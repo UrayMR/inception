@@ -6,7 +6,8 @@
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/UrayMR/inception.git](https://github.com/UrayMR/inception.git)```
+   git clone https://github.com/UrayMR/inception.git
+   ```
 
 2. **Navigate to the project directory**
    ```bash

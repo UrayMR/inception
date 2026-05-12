@@ -54,6 +54,11 @@
 10. **Access the application**
     Open your web browser and navigate to `http://localhost:8000` to start developing and testing the application.
 
+11. **Contribute**
+    - Fork or clone the repository and create a new branch for your jobdesk, feature, or bug fix.
+    - Make your changes and commit them with clear messages. Use the conventional commit format. [Conventional Commits](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13#file-conventional-commits-cheatsheet-md)
+    - Always run `composer run format` before pushing your changes to ensure code quality and consistency.
+
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 

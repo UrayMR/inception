@@ -25,9 +25,11 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'google_id' => null,
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'role' => fake()->randomElement([User::ROLE_ADMIN, User::ROLE_ACCOUNTANT, User::ROLE_PARTICIPANT]),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'two_factor_secret' => null,
@@ -43,6 +45,17 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the model should have a Google ID and no password.
+     */
+    public function withGoogle(?string $googleId = null): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'google_id' => $googleId ?? fake()->unique()->uuid(),
+            'password' => null,
         ]);
     }
 

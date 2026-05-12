@@ -1,6 +1,7 @@
 import { Form, Head } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
+import GoogleIcon from '@/components/svg/google-icon';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -8,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/routes';
+import { redirect } from '@/routes/auth/google';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 
@@ -27,7 +29,7 @@ export default function Login({
             <Head title="Log in" />
 
             <Form
-                {...store.form()}
+                {...store()}
                 resetOnSuccess={['password']}
                 className="flex flex-col gap-6"
             >
@@ -92,6 +94,14 @@ export default function Login({
                                 {processing && <Spinner />}
                                 Log in
                             </Button>
+
+                            <a
+                                href={redirect.url()}
+                                className="mt-2 flex w-full items-center justify-center gap-2 rounded border border-gray-300 bg-white py-2 text-gray-700 transition-colors hover:bg-gray-50"
+                            >
+                                <GoogleIcon />
+                                Masuk dengan Google
+                            </a>
                         </div>
 
                         {canRegister && (

@@ -15,12 +15,6 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasUuids, Notifiable, TwoFactorAuthenticatable;
 
-    public const string ROLE_ADMIN = 'admin';
-
-    public const string ROLE_ACCOUNTANT = 'accountant';
-
-    public const string ROLE_PARTICIPANT = 'participant';
-
     protected $fillable = [
         'name',
         'email',

@@ -1,4 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react';
+import AppLayout from '@/layouts/app-layout';
 import { dashboard, login, lomba, register } from '@/routes';
 
 export default function Main({
@@ -9,7 +10,7 @@ export default function Main({
     const { auth } = usePage().props;
 
     return (
-        <>
+        <AppLayout>
             <Head title="Welcome" />
             <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]">
                 <div className="mb-6 w-full">
@@ -50,6 +51,6 @@ export default function Main({
                     </div>
                 </div>
             </div>
-        </>
+        </AppLayout>
     );
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Utilities\FlashResponse;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -23,16 +24,15 @@ abstract class Controller
     }
 
     /**
-     * Flash a message to the session for the next request.
+     * Flash a toast message to the session for the next request using FlashResponse utility.
      *
-     * @param  string  $key  The key for the flash message.
-     * @param  mixed  $value  The value of the flash message.
+     * @param  string  $type  The type of the toast (success, info, error).
+     * @param  string  $message  The message to display.
      * @return $this
      */
-    protected function flash(string $key, mixed $value = null)
+    protected function flash(string $type, string $message)
     {
-        Inertia::flash($key, $value);
-
+        FlashResponse::{$type}($message);
         return $this;
     }
 }

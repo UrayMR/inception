@@ -48,11 +48,11 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
 
-        $user = $this->userService->create($request->toDTO());
+        $this->userService->create($request->toDTO());
 
         $this->flash('success', 'User created successfully.');
 
-        return redirect()->route('users.show', $user);
+        return redirect()->route('users.index');
     }
 
     /**

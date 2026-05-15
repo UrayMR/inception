@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\CompetitionStatus;
+use App\Enums\CompetitionType;
 use App\Models\Competition;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -25,10 +27,10 @@ class CompetitionFactory extends Factory
       'name' => $name,
       'description' => $this->faker->optional()->paragraph(),
       'slug' => Str::slug($name),
-      'type' => $this->faker->randomElement(['solo', 'team']),
+      'type' => $this->faker->randomElement(CompetitionType::cases()),
       'image_path' => $this->faker->optional()->imageUrl(),
       'price' => $this->faker->randomFloat(2, 0, 1000000),
-      'status' => $this->faker->randomElement(['closed', 'open', 'ongoing', 'completed']),
+      'status' => $this->faker->randomElement(CompetitionStatus::cases()),
     ];
   }
 }

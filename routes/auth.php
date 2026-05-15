@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,7 @@ Route::get('/auth/google/callback', function () {
                 'google_id' => $googleUser->getId(),
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
-                'role' => User::ROLE_PARTICIPANT,
+                'role' => UserRole::participant->value,
             ]);
         }
 

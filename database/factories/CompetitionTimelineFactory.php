@@ -26,7 +26,6 @@ class CompetitionTimelineFactory extends Factory
       'sequence' => $this->faker->numberBetween(1, 5),
       'start_at' => $this->faker->dateTimeBetween('-1 month', '+1 month'),
       'end_at' => $this->faker->dateTimeBetween('+1 month', '+2 months'),
-      'status' => $this->faker->randomElement(['closed', 'open', 'ongoing', 'completed']),
     ];
   }
 }

@@ -19,7 +19,6 @@ class CompetitionTimeline extends Model
     'sequence',
     'start_at',
     'end_at',
-    'status',
   ];
 
   public function competition()

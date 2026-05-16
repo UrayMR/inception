@@ -12,6 +12,16 @@ class Competition extends Model
   /** @use HasFactory<CompetitionFactory> */
   use HasFactory, HasUuids;
 
+  /**
+   * Get the route key for the model.
+   * 
+   * @return string The route key for the model refers to column name in the database.
+   */
+  public function getRouteKeyName(): string
+  {
+    return 'slug';
+  }
+
   protected $fillable = [
     'name',
     'description',

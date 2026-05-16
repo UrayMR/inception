@@ -1,12 +1,30 @@
 # Todo List
 
-- [✅] OAuth Google Implementation
-- [✅] Project Structure & User CRUD Implementation
+Main:
+- [✅] OAuth Google Implementation -- Still needs testing, docs, and cleanup
+- [✅] Backend Architecture
+- [✅] Frontend Architecture
+- [✅] Toast/Flash Message Utilities
 - Global Error Handler
-- Toast/Flash Message Utilities
-- Datatable Component
-- Form Component
-- Zod Component
+- DB Transaction Handling in Services
+
+Functionality List:
+- [✅] User
+- Competition
+- Competition Timeline
+- Team
+- Team Detail
+- Registration
+- Submission
+
+Components: 
+- [✅] Datatable Component
+- [✅] Button Component
+- [✅] Form Component
+- [✅] Zod Component
 
 Docs: 
-- [✅] Architecture Decision Records (ADR)
+- Frontend Architecture Decision Records
+- [✅] Backend Architecture Decision Records
+- API Documentation
+- [✅] README.md

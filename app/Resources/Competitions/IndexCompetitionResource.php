@@ -17,6 +17,7 @@ class IndexCompetitionResource extends JsonResource
   {
     return [
       'id' => $this->id,
+      'slug' => $this->slug,
       'name' => $this->name,
       'type' => $this->type,
       'status' => $this->status,

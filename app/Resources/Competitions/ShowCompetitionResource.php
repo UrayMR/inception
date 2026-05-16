@@ -17,6 +17,7 @@ class ShowCompetitionResource extends JsonResource
   {
     return [
       'id' => $this->id,
+      'slug' => $this->slug,
       'name' => $this->name,
       'description' => $this->description,
       'type' => $this->type,
@@ -26,6 +27,7 @@ class ShowCompetitionResource extends JsonResource
       'timelines' => collect($this->timelines)->sortBy('sequence')->values()->map(function ($timeline) {
         return [
           'id' => $timeline->id,
+          'competition_id' => $timeline->competition_id,
           'timeline_name' => $timeline->timeline_name,
           'description' => $timeline->description,
           'sequence' => $timeline->sequence,
@@ -33,6 +35,8 @@ class ShowCompetitionResource extends JsonResource
           'end_at' => $timeline->end_at,
         ];
       }),
+      'created_at' => $this->created_at?->toDateTimeString(),
+      'updated_at' => $this->updated_at?->toDateTimeString(),
     ];
   }
 }

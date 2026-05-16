@@ -1,0 +1,70 @@
+import { Head, useForm } from '@inertiajs/react';
+import { BackButton } from '@/components/buttons/back-button';
+import { SubmitButton } from '@/components/buttons/submit-button';
+import { CompetitionForm } from '@/components/forms/competition-form';
+import { MainContent } from '@/components/main-content';
+import { useZod } from '@/hooks/use-zod';
+import PanelLayout from '@/layouts/panel-layout';
+import competitions from '@/routes/competitions';
+import type { BreadcrumbItem } from '@/types';
+import { CompetitionStatusMap, CompetitionTypeMap } from '@/types';
+import { CreateCompetitionSchema } from '@/validations/competition-schema';
+import type { CreateCompetitionSchemaType } from '@/validations/competition-schema';
+
+export default function CreateCompetitionPage() {
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Competitions', href: competitions.index.url() },
+        { title: 'Create Competition', href: competitions.create.url() },
+    ];
+
+    const form = useForm<CreateCompetitionSchemaType>({
+        name: '',
+        description: '',
+        type: CompetitionTypeMap.Solo.value,
+        image_file: undefined,
+        price: 0,
+        status: CompetitionStatusMap.Closed.value,
+        timelines: [],
+    });
+
+    const { guard } = useZod<CreateCompetitionSchemaType>(
+        CreateCompetitionSchema,
+    );
+
+    const handleSubmit = (e: React.SubmitEvent) => {
+        e.preventDefault();
+
+        if (!guard(form.data, form.setError)) {
+            return;
+        }
+
+        form.post(competitions.store.url());
+    };
+
+    return (
+        <PanelLayout breadcrumbs={breadcrumbs}>
+            <Head title="Create Competition" />
+            <MainContent>
+                <MainContent.Header
+                    title="Create Competition"
+                    actions={<BackButton href={competitions.index.url()} />}
+                />
+
+                <MainContent.Section>
+                    <form onSubmit={handleSubmit}>
+                        <CompetitionForm
+                            mode="create"
+                            data={form.data}
+                            errors={form.errors}
+                            onChange={form.setData}
+                        />
+
+                        <div className="mt-4 flex justify-end">
+                            <SubmitButton loading={form.processing} />
+                        </div>
+                    </form>
+                </MainContent.Section>
+            </MainContent>
+        </PanelLayout>
+    );
+}

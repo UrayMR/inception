@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\Competitions\CompetitionRepository;
+use App\Repositories\Competitions\EloquentCompetitionRepository;
+use App\Repositories\Competitions\Timelines\EloquentTimelineRepository;
+use App\Repositories\Competitions\Timelines\TimelineRepository;
 use App\Repositories\Users\EloquentUserRepository;
 use App\Repositories\Users\UserRepository;
 use Carbon\CarbonImmutable;
@@ -17,13 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            // User Repository
-            UserRepository::class,
-            EloquentUserRepository::class,
+        $this->app->bind(UserRepository::class, EloquentUserRepository::class);
+        $this->app->bind(CompetitionRepository::class, EloquentCompetitionRepository::class);
+        $this->app->bind(TimelineRepository::class, EloquentTimelineRepository::class);
 
-            // ... Bind other repositories here
-        );
+        // ... Bind other repositories here
     }
 
     /**
@@ -46,13 +48,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Password::defaults(
-            fn (): ?Password => app()->isProduction()
+            fn(): ?Password => app()->isProduction()
                 ? Password::min(12)
-                    ->mixedCase()
-                    ->letters()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
+                ->mixedCase()
+                ->letters()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
                 : null,
         );
     }

@@ -3,11 +3,11 @@ import { CompetitionStatusValue, CompetitionTypeValue } from '@/types';
 
 export const CompetitionTimelineSchema = z
     .object({
-        timeline_name: z.string().max(255),
+        timeline_name: z.string().min(1).max(255),
         description: z.string().nullish(),
         sequence: z.int().min(1),
-        start_at: z.date(),
-        end_at: z.date(),
+        start_at: z.coerce.date(),
+        end_at: z.coerce.date(),
     })
     .refine((data) => data.start_at < data.end_at, {
         message: 'start_at must be before end_at',

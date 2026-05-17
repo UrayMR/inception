@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { CompetitionTimeline } from '@/types';
+import { DateTimePicker } from './date-time-picker';
 import InputError from './input-error';
 import InputHint from './input-hint';
 import { Label } from './ui/label';
@@ -12,7 +13,7 @@ interface DynamicTimelineInputProps {
     label: string;
     value?: CompetitionTimeline[];
     onChange?: (value: CompetitionTimeline[]) => void;
-    error?: string;
+    error?: Record<string, string>;
     required?: boolean;
     disabled?: boolean;
     readOnly?: boolean;
@@ -79,164 +80,183 @@ export function DynamicTimelineInput({
                     {required && <span className="text-destructive">*</span>}
                 </Label>
                 {hint && !error && <InputHint hint={hint} />}
-                {error && <InputError message={error} />}
             </div>
 
             <div className="flex flex-col gap-4">
-                {value.map((item, index) => (
-                    <div
-                        key={index}
-                        className="group relative flex flex-col gap-3 rounded-md border bg-background p-3"
-                    >
-                        <div className="flex items-center justify-between border-b pb-2">
-                            <span className="text-xs font-medium text-muted-foreground">
-                                Timeline #{index + 1}
-                            </span>
-                            {!isDisabled && value.length > 1 && (
-                                <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => handleRemoveItem(index)}
-                                    className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                                    aria-label="Remove timeline"
-                                >
-                                    <Trash2 className="h-4 w-4" />
-                                </Button>
-                            )}
+                {value.map((item, index) => {
+                    const nameError =
+                        error?.[`timelines.${index}.timeline_name`];
+                    const sequenceError =
+                        error?.[`timelines.${index}.sequence`];
+                    const startAtError = error?.[`timelines.${index}.start_at`];
+                    const endAtError = error?.[`timelines.${index}.end_at`];
+
+                    return (
+                        <div
+                            key={index}
+                            className="group relative flex flex-col gap-3 rounded-md border bg-background p-3"
+                        >
+                            <div className="flex items-center justify-between border-b pb-2">
+                                <span className="text-xs font-medium text-muted-foreground">
+                                    Timeline #{index + 1}
+                                </span>
+                                {!isDisabled && value.length > 1 && (
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => handleRemoveItem(index)}
+                                        className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                                        aria-label="Remove timeline"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                )}
+                            </div>
+
+                            {/* Grid Input Fields */}
+                            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                                <div className="flex flex-col gap-1 md:col-span-2">
+                                    <Label
+                                        htmlFor={`${id}-name-${index}`}
+                                        className="text-xs"
+                                    >
+                                        Timeline Name
+                                        <span className="ml-1 text-destructive">
+                                            *
+                                        </span>
+                                    </Label>
+                                    <Input
+                                        id={`${id}-name-${index}`}
+                                        value={item.timeline_name}
+                                        onChange={(e) =>
+                                            handleFieldChange(
+                                                index,
+                                                'timeline_name',
+                                                e.target.value,
+                                            )
+                                        }
+                                        placeholder="Your timeline name"
+                                        disabled={isDisabled}
+                                    />
+                                    {nameError && (
+                                        <InputError message={nameError} />
+                                    )}
+                                </div>
+
+                                <div className="flex flex-col gap-1">
+                                    <Label
+                                        htmlFor={`${id}-seq-${index}`}
+                                        className="text-xs"
+                                    >
+                                        Sequence
+                                        <span className="ml-1 text-destructive">
+                                            *
+                                        </span>
+                                    </Label>
+                                    <Input
+                                        id={`${id}-seq-${index}`}
+                                        type="number"
+                                        value={item.sequence}
+                                        onChange={(e) =>
+                                            handleFieldChange(
+                                                index,
+                                                'sequence',
+                                                parseInt(e.target.value) || 0,
+                                            )
+                                        }
+                                        disabled={isDisabled}
+                                    />
+                                    {sequenceError && (
+                                        <InputError message={sequenceError} />
+                                    )}
+                                </div>
+
+                                <div className="flex flex-col gap-1.5">
+                                    <Label
+                                        htmlFor={`timeline-start-${index}`}
+                                        className="text-xs"
+                                    >
+                                        Start Date & Time
+                                        <span className="ml-1 text-destructive">
+                                            *
+                                        </span>
+                                    </Label>
+                                    <DateTimePicker
+                                        date={
+                                            item.start_at
+                                                ? new Date(item.start_at)
+                                                : undefined
+                                        }
+                                        setDate={(newDate) =>
+                                            handleFieldChange(
+                                                index,
+                                                'start_at',
+                                                newDate,
+                                            )
+                                        }
+                                        disabled={isDisabled}
+                                    />
+                                    {startAtError && (
+                                        <InputError message={startAtError} />
+                                    )}
+                                </div>
+
+                                <div className="flex flex-col gap-1.5">
+                                    <Label
+                                        htmlFor={`timeline-end-${index}`}
+                                        className="text-xs"
+                                    >
+                                        End Date & Time
+                                        <span className="ml-1 text-destructive">
+                                            *
+                                        </span>
+                                    </Label>
+                                    <DateTimePicker
+                                        date={
+                                            item.end_at
+                                                ? new Date(item.end_at)
+                                                : undefined
+                                        }
+                                        setDate={(newDate) =>
+                                            handleFieldChange(
+                                                index,
+                                                'end_at',
+                                                newDate,
+                                            )
+                                        }
+                                        disabled={isDisabled}
+                                    />
+                                    {endAtError && (
+                                        <InputError message={endAtError} />
+                                    )}
+                                </div>
+
+                                <div className="flex flex-col gap-1 md:col-span-3">
+                                    <Label
+                                        htmlFor={`${id}-desc-${index}`}
+                                        className="text-xs"
+                                    >
+                                        Description (Optional)
+                                    </Label>
+                                    <Input
+                                        id={`${id}-desc-${index}`}
+                                        value={item.description || ''}
+                                        onChange={(e) =>
+                                            handleFieldChange(
+                                                index,
+                                                'description',
+                                                e.target.value,
+                                            )
+                                        }
+                                        placeholder="Short description about the timeline"
+                                        disabled={isDisabled}
+                                    />
+                                </div>
+                            </div>
                         </div>
-
-                        {/* Grid Input Fields */}
-                        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                            <div className="flex flex-col gap-1 md:col-span-2">
-                                <Label
-                                    htmlFor={`${id}-name-${index}`}
-                                    className="text-xs"
-                                >
-                                    Timeline Name
-                                </Label>
-                                <Input
-                                    id={`${id}-name-${index}`}
-                                    value={item.timeline_name}
-                                    onChange={(e) =>
-                                        handleFieldChange(
-                                            index,
-                                            'timeline_name',
-                                            e.target.value,
-                                        )
-                                    }
-                                    placeholder="Your timeline name"
-                                    disabled={isDisabled}
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-                                <Label
-                                    htmlFor={`${id}-seq-${index}`}
-                                    className="text-xs"
-                                >
-                                    Sequence
-                                </Label>
-                                <Input
-                                    id={`${id}-seq-${index}`}
-                                    type="number"
-                                    value={item.sequence}
-                                    onChange={(e) =>
-                                        handleFieldChange(
-                                            index,
-                                            'sequence',
-                                            parseInt(e.target.value) || 0,
-                                        )
-                                    }
-                                    disabled={isDisabled}
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-                                <Label
-                                    htmlFor={`${id}-start-${index}`}
-                                    className="text-xs"
-                                >
-                                    Start Date
-                                </Label>
-                                <Input
-                                    id={`${id}-start-${index}`}
-                                    type="date"
-                                    // Convert Date object to string format YYYY-MM-DD can be read by input type="date"
-                                    value={
-                                        item.start_at instanceof Date
-                                            ? item.start_at
-                                                  .toISOString()
-                                                  .split('T')[0]
-                                            : ''
-                                    }
-                                    onChange={(e) =>
-                                        handleFieldChange(
-                                            index,
-                                            'start_at',
-                                            e.target.value
-                                                ? new Date(e.target.value)
-                                                : new Date(),
-                                        )
-                                    }
-                                    disabled={isDisabled}
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-                                <Label
-                                    htmlFor={`${id}-end-${index}`}
-                                    className="text-xs"
-                                >
-                                    End Date
-                                </Label>
-                                <Input
-                                    id={`${id}-end-${index}`}
-                                    type="date"
-                                    value={
-                                        item.end_at instanceof Date
-                                            ? item.end_at
-                                                  .toISOString()
-                                                  .split('T')[0]
-                                            : ''
-                                    }
-                                    onChange={(e) =>
-                                        handleFieldChange(
-                                            index,
-                                            'end_at',
-                                            e.target.value
-                                                ? new Date(e.target.value)
-                                                : new Date(),
-                                        )
-                                    }
-                                    disabled={isDisabled}
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-1 md:col-span-3">
-                                <Label
-                                    htmlFor={`${id}-desc-${index}`}
-                                    className="text-xs"
-                                >
-                                    Description (Optional)
-                                </Label>
-                                <Input
-                                    id={`${id}-desc-${index}`}
-                                    value={item.description || ''}
-                                    onChange={(e) =>
-                                        handleFieldChange(
-                                            index,
-                                            'description',
-                                            e.target.value,
-                                        )
-                                    }
-                                    placeholder="Short description about the timeline"
-                                    disabled={isDisabled}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             {!isDisabled && (

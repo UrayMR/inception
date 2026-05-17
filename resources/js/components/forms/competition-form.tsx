@@ -157,8 +157,9 @@ export function CompetitionForm({
                     onChange={(updatedTimelines) =>
                         onChange('timelines', updatedTimelines)
                     }
-                    error={errors.timelines}
+                    error={errors}
                     disabled={isReadOnly}
+                    required
                 />
             </div>
         </div>

@@ -16,6 +16,7 @@ import {
 import { dashboard, home } from '@/routes';
 import users from '@/routes/users';
 import type { NavItem } from '@/types';
+import competitions from '@/routes/competitions';
 
 const mainNavItems: NavItem[] = [
     {
@@ -27,6 +28,11 @@ const mainNavItems: NavItem[] = [
         title: 'Users',
         href: users.index(),
         icon: Users,
+    },
+    {
+        title: 'Competitions',
+        href: competitions.index(),
+        icon: BookOpen,
     },
 ];
 

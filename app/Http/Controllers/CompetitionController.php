@@ -1,0 +1,127 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\Competitions\StoreCompetitionRequest;
+use App\Http\Requests\Competitions\UpdateCompetitionRequest;
+use App\Models\Competition;
+use App\Resources\Competitions\EditCompetitionResource;
+use App\Resources\Competitions\IndexCompetitionResource;
+use App\Resources\Competitions\ShowCompetitionResource;
+use App\Services\Competitions\CompetitionService;
+use App\Services\Competitions\TimelineService;
+use Illuminate\Http\Request;
+
+class CompetitionController extends Controller
+{
+    public function __construct(
+        protected CompetitionService $competitionService,
+        protected TimelineService $timelineService
+    ) {}
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $this->authorize('viewAny', Competition::class);
+
+        $competitions = $this->competitionService->index($request);
+
+        return $this->render('panel/competitions/index', [
+            'competitions' => IndexCompetitionResource::collection($competitions),
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $this->authorize('create', Competition::class);
+
+        return $this->render('panel/competitions/create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreCompetitionRequest $request)
+    {
+        $this->authorize('create', Competition::class);
+
+        // TODO: Make a validation that the given request name is unique(slug)
+        
+        $competition = $this->competitionService->create($request->toCompetitionDTO());
+
+        $this->timelineService->createMany($competition, $request->toTimelineDTO($competition->id));
+
+        $this->flash('success', 'Competition created successfully.');
+
+        return redirect()->route('competitions.index');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Competition $competition)
+    {
+        $this->authorize('view', $competition);
+
+        $competition->load('timelines');
+
+        return $this->render('panel/competitions/show', [
+            'competition' => ShowCompetitionResource::make($competition)->resolve(),
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Competition $competition)
+    {
+        $this->authorize('update', $competition);
+
+        $competition->load('timelines');
+
+        return $this->render('panel/competitions/edit', [
+            'competition' => EditCompetitionResource::make($competition)->resolve(),
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateCompetitionRequest $request, Competition $competition)
+    {
+        $this->authorize('update', $competition);
+
+        $competition = $this->competitionService->update($request->toCompetitionDTO(), $competition);
+
+        $this->timelineService->updateMany($competition, $request->toTimelineDTO($competition->id));
+
+        $this->flash('success', 'Competition updated successfully.');
+
+        return redirect()->route('competitions.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Competition $competition)
+    {
+        $this->authorize('delete', $competition);
+
+        $isTimelineDeleted = $this->timelineService->destroyMany($competition);
+        if (!$isTimelineDeleted) {
+            $this->flash('error', 'Failed to delete competition timelines.');
+            return redirect()->back();
+        }
+
+        $this->competitionService->destroy($competition);
+
+        $this->flash('success', 'Competition deleted successfully.');
+
+        return redirect()->route('competitions.index');
+    }
+}

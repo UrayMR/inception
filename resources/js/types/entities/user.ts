@@ -1,4 +1,4 @@
-import type { UserRoleValue } from '../enums/role';
+import type { UserRoleType } from '../enums/role';
 
 export interface User {
     id: string;
@@ -6,7 +6,7 @@ export interface User {
     name: string;
     email: string;
     email_verified_at?: string;
-    role: UserRoleValue;
+    role: UserRoleType;
     two_factor_enabled?: boolean;
     created_at: string;
     updated_at: string;
@@ -16,7 +16,7 @@ export interface IUserIndex {
     id: string;
     name: string;
     email: string;
-    role: UserRoleValue;
+    role: UserRoleType;
 }
 
 export interface IUserAuth extends IUserIndex {
@@ -30,7 +30,4 @@ export interface IUserShow extends IUserIndex {
     updated_at: string;
 }
 
-export interface IUserEdit extends IUserIndex {
-    created_at: string;
-    updated_at: string;
-}
+export type IUserEdit = IUserShow;

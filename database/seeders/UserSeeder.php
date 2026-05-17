@@ -13,7 +13,9 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        User::updateOrCreate([
+            'email' => 'admin@gmail.com',
+        ], [
             'name' => 'Admin User',
             'email' => 'admin@gmail.com',
             'role' => UserRole::admin->value,

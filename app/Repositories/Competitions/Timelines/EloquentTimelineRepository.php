@@ -16,8 +16,10 @@ class EloquentTimelineRepository implements TimelineRepository
 
   public function storeMany(Competition $competition, array $attributes): void
   {
-    if (!isset($attributes['sequence'])) {
-      $attributes['sequence'] = $this->getMaxSequence($competition->id) + 1;
+    foreach ($attributes as $item) {
+      if (!isset($item['sequence']) || is_null($item['sequence'])) {
+        $item['sequence'] = $this->getMaxSequence($competition->id) + 1;
+      }
     }
 
     $competition->timelines()->createMany($attributes);

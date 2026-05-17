@@ -22,7 +22,6 @@ class StoreCompetitionRequest extends FormRequest
     $competitionRules = [
       'name' => ['required', 'string', 'max:255'],
       'description' => ['nullable', 'string'],
-      'slug' => ['required', 'string', 'max:255', 'unique:competitions,slug'],
       'type' => ['required', 'string', Rule::in(CompetitionType::cases())],
       'image_file' => ['nullable', 'file', 'image', 'max:2048'], // Max 2MB
       'price' => ['nullable', 'numeric', 'min:0'],
@@ -41,43 +40,43 @@ class StoreCompetitionRequest extends FormRequest
     return array_merge($competitionRules, $timelineRules);
   }
 
-  public function toDTO(): StoreCompetitionDTO
-  {
-    $timelines = TimelineDTO::collection($this->input('timelines', []));
-
-    return new StoreCompetitionDTO(
-      name: $this->input('name'),
-      description: $this->input('description'),
-      slug: $this->input('slug'),
-      type: $this->input('type'),
-      image_file: $this->file('image_file'),
-      price: $this->input('price'),
-      status: $this->input('status'),
-      timelines: $timelines,
-    );
-  }
-
   /**
-   * Competition DTO without timelines collection
+   * Competition DTO
    * 
    * @return StoreCompetitionDTO
    */
   public function toCompetitionDTO(): StoreCompetitionDTO
   {
-    $dto = $this->toDTO();
-
-    unset($dto->timelines); // Remove timelines from the main DTO, as they will be handled separately
-
-    return $dto;
+    return new StoreCompetitionDTO(
+      name: $this->input('name'),
+      description: $this->input('description'),
+      type: $this->input('type'),
+      image_file: $this->file('image_file'),
+      price: $this->input('price'),
+      status: $this->input('status'),
+    );
   }
 
   /**
-   * Timeline DTO collection
+   * Timeline DTO array
    * 
    * @return array
    */
-  public function toTimelineDTO(): array
+  public function toTimelineDTO(string $competition_id): array
   {
-    return $this->toDTO()->timelines; // Return only the timelines part as an array of TimelineDTOs
+    $timelinesData = $this->input('timelines', []);
+
+    return array_map(function ($timeline) use ($competition_id) {
+      $dto = new TimelineDTO(
+        competition_id: $competition_id,
+        timeline_name: $timeline['timeline_name'],
+        description: $timeline['description'] ?? null,
+        sequence: $timeline['sequence'],
+        start_at: $timeline['start_at'],
+        end_at: $timeline['end_at'],
+      );
+
+      return $dto->toArray();
+    }, $timelinesData);
   }
 }

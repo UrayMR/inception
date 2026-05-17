@@ -21,6 +21,19 @@ class CompetitionTimeline extends Model
     'end_at',
   ];
 
+  /**
+   * Get the attributes that should be cast.
+   *
+   * @return array<string, string>
+   */
+  protected function casts(): array
+  {
+    return [
+      'start_at' => 'datetime',
+      'end_at' => 'datetime',
+    ];
+  }
+
   public function competition()
   {
     return $this->belongsTo(Competition::class);

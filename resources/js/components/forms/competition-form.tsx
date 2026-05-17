@@ -14,6 +14,7 @@ import type {
     FormProps,
 } from '@/types';
 import { CompetitionStatusMap, CompetitionTypeMap } from '@/types';
+import { DynamicTimelineInput } from '../dynamic-timeline-input';
 
 type CompetitionFormData = {
     name: string;
@@ -144,6 +145,22 @@ export function CompetitionForm({
                     </SelectContent>
                 </Select>
             </FormField>
+
+            <hr className="my-6 border-muted" />
+
+            <div className="space-y-4">
+                <DynamicTimelineInput
+                    id="timelines"
+                    label="Competition Timelines"
+                    hint="Manage schedule and phases for this competition."
+                    value={data.timelines}
+                    onChange={(updatedTimelines) =>
+                        onChange('timelines', updatedTimelines)
+                    }
+                    error={errors.timelines}
+                    disabled={isReadOnly}
+                />
+            </div>
         </div>
     );
 }

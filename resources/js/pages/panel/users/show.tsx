@@ -5,12 +5,12 @@ import { MainContent } from '@/components/main-content';
 import PanelLayout from '@/layouts/panel-layout';
 import users from '@/routes/users';
 import type { BreadcrumbItem, IUserShow } from '@/types';
-import type { UserRoleValue } from '@/types';
+import type { UserRoleType } from '@/types';
 
 interface ShowUserForm {
     name: string;
     email: string;
-    role: UserRoleValue;
+    role: UserRoleType;
     updated_at: string;
     created_at: string;
 }

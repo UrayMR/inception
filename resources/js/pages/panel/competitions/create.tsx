@@ -24,7 +24,15 @@ export default function CreateCompetitionPage() {
         image_file: undefined,
         price: 0,
         status: CompetitionStatusMap.Closed.value,
-        timelines: [],
+        timelines: [
+            {
+                timeline_name: '',
+                sequence: 1,
+                start_at: new Date(),
+                end_at: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // Default to 1 day later
+                description: '',
+            },
+        ],
     });
 
     const { guard } = useZod<CreateCompetitionSchemaType>(

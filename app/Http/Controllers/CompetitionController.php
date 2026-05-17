@@ -50,9 +50,11 @@ class CompetitionController extends Controller
     {
         $this->authorize('create', Competition::class);
 
+        // TODO: Make a validation that the given request name is unique(slug)
+        
         $competition = $this->competitionService->create($request->toCompetitionDTO());
 
-        $this->timelineService->createMany($competition, $request->toTimelineDTO());
+        $this->timelineService->createMany($competition, $request->toTimelineDTO($competition->id));
 
         $this->flash('success', 'Competition created successfully.');
 
@@ -96,7 +98,7 @@ class CompetitionController extends Controller
 
         $competition = $this->competitionService->update($request->toCompetitionDTO(), $competition);
 
-        $this->timelineService->updateMany($competition, $request->toTimelineDTO());
+        $this->timelineService->updateMany($competition, $request->toTimelineDTO($competition->id));
 
         $this->flash('success', 'Competition updated successfully.');
 

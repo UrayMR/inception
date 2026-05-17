@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Competitions;
+namespace App\Http\Requests\Teams;
 
 use App\DTOs\Teams\Members\MemberDTO;
 use App\DTOs\Teams\UpdateTeamDTO;

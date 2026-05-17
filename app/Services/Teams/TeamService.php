@@ -11,6 +11,14 @@ use Illuminate\Http\Request;
 class TeamService
 {
 
+  // NOTE:
+  // TeamService can be reusable accross different role controllers (Admin, Participant, etc.)
+  // Just called the function when trying to perform team related operations, and the service will handle the rest
+  
+  // Example: 
+  // in TeamController.php (admin controller), we can call $this->teamService->create($dto) to create a team.
+  // in Participant/ParticipantTeamController.php (participant controller), we can also call $this->teamService->create($dto) to create a team.
+
   public function __construct(
     protected TeamRepository $teamRepository,
   ) {}

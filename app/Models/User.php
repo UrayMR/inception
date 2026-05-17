@@ -43,4 +43,9 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+
+    public function team()
+    {
+        return $this->hasOne(Team::class, 'leader_id', 'id');
+    }
 }

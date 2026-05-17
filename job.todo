@@ -6,20 +6,26 @@ Main:
 - [✅] Frontend Architecture
 - [✅] Toast/Flash Message Utilities
 - Global Error Handler
-- DB Transaction Handling in Services
+- DB Transaction Handling in Services (For doing multiple DB operations in one service function)
 - Role Middleware
+- Rate Limiting Middleware
 
 Functionality List:
 - [✅] User
-- Competition
-- Competition Timeline
+- [✅] Competition
+- [✅] Competition Timeline
 - Team
 - Team Detail
 - Registration
 - Submission
 
+Detail Functionality List:
+- Component Functionality (Detailing & Efficiency)
+- Duplicate/Non-Unique handling to Competition Creation (Currently, it will just error out if you try to create a competition with the same name as an existing one. We should handle this more gracefully.)
+
 Components: 
 - [✅] Datatable Component
+- [✅] Input Component (Date Picker, [Not Yet] File Upload)
 - [✅] Button Component
 - [✅] Form Component
 - [✅] Zod Component
@@ -27,5 +33,5 @@ Components:
 Docs: 
 - Frontend Architecture Decision Records
 - [✅] Backend Architecture Decision Records
-- API Documentation
+- Route Documentation
 - [✅] README.md

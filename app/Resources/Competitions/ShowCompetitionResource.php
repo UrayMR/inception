@@ -27,7 +27,6 @@ class ShowCompetitionResource extends JsonResource
       'timelines' => collect($this->timelines)->sortBy('sequence')->values()->map(function ($timeline) {
         return [
           'id' => $timeline->id,
-          'competition_id' => $timeline->competition_id,
           'timeline_name' => $timeline->timeline_name,
           'description' => $timeline->description,
           'sequence' => $timeline->sequence,

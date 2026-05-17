@@ -60,6 +60,7 @@ class StoreCompetitionRequest extends FormRequest
   /**
    * Timeline DTO array
    * 
+   * @param string $competition_id
    * @return array
    */
   public function toTimelineDTO(string $competition_id): array

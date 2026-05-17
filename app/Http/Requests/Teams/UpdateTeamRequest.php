@@ -41,7 +41,6 @@ class UpdateTeamRequest extends FormRequest
     return new UpdateTeamDTO(
       competition_id: $this->input('competition_id'),
       team_name: $this->input('team_name'),
-      leader_id: $this->user()->id,
       phone_number: $this->input('phone_number'),
     );
   }

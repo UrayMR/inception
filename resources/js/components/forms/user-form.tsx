@@ -7,13 +7,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { UserRole } from '@/types';
-import type { UserRoleValue, FormProps } from '@/types';
+import { UserRoleMap } from '@/types';
+import type { UserRoleType, FormProps } from '@/types';
 
 export type UserFormData = {
     name: string;
     email: string;
-    role: UserRoleValue;
+    role: UserRoleType;
     password?: string;
     password_confirmation?: string;
 };
@@ -76,7 +76,7 @@ export function UserForm({ mode, data, errors, onChange }: UserFormProps) {
                 <Select
                     value={data.role}
                     onValueChange={(value) =>
-                        onChange('role', value as UserRoleValue)
+                        onChange('role', value as UserRoleType)
                     }
                     required
                 >
@@ -85,7 +85,7 @@ export function UserForm({ mode, data, errors, onChange }: UserFormProps) {
                     </SelectTrigger>
 
                     <SelectContent>
-                        {Object.values(UserRole).map((role) => (
+                        {Object.values(UserRoleMap).map((role) => (
                             <SelectItem
                                 key={role.value}
                                 value={role.value}

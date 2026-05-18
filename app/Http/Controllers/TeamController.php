@@ -8,26 +8,28 @@ use App\Models\Team;
 use App\Resources\Teams\EditTeamResource;
 use App\Resources\Teams\IndexTeamResource;
 use App\Resources\Teams\ShowTeamResource;
+use App\Services\Competitions\CompetitionService;
 use App\Services\Teams\Members\MemberService;
 use App\Services\Teams\TeamService;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
-    // NOTE: 
-    // Team should be created by the user who is the leader of the team, 
+    // NOTE:
+    // Team should be created by the user who is the leader of the team,
     // so the leader_id will be set to the authenticated user id, and cannot be changed/updated.
 
-    // Team creation only appears when registering for a competition, 
-    // so the competition_id will be set based on the competition that the user is registering for, 
+    // Team creation only appears when registering for a competition,
+    // so the competition_id will be set based on the competition that the user is registering for,
     // and all of team detail cannot be changed/updated.
-    
-    // This Controller only handling the team management by admin, 
+
+    // This Controller only handling the team management by admin,
     // so the team can be updated and deleted by admin, but not by the leader of the team.
 
     public function __construct(
         protected TeamService $teamService,
-        protected MemberService $memberService
+        protected MemberService $memberService,
+        protected CompetitionService $competitionService,
     ) {}
 
     /**
@@ -51,7 +53,9 @@ class TeamController extends Controller
     {
         $this->authorize('create', Team::class);
 
-        return $this->render('panel/teams/create');
+        return $this->render('panel/teams/create', [
+            'competitionMap' => $this->competitionService->getCompetitionMap(),
+        ]);
     }
 
     /**
@@ -95,6 +99,7 @@ class TeamController extends Controller
 
         return $this->render('panel/teams/edit', [
             'team' => EditTeamResource::make($team)->resolve(),
+            'competitionMap' => $this->competitionService->getCompetitionMap(),
         ]);
     }
 
@@ -122,8 +127,9 @@ class TeamController extends Controller
         $this->authorize('delete', $team);
 
         $isMemberDeleted = $this->memberService->destroyMany($team);
-        if (!$isMemberDeleted) {
+        if (! $isMemberDeleted) {
             $this->flash('error', 'Failed to delete team members.');
+
             return redirect()->back();
         }
 

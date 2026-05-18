@@ -7,7 +7,7 @@ import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
 import users from '@/routes/users';
 import type { BreadcrumbItem } from '@/types';
-import { UserRole } from '@/types';
+import { UserRoleMap } from '@/types';
 import { CreateUserSchema } from '@/validations/user-schema';
 import type { CreateUserSchemaType } from '@/validations/user-schema';
 
@@ -20,7 +20,7 @@ export default function CreateUserPage() {
     const form = useForm<CreateUserSchemaType>({
         name: '',
         email: '',
-        role: UserRole.Participant.value,
+        role: UserRoleMap.Participant.value,
         password: '',
         password_confirmation: '',
     });

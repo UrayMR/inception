@@ -6,22 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-  public function up(): void
-  {
-    Schema::create('competition_timelines', function (Blueprint $table) {
-      $table->uuid('id')->primary();
-      $table->foreignUuid('competition_id')->constrained('competitions', 'id')->onDelete('cascade');
-      $table->string('timeline_name');
-      $table->text('description')->nullable();
-      $table->integer('sequence')->default(0);
-      $table->timestamp('start_at');
-      $table->timestamp('end_at');
-      $table->timestamps();
-    });
-  }
+    public function up(): void
+    {
+        Schema::create('competition_timelines', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('competition_id')->constrained('competitions', 'id')->onDelete('cascade');
+            $table->string('timeline_name');
+            $table->text('description')->nullable();
+            $table->integer('sequence')->default(0);
+            $table->timestamp('start_at');
+            $table->timestamp('end_at');
+            $table->timestamps();
+        });
+    }
 
-  public function down(): void
-  {
-    Schema::dropIfExists('competition_timelines');
-  }
+    public function down(): void
+    {
+        Schema::dropIfExists('competition_timelines');
+    }
 };

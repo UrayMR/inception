@@ -1,12 +1,12 @@
 import { Plus, Trash2 } from 'lucide-react';
 import { useCallback } from 'react';
+import { DateTimePicker } from '@/components/date-time-picker';
+import InputError from '@/components/input-error';
+import InputHint from '@/components/input-hint';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import type { CompetitionTimeline } from '@/types';
-import { DateTimePicker } from './date-time-picker';
-import InputError from './input-error';
-import InputHint from './input-hint';
-import { Label } from './ui/label';
 
 interface DynamicTimelineInputProps {
     id: string;

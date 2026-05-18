@@ -51,7 +51,7 @@ class CompetitionController extends Controller
         $this->authorize('create', Competition::class);
 
         // TODO: Make a validation that the given request name is unique(slug)
-        
+
         $competition = $this->competitionService->create($request->toCompetitionDTO());
 
         $this->timelineService->createMany($competition, $request->toTimelineDTO($competition->id));
@@ -113,8 +113,9 @@ class CompetitionController extends Controller
         $this->authorize('delete', $competition);
 
         $isTimelineDeleted = $this->timelineService->destroyMany($competition);
-        if (!$isTimelineDeleted) {
+        if (! $isTimelineDeleted) {
             $this->flash('error', 'Failed to delete competition timelines.');
+
             return redirect()->back();
         }
 

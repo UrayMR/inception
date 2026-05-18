@@ -14,9 +14,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard, home } from '@/routes';
+import competitions from '@/routes/competitions';
 import users from '@/routes/users';
 import type { NavItem } from '@/types';
-import competitions from '@/routes/competitions';
 
 const mainNavItems: NavItem[] = [
     {

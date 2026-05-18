@@ -4,6 +4,7 @@ import { getCompetitionColumns } from '@/components/columns/competition-column';
 import { DataTable } from '@/components/data-table';
 import { MainContent } from '@/components/main-content';
 import PanelLayout from '@/layouts/panel-layout';
+import competitions from '@/routes/competitions';
 import type {
     Auth,
     BreadcrumbItem,
@@ -11,7 +12,6 @@ import type {
     ICompetitionIndex,
     SearchParams,
 } from '@/types';
-import competitions from '@/routes/competitions';
 
 type CompetitionsPageProps = {
     competitions: DataTableProps<ICompetitionIndex>;

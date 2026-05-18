@@ -1,13 +1,13 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import users from '@/routes/users';
-import type { IUserIndex, PaginationMeta } from '@/types';
+import teams from '@/routes/teams';
+import type { ITeamIndex, PaginationMeta } from '@/types';
 import { DeleteDialogButton } from '../buttons/delete-dialog-button';
 import { EditButton } from '../buttons/edit-button';
 import { ShowButton } from '../buttons/show-button';
 
-export const getUserColumns = (
+export const getTeamColumns = (
     meta: PaginationMeta,
-): ColumnDef<IUserIndex>[] => [
+): ColumnDef<ITeamIndex>[] => [
     {
         accessorKey: 'No',
         header: 'No',
@@ -23,26 +23,16 @@ export const getUserColumns = (
         },
     },
     {
-        accessorKey: 'name',
-        header: 'Name',
-        cell: ({ row }) => {
-            const name = row.original.name;
-
-            return name.length > 20 ? `${name.substring(0, 20)}...` : name;
-        },
+        accessorKey: 'competition.value',
+        header: 'Competition Name',
     },
     {
-        accessorKey: 'email',
-        header: 'Email',
+        accessorKey: 'team_name',
+        header: 'Team Name',
     },
     {
-        accessorKey: 'role',
-        header: 'Role',
-        cell: ({ row }) => {
-            const role = row.original.role;
-
-            return role.charAt(0).toUpperCase() + role.slice(1);
-        },
+        accessorKey: 'leader_name',
+        header: 'Leader Name',
     },
     {
         header: 'Actions',
@@ -50,20 +40,20 @@ export const getUserColumns = (
             return (
                 <div className="flex items-center gap-2">
                     <ShowButton
-                        href={users.show.url({
-                            user: row.original,
+                        href={teams.show.url({
+                            team: row.original.id,
                         })}
                     />
 
                     <EditButton
-                        href={users.edit.url({
-                            user: row.original,
+                        href={teams.edit.url({
+                            team: row.original.id,
                         })}
                     />
 
                     <DeleteDialogButton
-                        href={users.destroy.url({
-                            user: row.original,
+                        href={teams.destroy.url({
+                            team: row.original.id,
                         })}
                     />
                 </div>

@@ -7,35 +7,35 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class EditCompetitionResource extends JsonResource
 {
-  /**
-   * Transform the resource into an array.
-   *
-   * @param  Request  $request
-   * @return array<string, mixed>
-   */
-  public function toArray($request): array
-  {
-    return [
-      'id' => $this->id,
-      'name' => $this->name,
-      'slug' => $this->slug,
-      'description' => $this->description,
-      'type' => $this->type,
-      'image_path' => $this->image_path,
-      'price' => $this->price,
-      'status' => $this->status,
-      'timelines' => collect($this->timelines)->sortBy('sequence')->values()->map(function ($timeline) {
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  Request  $request
+     * @return array<string, mixed>
+     */
+    public function toArray($request): array
+    {
         return [
-          'id' => $timeline->id,
-          'timeline_name' => $timeline->timeline_name,
-          'description' => $timeline->description,
-          'sequence' => $timeline->sequence,
-          'start_at' => $timeline->start_at->toDateTimeString(),
-          'end_at' => $timeline->end_at->toDateTimeString(),
+            'id' => $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'description' => $this->description,
+            'type' => $this->type,
+            'image_path' => $this->image_path,
+            'price' => $this->price,
+            'status' => $this->status,
+            'timelines' => collect($this->timelines)->sortBy('sequence')->values()->map(function ($timeline) {
+                return [
+                    'id' => $timeline->id,
+                    'timeline_name' => $timeline->timeline_name,
+                    'description' => $timeline->description,
+                    'sequence' => $timeline->sequence,
+                    'start_at' => $timeline->start_at->toDateTimeString(),
+                    'end_at' => $timeline->end_at->toDateTimeString(),
+                ];
+            }),
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
-      }),
-      'created_at' => $this->created_at?->toDateTimeString(),
-      'updated_at' => $this->updated_at?->toDateTimeString(),
-    ];
-  }
+    }
 }

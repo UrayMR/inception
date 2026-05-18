@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Enums\UserRole;
 use App\Models\Team;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class TeamPolicy
 {

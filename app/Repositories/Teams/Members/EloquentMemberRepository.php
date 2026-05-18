@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Competitions\Timelines;
+namespace App\Repositories\Teams\Members;
 
 use App\Models\Team;
 use App\Models\TeamMember;

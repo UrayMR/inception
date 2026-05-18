@@ -12,6 +12,7 @@ export type * from './enums/competition';
 
 export type * from './entities/user';
 export type * from './entities/competition';
+export type * from './entities/team';
 
 export interface SearchParams {
     search?: string;
@@ -20,6 +21,7 @@ export interface SearchParams {
 }
 
 export interface Option {
-    label: string;
     value: string;
+    label: string;
+    otherValues?: Record<string, any>;
 }

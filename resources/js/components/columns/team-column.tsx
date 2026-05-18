@@ -23,7 +23,7 @@ export const getTeamColumns = (
         },
     },
     {
-        accessorKey: 'competition.value',
+        accessorKey: 'competition.label',
         header: 'Competition Name',
     },
     {

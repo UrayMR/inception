@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Teams\Members;
+namespace App\Services\Teams;
 
 use App\Models\Team;
 use App\Repositories\Teams\Members\MemberRepository;

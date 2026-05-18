@@ -9,7 +9,7 @@ use App\Resources\Teams\EditTeamResource;
 use App\Resources\Teams\IndexTeamResource;
 use App\Resources\Teams\ShowTeamResource;
 use App\Services\Competitions\CompetitionService;
-use App\Services\Teams\Members\MemberService;
+use App\Services\Teams\MemberService;
 use App\Services\Teams\TeamService;
 use Illuminate\Http\Request;
 

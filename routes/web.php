@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -16,9 +17,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('users', UserController::class)->names('users');
     Route::resource('competitions', CompetitionController::class)->names('competitions');
     Route::resource('teams', TeamController::class)->names('teams');
+    Route::resource('transactions', TransactionController::class)->names('transactions');
 
     Route::inertia('/form-pendaftaran-lomba', 'participant/form-pendaftaran-lomba')->name('lomba');
 });
 
-require __DIR__.'/auth.php';
-require __DIR__.'/settings.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/settings.php';

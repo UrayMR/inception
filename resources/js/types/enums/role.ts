@@ -6,4 +6,5 @@ export const UserRoleMap = {
     Participant: { value: UserRoleValue[2], label: 'Participant' },
 } as const;
 
-export type UserRoleType = (typeof UserRoleMap)[keyof typeof UserRoleMap]['value'];
+export type UserRoleType =
+    (typeof UserRoleMap)[keyof typeof UserRoleMap]['value'];

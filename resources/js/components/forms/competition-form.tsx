@@ -14,7 +14,7 @@ import type {
     FormProps,
 } from '@/types';
 import { CompetitionStatusMap, CompetitionTypeMap } from '@/types';
-import { DynamicTimelineInput } from '../dynamic-timeline-input';
+import { DynamicTimelineInput } from '../specifics/dynamic-timeline-input';
 
 type CompetitionFormData = {
     name: string;

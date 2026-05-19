@@ -9,33 +9,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class CompetitionTimeline extends Model
 {
-  /** @use HasFactory<CompetitionTimelineFactory> */
-  use HasFactory, HasUuids;
+    /** @use HasFactory<CompetitionTimelineFactory> */
+    use HasFactory, HasUuids;
 
-  protected $fillable = [
-    'competition_id',
-    'timeline_name',
-    'description',
-    'sequence',
-    'start_at',
-    'end_at',
-  ];
-
-  /**
-   * Get the attributes that should be cast.
-   *
-   * @return array<string, string>
-   */
-  protected function casts(): array
-  {
-    return [
-      'start_at' => 'datetime',
-      'end_at' => 'datetime',
+    protected $fillable = [
+        'competition_id',
+        'timeline_name',
+        'description',
+        'sequence',
+        'start_at',
+        'end_at',
     ];
-  }
 
-  public function competition()
-  {
-    return $this->belongsTo(Competition::class);
-  }
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'start_at' => 'datetime',
+            'end_at' => 'datetime',
+        ];
+    }
+
+    public function competition()
+    {
+        return $this->belongsTo(Competition::class);
+    }
 }

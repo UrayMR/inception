@@ -1,5 +1,12 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, House, LayoutGrid, Users } from 'lucide-react';
+import {
+    BookOpen,
+    FolderGit2,
+    Group,
+    House,
+    LayoutGrid,
+    Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -14,9 +21,10 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard, home } from '@/routes';
+import competitions from '@/routes/competitions';
+import teams from '@/routes/teams';
 import users from '@/routes/users';
 import type { NavItem } from '@/types';
-import competitions from '@/routes/competitions';
 
 const mainNavItems: NavItem[] = [
     {
@@ -33,6 +41,11 @@ const mainNavItems: NavItem[] = [
         title: 'Competitions',
         href: competitions.index(),
         icon: BookOpen,
+    },
+    {
+        title: 'Teams',
+        href: teams.index(),
+        icon: Group,
     },
 ];
 

@@ -5,7 +5,9 @@ import { DeleteDialogButton } from '../buttons/delete-dialog-button';
 import { EditButton } from '../buttons/edit-button';
 import { ShowButton } from '../buttons/show-button';
 
-export const getUserColumns = (meta: PaginationMeta): ColumnDef<IUserIndex>[] => [
+export const getUserColumns = (
+    meta: PaginationMeta,
+): ColumnDef<IUserIndex>[] => [
     {
         accessorKey: 'No',
         header: 'No',

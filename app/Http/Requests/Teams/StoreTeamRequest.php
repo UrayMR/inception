@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Teams;
 
+use App\Enums\CompetitionType;
 use App\DTOs\Teams\Members\MemberDTO;
 use App\DTOs\Teams\StoreTeamDTO;
+use App\Models\Competition;
 use App\Models\Team;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -17,6 +19,8 @@ class StoreTeamRequest extends FormRequest
 
     public function rules(): array
     {
+        $isSoloCompetition = $this->isSoloCompetition();
+
         $teamRules = [
             'competition_id' => ['required', 'string', Rule::exists('competitions', 'id')],
             'team_name' => ['required', 'string', 'max:255'],
@@ -24,11 +28,24 @@ class StoreTeamRequest extends FormRequest
         ];
 
         $memberRules = [
-            'members' => ['required', 'array', 'min:1'],
-            'members.*.member_name' => ['required', 'string', 'max:255'],
+            'members' => $isSoloCompetition ? ['prohibited'] : ['required', 'array', 'min:1'],
+            'members.*.member_name' => $isSoloCompetition ? ['prohibited'] : ['required', 'string', 'max:255'],
         ];
 
         return array_merge($teamRules, $memberRules);
+    }
+
+    protected function isSoloCompetition(): bool
+    {
+        $competitionId = $this->input('competition_id');
+
+        if (! $competitionId) {
+            return false;
+        }
+
+        return Competition::query()
+            ->whereKey($competitionId)
+            ->value('type') === CompetitionType::solo->value;
     }
 
     /**

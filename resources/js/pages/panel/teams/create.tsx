@@ -6,11 +6,17 @@ import { MainContent } from '@/components/main-content';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
 import teams from '@/routes/teams';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, CompetitionType, Option } from '@/types';
 import { CreateTeamSchema } from '@/validations/team-schema';
 import type { CreateTeamSchemaType } from '@/validations/team-schema';
 
-export default function CreateTeamPage() {
+interface CreateTeamPageProps {
+    competitionMap: Option[];
+}
+
+export default function CreateTeamPage({
+    competitionMap,
+}: CreateTeamPageProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Teams', href: teams.index.url() },
         { title: 'Create Team', href: teams.create.url() },
@@ -27,7 +33,13 @@ export default function CreateTeamPage() {
         ],
     });
 
-    const { guard } = useZod<CreateTeamSchemaType>(CreateTeamSchema);
+    const selectedCompetitionType = competitionMap.find(
+        (competition) => competition.value === form.data.competition_id,
+    )?.otherValues?.type as CompetitionType | undefined;
+
+    const { guard } = useZod<CreateTeamSchemaType>(
+        CreateTeamSchema(selectedCompetitionType),
+    );
 
     const handleSubmit = (e: React.SubmitEvent) => {
         e.preventDefault();
@@ -55,6 +67,7 @@ export default function CreateTeamPage() {
                             data={form.data}
                             errors={form.errors}
                             onChange={form.setData}
+                            competitions={competitionMap}
                         />
 
                         <div className="mt-4 flex justify-end">

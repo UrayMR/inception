@@ -64,6 +64,13 @@ export function TeamForm({
             CompetitionTypeMap.Solo.value
         ) {
             onChange('members', []);
+        } else if (
+            newSelectedCompetition?.otherValues?.type ===
+            CompetitionTypeMap.Team.value
+        ) {
+            if (!data.members || data.members.length === 0) {
+                onChange('members', [{ member_name: '' }]);
+            }
         }
     };
 

@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Teams;
 
+use App\Enums\CompetitionType;
 use App\DTOs\Teams\Members\MemberDTO;
 use App\DTOs\Teams\UpdateTeamDTO;
+use App\Models\Competition;
 use App\Models\Team;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -12,11 +14,13 @@ class UpdateTeamRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->can('update', Team::class);
+        return $this->user()->can('update', $this->route('team'));
     }
 
     public function rules(): array
     {
+        $isSoloCompetition = $this->isSoloCompetition();
+
         $teamRules = [
             'competition_id' => ['required', 'string', Rule::exists('competitions', 'id')],
             'team_name' => ['required', 'string', 'max:255'],
@@ -24,11 +28,27 @@ class UpdateTeamRequest extends FormRequest
         ];
 
         $memberRules = [
-            'members' => ['required', 'array', 'min:1'],
-            'members.*.member_name' => ['required', 'string', 'max:255'],
+            'members' => $isSoloCompetition ? ['prohibited'] : ['required', 'array', 'min:1'],
+            'members.*.member_name' => $isSoloCompetition ? ['prohibited'] : ['required', 'string', 'max:255'],
         ];
 
         return array_merge($teamRules, $memberRules);
+    }
+
+    /**
+     * Check if the competition is a solo type
+     */
+    protected function isSoloCompetition(): bool
+    {
+        $competitionId = $this->input('competition_id');
+
+        if (! $competitionId) {
+            return false;
+        }
+
+        return Competition::query()
+            ->whereKey($competitionId)
+            ->value('type') === CompetitionType::solo->value;
     }
 
     /**

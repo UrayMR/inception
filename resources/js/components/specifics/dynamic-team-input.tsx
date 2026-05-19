@@ -41,12 +41,7 @@ export function DynamicTeamInput({
 
     const handleRemoveItem = useCallback(
         (index: number) => {
-            const newItems = value
-                .filter((_, i) => i !== index)
-                .map((item, i) => ({
-                    ...item,
-                    sequence: i + 1, // Re-index sequence to start from 1
-                }));
+            const newItems = value.filter((_, i) => i !== index);
             onChange?.(newItems);
         },
         [onChange, value],

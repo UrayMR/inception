@@ -6,7 +6,12 @@ import { MainContent } from '@/components/main-content';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
 import teams from '@/routes/teams';
-import type { BreadcrumbItem, ITeamEdit, Option } from '@/types';
+import type {
+    BreadcrumbItem,
+    CompetitionType,
+    ITeamEdit,
+    Option,
+} from '@/types';
 import { UpdateTeamSchema } from '@/validations/team-schema';
 import type { UpdateTeamSchemaType } from '@/validations/team-schema';
 
@@ -36,10 +41,16 @@ export default function EditTeamPage({
         competition_id: team.competition_id,
         leader_name: team.leader_name,
         phone_number: team.phone_number,
-        members: team.members,
+        members: team.members || [],
     });
 
-    const { guard } = useZod<UpdateTeamSchemaType>(UpdateTeamSchema);
+    const selectedCompetitionType = competitionMap.find(
+        (competition) => competition.value === form.data.competition_id,
+    )?.otherValues?.type as CompetitionType | undefined;
+
+    const { guard } = useZod<UpdateTeamSchemaType>(
+        UpdateTeamSchema(selectedCompetitionType),
+    );
 
     const handleSubmit = (e: React.SubmitEvent) => {
         e.preventDefault();

@@ -5,6 +5,8 @@ namespace App\Repositories\Teams\Members;
 use App\Models\Team;
 use App\Models\TeamMember;
 use App\Repositories\Teams\Members\MemberRepository;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class EloquentMemberRepository implements MemberRepository
 {
@@ -15,16 +17,20 @@ class EloquentMemberRepository implements MemberRepository
 
     public function updateMany(Team $team, array $attributes): void
     {
-        // Update or Insert members based on the presence of 'id' in the attributes.
-        // If 'id' is present, it will update; if not, it will create a new member.
-        TeamMember::upsert($attributes, ['id'], ['user_name', 'phone_number']);
+        DB::transaction(function () use ($team, $attributes) {
+            // TODO: This is a temporary solution to ensure that the team members are updated correctly. 
+            //  We should implement a more efficient way to handle updates and deletions without deleting all members first.
+            $team->members()->delete();
 
-        // Because upsert does not handle deletions, we need to manually delete any members that were removed from the team.
-        $memberIds = $team->members()->pluck('id')->toArray();
-        $idsToDelete = array_diff($memberIds, array_column($attributes, 'id'));
-        if (! empty($idsToDelete)) {
-            $team->members()->whereIn('id', $idsToDelete)->delete();
-        }
+            $formattedAttributes = array_map(function ($attribute) use ($team) {
+                $attribute['id'] = Str::uuid();
+                $attribute['team_id'] = $team->id;
+
+                return $attribute;
+            }, $attributes);
+
+            TeamMember::insert($formattedAttributes);
+        });
     }
 
     public function destroyMany(Team $team): bool

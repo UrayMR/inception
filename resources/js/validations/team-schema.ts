@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { CompetitionTypeMap } from '@/types';
+import type { CompetitionType } from '@/types';
 
 export const TeamMemberSchema = z.object({
     member_name: z.string().min(1).max(255),
@@ -10,13 +12,23 @@ export const TeamBaseSchema = z.object({
     phone_number: z.string().min(1).max(20),
 });
 
-export const CreateTeamSchema = TeamBaseSchema.extend({
-    members: z.array(TeamMemberSchema).min(1),
-});
+const TeamMembersSchema = z.array(TeamMemberSchema);
 
-export const UpdateTeamSchema = TeamBaseSchema.extend({
-    members: z.array(TeamMemberSchema).min(1),
-});
+export const CreateTeamSchema = (competitionType?: CompetitionType) =>
+    TeamBaseSchema.extend({
+        members:
+            competitionType === CompetitionTypeMap.Solo.value
+                ? TeamMembersSchema.optional().default([])
+                : TeamMembersSchema.min(1),
+    });
 
-export type CreateTeamSchemaType = z.infer<typeof CreateTeamSchema>;
-export type UpdateTeamSchemaType = z.infer<typeof UpdateTeamSchema>;
+export const UpdateTeamSchema = (competitionType?: CompetitionType) =>
+    TeamBaseSchema.extend({
+        members:
+            competitionType === CompetitionTypeMap.Solo.value
+                ? TeamMembersSchema.optional().default([])
+                : TeamMembersSchema.min(1),
+    });
+
+export type CreateTeamSchemaType = z.infer<ReturnType<typeof CreateTeamSchema>>;
+export type UpdateTeamSchemaType = z.infer<ReturnType<typeof UpdateTeamSchema>>;

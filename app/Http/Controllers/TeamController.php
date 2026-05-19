@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CompetitionType;
 use App\Http\Requests\Teams\StoreTeamRequest;
 use App\Http\Requests\Teams\UpdateTeamRequest;
 use App\Models\Team;
@@ -126,11 +127,13 @@ class TeamController extends Controller
     {
         $this->authorize('delete', $team);
 
-        $isMemberDeleted = $this->memberService->destroyMany($team);
-        if (! $isMemberDeleted) {
-            $this->flash('error', 'Failed to delete team members.');
+        if ($team->competition->type === CompetitionType::team->value) {
+            $isMemberDeleted = $this->memberService->destroyMany($team);
+            if (! $isMemberDeleted) {
+                $this->flash('error', 'Failed to delete team members.');
 
-            return redirect()->back();
+                return redirect()->back();
+            }
         }
 
         $this->teamService->destroy($team);

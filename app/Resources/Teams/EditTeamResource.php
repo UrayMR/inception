@@ -25,7 +25,6 @@ class EditTeamResource extends JsonResource
             'phone_number' => $this->phone_number,
             'members' => $isCompetitionSolo ? [] : $this->members->map(function ($member) {
                 return [
-                    'id' => $member->id,
                     'member_name' => $member->member_name,
                 ];
             })->toArray(),

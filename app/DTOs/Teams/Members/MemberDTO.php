@@ -15,6 +15,7 @@ class MemberDTO
     public function toArray(): array
     {
         return [
+            'id' => $this->id ?? null, // Ensure 'id' is included in the array, even if it's null for new members
             'team_id' => $this->team_id,
             'member_name' => $this->member_name,
         ];

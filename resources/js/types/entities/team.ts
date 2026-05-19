@@ -21,7 +21,7 @@ export interface ITeamShow extends ITeamIndex {
 export interface ITeamEdit extends ITeamIndex {
     competition_id: string;
     phone_number: string;
-    members: TeamMember[];
+    members?: TeamMember[];
     created_at: string;
     updated_at: string;
 }

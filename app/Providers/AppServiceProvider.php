@@ -6,10 +6,10 @@ use App\Repositories\Competitions\CompetitionRepository;
 use App\Repositories\Competitions\EloquentCompetitionRepository;
 use App\Repositories\Competitions\Timelines\EloquentTimelineRepository;
 use App\Repositories\Competitions\Timelines\TimelineRepository;
-use App\Repositories\Teams\TeamRepository;
 use App\Repositories\Teams\EloquentTeamRepository;
-use App\Repositories\Teams\Members\MemberRepository;
 use App\Repositories\Teams\Members\EloquentMemberRepository;
+use App\Repositories\Teams\Members\MemberRepository;
+use App\Repositories\Teams\TeamRepository;
 use App\Repositories\Users\EloquentUserRepository;
 use App\Repositories\Users\UserRepository;
 use Carbon\CarbonImmutable;
@@ -54,13 +54,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Password::defaults(
-            fn(): ?Password => app()->isProduction()
+            fn (): ?Password => app()->isProduction()
                 ? Password::min(12)
-                ->mixedCase()
-                ->letters()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
                 : null,
         );
     }

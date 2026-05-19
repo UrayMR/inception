@@ -14,8 +14,8 @@ Functionality List:
 - [✅] User
 - [✅] Competition
 - [✅] Competition Timeline
-- Team
-- Team Detail
+- [✅] Team
+- [✅] Team Member
 - Registration
 - Submission
 
@@ -24,6 +24,7 @@ Detail Functionality List:
 - PHPDoc Comments (For better code readability and maintainability)
 - Error Message Contract (Standardizing error messages across the app for better frontend handling + main language message source)
 - Duplicate/Non-Unique handling to Competition Creation (Currently, it will just error out if you try to create a competition with the same name as an existing one. We should handle this more gracefully.)
+- Strict payload request validation (Team [✅], Competition [need to be checked], User [need to be checked])
 
 Components: 
 - [✅] Datatable Component

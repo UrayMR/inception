@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Teams;
 
-use App\Enums\CompetitionType;
 use App\DTOs\Teams\Members\MemberDTO;
 use App\DTOs\Teams\StoreTeamDTO;
+use App\Enums\CompetitionType;
 use App\Models\Competition;
 use App\Models\Team;
 use Illuminate\Foundation\Http\FormRequest;

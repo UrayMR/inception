@@ -16,11 +16,15 @@ class ShowTransactionResource extends JsonResource
   public function toArray($request): array
   {
     return [
+      'id' => $this->id,
       'team_name' => $this->team?->team_name,
       'competition_name' => $this->team?->competition?->name,
       'amount' => $this->amount,
+      'payment_method' => $this->payment_method,
       'payment_proof_path' => $this->payment_proof_path,
       'status' => $this->status,
+      'created_at' => $this->created_at?->toDateTimeString(),
+      'updated_at' => $this->updated_at?->toDateTimeString(),
     ];
   }
 }

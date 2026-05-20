@@ -16,6 +16,7 @@ class IndexTransactionResource extends JsonResource
   public function toArray($request): array
   {
     return [
+      'id' => $this->id,
       'team_name' => $this->team?->team_name,
       'competition_name' => $this->team?->competition?->name,
       'amount' => $this->amount,

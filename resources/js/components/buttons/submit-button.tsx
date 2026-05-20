@@ -6,6 +6,7 @@ interface SubmitButtonProps {
     label?: string;
     loadingLabel?: string;
     disabled?: boolean;
+    variant?: 'default' | 'destructive' | 'outline' | 'secondary';
 }
 
 export const SubmitButton = ({
@@ -13,9 +14,10 @@ export const SubmitButton = ({
     label = 'Submit',
     loadingLabel = 'Submitting...',
     disabled,
+    variant = 'default',
 }: SubmitButtonProps) => {
     return (
-        <Button type="submit" disabled={loading || disabled}>
+        <Button type="submit" disabled={loading || disabled} variant={variant}>
             {loading ? (
                 <>
                     <Spinner className="mr-2" />

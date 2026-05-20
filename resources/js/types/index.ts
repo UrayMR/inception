@@ -10,9 +10,13 @@ export type * from './enums/role';
 export * from './enums/competition';
 export type * from './enums/competition';
 
+export * from './enums/transaction';
+export type * from './enums/transaction';
+
 export type * from './entities/user';
 export type * from './entities/competition';
 export type * from './entities/team';
+export type * from './entities/transaction';
 
 export interface SearchParams {
     search?: string;

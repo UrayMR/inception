@@ -40,7 +40,17 @@ function Section({ children, className }: MainContentSectionProps) {
     return <div className={cn(className, '')}>{children}</div>;
 }
 
+interface MainContentFooterProps {
+    children: ReactNode;
+    className?: string;
+}
+
+function Footer({ children, className }: MainContentFooterProps) {
+    return <div className={cn(className, '')}>{children}</div>;
+}
+
 MainContent.Header = Header;
 MainContent.Section = Section;
+MainContent.Footer = Footer;
 
 export { MainContent };

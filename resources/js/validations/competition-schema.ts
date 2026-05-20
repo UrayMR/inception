@@ -20,7 +20,7 @@ export const CompetitionBaseSchema = z.object({
     type: z.enum(CompetitionTypeValue),
     image_file: z
         .file()
-        .mime(['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'])
+        .mime(['image/jpeg', 'image/png', 'image/webp'])
         .nullish(),
     price: z.number().min(0),
     status: z.enum(CompetitionStatusValue),

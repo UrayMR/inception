@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import {
     BookOpen,
+    FolderArchive,
     FolderGit2,
     Group,
     House,
@@ -23,6 +24,7 @@ import {
 import { dashboard, home } from '@/routes';
 import competitions from '@/routes/competitions';
 import teams from '@/routes/teams';
+import transactions from '@/routes/transactions';
 import users from '@/routes/users';
 import type { NavItem } from '@/types';
 
@@ -47,6 +49,11 @@ const mainNavItems: NavItem[] = [
         href: teams.index(),
         icon: Group,
     },
+    {
+        title: 'Transactions',
+        href: transactions.index(),
+        icon: FolderArchive,
+    }
 ];
 
 const footerNavItems: NavItem[] = [

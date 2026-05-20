@@ -11,6 +11,8 @@ use App\Repositories\Teams\Members\EloquentMemberRepository;
 use App\Repositories\Teams\Members\MemberRepository;
 use App\Repositories\Teams\TeamRepository;
 use App\Repositories\Users\EloquentUserRepository;
+use App\Repositories\Transactions\TransactionRepository;
+use App\Repositories\Transactions\EloquentTransactionRepository;
 use App\Repositories\Users\UserRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TimelineRepository::class, EloquentTimelineRepository::class);
         $this->app->bind(TeamRepository::class, EloquentTeamRepository::class);
         $this->app->bind(MemberRepository::class, EloquentMemberRepository::class);
+        $this->app->bind(TransactionRepository::class, EloquentTransactionRepository::class);
 
         // ... Bind other repositories here
     }
@@ -54,13 +57,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Password::defaults(
-            fn (): ?Password => app()->isProduction()
+            fn(): ?Password => app()->isProduction()
                 ? Password::min(12)
-                    ->mixedCase()
-                    ->letters()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
+                ->mixedCase()
+                ->letters()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
                 : null,
         );
     }

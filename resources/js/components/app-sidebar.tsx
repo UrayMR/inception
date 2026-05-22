@@ -22,7 +22,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard, home } from '@/routes';
-import competitions from '@/routes/competitions';
+import competitions from '@/routes/admin/competitions';
 import teams from '@/routes/teams';
 import transactions from '@/routes/transactions';
 import users from '@/routes/users';

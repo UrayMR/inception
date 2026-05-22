@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import competitions from '@/routes/competitions';
+import competitions from '@/routes/admin/competitions';
 import type { ICompetitionIndex, PaginationMeta } from '@/types';
 import { DeleteDialogButton } from '../buttons/delete-dialog-button';
 import { EditButton } from '../buttons/edit-button';

@@ -3,7 +3,7 @@ import { BackButton } from '@/components/buttons/back-button';
 import { CompetitionForm } from '@/components/forms/competition-form';
 import { MainContent } from '@/components/main-content';
 import PanelLayout from '@/layouts/panel-layout';
-import competitions from '@/routes/competitions';
+import competitions from '@/routes/admin/competitions';
 import type { CompetitionTimeline } from '@/types';
 import type {
     BreadcrumbItem,

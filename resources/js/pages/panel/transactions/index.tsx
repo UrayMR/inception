@@ -1,6 +1,6 @@
 import { Head, usePage } from '@inertiajs/react';
 import { getTransactionColumns } from '@/components/columns/transaction-column';
-import { DataTable } from '@/components/data-table';
+import { DataTable } from '@/components/data-table/data-table';
 import { MainContent } from '@/components/main-content';
 import PanelLayout from '@/layouts/panel-layout';
 import transactions from '@/routes/transactions';

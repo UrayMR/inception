@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Guest\CompetitionController;
 use App\Http\Controllers\Panel\CompetitionController as AdminCompetitionController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TransactionController;
@@ -15,12 +16,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'panel/dashboard')->name('dashboard');
 
     Route::resource('users', UserController::class)->names('users');
-    Route::resource('competitions', AdminCompetitionController::class)->names('admin.competitions');
+    Route::resource('admin/competitions', AdminCompetitionController::class)->names('admin.competitions');
     Route::resource('teams', TeamController::class)->names('teams');
 
     Route::patch('transactions/verify/{transaction}', [TransactionController::class, 'verify'])->name('transactions.verify');
     Route::patch('transactions/reject/{transaction}', [TransactionController::class, 'reject'])->name('transactions.reject');
     Route::resource('transactions', TransactionController::class)->names('transactions');
+
+    Route::resource('competitions', CompetitionController::class)->names('competitions');
 
     Route::inertia('/form-pendaftaran-lomba', 'participant/form-pendaftaran-lomba')->name('lomba');
 });

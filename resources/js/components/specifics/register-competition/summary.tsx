@@ -1,14 +1,13 @@
 import { Badge } from '@/components/ui/badge';
 import type { Option } from '@/types';
+import formatCurrency from '@/helpers/format-currency';
 
 type RegisterCompetitionSummaryProps = {
     selectedCompetition?: Option;
-    currencyFormatter: Intl.NumberFormat;
 };
 
 export default function RegisterCompetitionSummary({
     selectedCompetition,
-    currencyFormatter,
 }: RegisterCompetitionSummaryProps) {
     return (
         <aside className="space-y-4 rounded-3xl border border-border/60 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.3)] dark:bg-[#111111]">
@@ -35,13 +34,13 @@ export default function RegisterCompetitionSummary({
                             className="rounded-full px-2.5 py-0.5"
                         >
                             Max members:{' '}
-                            {selectedCompetition.otherValues?.maxMembers ||
+                            {selectedCompetition.otherValues?.max_members ||
                                 'Unlimited'}
                         </Badge>
                     </div>
                     <p className="text-muted-foreground">
                         Fee:{' '}
-                        {currencyFormatter.format(
+                        {formatCurrency(
                             selectedCompetition.otherValues?.price || 0,
                         )}
                     </p>

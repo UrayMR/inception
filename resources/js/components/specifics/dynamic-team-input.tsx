@@ -69,7 +69,7 @@ export function DynamicTeamInput({
                     {label}{' '}
                     {required && <span className="text-destructive">*</span>}
                 </Label>
-                {hint && !error && <InputHint hint={hint} />}
+                {hint && <InputHint hint={hint} />}
             </div>
 
             <div className="flex flex-col gap-4">

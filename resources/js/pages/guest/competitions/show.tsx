@@ -4,30 +4,12 @@ import { Button } from '@/components/ui/button';
 import capitalize from '@/helpers/capitalize';
 import AppLayout from '@/layouts/app-layout';
 import type { AppProps, ICompetitionShow } from '@/types';
+import formatCurrency from '@/helpers/format-currency';
+import formatDate from '@/helpers/format-date';
 
 type CompetitionShowPageProps = {
     competition: AppProps<ICompetitionShow>;
 };
-
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-});
-
-function formatDate(value: string | Date | null | undefined) {
-    if (!value) {
-        return '-';
-    }
-
-    const date = value instanceof Date ? value : new Date(value);
-
-    if (Number.isNaN(date.getTime())) {
-        return String(value);
-    }
-
-    return dateFormatter.format(date);
-}
 
 // TODO: Separate helper function, define props type properly.
 export default function CompetitionShowPage({
@@ -101,11 +83,7 @@ export default function CompetitionShowPage({
                                     </p>
                                     <p className="mt-1 text-base font-semibold text-foreground">
                                         {data.price > 0
-                                            ? new Intl.NumberFormat('id-ID', {
-                                                  style: 'currency',
-                                                  currency: 'IDR',
-                                                  maximumFractionDigits: 0,
-                                              }).format(data.price)
+                                            ? formatCurrency(data.price)
                                             : 'Free registration'}
                                     </p>
                                 </div>

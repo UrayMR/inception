@@ -121,15 +121,16 @@ export default function RegisterCompetitionPage({
                         </section>
 
                         <div className="mt-6 flex flex-wrap gap-3">
-                            <Button type="submit" disabled={form.processing}>
-                                Submit (Dummy)
-                            </Button>
                             <Button
                                 type="button"
                                 variant="outline"
                                 onClick={handleReset}
                             >
                                 Reset form
+                            </Button>
+
+                            <Button type="submit" disabled={form.processing}>
+                                Submit
                             </Button>
                         </div>
                     </form>

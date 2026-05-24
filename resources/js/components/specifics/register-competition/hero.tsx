@@ -1,5 +1,4 @@
 import { Link } from '@inertiajs/react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 export default function RegisterCompetitionHero() {
@@ -15,8 +14,9 @@ export default function RegisterCompetitionHero() {
                         Competition Registration Form
                     </h1>
                     <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
-                        This is a frontend mock page. Data is dummy for now and
-                        safe to redesign before backend integration.
+                        Form to register for competitions. Please fill out the
+                        form with accurate information to ensure a smooth
+                        registration process.
                     </p>
                     <div className="flex flex-wrap gap-3">
                         <Button variant="outline" asChild>
@@ -24,23 +24,17 @@ export default function RegisterCompetitionHero() {
                                 Back to competitions
                             </Link>
                         </Button>
-                        <Badge
-                            variant="outline"
-                            className="rounded-full px-3 py-1"
-                        >
-                            Dummy mode
-                        </Badge>
                     </div>
                 </div>
 
                 <div className="rounded-2xl bg-muted/40 p-5">
                     <h2 className="text-base font-semibold">
-                        Registration Notes
+                        Whatever is this
                     </h2>
                     <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                        <li>Choose competition first.</li>
-                        <li>Team competitions require member list.</li>
-                        <li>Use an active phone number for contact.</li>
+                        <li>adwadw.</li>
+                        <li>adwadw.</li>
+                        <li>adwadw.</li>
                     </ul>
                 </div>
             </div>

@@ -12,6 +12,7 @@ class Team extends Model
     /** @use HasFactory<TeamFactory> */
     use HasFactory, HasUuids;
 
+    // TODO: Add Institution
     protected $fillable = [
         'competition_id',
         'team_name',

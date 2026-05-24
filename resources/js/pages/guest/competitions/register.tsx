@@ -24,6 +24,7 @@ export default function RegisterCompetitionPage({
     competitionMap,
 }: RegisterCompetitionPageProps) {
     const preselectedCompetitionSlug = getQueryParam('competition');
+
     const preselectedCompetition = competitionMap.find(
         (competition) =>
             competition.otherValues?.slug === preselectedCompetitionSlug,
@@ -33,7 +34,6 @@ export default function RegisterCompetitionPage({
         competition_id: preselectedCompetition?.value || '',
         team_name: '',
         phone_number: '',
-        institution: '',
         members:
             preselectedCompetition?.otherValues?.type ===
             CompetitionTypeMap.Team.value
@@ -86,12 +86,7 @@ export default function RegisterCompetitionPage({
     };
 
     const handleReset = () => {
-        form.resetAndClearErrors(
-            'team_name',
-            'phone_number',
-            'institution',
-            'members',
-        );
+        form.resetAndClearErrors('team_name', 'phone_number', 'members');
         form.setData('members', isTeamCompetition ? [{ member_name: '' }] : []);
     };
 

@@ -62,7 +62,9 @@ class EloquentCompetitionRepository implements CompetitionRepository
                     'value' => $competition->id,
                     'label' => $competition->name,
                     'otherValues' => [
+                        'slug' => $competition->slug,
                         'type' => $competition->type,
+                        'price' => $competition->price,
                     ],
                 ];
             })

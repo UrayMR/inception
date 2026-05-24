@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
 Route::inertia('/', 'guest/main', [
-    'canRegister' => Features::enabled(Features::registration()),
+    // 'canRegister' => Features::enabled(Features::registration()),
 ])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -23,9 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('transactions/reject/{transaction}', [TransactionController::class, 'reject'])->name('transactions.reject');
     Route::resource('transactions', TransactionController::class)->names('transactions');
 
+    Route::get('/register', [CompetitionController::class, 'register'])->name('competitions.register');
     Route::resource('competitions', CompetitionController::class)->names('competitions');
-
-    Route::inertia('/form-pendaftaran-lomba', 'participant/form-pendaftaran-lomba')->name('lomba');
 });
 
 require __DIR__ . '/auth.php';

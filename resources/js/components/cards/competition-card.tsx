@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,6 +12,7 @@ import {
 import capitalize from '@/helpers/capitalize';
 
 type CompetitionCardProps = {
+    href: string;
     name: string;
     type: string;
     status: string;
@@ -22,6 +24,7 @@ type CompetitionCardProps = {
 };
 
 export function CompetitionCard({
+    href,
     name,
     type,
     status,
@@ -75,8 +78,8 @@ export function CompetitionCard({
             </CardContent>
 
             <CardFooter className="flex items-center justify-end gap-3 px-5 pb-5">
-                <Button size="sm" className="rounded-full px-4">
-                    View details
+                <Button size="sm" className="rounded-full px-4" asChild>
+                    <Link href={href}>View details</Link>
                 </Button>
             </CardFooter>
         </Card>

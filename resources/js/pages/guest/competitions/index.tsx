@@ -120,6 +120,7 @@ export default function CompetitionsIndex() {
                         {competitionData.map((competition) => (
                             <CompetitionCard
                                 key={competition.name}
+                                href={`/competitions/${competition.slug}`}
                                 name={competition.name}
                                 type={competition.type}
                                 status={competition.status}

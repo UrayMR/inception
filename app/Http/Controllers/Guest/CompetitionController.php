@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Competition;
 use App\Resources\Competitions\IndexCompetitionResource;
 use App\Resources\Competitions\ShowCompetitionResource;
+use App\Resources\Guest\Competitions\RegisterCompetitionResource;
 use App\Services\Competitions\CompetitionService;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,9 @@ class CompetitionController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    // TODO: Call service/eloquent. 
+    // TODO: Use another resource collection.
     public function index()
     {
         $query = Competition::query()->with('timelines');
@@ -29,11 +33,13 @@ class CompetitionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for registering a resource.
      */
-    public function create()
+    public function register()
     {
-        return $this->render('panel/competitions/create');
+        return $this->render('guest/competitions/register', [
+            'competitionMap' => $this->competitionService->getCompetitionMap(),
+        ]);
     }
 
     /**
@@ -47,9 +53,15 @@ class CompetitionController extends Controller
     /**
      * Display the specified resource.
      */
+    // TODO: Use another resource.
+    // TODO: Dont use new resource, use collection or something else.
     public function show(Competition $competition)
     {
-        return $this->render('guest/competitions/show');
+        $competition->load('timelines');
+
+        return $this->render('guest/competitions/show', [
+            'competition' => new ShowCompetitionResource($competition),
+        ]);
     }
 
     /**

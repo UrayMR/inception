@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import AuthLayout from '@/layouts/auth-layout';
 import { register } from '@/routes';
 import { redirect } from '@/routes/auth/google';
 import { store } from '@/routes/login';
@@ -25,7 +26,7 @@ export default function Login({
     canRegister,
 }: Props) {
     return (
-        <>
+        <AuthLayout>
             <Head title="Log in" />
 
             <Form
@@ -121,7 +122,7 @@ export default function Login({
                     {status}
                 </div>
             )}
-        </>
+        </AuthLayout>
     );
 }
 

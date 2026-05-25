@@ -55,14 +55,16 @@ class EloquentCompetitionRepository implements CompetitionRepository
 
     public function getCompetitionMap(): array
     {
-        return Competition::select('id', 'name', 'type')
+        return Competition::query()
             ->get()
             ->map(function ($competition) {
                 return [
                     'value' => $competition->id,
                     'label' => $competition->name,
                     'otherValues' => [
+                        'slug' => $competition->slug,
                         'type' => $competition->type,
+                        'price' => $competition->price,
                     ],
                 ];
             })

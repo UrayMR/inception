@@ -5,12 +5,19 @@ namespace App\Services\Transactions;
 use App\DTOs\Transactions\StoreTransactionDTO;
 use App\Models\Transaction;
 use App\Repositories\Transactions\TransactionRepository;
+use App\Services\FileService;
 use Illuminate\Http\Request;
 
 class TransactionService
 {
+  /**
+   * The default directory for storing transaction-related files.
+   */
+  protected string $directory = 'transaction-payment-proofs';
+
   public function __construct(
     protected TransactionRepository $transactionRepository,
+    protected FileService $fileService,
   ) {}
 
   public function index(Request $request)
@@ -31,7 +38,10 @@ class TransactionService
       'team_id' => $dto->team_id,
       'amount' => $dto->amount,
       'payment_method' => $dto->payment_method,
-      'payment_proof_file' => $dto->payment_proof_file,
+      'payment_proof_path' => $this->fileService->store(
+        $dto->payment_proof_file,
+        $this->directory,
+      ),
       'status' => $dto->status,
     ];
 

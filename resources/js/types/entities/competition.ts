@@ -29,3 +29,4 @@ export interface ICompetitionShow extends ICompetitionIndex {
 }
 
 export type ICompetitionEdit = ICompetitionShow;
+export type ICompetitionRegister = ICompetitionShow;

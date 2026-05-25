@@ -22,6 +22,7 @@ class Competition extends Model
         return 'slug';
     }
 
+    // TODO: Add Max Members
     protected $fillable = [
         'name',
         'description',

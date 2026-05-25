@@ -5,7 +5,7 @@ import { CompetitionForm } from '@/components/forms/competition-form';
 import { MainContent } from '@/components/main-content';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
-import competitions from '@/routes/competitions';
+import competitions from '@/routes/admin/competitions';
 import type { BreadcrumbItem, ICompetitionEdit } from '@/types';
 import { UpdateCompetitionSchema } from '@/validations/competition-schema';
 import type { UpdateCompetitionSchemaType } from '@/validations/competition-schema';

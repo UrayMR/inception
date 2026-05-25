@@ -31,3 +31,6 @@ export interface PaginationMeta {
     current_page: number;
     per_page: number;
 }
+
+export type SearchParamsType = string;
+export type FiltersParamsType = Record<string, string | number | null>;

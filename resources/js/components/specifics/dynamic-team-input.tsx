@@ -12,7 +12,7 @@ interface DynamicTeamInputProps {
     label: string;
     value?: TeamMember[];
     onChange?: (value: TeamMember[]) => void;
-    error?: Record<string, string>;
+    error?: Partial<Record<string, string>>;
     required?: boolean;
     disabled?: boolean;
     readOnly?: boolean;

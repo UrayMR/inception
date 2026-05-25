@@ -9,8 +9,14 @@ import { Button } from '@/components/ui/button';
 import getQueryParam from '@/helpers/get-query-param';
 import { useZod } from '@/hooks/use-zod';
 import AppLayout from '@/layouts/app-layout';
-import { CompetitionTypeMap } from '@/types';
-import type { Auth, Option } from '@/types';
+import competitions from '@/routes/competitions';
+import { CompetitionTypeMap, TransactionPaymentMethodMap } from '@/types';
+import type {
+    Auth,
+    Option,
+    TeamMember,
+    TransactionPaymentMethodType,
+} from '@/types';
 import type { RegisterCompetitionSchemaType } from '@/validations/register-competition-schema';
 import { RegisterCompetitionSchema } from '@/validations/register-competition-schema';
 
@@ -18,6 +24,15 @@ interface RegisterCompetitionPageProps {
     competitionMap: Option[];
     auth: Auth;
 }
+
+type RegisterCompetitionForm = {
+    competition_id: string;
+    team_name?: string;
+    phone_number: string;
+    payment_method: TransactionPaymentMethodType;
+    payment_proof_file?: File;
+    members: TeamMember[];
+};
 
 // TODO: This page implement too many kinds of different logic that can't be read easily.
 export default function RegisterCompetitionPage({
@@ -30,10 +45,12 @@ export default function RegisterCompetitionPage({
             competition.otherValues?.slug === preselectedCompetitionSlug,
     );
 
-    const form = useForm<RegisterCompetitionSchemaType>({
+    const form = useForm<RegisterCompetitionForm>({
         competition_id: preselectedCompetition?.value || '',
         team_name: '',
         phone_number: '',
+        payment_method: TransactionPaymentMethodMap.qris.value,
+        payment_proof_file: undefined,
         members:
             preselectedCompetition?.otherValues?.type ===
             CompetitionTypeMap.Team.value
@@ -83,10 +100,18 @@ export default function RegisterCompetitionPage({
         if (!guard(form.data, form.setError)) {
             return;
         }
+
+        form.post(competitions.register.store.url());
     };
 
     const handleReset = () => {
-        form.resetAndClearErrors('team_name', 'phone_number', 'members');
+        form.resetAndClearErrors(
+            'team_name',
+            'phone_number',
+            'payment_method',
+            'payment_proof_file',
+            'members',
+        );
         form.setData('members', isTeamCompetition ? [{ member_name: '' }] : []);
     };
 

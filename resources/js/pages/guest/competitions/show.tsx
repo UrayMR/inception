@@ -2,10 +2,11 @@ import { Head, Link } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import capitalize from '@/helpers/capitalize';
-import AppLayout from '@/layouts/app-layout';
-import type { AppProps, ICompetitionShow } from '@/types';
 import formatCurrency from '@/helpers/format-currency';
 import formatDate from '@/helpers/format-date';
+import AppLayout from '@/layouts/app-layout';
+import competitions from '@/routes/competitions';
+import type { AppProps, ICompetitionShow } from '@/types';
 
 type CompetitionShowPageProps = {
     competition: AppProps<ICompetitionShow>;
@@ -59,7 +60,11 @@ export default function CompetitionShowPage({
                                         className="rounded-full px-5"
                                     >
                                         <Link
-                                            href={`/register?competition=${data.slug}`}
+                                            href={competitions.register.url({
+                                                query: {
+                                                    competition: data.slug,
+                                                },
+                                            })}
                                         >
                                             Register now
                                         </Link>

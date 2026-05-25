@@ -23,8 +23,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('transactions/reject/{transaction}', [TransactionController::class, 'reject'])->name('transactions.reject');
     Route::resource('transactions', TransactionController::class)->names('transactions');
 
-    Route::get('/register', [CompetitionController::class, 'register'])->name('competitions.register');
-    Route::resource('competitions', CompetitionController::class)->names('competitions');
+    Route::get('competitions', [CompetitionController::class, 'index'])->name('competitions.index');
+    Route::get('competitions/{competition}', [CompetitionController::class, 'show'])->name('competitions.show');
+
+    // Route::get('competitions/register', [CompetitionController::class, 'register'])->name('competitions.register');
+    // Route::post('competitions/register', [CompetitionController::class, 'store'])->name('competitions.register.store');
+
+    Route::controller(CompetitionController::class)->group(function () {
+        Route::get('test/register', 'register')->name('competitions.register');
+        Route::post('test/register', 'store')->name('competitions.register.store');
+    });
 });
 
 require __DIR__ . '/auth.php';

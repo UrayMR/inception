@@ -9,20 +9,24 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import type { FormErrors, Option } from '@/types';
-import type { RegisterCompetitionSchemaType } from '@/validations/register-competition-schema';
+import {
+    TransactionPaymentMethodMap,
+    TransactionPaymentMethodValue,
+} from '@/types';
+import type { FormErrors, Option, TransactionPaymentMethodType } from '@/types';
+import type { RegisterCompetitionFormDataType } from '@/validations/register-competition-schema';
 
 type RegisterCompetitionFormProps = {
     competitionMap: Option[];
-    data: RegisterCompetitionSchemaType;
-    errors: FormErrors<RegisterCompetitionSchemaType>;
+    data: RegisterCompetitionFormDataType;
+    errors: FormErrors<RegisterCompetitionFormDataType>;
     isTeamCompetition: boolean;
     canFillTeamDetails: boolean;
     selectedCompetition?: Option;
     onCompetitionChange: (competitionId: string) => void;
-    onChange: <K extends keyof RegisterCompetitionSchemaType>(
+    onChange: <K extends keyof RegisterCompetitionFormDataType>(
         key: K,
-        value: RegisterCompetitionSchemaType[K],
+        value: RegisterCompetitionFormDataType[K],
     ) => void;
 };
 
@@ -40,6 +44,8 @@ export default function RegisterCompetitionForm({
 
     const leaderNameLabel = isTeamCompetition ? 'Leader Name' : 'Your Name';
     const leaderEmailLabel = isTeamCompetition ? 'Leader Email' : 'Your Email';
+    const isQrisPayment =
+        data.payment_method === TransactionPaymentMethodValue[0];
 
     return (
         <div className="space-y-5 rounded-3xl border border-border/60 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.3)] dark:bg-[#111111]">
@@ -164,29 +170,116 @@ export default function RegisterCompetitionForm({
                         required
                     />
                 </FormField> */}
-            </div>
 
-            {isTeamCompetition && (
-                <DynamicTeamInput
-                    id="members"
-                    label="Team Members"
-                    hint={`Add up to ${selectedCompetition?.otherValues?.maxMembers || 1} members for this team competition.`}
-                    value={data.members}
-                    error={errors}
-                    onChange={(members) =>
-                        onChange(
-                            'members',
-                            members.slice(
-                                0,
-                                selectedCompetition?.otherValues?.maxMembers ||
-                                    members.length,
-                            ),
-                        )
-                    }
-                    required
-                    disabled={!canFillTeamDetails}
-                />
-            )}
+                <div className="sm:col-span-2 space-y-4">
+                    {isTeamCompetition && (
+                        <DynamicTeamInput
+                            id="members"
+                            label="Team Members"
+                            hint={`Add up to ${selectedCompetition?.otherValues?.maxMembers || 1} members for this team competition.`}
+                            value={data.members}
+                            error={errors}
+                            onChange={(members) =>
+                                onChange(
+                                    'members',
+                                    members.slice(
+                                        0,
+                                        selectedCompetition?.otherValues
+                                            ?.maxMembers || members.length,
+                                    ),
+                                )
+                            }
+                            required
+                            disabled={!canFillTeamDetails}
+                        />
+                    )}
+
+                    <FormField
+                        name="payment_method"
+                        label="Payment Method"
+                        error={errors.payment_method}
+                        required
+                    >
+                        <Select
+                            value={data.payment_method}
+                            onValueChange={(value) =>
+                                onChange(
+                                    'payment_method',
+                                    value as TransactionPaymentMethodType,
+                                )
+                            }
+                            disabled={!canFillTeamDetails}
+                            required
+                        >
+                            <SelectTrigger
+                                id="payment_method"
+                                className="w-full"
+                            >
+                                <SelectValue placeholder="Select payment method" />
+                            </SelectTrigger>
+
+                            <SelectContent>
+                                {Object.values(TransactionPaymentMethodMap).map(
+                                    (method) => (
+                                        <SelectItem
+                                            key={method.value}
+                                            value={method.value}
+                                        >
+                                            {method.label}
+                                        </SelectItem>
+                                    ),
+                                )}
+                            </SelectContent>
+                        </Select>
+                    </FormField>
+                </div>
+
+                {isQrisPayment && (
+                    <div className="rounded-2xl border border-border/70 bg-muted/30 p-4 sm:col-span-2">
+                        <div className="space-y-2">
+                            <p className="text-sm font-medium text-foreground">
+                                QRIS Payment
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                                Scan this QRIS code to complete the payment.
+                            </p>
+                        </div>
+
+                        <div className="mt-4 flex justify-center">
+                            {/* TODO: Change with real QRIS */}
+                            <img
+                                src="https://chart.googleapis.com/chart?chs=320x320&cht=qr&chl=QRIS%20Payment%20Placeholder"
+                                alt="QRIS payment code"
+                                className="h-56 w-56 rounded-2xl border border-border bg-white p-3 shadow-sm"
+                            />
+                        </div>
+                    </div>
+                )}
+
+                <div className="sm:col-span-2">
+                    <FormField
+                        name="payment_proof_file"
+                        label="Payment Proof"
+                        error={errors.payment_proof_file}
+                        required
+                    >
+                        <Input
+                            key={data.payment_proof_file?.name || 'empty'}
+                            id="payment_proof_file"
+                            type="file"
+                            accept="image/png,image/jpeg,image/webp"
+                            onChange={(event) =>
+                                onChange(
+                                    'payment_proof_file',
+                                    event.target.files?.[0],
+                                )
+                            }
+                            disabled={!canFillTeamDetails}
+                            required
+                        />
+                    </FormField>
+                </div>
+            </div>
         </div>
     );
 }

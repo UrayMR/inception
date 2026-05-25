@@ -12,15 +12,19 @@ Route::inertia('/', 'guest/main', [
 ])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'panel/dashboard')->name('dashboard');
+    Route::middleware('role:admin')->group(function () {
+        Route::inertia('dashboard', 'panel/dashboard')->name('dashboard');
 
-    Route::resource('users', UserController::class)->names('users');
-    Route::resource('competitions', CompetitionController::class)->names('competitions');
-    Route::resource('teams', TeamController::class)->names('teams');
+        Route::resource('users', UserController::class)->names('users');
+        Route::resource('competitions', CompetitionController::class)->names('competitions');
+        Route::resource('teams', TeamController::class)->names('teams');
+    });
 
-    Route::patch('transactions/verify/{transaction}', [TransactionController::class, 'verify'])->name('transactions.verify');
-    Route::patch('transactions/reject/{transaction}', [TransactionController::class, 'reject'])->name('transactions.reject');
-    Route::resource('transactions', TransactionController::class)->names('transactions');
+    Route::middleware('role:admin,accountant')->group(function () {
+        Route::patch('transactions/verify/{transaction}', [TransactionController::class, 'verify'])->name('transactions.verify');
+        Route::patch('transactions/reject/{transaction}', [TransactionController::class, 'reject'])->name('transactions.reject');
+        Route::resource('transactions', TransactionController::class)->names('transactions');
+    });
 
     Route::inertia('/form-pendaftaran-lomba', 'participant/form-pendaftaran-lomba')->name('lomba');
 });

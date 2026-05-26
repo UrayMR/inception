@@ -2,8 +2,12 @@
 
 namespace App\Http\Requests\Participant\Competitions;
 
+use App\DTOs\Teams\Members\MemberDTO;
+use App\DTOs\Teams\StoreTeamDTO;
+use App\DTOs\Transactions\StoreTransactionDTO;
 use App\Enums\CompetitionType;
 use App\Enums\TransactionMethod;
+use App\Enums\TransactionStatus;
 use App\Models\Competition;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -58,5 +62,53 @@ class RegisterCompetitionRequest extends FormRequest
         );
       }
     });
+  }
+
+  /**
+   * Format team attributes.
+   */
+  public function toTeamDTO(Competition $competition): StoreTeamDTO
+  {
+    $teamName = $competition->type === CompetitionType::solo->value
+      ? $this->user()->name
+      : trim((string) $this->input('team_name'));
+
+    return new StoreTeamDTO(
+      competition_id: $competition->id,
+      team_name: $teamName,
+      leader_id: $this->user()->id,
+      phone_number: $this->input('phone_number'),
+    );
+  }
+
+  /**
+   * Format member DTO array.
+   */
+  public function toMemberDTO(string $team_id): array
+  {
+    $membersData = $this->input('members', []);
+
+    return array_map(function ($member) use ($team_id) {
+      $dto = new MemberDTO(
+        team_id: $team_id,
+        member_name: $member['member_name'],
+      );
+
+      return $dto->toArray();
+    }, $membersData);
+  }
+
+  /**
+   * Format transaction DTO.
+   */
+  public function toTransactionDTO(string $team_id, float $amount): StoreTransactionDTO
+  {
+    return new StoreTransactionDTO(
+      team_id: $team_id,
+      amount: $amount,
+      payment_method: $this->input('payment_method'),
+      payment_proof_file: $this->file('payment_proof_file'),
+      status: TransactionStatus::pending->value,
+    );
   }
 }

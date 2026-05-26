@@ -9,6 +9,7 @@ use App\Repositories\Competitions\CompetitionRepository;
 use App\Services\FileService;
 use App\Utilities\SlugGenerator;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CompetitionService
 {
@@ -22,7 +23,7 @@ class CompetitionService
         protected CompetitionRepository $competitionRepository,
     ) {}
 
-    public function index(Request $request)
+    public function index(Request $request, int $perPage = 10): LengthAwarePaginator
     {
         // Only allow specific query params
         $queryParams = [
@@ -33,7 +34,7 @@ class CompetitionService
             ],
         ];
 
-        return $this->competitionRepository->index($queryParams);
+        return $this->competitionRepository->index($queryParams, $perPage);
     }
 
     public function create(StoreCompetitionDTO $dto): Competition
@@ -84,6 +85,11 @@ class CompetitionService
         }
 
         return $this->competitionRepository->destroy($competition);
+    }
+
+    public function findByIdOrFail(string $id): Competition
+    {
+        return $this->competitionRepository->findByIdOrFail($id);
     }
 
     public function getCompetitionMap(): array

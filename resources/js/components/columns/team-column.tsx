@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import teams from '@/routes/teams';
+import teams from '@/routes/panel/teams';
 import type { ITeamIndex, PaginationMeta } from '@/types';
 import { DeleteDialogButton } from '../buttons/delete-dialog-button';
 import { EditButton } from '../buttons/edit-button';

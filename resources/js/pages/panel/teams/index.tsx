@@ -4,7 +4,7 @@ import { getTeamColumns } from '@/components/columns/team-column';
 import { DataTable } from '@/components/data-table/data-table';
 import { MainContent } from '@/components/main-content';
 import PanelLayout from '@/layouts/panel-layout';
-import teams from '@/routes/teams';
+import teams from '@/routes/panel/teams';
 import type {
     Auth,
     BreadcrumbItem,

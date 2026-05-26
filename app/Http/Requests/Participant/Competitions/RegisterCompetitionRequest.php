@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Guest\Competitions;
+namespace App\Http\Requests\Participant\Competitions;
 
 use App\Enums\CompetitionType;
 use App\Enums\TransactionMethod;

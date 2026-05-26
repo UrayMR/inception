@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
-import type { Option } from '@/types';
 import formatCurrency from '@/helpers/format-currency';
+import type { Option } from '@/types';
 
 type RegisterCompetitionSummaryProps = {
     selectedCompetition?: Option;

@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import getQueryParam from '@/helpers/get-query-param';
 import { useZod } from '@/hooks/use-zod';
 import AppLayout from '@/layouts/app-layout';
-import competitions from '@/routes/competitions';
+import competitions from '@/routes/participant/competitions';
 import { CompetitionTypeMap, TransactionPaymentMethodMap } from '@/types';
 import type {
     Auth,

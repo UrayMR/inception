@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import users from '@/routes/users';
+import users from '@/routes/panel/users';
 import type { IUserIndex, PaginationMeta } from '@/types';
 import { DeleteDialogButton } from '../buttons/delete-dialog-button';
 import { EditButton } from '../buttons/edit-button';

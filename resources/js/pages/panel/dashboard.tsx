@@ -1,12 +1,12 @@
 import { Head } from '@inertiajs/react';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import PanelLayout from '@/layouts/panel-layout';
-import { dashboard } from '@/routes';
+import panel from '@/routes/panel';
 import type { BreadcrumbItem } from '@/types';
 
 export default function Dashboard() {
     const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Dashboard', href: dashboard() },
+        { title: 'Dashboard', href: panel.dashboard() },
     ];
 
     return (

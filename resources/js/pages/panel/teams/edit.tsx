@@ -5,7 +5,7 @@ import { TeamForm } from '@/components/forms/team-form';
 import { MainContent } from '@/components/main-content';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
-import teams from '@/routes/teams';
+import teams from '@/routes/panel/teams';
 import type {
     BreadcrumbItem,
     CompetitionType,

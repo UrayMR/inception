@@ -3,7 +3,7 @@ import { BackButton } from '@/components/buttons/back-button';
 import { TeamForm } from '@/components/forms/team-form';
 import { MainContent } from '@/components/main-content';
 import PanelLayout from '@/layouts/panel-layout';
-import teams from '@/routes/teams';
+import teams from '@/routes/panel/teams';
 import type { BreadcrumbItem, ITeamShow, Option, TeamMember } from '@/types';
 
 interface ShowTeamForm {

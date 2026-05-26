@@ -3,7 +3,7 @@ import { getTransactionColumns } from '@/components/columns/transaction-column';
 import { DataTable } from '@/components/data-table/data-table';
 import { MainContent } from '@/components/main-content';
 import PanelLayout from '@/layouts/panel-layout';
-import transactions from '@/routes/transactions';
+import transactions from '@/routes/panel/transactions';
 import type {
     Auth,
     BreadcrumbItem,

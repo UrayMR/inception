@@ -21,18 +21,19 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard, home } from '@/routes';
-import competitions from '@/routes/admin/competitions';
-import teams from '@/routes/teams';
-import transactions from '@/routes/transactions';
-import users from '@/routes/users';
+import { home } from '@/routes';
+import panel from '@/routes/panel';
+import competitions from '@/routes/panel/competitions';
+import teams from '@/routes/panel/teams';
+import transactions from '@/routes/panel/transactions';
+import users from '@/routes/panel/users';
 import { UserRoleMap } from '@/types';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard(),
+        href: panel.dashboard(),
         icon: LayoutGrid,
         roles: [UserRoleMap.Admin.value, UserRoleMap.Accountant.value],
     },
@@ -93,7 +94,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={panel.dashboard()} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

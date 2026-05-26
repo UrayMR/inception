@@ -15,9 +15,8 @@ use App\Services\FileService;
 use App\Services\Teams\TeamService;
 use App\Services\Transactions\TransactionService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 
-class CompetitionController extends Controller
+class CompetitionRegistrationController extends Controller
 {
     public function __construct(
         protected CompetitionService $competitionService,
@@ -108,29 +107,5 @@ class CompetitionController extends Controller
         return $this->render('guest/competitions/show', [
             'competition' => new ShowCompetitionResource($competition),
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit()
-    {
-        return $this->render('guest/competitions/edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Competition $competition)
-    {
-        return redirect()->route('guest.competitions.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Competition $competition)
-    {
-        return redirect()->route('guest.competitions.index');
     }
 }

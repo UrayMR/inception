@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
 use App\Models\Transaction;
 use App\Resources\Transactions\IndexTransactionResource;
@@ -8,6 +8,7 @@ use App\Resources\Transactions\ShowTransactionResource;
 use App\Services\Competitions\CompetitionService;
 use App\Services\Transactions\TransactionService;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class TransactionController extends Controller
 {

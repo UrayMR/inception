@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import transactions from '@/routes/transactions';
+import transactions from '@/routes/panel/transactions';
 import type { ITransactionIndex, PaginationMeta } from '@/types';
 import { ShowButton } from '../buttons/show-button';
 

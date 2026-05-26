@@ -4,7 +4,7 @@ import { SubmitButton } from '@/components/buttons/submit-button';
 import { TransactionForm } from '@/components/forms/transaction-form';
 import { MainContent } from '@/components/main-content';
 import PanelLayout from '@/layouts/panel-layout';
-import transactions from '@/routes/transactions';
+import transactions from '@/routes/panel/transactions';
 import { TransactionStatusMap } from '@/types';
 import type {
     BreadcrumbItem,

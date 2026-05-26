@@ -5,7 +5,7 @@ import { UserForm } from '@/components/forms/user-form';
 import { MainContent } from '@/components/main-content';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
-import users from '@/routes/users';
+import users from '@/routes/panel/users';
 import type { BreadcrumbItem, IUserEdit } from '@/types';
 import { UpdateUserSchema } from '@/validations/user-schema';
 import type { UpdateUserSchemaType } from '@/validations/user-schema';

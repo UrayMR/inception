@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Guest;
+namespace App\Http\Controllers\Participant;
 
 use App\Http\Controllers\Controller;
 use App\DTOs\Teams\StoreTeamDTO;
 use App\DTOs\Transactions\StoreTransactionDTO;
 use App\Enums\CompetitionType;
 use App\Enums\TransactionStatus;
-use App\Http\Requests\Guest\Competitions\RegisterCompetitionRequest;
+use App\Http\Requests\Participant\Competitions\RegisterCompetitionRequest;
 use App\Models\Competition;
 use App\Resources\Competitions\ShowCompetitionResource;
 use App\Services\Competitions\CompetitionService;
@@ -36,7 +36,7 @@ class CompetitionRegistrationController extends Controller
         $query = Competition::query()->with('timelines');
         $competitions = $query->orderByDesc('updated_at')->paginate(5);
 
-        return $this->render('guest/competitions/index', [
+        return $this->render('participant/competitions/index', [
             'competitions' => ShowCompetitionResource::collection($competitions),
         ]);
     }
@@ -46,7 +46,7 @@ class CompetitionRegistrationController extends Controller
      */
     public function register()
     {
-        return $this->render('guest/competitions/register', [
+        return $this->render('participant/competitions/register', [
             'competitionMap' => $this->competitionService->getCompetitionMap(),
         ]);
     }
@@ -104,7 +104,7 @@ class CompetitionRegistrationController extends Controller
     {
         $competition->load('timelines');
 
-        return $this->render('guest/competitions/show', [
+        return $this->render('participant/competitions/show', [
             'competition' => new ShowCompetitionResource($competition),
         ]);
     }

@@ -1,6 +1,7 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { dashboard, login, register } from '@/routes';
+import { login, register } from '@/routes';
+import panel from '@/routes/panel';
 
 export default function Main() {
     const { auth } = usePage().props;
@@ -13,7 +14,7 @@ export default function Main() {
                     <div className="flex items-center justify-center gap-4">
                         {auth.user ? (
                             <Link
-                                href={dashboard()}
+                                href={panel.dashboard()}
                                 className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                             >
                                 Dashboard

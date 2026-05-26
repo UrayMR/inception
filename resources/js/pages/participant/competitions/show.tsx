@@ -5,7 +5,7 @@ import capitalize from '@/helpers/capitalize';
 import formatCurrency from '@/helpers/format-currency';
 import formatDate from '@/helpers/format-date';
 import AppLayout from '@/layouts/app-layout';
-import competitions from '@/routes/competitions';
+import competitions from '@/routes/participant/competitions';
 import type { AppProps, ICompetitionShow } from '@/types';
 
 type CompetitionShowPageProps = {

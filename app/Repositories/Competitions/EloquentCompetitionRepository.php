@@ -26,6 +26,11 @@ class EloquentCompetitionRepository implements CompetitionRepository
         return $query->orderByDesc('updated_at')->paginate($perPage);
     }
 
+    public function findByIdOrFail(string $id): Competition
+    {
+        return Competition::query()->findOrFail($id);
+    }
+
     /**
      * @param  array  $attributes  (data sent from form)
      */

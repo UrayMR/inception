@@ -7,7 +7,7 @@ Main:
 - [✅] Toast/Flash Message Utilities
 - Global Error Handler
 - DB Transaction Handling in Services (For doing multiple DB operations in one service function)
-- Role Middleware
+- [✅] Role Middleware
 - Rate Limiting Middleware
 
 Functionality List:

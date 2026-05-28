@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Participant;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Participant\Competitions\RegisterCompetitionRequest;
+use App\Enums\CompetitionStatus;
 use App\Models\Competition;
 use App\Resources\Participant\Competitions\CompetitionListResource;
 use App\Resources\Participant\Competitions\CompetitionDetailResource;
@@ -37,7 +38,9 @@ class CompetitionRegistrationController extends Controller
     public function register()
     {
         return $this->render('participant/competitions/register', [
-            'competitionMap' => $this->competitionService->getCompetitionMap(),
+            'competitionMap' => $this->competitionService->getCompetitionMap([
+                'status' => CompetitionStatus::open->value,
+            ]),
         ]);
     }
 

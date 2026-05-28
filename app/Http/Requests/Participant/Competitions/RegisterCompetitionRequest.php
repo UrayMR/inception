@@ -6,6 +6,7 @@ use App\DTOs\Teams\Members\MemberDTO;
 use App\DTOs\Teams\StoreTeamDTO;
 use App\DTOs\Transactions\StoreTransactionDTO;
 use App\Enums\CompetitionType;
+use App\Enums\CompetitionStatus;
 use App\Enums\TransactionMethod;
 use App\Enums\TransactionStatus;
 use App\Models\Competition;
@@ -41,27 +42,49 @@ class RegisterCompetitionRequest extends FormRequest
   {
     $validator->after(function (Validator $validator) {
       $competition = Competition::query()->find($this->input('competition_id'));
-
-      if (! $competition || $competition->type !== CompetitionType::team->value) {
+      if (! $competition) {
         return;
       }
 
-      if (! filled($this->input('team_name'))) {
-        $validator->errors()->add(
-          'team_name',
-          'Team name is required for team competitions.',
-        );
+      $this->ensureCompetitionIsOpen($validator, $competition);
+
+      if ($competition->type !== CompetitionType::team->value) {
+        return;
       }
 
-      $members = $this->input('members', []);
-
-      if (! is_array($members) || count($members) < 1) {
-        $validator->errors()->add(
-          'members',
-          'At least one team member is required for team competitions.',
-        );
-      }
+      $this->ensureTeamCompetitionPayloadIsValid($validator);
     });
+  }
+
+  private function ensureCompetitionIsOpen(Validator $validator, Competition $competition): void
+  {
+    if ($competition->status === CompetitionStatus::open->value) {
+      return;
+    }
+
+    $validator->errors()->add(
+      'competition_id',
+      'Registration is only available for competitions with open status.',
+    );
+  }
+
+  private function ensureTeamCompetitionPayloadIsValid(Validator $validator): void
+  {
+    if (! filled($this->input('team_name'))) {
+      $validator->errors()->add(
+        'team_name',
+        'Team name is required for team competitions.',
+      );
+    }
+
+    $members = $this->input('members', []);
+
+    if (! is_array($members) || count($members) < 1) {
+      $validator->errors()->add(
+        'members',
+        'At least one team member is required for team competitions.',
+      );
+    }
   }
 
   /**

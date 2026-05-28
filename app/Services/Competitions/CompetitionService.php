@@ -32,8 +32,8 @@ class CompetitionService
         return $this->competitionRepository->findByIdOrFail($id);
     }
 
-    public function getCompetitionMap(): array
+    public function getCompetitionMap(array $filters = []): array
     {
-        return $this->competitionRepository->getCompetitionMap();
+        return $this->competitionRepository->getCompetitionMap($filters);
     }
 }

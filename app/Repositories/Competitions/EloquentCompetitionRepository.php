@@ -58,9 +58,19 @@ class EloquentCompetitionRepository implements CompetitionRepository
         return $competition->delete();
     }
 
-    public function getCompetitionMap(): array
+    public function getCompetitionMap(array $filters = []): array
     {
-        return Competition::query()
+        $query = Competition::query();
+
+        if (! empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (! empty($filters['type'])) {
+            $query->where('type', $filters['type']);
+        }
+
+        return $query
             ->get()
             ->map(function ($competition) {
                 return [

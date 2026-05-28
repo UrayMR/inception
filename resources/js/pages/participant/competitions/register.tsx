@@ -1,8 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { useForm } from '@inertiajs/react';
 import { useMemo } from 'react';
-import type { FormEvent } from 'react';
-import RegisterCompetitionForm from '@/components/specifics/register-competition/form';
+import RegisterCompetitionForm from '@/components/forms/competition-registration-form';
 import RegisterCompetitionHero from '@/components/specifics/register-competition/hero';
 import RegisterCompetitionSummary from '@/components/specifics/register-competition/summary';
 import { Button } from '@/components/ui/button';
@@ -94,7 +93,7 @@ export default function RegisterCompetitionPage({
         }));
     };
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.SubmitEvent) => {
         event.preventDefault();
 
         if (!guard(form.data, form.setError)) {

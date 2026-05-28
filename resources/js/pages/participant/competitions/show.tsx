@@ -6,22 +6,18 @@ import formatCurrency from '@/helpers/format-currency';
 import formatDate from '@/helpers/format-date';
 import AppLayout from '@/layouts/app-layout';
 import competitions from '@/routes/participant/competitions';
-import type { AppProps, ICompetitionShow } from '@/types';
+import type { ICompetitionShow } from '@/types';
 
 type CompetitionShowPageProps = {
-    competition: AppProps<ICompetitionShow>;
+    competition: ICompetitionShow;
 };
 
-// TODO: Separate helper function, define props type properly.
 export default function CompetitionShowPage({
     competition,
 }: CompetitionShowPageProps) {
-    const data = competition.data;
-    const timelines = data.timelines || [];
-
     return (
         <AppLayout>
-            <Head title={data.name} />
+            <Head title={competition.name} />
             <div className="bg-[#FDFDFC] text-[#1b1b18] dark:bg-[#0a0a0a]">
                 <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
                     <section className="overflow-hidden rounded-3xl border border-border/60 bg-white shadow-[0_24px_80px_-40px_rgba(15,23,42,0.35)] dark:bg-[#111111]">
@@ -33,10 +29,10 @@ export default function CompetitionShowPage({
                                         variant="outline"
                                         className="rounded-full px-3 py-1"
                                     >
-                                        {capitalize(data.type)}
+                                        {capitalize(competition.type)}
                                     </Badge>
                                     <Badge className="rounded-full px-3 py-1">
-                                        {capitalize(data.status)}
+                                        {capitalize(competition.status)}
                                     </Badge>
                                 </div>
 
@@ -45,11 +41,11 @@ export default function CompetitionShowPage({
                                         Competition Detail
                                     </p>
                                     <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                                        {capitalize(data.name)}
+                                        {capitalize(competition.name)}
                                     </h1>
                                     <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
-                                        {data.description
-                                            ? capitalize(data.description)
+                                        {competition.description
+                                            ? capitalize(competition.description)
                                             : 'No description has been provided for this competition yet.'}
                                     </p>
                                 </div>
@@ -62,7 +58,7 @@ export default function CompetitionShowPage({
                                         <Link
                                             href={competitions.register.url({
                                                 query: {
-                                                    competition: data.slug,
+                                                    competition: competition.slug,
                                                 },
                                             })}
                                         >
@@ -87,8 +83,8 @@ export default function CompetitionShowPage({
                                         Prize
                                     </p>
                                     <p className="mt-1 text-base font-semibold text-foreground">
-                                        {data.price > 0
-                                            ? formatCurrency(data.price)
+                                        {competition.price > 0
+                                            ? formatCurrency(competition.price)
                                             : 'Free registration'}
                                     </p>
                                 </div>
@@ -97,7 +93,7 @@ export default function CompetitionShowPage({
                                         Created at
                                     </p>
                                     <p className="mt-1 text-base font-semibold text-foreground">
-                                        {formatDate(data.created_at)}
+                                        {formatDate(competition.created_at)}
                                     </p>
                                 </div>
                                 <div>
@@ -105,7 +101,7 @@ export default function CompetitionShowPage({
                                         Last updated
                                     </p>
                                     <p className="mt-1 text-base font-semibold text-foreground">
-                                        {formatDate(data.updated_at)}
+                                        {formatDate(competition.updated_at)}
                                     </p>
                                 </div>
                             </div>
@@ -118,8 +114,8 @@ export default function CompetitionShowPage({
                                 Overview
                             </h2>
                             <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                                {data.description
-                                    ? data.description
+                                {competition.description
+                                    ? competition.description
                                     : 'This competition does not have a longer overview yet.'}
                             </p>
                         </div>
@@ -129,8 +125,8 @@ export default function CompetitionShowPage({
                                 Timeline
                             </h2>
                             <div className="mt-5 space-y-4">
-                                {timelines.length > 0 ? (
-                                    timelines.map((timeline) => (
+                                {competition.timelines.length > 0 ? (
+                                    competition.timelines.map((timeline) => (
                                         <div
                                             key={timeline.timeline_name}
                                             className="rounded-2xl bg-muted/50 p-4"

@@ -29,8 +29,3 @@ export interface Option {
     label: string;
     otherValues?: Record<string, any>;
 }
-
-// TODO: Define this app props properly
-export interface AppProps<T> {
-    data: T;
-}

@@ -171,7 +171,7 @@ export default function RegisterCompetitionForm({
                     />
                 </FormField> */}
 
-                <div className="sm:col-span-2 space-y-4">
+                <div className="space-y-4 sm:col-span-2">
                     {isTeamCompetition && (
                         <DynamicTeamInput
                             id="members"
@@ -264,7 +264,6 @@ export default function RegisterCompetitionForm({
                         required
                     >
                         <Input
-                            key={data.payment_proof_file?.name || 'empty'}
                             id="payment_proof_file"
                             type="file"
                             accept="image/png,image/jpeg,image/webp"

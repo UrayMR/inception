@@ -15,7 +15,9 @@ interface CompetitionRepository
 
     public function destroy(Competition $competition): bool;
 
-    public function getCompetitionMap(): array;
-    
+    public function getCompetitionMap(array $filters = []): array;
+
     public function findByIdOrFail(string $id): Competition;
+
+    public function slugExists(string $slug, ?string $ignoreCompetitionId = null): bool;
 }

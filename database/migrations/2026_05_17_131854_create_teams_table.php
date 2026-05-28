@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('team_name');
             $table->foreignUuid('leader_id')->constrained('users', 'id')->onDelete('cascade');
             $table->string('phone_number');
+            $table->string('institution')->nullable();
+            $table->string('status')->default('active'); // registered, active, rejected
             $table->timestamps();
         });
     }

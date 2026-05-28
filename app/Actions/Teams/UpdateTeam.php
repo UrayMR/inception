@@ -22,6 +22,8 @@ class UpdateTeam
         'competition_id' => $dto->competition_id,
         'team_name' => $dto->team_name,
         'phone_number' => $dto->phone_number,
+        'institution' => $dto->institution,
+        'status' => $dto->status,
       ], $team);
 
       if (! empty($members)) {

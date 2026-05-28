@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Actions\Transactions\VerifyTransaction;
+use App\Actions\Transactions\RejectTransaction;
+use App\Actions\Transactions\DeleteTransaction;
 use App\Models\Transaction;
 use App\Resources\Transactions\IndexTransactionResource;
 use App\Resources\Transactions\ShowTransactionResource;
-use App\Services\Competitions\CompetitionService;
 use App\Services\Transactions\TransactionService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,7 +16,9 @@ class TransactionController extends Controller
 {
   public function __construct(
     protected TransactionService $transactionService,
-    protected CompetitionService $competitionService,
+    protected VerifyTransaction $verifyTransaction,
+    protected RejectTransaction $rejectTransaction,
+    protected DeleteTransaction $deleteTransaction,
   ) {}
 
   public function index(Request $request)
@@ -27,25 +31,6 @@ class TransactionController extends Controller
       'transactions' => IndexTransactionResource::collection($transactions),
     ]);
   }
-
-  // Transaction creation is handled by the user-facing controller, so we don't need create/store methods here.
-  // public function create()
-  // {
-  //   $this->authorize('create', Transaction::class);
-
-  //   return $this->render('panel/transactions/create', [
-  //     'competitionMap' => $this->competitionService->getCompetitionMap(),
-  //   ]);
-  // }
-
-  // public function store(StoreTransactionRequest $request)
-  // {
-  //   $this->transactionService->create($request->toDTO());
-
-  //   $this->flash('success', 'Transaction created successfully.');
-
-  //   return redirect()->route('transactions.index');
-  // }
 
   public function show(Transaction $transaction)
   {
@@ -60,10 +45,7 @@ class TransactionController extends Controller
   {
     $this->authorize('update', $transaction);
 
-    $transaction->status = 'verified';
-    $transaction->save();
-
-    // TODO: if verified, make the maded team's cannot commit to other competition again.
+    $this->verifyTransaction->handle($transaction);
 
     $this->flash('success', 'Transaction verified successfully.');
 
@@ -74,11 +56,7 @@ class TransactionController extends Controller
   {
     $this->authorize('update', $transaction);
 
-    $transaction->status = 'rejected';
-    $transaction->save();
-
-    // TODO: if rejected, delete the payment proof file from storage and update the transaction record to remove the file path
-    // And make the maded team's can commit to other competition again.
+    $this->rejectTransaction->handle($transaction);
 
     $this->flash('success', 'Transaction rejected successfully.');
 
@@ -89,7 +67,12 @@ class TransactionController extends Controller
   {
     $this->authorize('delete', $transaction);
 
-    $this->transactionService->destroy($transaction);
+    $isDeleted = $this->deleteTransaction->handle($transaction);
+    if (! $isDeleted) {
+      $this->flash('error', 'Failed to delete transaction.');
+
+      return redirect()->back();
+    }
 
     $this->flash('success', 'Transaction deleted successfully.');
 

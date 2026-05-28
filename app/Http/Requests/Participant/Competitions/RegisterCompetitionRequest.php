@@ -2,13 +2,14 @@
 
 namespace App\Http\Requests\Participant\Competitions;
 
-use App\DTOs\Teams\Members\MemberDTO;
 use App\DTOs\Teams\StoreTeamDTO;
 use App\DTOs\Transactions\StoreTransactionDTO;
 use App\Enums\CompetitionType;
+use App\Enums\TeamStatus;
 use App\Enums\TransactionMethod;
 use App\Enums\TransactionStatus;
 use App\Models\Competition;
+use App\Models\Team;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -42,7 +43,20 @@ class RegisterCompetitionRequest extends FormRequest
     $validator->after(function (Validator $validator) {
       $competition = Competition::query()->find($this->input('competition_id'));
 
-      if (! $competition || $competition->type !== CompetitionType::team->value) {
+      if (! $competition) {
+        return;
+      }
+
+      if ($this->hasActiveTeamRegistration()) {
+        $validator->errors()->add(
+          'competition_id',
+          'You already have a pending or verified registration.',
+        );
+
+        return;
+      }
+
+      if ($competition->type !== CompetitionType::team->value) {
         return;
       }
 
@@ -64,8 +78,19 @@ class RegisterCompetitionRequest extends FormRequest
     });
   }
 
+  private function hasActiveTeamRegistration(): bool
+  {
+    return Team::query()
+      ->where('leader_id', $this->user()->id)
+      ->whereIn('status', [
+        TeamStatus::active->value,
+        TeamStatus::registered->value,
+      ])
+      ->exists();
+  }
+
   /**
-   * Format team attributes.
+   * Format team DTO.
    */
   public function toTeamDTO(Competition $competition): StoreTeamDTO
   {
@@ -78,24 +103,9 @@ class RegisterCompetitionRequest extends FormRequest
       team_name: $teamName,
       leader_id: $this->user()->id,
       phone_number: $this->input('phone_number'),
+      institution: $this->input('institution'),
+      status: TeamStatus::active->value,
     );
-  }
-
-  /**
-   * Format member DTO array.
-   */
-  public function toMemberDTO(string $team_id): array
-  {
-    $membersData = $this->input('members', []);
-
-    return array_map(function ($member) use ($team_id) {
-      $dto = new MemberDTO(
-        team_id: $team_id,
-        member_name: $member['member_name'],
-      );
-
-      return $dto->toArray();
-    }, $membersData);
   }
 
   /**

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\TeamStatus;
 use App\Models\Competition;
 use App\Models\Team;
 use App\Models\User;
@@ -24,6 +25,8 @@ class TeamFactory extends Factory
             'team_name' => $this->faker->company(),
             'leader_id' => User::factory(),
             'phone_number' => $this->faker->phoneNumber(),
+            'institution' => $this->faker->optional()->company(),
+            'status' => $this->faker->randomElement(TeamStatus::cases()),
         ];
     }
 }

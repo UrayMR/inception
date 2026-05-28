@@ -18,12 +18,16 @@ class StoreTeam
   public function handle(StoreTeamDTO $dto, array $members = []): Team
   {
     return DB::transaction(function () use ($dto, $members) {
-      $team = $this->teamRepository->store([
+      $attributes = [
         'competition_id' => $dto->competition_id,
         'team_name' => $dto->team_name,
         'leader_id' => $dto->leader_id,
         'phone_number' => $dto->phone_number,
-      ]);
+        'institution' => $dto->institution,
+        'status' => $dto->status,
+      ];
+
+      $team = $this->teamRepository->store($attributes);
 
       if (! empty($members)) {
         $this->memberService->createMany($team, $this->formatMembers($members));

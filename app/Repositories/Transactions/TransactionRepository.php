@@ -11,5 +11,7 @@ interface TransactionRepository
 
   public function store(array $attributes): Transaction;
 
+  public function update(array $attributes, Transaction $transaction): Transaction;
+
   public function destroy(Transaction $transaction): bool;
 }

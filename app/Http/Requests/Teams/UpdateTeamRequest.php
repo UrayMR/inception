@@ -5,6 +5,7 @@ namespace App\Http\Requests\Teams;
 use App\DTOs\Teams\Members\MemberDTO;
 use App\DTOs\Teams\UpdateTeamDTO;
 use App\Enums\CompetitionType;
+use App\Enums\TeamStatus;
 use App\Models\Competition;
 use App\Models\Team;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,6 +26,8 @@ class UpdateTeamRequest extends FormRequest
             'competition_id' => ['required', 'string', Rule::exists('competitions', 'id')],
             'team_name' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:20'],
+            'institution' => ['nullable', 'string', 'max:255'],
+            'status' => ['required', 'string', Rule::in(TeamStatus::cases())],
         ];
 
         $memberRules = [
@@ -60,6 +63,8 @@ class UpdateTeamRequest extends FormRequest
             competition_id: $this->input('competition_id'),
             team_name: $this->input('team_name'),
             phone_number: $this->input('phone_number'),
+            institution: $this->input('institution'),
+            status: $this->input('status'),
         );
     }
 

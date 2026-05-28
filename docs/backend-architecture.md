@@ -133,6 +133,8 @@ For write operations, the current flow is usually:
 5. **Action** returns the final model or result to the controller.
 6. **Controller** flashes a message or redirects.
 
+Security and business gate checks that protect a write endpoint should also live in this path, ideally in the Form Request or in the endpoint's first validation layer. For example, a competition registration must only work when the competition status is `open`, that rule should be enforced on the registration write endpoint before the action or repository starts mutating data. This keeps the endpoint itself as the source of truth for access rules and avoids relying only on the UI.
+
 ## Read Flow Pattern
 
 For read operations, the flow is simpler:
@@ -279,6 +281,7 @@ Use these guidelines when deciding where new logic belongs:
 - Put **reusable query logic** in Services.
 - Put **database access** in Repositories.
 - Put **file storage primitives** in FileService.
+- Put **security or business gates for write endpoints** in the Form Request or the endpoint's first validation layer, so rules like `a competition should not be registered if the status is not open` fail before mutation logic runs.
 
 ## Summary
 

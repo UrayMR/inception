@@ -5,9 +5,9 @@ namespace App\Actions\Competitions;
 use App\DTOs\Competitions\StoreCompetitionDTO;
 use App\Models\Competition;
 use App\Repositories\Competitions\CompetitionRepository;
+use App\Services\Competitions\CompetitionService;
 use App\Services\Competitions\TimelineService;
 use App\Services\FileService;
-use App\Utilities\SlugGenerator;
 use Illuminate\Support\Facades\DB;
 
 class StoreCompetition
@@ -17,16 +17,19 @@ class StoreCompetition
   public function __construct(
     protected FileService $fileService,
     protected CompetitionRepository $competitionRepository,
+    protected CompetitionService $competitionService,
     protected TimelineService $timelineService,
   ) {}
 
   public function handle(StoreCompetitionDTO $dto, array $timelineAttributes = []): Competition
   {
     return DB::transaction(function () use ($dto, $timelineAttributes) {
+      $slug = $this->competitionService->generateUniqueSlug($dto->name);
+
       $attributes = [
         'name' => $dto->name,
         'description' => $dto->description,
-        'slug' => SlugGenerator::make($dto->name),
+        'slug' => $slug,
         'type' => $dto->type,
         'price' => $dto->price,
         'status' => $dto->status,

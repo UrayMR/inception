@@ -85,4 +85,14 @@ class EloquentCompetitionRepository implements CompetitionRepository
             })
             ->toArray();
     }
+
+    public function slugExists(string $slug, ?string $ignoreCompetitionId = null): bool
+    {
+        return Competition::query()
+            ->where('slug', $slug)
+            ->when($ignoreCompetitionId, function ($query, string $ignoreCompetitionId) {
+                $query->where('id', '!=', $ignoreCompetitionId);
+            })
+            ->exists();
+    }
 }

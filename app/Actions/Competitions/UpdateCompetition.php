@@ -5,9 +5,9 @@ namespace App\Actions\Competitions;
 use App\DTOs\Competitions\UpdateCompetitionDTO;
 use App\Models\Competition;
 use App\Repositories\Competitions\CompetitionRepository;
+use App\Services\Competitions\CompetitionService;
 use App\Services\Competitions\TimelineService;
 use App\Services\FileService;
-use App\Utilities\SlugGenerator;
 use Illuminate\Support\Facades\DB;
 
 class UpdateCompetition
@@ -17,6 +17,7 @@ class UpdateCompetition
   public function __construct(
     protected FileService $fileService,
     protected CompetitionRepository $competitionRepository,
+    protected CompetitionService $competitionService,
     protected TimelineService $timelineService,
   ) {}
 
@@ -32,7 +33,7 @@ class UpdateCompetition
       ];
 
       if ($dto->name !== $competition->name) {
-        $attributes['slug'] = SlugGenerator::make($dto->name);
+        $attributes['slug'] = $this->competitionService->generateUniqueSlug($dto->name, $competition);
       }
 
       if ($dto->image_file) {

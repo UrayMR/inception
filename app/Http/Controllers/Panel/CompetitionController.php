@@ -55,8 +55,6 @@ class CompetitionController extends Controller
     {
         $this->authorize('create', Competition::class);
 
-        // TODO: Make a validation that the given request name is unique(slug)
-
         $this->storeCompetition->handle(
             $request->toCompetitionDTO(),
             $request->input('timelines', []),

@@ -26,6 +26,13 @@ class EloquentTransactionRepository implements TransactionRepository
     return Transaction::create($attributes);
   }
 
+  public function update(array $attributes, Transaction $transaction): Transaction
+  {
+    $transaction->update($attributes);
+
+    return $transaction;
+  }
+
   public function destroy(Transaction $transaction): bool
   {
     return $transaction->delete();

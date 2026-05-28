@@ -12,12 +12,13 @@ class Team extends Model
     /** @use HasFactory<TeamFactory> */
     use HasFactory, HasUuids;
 
-    // TODO: Add Institution and team status to tell that this team is already registered or not
     protected $fillable = [
         'competition_id',
         'team_name',
         'leader_id',
         'phone_number',
+        'institution',
+        'status',
     ];
 
     public function competition()

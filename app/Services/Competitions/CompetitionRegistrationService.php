@@ -2,17 +2,17 @@
 
 namespace App\Services\Competitions;
 
+use App\Actions\Transactions\StoreTransaction;
 use App\Actions\Teams\StoreTeam;
 use App\Http\Requests\Participant\Competitions\RegisterCompetitionRequest;
 use App\Models\Competition;
-use App\Services\Transactions\TransactionService;
 use Illuminate\Support\Facades\DB;
 
 class CompetitionRegistrationService
 {
   public function __construct(
     protected StoreTeam $storeTeam,
-    protected TransactionService $transactionService,
+    protected StoreTransaction $storeTransaction,
   ) {}
 
   public function register(RegisterCompetitionRequest $request, Competition $competition): void
@@ -23,7 +23,7 @@ class CompetitionRegistrationService
         $request->input('members', []),
       );
 
-      $this->transactionService->create($request->toTransactionDTO($team->id, $competition->price));
+      $this->storeTransaction->handle($request->toTransactionDTO($team->id, $competition->price));
     });
   }
 }

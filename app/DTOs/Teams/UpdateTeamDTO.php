@@ -8,5 +8,7 @@ class UpdateTeamDTO
         public string $competition_id,
         public string $team_name,
         public string $phone_number,
+        public ?string $institution,
+        public string $status
     ) {}
 }

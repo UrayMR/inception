@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Enums\CompetitionType;
+use App\Actions\Teams\StoreTeam;
+use App\Actions\Teams\DeleteTeam;
+use App\Actions\Teams\UpdateTeam;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Teams\StoreTeamRequest;
 use App\Http\Requests\Teams\UpdateTeamRequest;
@@ -11,26 +13,16 @@ use App\Resources\Teams\EditTeamResource;
 use App\Resources\Teams\IndexTeamResource;
 use App\Resources\Teams\ShowTeamResource;
 use App\Services\Competitions\CompetitionService;
-use App\Services\Teams\MemberService;
 use App\Services\Teams\TeamService;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
-    // NOTE:
-    // Team should be created by the user who is the leader of the team,
-    // so the leader_id will be set to the authenticated user id, and cannot be changed/updated.
-
-    // Team creation only appears when registering for a competition,
-    // so the competition_id will be set based on the competition that the user is registering for,
-    // and all of team detail cannot be changed/updated.
-
-    // This Controller only handling the team management by admin,
-    // so the team can be updated and deleted by admin, but not by the leader of the team.
-
     public function __construct(
         protected TeamService $teamService,
-        protected MemberService $memberService,
+        protected StoreTeam $storeTeam,
+        protected UpdateTeam $updateTeam,
+        protected DeleteTeam $deleteTeam,
         protected CompetitionService $competitionService,
     ) {}
 
@@ -67,9 +59,7 @@ class TeamController extends Controller
     {
         $this->authorize('create', Team::class);
 
-        $team = $this->teamService->create($request->toTeamDTO());
-
-        $this->memberService->createMany($team, $request->toMemberDTO($team->id));
+        $this->storeTeam->handle($request->toTeamDTO(), $request->input('members', []));
 
         $this->flash('success', 'Team created successfully.');
 
@@ -112,9 +102,7 @@ class TeamController extends Controller
     {
         $this->authorize('update', $team);
 
-        $team = $this->teamService->update($request->toTeamDTO(), $team);
-
-        $this->memberService->updateMany($team, $request->toMemberDTO($team->id));
+        $this->updateTeam->handle($request->toTeamDTO(), $team, $request->input('members', []));
 
         $this->flash('success', 'Team updated successfully.');
 
@@ -128,16 +116,12 @@ class TeamController extends Controller
     {
         $this->authorize('delete', $team);
 
-        if ($team->competition->type === CompetitionType::team->value) {
-            $isMemberDeleted = $this->memberService->destroyMany($team);
-            if (! $isMemberDeleted) {
-                $this->flash('error', 'Failed to delete team members.');
+        $isDeleted = $this->deleteTeam->handle($team);
+        if (! $isDeleted) {
+            $this->flash('error', 'Failed to delete team and members.');
 
-                return redirect()->back();
-            }
+            return redirect()->back();
         }
-
-        $this->teamService->destroy($team);
 
         $this->flash('success', 'Team deleted successfully.');
 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Actions\Competitions\StoreCompetition;
+use App\Actions\Competitions\DeleteCompetition;
+use App\Actions\Competitions\UpdateCompetition;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Competitions\StoreCompetitionRequest;
 use App\Http\Requests\Competitions\UpdateCompetitionRequest;
@@ -10,14 +13,15 @@ use App\Resources\Competitions\EditCompetitionResource;
 use App\Resources\Competitions\IndexCompetitionResource;
 use App\Resources\Competitions\ShowCompetitionResource;
 use App\Services\Competitions\CompetitionService;
-use App\Services\Competitions\TimelineService;
 use Illuminate\Http\Request;
 
 class CompetitionController extends Controller
 {
     public function __construct(
         protected CompetitionService $competitionService,
-        protected TimelineService $timelineService
+        protected StoreCompetition $storeCompetition,
+        protected UpdateCompetition $updateCompetition,
+        protected DeleteCompetition $deleteCompetition,
     ) {}
 
     /**
@@ -53,9 +57,10 @@ class CompetitionController extends Controller
 
         // TODO: Make a validation that the given request name is unique(slug)
 
-        $competition = $this->competitionService->create($request->toCompetitionDTO());
-
-        $this->timelineService->createMany($competition, $request->toTimelineDTO($competition->id));
+        $this->storeCompetition->handle(
+            $request->toCompetitionDTO(),
+            $request->input('timelines', []),
+        );
 
         $this->flash('success', 'Competition created successfully.');
 
@@ -97,9 +102,11 @@ class CompetitionController extends Controller
     {
         $this->authorize('update', $competition);
 
-        $competition = $this->competitionService->update($request->toCompetitionDTO(), $competition);
-
-        $this->timelineService->updateMany($competition, $request->toTimelineDTO($competition->id));
+        $this->updateCompetition->handle(
+            $request->toCompetitionDTO(),
+            $competition,
+            $request->toTimelineDTO($competition->id),
+        );
 
         $this->flash('success', 'Competition updated successfully.');
 
@@ -113,14 +120,12 @@ class CompetitionController extends Controller
     {
         $this->authorize('delete', $competition);
 
-        $isTimelineDeleted = $this->timelineService->destroyMany($competition);
-        if (! $isTimelineDeleted) {
+        $isDeleted = $this->deleteCompetition->handle($competition);
+        if (! $isDeleted) {
             $this->flash('error', 'Failed to delete competition timelines.');
 
             return redirect()->back();
         }
-
-        $this->competitionService->destroy($competition);
 
         $this->flash('success', 'Competition deleted successfully.');
 

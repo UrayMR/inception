@@ -6,7 +6,7 @@ Main:
 - [✅] Frontend Architecture
 - [✅] Toast/Flash Message Utilities
 - Global Error Handler
-- DB Transaction Handling in Services (For doing multiple DB operations in one service function)
+- [✅] DB Transaction Handling in Services (For doing multiple DB operations in one function (actions pattern))
 - [✅] Role Middleware
 - Rate Limiting Middleware
 

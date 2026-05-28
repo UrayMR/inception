@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Actions\Teams\CreateTeam;
+use App\Actions\Teams\StoreTeam;
 use App\Actions\Teams\DeleteTeam;
 use App\Actions\Teams\UpdateTeam;
 use App\Http\Controllers\Controller;
@@ -20,7 +20,7 @@ class TeamController extends Controller
 {
     public function __construct(
         protected TeamService $teamService,
-        protected CreateTeam $createTeam,
+        protected StoreTeam $storeTeam,
         protected UpdateTeam $updateTeam,
         protected DeleteTeam $deleteTeam,
         protected CompetitionService $competitionService,
@@ -59,7 +59,7 @@ class TeamController extends Controller
     {
         $this->authorize('create', Team::class);
 
-        $this->createTeam->handle($request->toTeamDTO(), $request->input('members', []));
+        $this->storeTeam->handle($request->toTeamDTO(), $request->input('members', []));
 
         $this->flash('success', 'Team created successfully.');
 

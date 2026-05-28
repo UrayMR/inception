@@ -8,7 +8,7 @@ use App\Services\Teams\MemberService;
 use App\Repositories\Teams\TeamRepository;
 use Illuminate\Support\Facades\DB;
 
-class CreateTeam
+class StoreTeam
 {
   public function __construct(
     protected TeamRepository $teamRepository,

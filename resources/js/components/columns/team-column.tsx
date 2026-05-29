@@ -35,6 +35,15 @@ export const getTeamColumns = (
         header: 'Leader Name',
     },
     {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: ({ row }) => {
+            const status = row.original.status;
+
+            return status.charAt(0).toUpperCase() + status.slice(1);
+        }
+    },
+    {
         header: 'Actions',
         cell: ({ row }) => {
             return (

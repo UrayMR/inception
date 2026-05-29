@@ -7,15 +7,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import type { FormProps, Option, TeamMember } from '@/types';
-import { CompetitionTypeMap } from '@/types';
+import type { FormProps, Option, TeamMember, TeamStatusType } from '@/types';
+import { CompetitionTypeMap, TeamStatusMap } from '@/types';
 import { DynamicTeamInput } from '../specifics/dynamic-team-input';
 
 type TeamFormData = {
     competition_id: string;
     team_name: string;
     leader_name?: string;
+    institution?: string;
     phone_number: string;
+    status: TeamStatusType;
 
     members?: TeamMember[];
     competition?: Option;
@@ -91,6 +93,54 @@ export function TeamForm({
                     placeholder="Enter Team Name"
                     required
                 />
+            </FormField>
+
+            <FormField
+                name="institution"
+                label="Institution"
+                error={errors.institution}
+                required={false}
+            >
+                <Input
+                    id="institution"
+                    type="text"
+                    value={data.institution || ''}
+                    onChange={(e) => onChange('institution', e.target.value)}
+                    readOnly={isReadOnly}
+                    placeholder="Enter Institution"
+                />
+            </FormField>
+
+            <FormField
+                name="status"
+                label="Status"
+                error={errors.status}
+                required
+            >
+                <Select
+                    value={data.status}
+                    onValueChange={(value) =>
+                        onChange('status', value as TeamStatusType)
+                    }
+                    disabled={isReadOnly}
+                    required
+                >
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select Status" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                        {Object.values(TeamStatusMap).map((status) => (
+                            <SelectItem
+                                key={status.value}
+                                value={status.value}
+                                disabled={isReadOnly}
+                            >
+                                {status.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
             </FormField>
 
             <FormField

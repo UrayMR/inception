@@ -10,6 +10,9 @@ export type * from './enums/role';
 export * from './enums/competition';
 export type * from './enums/competition';
 
+export * from './enums/team';
+export type * from './enums/team';
+
 export * from './enums/transaction';
 export type * from './enums/transaction';
 

@@ -12,6 +12,7 @@ import type {
     ITeamEdit,
     Option,
 } from '@/types';
+import { TeamStatusMap } from '@/types';
 import { UpdateTeamSchema } from '@/validations/team-schema';
 import type { UpdateTeamSchemaType } from '@/validations/team-schema';
 
@@ -40,7 +41,9 @@ export default function EditTeamPage({
         team_name: team.team_name,
         competition_id: team.competition_id,
         leader_name: team.leader_name,
+        institution: team.institution || '',
         phone_number: team.phone_number,
+        status: team.status || TeamStatusMap.Active.value,
         members: team.members || [],
     });
 

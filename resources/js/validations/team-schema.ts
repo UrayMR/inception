@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { CompetitionTypeMap } from '@/types';
+import { CompetitionTypeMap, TeamStatusValue } from '@/types';
 import type { CompetitionType } from '@/types';
 
 export const TeamMemberSchema = z.object({
@@ -9,7 +9,9 @@ export const TeamMemberSchema = z.object({
 export const TeamBaseSchema = z.object({
     competition_id: z.uuid(),
     team_name: z.string().min(1).max(255),
+    institution: z.string().max(255).optional(),
     phone_number: z.string().min(1).max(20),
+    status: z.enum(TeamStatusValue),
 });
 
 const TeamMembersSchema = z.array(TeamMemberSchema);

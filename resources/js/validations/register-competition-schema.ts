@@ -43,6 +43,7 @@ export type RegisterCompetitionSchemaType = z.infer<
 export type RegisterCompetitionFormDataType = {
     competition_id: string;
     team_name?: string;
+    institution?: string;
     phone_number: string;
     payment_method: (typeof TransactionPaymentMethodValue)[number];
     payment_proof_file?: File;

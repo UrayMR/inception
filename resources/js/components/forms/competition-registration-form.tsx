@@ -152,8 +152,7 @@ export default function RegisterCompetitionForm({
                     />
                 </FormField>
 
-                {/* TODO: Add Institution */}
-                {/* <FormField
+                <FormField
                     name="institution"
                     label="Institution"
                     error={errors.institution}
@@ -169,7 +168,7 @@ export default function RegisterCompetitionForm({
                         disabled={!canFillTeamDetails}
                         required
                     />
-                </FormField> */}
+                </FormField>
 
                 <div className="space-y-4 sm:col-span-2">
                     {isTeamCompetition && (

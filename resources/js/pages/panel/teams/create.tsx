@@ -7,6 +7,7 @@ import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
 import teams from '@/routes/panel/teams';
 import type { BreadcrumbItem, CompetitionType, Option } from '@/types';
+import { TeamStatusMap } from '@/types';
 import { CreateTeamSchema } from '@/validations/team-schema';
 import type { CreateTeamSchemaType } from '@/validations/team-schema';
 
@@ -25,7 +26,9 @@ export default function CreateTeamPage({
     const form = useForm<CreateTeamSchemaType>({
         competition_id: '',
         team_name: '',
+        institution: '',
         phone_number: '',
+        status: TeamStatusMap.Active.value,
         members: [
             {
                 member_name: '',

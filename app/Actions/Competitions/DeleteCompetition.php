@@ -19,20 +19,18 @@ class DeleteCompetition
 
   public function handle(Competition $competition): bool
   {
-    return DB::transaction(function () use ($competition) {
-      if (! $this->timelineService->destroyMany($competition)) {
-        throw new RuntimeException('Failed to delete competition timelines.');
-      }
+    if (! $this->timelineService->destroyMany($competition)) {
+      throw new RuntimeException('Failed to delete competition timelines.');
+    }
 
-      if ($competition->image_path) {
-        $this->fileService->delete($competition->image_path);
-      }
+    if ($competition->image_path) {
+      $this->fileService->delete($competition->image_path);
+    }
 
-      if (! $this->competitionRepository->destroy($competition)) {
-        throw new RuntimeException('Failed to delete competition.');
-      }
+    if (! $this->competitionRepository->destroy($competition)) {
+      throw new RuntimeException('Failed to delete competition.');
+    }
 
-      return true;
-    });
+    return true;
   }
 }

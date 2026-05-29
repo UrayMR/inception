@@ -4,6 +4,7 @@ import type {
 } from '../enums/competition';
 
 export interface CompetitionTimeline {
+    id?: string;
     timeline_name: string;
     description?: string | null;
     sequence: number;

@@ -64,6 +64,7 @@ class StoreCompetitionRequest extends FormRequest
 
         return array_map(function ($timeline) use ($competition_id) {
             $dto = new TimelineDTO(
+                id: null,
                 competition_id: $competition_id,
                 timeline_name: $timeline['timeline_name'],
                 description: $timeline['description'] ?? null,

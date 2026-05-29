@@ -7,6 +7,9 @@ use Illuminate\Support\Carbon;
 class TimelineDTO
 {
     public function __construct(
+        // ID is nullable because it won't be set for new timelines being created
+        public ?string $id,
+        
         public string $competition_id,
         public string $timeline_name,
         public ?string $description,
@@ -21,6 +24,7 @@ class TimelineDTO
     public function toArray(): array
     {
         return [
+            'id' => $this->id,
             'competition_id' => $this->competition_id,
             'timeline_name' => $this->timeline_name,
             'description' => $this->description,

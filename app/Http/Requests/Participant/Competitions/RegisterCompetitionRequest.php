@@ -6,11 +6,9 @@ use App\DTOs\Teams\StoreTeamDTO;
 use App\DTOs\Transactions\StoreTransactionDTO;
 use App\Enums\CompetitionType;
 use App\Enums\TeamStatus;
-use App\Enums\CompetitionStatus;
 use App\Enums\TransactionMethod;
 use App\Enums\TransactionStatus;
 use App\Models\Competition;
-use App\Models\Team;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -28,6 +26,7 @@ class RegisterCompetitionRequest extends FormRequest
       'competition_id' => ['required', 'uuid', Rule::exists('competitions', 'id')],
       'team_name' => ['nullable', 'string', 'max:255'],
       'phone_number' => ['required', 'string', 'max:20'],
+      'institution' => ['nullable', 'string', 'max:255'],
       'payment_method' => [
         'required',
         'string',
@@ -39,57 +38,25 @@ class RegisterCompetitionRequest extends FormRequest
     ];
   }
 
-  public function withValidator(Validator $validator): void
+  public function after(): array
   {
-    $validator->after(function (Validator $validator) {
-      $competition = Competition::query()->find($this->input('competition_id'));
-      if (! $competition) {
-        return;
-      }
-      
-      if ($this->hasActiveTeamRegistration()) {
-        $validator->errors()->add(
-          'competition_id',
-          'You already have a pending or verified registration.',
-        );
+    return [
+      function (Validator $validator): void {
+        $competition = Competition::query()->find($this->input('competition_id'));
+        if (! $competition) {
+          return;
+        }
 
-        return;
-      }
+        if ($competition->type !== CompetitionType::team->value) {
+          return;
+        }
 
-      $this->ensureCompetitionIsOpen($validator, $competition);
-
-      if ($competition->type !== CompetitionType::team->value) {
-        return;
-      }
-
-      $this->ensureTeamCompetitionPayloadIsValid($validator);
-    });
+        $this->validateTeamCompetitionPayload($validator);
+      },
+    ];
   }
 
-  private function hasActiveTeamRegistration(): bool
-  {
-    return Team::query()
-      ->where('leader_id', $this->user()->id)
-      ->whereIn('status', [
-        TeamStatus::active->value,
-        TeamStatus::registered->value,
-      ])
-      ->exists();
-  }
-                      
-  private function ensureCompetitionIsOpen(Validator $validator, Competition $competition): void
-  {
-    if ($competition->status === CompetitionStatus::open->value) {
-      return;
-    }
-
-    $validator->errors()->add(
-      'competition_id',
-      'Registration is only available for competitions with open status.',
-    );
-  }
-
-  private function ensureTeamCompetitionPayloadIsValid(Validator $validator): void
+  private function validateTeamCompetitionPayload(Validator $validator): void
   {
     if (! filled($this->input('team_name'))) {
       $validator->errors()->add(

@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 
 class ThrowException
 {
@@ -11,5 +12,10 @@ class ThrowException
     throw ValidationException::withMessages([
       $field => $message,
     ]);
+  }
+
+  public static function runtime(string $message): never
+  {
+    throw new RuntimeException($message);
   }
 }

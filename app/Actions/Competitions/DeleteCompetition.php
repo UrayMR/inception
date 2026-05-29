@@ -2,11 +2,11 @@
 
 namespace App\Actions\Competitions;
 
+use App\Helpers\ThrowException;
 use App\Models\Competition;
 use App\Repositories\Competitions\CompetitionRepository;
 use App\Services\Competitions\TimelineService;
 use App\Services\FileService;
-use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 class DeleteCompetition
@@ -20,7 +20,7 @@ class DeleteCompetition
   public function handle(Competition $competition): bool
   {
     if (! $this->timelineService->destroyMany($competition)) {
-      throw new RuntimeException('Failed to delete competition timelines.');
+      ThrowException::runtime('Failed to delete competition timelines.');
     }
 
     if ($competition->image_path) {
@@ -28,7 +28,7 @@ class DeleteCompetition
     }
 
     if (! $this->competitionRepository->destroy($competition)) {
-      throw new RuntimeException('Failed to delete competition.');
+      ThrowException::runtime('Failed to delete competition.');
     }
 
     return true;

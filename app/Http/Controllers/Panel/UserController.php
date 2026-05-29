@@ -53,7 +53,7 @@ class UserController extends Controller
 
         $this->flash('success', 'User created successfully.');
 
-        return redirect()->route('users.index');
+        return redirect()->route('panel.users.index');
     }
 
     /**
@@ -91,7 +91,7 @@ class UserController extends Controller
 
         $this->flash('success', 'User updated successfully.');
 
-        return redirect()->route('users.index');
+        return redirect()->route('panel.users.index');
     }
 
     /**
@@ -105,6 +105,6 @@ class UserController extends Controller
 
         $this->flash('success', 'User deleted successfully.');
 
-        return redirect()->route('users.index');
+        return redirect()->route('panel.users.index');
     }
 }

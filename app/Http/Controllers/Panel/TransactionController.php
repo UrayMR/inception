@@ -43,7 +43,7 @@ class TransactionController extends Controller
 
     $this->flash('success', 'Transaction verified successfully.');
 
-    return redirect()->route('transactions.index');
+    return redirect()->route('panel.transactions.index');
   }
 
   public function reject(Transaction $transaction)
@@ -54,7 +54,7 @@ class TransactionController extends Controller
 
     $this->flash('success', 'Transaction rejected successfully.');
 
-    return redirect()->route('transactions.index');
+    return redirect()->route('panel.transactions.index');
   }
 
   public function destroy(Transaction $transaction)
@@ -70,6 +70,6 @@ class TransactionController extends Controller
 
     $this->flash('success', 'Transaction deleted successfully.');
 
-    return redirect()->route('transactions.index');
+    return redirect()->route('panel.transactions.index');
   }
 }

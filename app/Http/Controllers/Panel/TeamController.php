@@ -57,7 +57,7 @@ class TeamController extends Controller
 
         $this->flash('success', 'Team created successfully.');
 
-        return redirect()->route('teams.index');
+        return redirect()->route('panel.teams.index');
     }
 
     /**
@@ -100,7 +100,7 @@ class TeamController extends Controller
 
         $this->flash('success', 'Team updated successfully.');
 
-        return redirect()->route('teams.index');
+        return redirect()->route('panel.teams.index');
     }
 
     /**
@@ -119,6 +119,6 @@ class TeamController extends Controller
 
         $this->flash('success', 'Team deleted successfully.');
 
-        return redirect()->route('teams.index');
+        return redirect()->route('panel.teams.index');
     }
 }

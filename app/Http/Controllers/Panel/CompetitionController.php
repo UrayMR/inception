@@ -53,7 +53,7 @@ class CompetitionController extends Controller
 
         $this->flash('success', 'Competition created successfully.');
 
-        return redirect()->route('admin.competitions.index');
+        return redirect()->route('panel.competitions.index');
     }
 
     /**
@@ -95,7 +95,7 @@ class CompetitionController extends Controller
 
         $this->flash('success', 'Competition updated successfully.');
 
-        return redirect()->route('admin.competitions.index');
+        return redirect()->route('panel.competitions.index');
     }
 
     /**
@@ -114,6 +114,6 @@ class CompetitionController extends Controller
 
         $this->flash('success', 'Competition deleted successfully.');
 
-        return redirect()->route('admin.competitions.index');
+        return redirect()->route('panel.competitions.index');
     }
 }

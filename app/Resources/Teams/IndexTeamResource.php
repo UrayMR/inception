@@ -23,6 +23,7 @@ class IndexTeamResource extends JsonResource
             ],
             'team_name' => $this->team_name,
             'leader_name' => $this->leader?->name,
+            'status' => $this->status,
         ];
     }
 }

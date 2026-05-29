@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Actions\Users\DeleteUser;
-use App\Actions\Users\StoreUser;
-use App\Actions\Users\UpdateUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\StoreUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
@@ -19,9 +16,6 @@ class UserController extends Controller
 {
     public function __construct(
         protected UserService $userService,
-        protected StoreUser $storeUser,
-        protected UpdateUser $updateUser,
-        protected DeleteUser $deleteUser,
     ) {}
 
     /**
@@ -55,7 +49,7 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
 
-        $this->storeUser->handle($request->toDTO());
+        $this->userService->store($request->toDTO());
 
         $this->flash('success', 'User created successfully.');
 
@@ -93,7 +87,7 @@ class UserController extends Controller
     {
         $this->authorize('update', $user);
 
-        $this->updateUser->handle($request->toDTO(), $user);
+        $this->userService->update($request->toDTO(), $user);
 
         $this->flash('success', 'User updated successfully.');
 
@@ -107,7 +101,7 @@ class UserController extends Controller
     {
         $this->authorize('delete', $user);
 
-        $this->deleteUser->handle($user);
+        $this->userService->destroy($user);
 
         $this->flash('success', 'User deleted successfully.');
 

@@ -9,14 +9,14 @@ use App\Models\Competition;
 use App\Resources\Participant\Competitions\CompetitionListResource;
 use App\Resources\Participant\Competitions\CompetitionDetailResource;
 use App\Services\Competitions\CompetitionService;
-use App\Services\Competitions\CompetitionRegistrationService;
+use App\Services\Competitions\Registrations\RegisterCompetitionService;
 use Illuminate\Http\Request;
 
 class CompetitionRegistrationController extends Controller
 {
     public function __construct(
         protected CompetitionService $competitionService,
-        protected CompetitionRegistrationService $competitionRegistrationService,
+        protected RegisterCompetitionService $registerCompetitionService,
     ) {}
 
     /**
@@ -49,9 +49,10 @@ class CompetitionRegistrationController extends Controller
      */
     public function store(RegisterCompetitionRequest $request)
     {
-        $competition = $this->competitionService->findByIdOrFail($request->input('competition_id'));
+        $dto = $request->toDTO();
+        $competition = $this->competitionService->findByIdOrFail($dto->competition_id);
 
-        $this->competitionRegistrationService->register($request, $competition);
+        $this->registerCompetitionService->register($dto, $competition);
 
         $this->flash('success', 'Competition registration submitted successfully.');
         $this->flash('success', 'Please kindly wait for the verification of your transaction. Thank you!');

@@ -2,16 +2,10 @@
 
 namespace App\Http\Requests\Participant\Competitions;
 
-use App\DTOs\Teams\StoreTeamDTO;
-use App\DTOs\Transactions\StoreTransactionDTO;
-use App\Enums\CompetitionType;
-use App\Enums\TeamStatus;
 use App\Enums\TransactionMethod;
-use App\Enums\TransactionStatus;
-use App\Models\Competition;
+use App\DTOs\Competitions\Registrations\RegisterCompetitionDTO;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
 class RegisterCompetitionRequest extends FormRequest
 {
@@ -38,73 +32,18 @@ class RegisterCompetitionRequest extends FormRequest
     ];
   }
 
-  public function after(): array
+  public function toDTO(): RegisterCompetitionDTO
   {
-    return [
-      function (Validator $validator): void {
-        $competition = Competition::query()->find($this->input('competition_id'));
-        if (! $competition) {
-          return;
-        }
-
-        if ($competition->type !== CompetitionType::team->value) {
-          return;
-        }
-
-        $this->validateTeamCompetitionPayload($validator);
-      },
-    ];
-  }
-
-  private function validateTeamCompetitionPayload(Validator $validator): void
-  {
-    if (! filled($this->input('team_name'))) {
-      $validator->errors()->add(
-        'team_name',
-        'Team name is required for team competitions.',
-      );
-    }
-
-    $members = $this->input('members', []);
-
-    if (! is_array($members) || count($members) < 1) {
-      $validator->errors()->add(
-        'members',
-        'At least one team member is required for team competitions.',
-      );
-    }
-  }
-
-  /**
-   * Format team DTO.
-   */
-  public function toTeamDTO(Competition $competition): StoreTeamDTO
-  {
-    $teamName = $competition->type === CompetitionType::solo->value
-      ? $this->user()->name
-      : trim((string) $this->input('team_name'));
-
-    return new StoreTeamDTO(
-      competition_id: $competition->id,
-      team_name: $teamName,
+    return new RegisterCompetitionDTO(
+      competition_id: $this->input('competition_id'),
+      team_name: $this->input('team_name'),
       leader_id: $this->user()->id,
+      leader_name: $this->user()->name,
       phone_number: $this->input('phone_number'),
       institution: $this->input('institution'),
-      status: TeamStatus::active->value,
-    );
-  }
-
-  /**
-   * Format transaction DTO.
-   */
-  public function toTransactionDTO(string $team_id, float $amount): StoreTransactionDTO
-  {
-    return new StoreTransactionDTO(
-      team_id: $team_id,
-      amount: $amount,
       payment_method: $this->input('payment_method'),
       payment_proof_file: $this->file('payment_proof_file'),
-      status: TransactionStatus::pending->value,
+      members: $this->input('members', []),
     );
   }
 }

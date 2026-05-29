@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Actions\Competitions;
+namespace App\Actions\Competitions\Registrations;
 
-use App\Http\Requests\Participant\Competitions\RegisterCompetitionRequest;
+use App\DTOs\Competitions\Registrations\RegisterCompetitionDTO;
 use App\Models\Competition;
 use App\Models\Team;
 use App\Repositories\Teams\Members\MemberRepository;
@@ -21,43 +21,38 @@ class StoreCompetitionRegistration
     protected FileService $fileService,
   ) {}
 
-  public function handle(RegisterCompetitionRequest $request, Competition $competition): Team
+  public function handle(RegisterCompetitionDTO $dto, Competition $competition): Team
   {
+    $teamDTO = $dto->toTeamDTO($competition);
+
     $team = $this->teamRepository->store([
       'competition_id' => $competition->id,
-      'team_name' => $request->toTeamDTO($competition)->team_name,
-      'leader_id' => $request->user()->id,
-      'phone_number' => $request->input('phone_number'),
-      'institution' => $request->input('institution'),
-      'status' => $request->toTeamDTO($competition)->status,
+      'team_name' => $teamDTO->team_name,
+      'leader_id' => $teamDTO->leader_id,
+      'phone_number' => $teamDTO->phone_number,
+      'institution' => $teamDTO->institution,
+      'status' => $teamDTO->status,
     ]);
 
-    $members = $this->formatMembers($request->input('members', []));
+    $members = $dto->memberRows();
 
     if (! empty($members)) {
       $this->memberRepository->storeMany($team, $members);
     }
 
+    $transactionDTO = $dto->toTransactionDTO($team->id, $competition->price);
+
     $this->transactionRepository->store([
       'team_id' => $team->id,
       'amount' => $competition->price,
-      'payment_method' => $request->input('payment_method'),
+      'payment_method' => $transactionDTO->payment_method,
       'payment_proof_path' => $this->fileService->store(
-        $request->file('payment_proof_file'),
+        $transactionDTO->payment_proof_file,
         $this->directory,
       ),
-      'status' => $request->toTransactionDTO($team->id, $competition->price)->status,
+      'status' => $transactionDTO->status,
     ]);
 
     return $team;
-  }
-
-  protected function formatMembers(array $members): array
-  {
-    return array_map(function (array $member): array {
-      return [
-        'member_name' => $member['member_name'],
-      ];
-    }, $members);
   }
 }

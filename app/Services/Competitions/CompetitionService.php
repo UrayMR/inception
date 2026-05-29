@@ -2,8 +2,10 @@
 
 namespace App\Services\Competitions;
 
+use App\Enums\CompetitionType;
 use App\Models\Competition;
 use App\Repositories\Competitions\CompetitionRepository;
+use App\Helpers\ThrowException;
 use App\Utilities\SlugGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -36,6 +38,29 @@ class CompetitionService
     public function getCompetitionMap(array $filters = []): array
     {
         return $this->competitionRepository->getCompetitionMap($filters);
+    }
+
+    public function ensureTeamCompetitionPayloadIsValid(string $competitionId, array $members = []): void
+    {
+        $competition = $this->findByIdOrFail($competitionId);
+
+        if ($competition->type === CompetitionType::solo->value) {
+            if (! empty($members)) {
+                ThrowException::validation(
+                    'members',
+                    'Members are not allowed for solo competitions.',
+                );
+            }
+
+            return;
+        }
+
+        if (empty($members)) {
+            ThrowException::validation(
+                'members',
+                'At least one team member is required for team competitions.',
+            );
+        }
     }
 
     public function generateUniqueSlug(string $name, ?Competition $ignoreCompetition = null): string

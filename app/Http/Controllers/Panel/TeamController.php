@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Actions\Teams\StoreTeam;
-use App\Actions\Teams\DeleteTeam;
-use App\Actions\Teams\UpdateTeam;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Teams\StoreTeamRequest;
 use App\Http\Requests\Teams\UpdateTeamRequest;
@@ -20,9 +17,6 @@ class TeamController extends Controller
 {
     public function __construct(
         protected TeamService $teamService,
-        protected StoreTeam $storeTeam,
-        protected UpdateTeam $updateTeam,
-        protected DeleteTeam $deleteTeam,
         protected CompetitionService $competitionService,
     ) {}
 
@@ -59,7 +53,7 @@ class TeamController extends Controller
     {
         $this->authorize('create', Team::class);
 
-        $this->storeTeam->handle($request->toTeamDTO(), $request->input('members', []));
+        $this->teamService->store($request->toTeamDTO(), $request->input('members', []));
 
         $this->flash('success', 'Team created successfully.');
 
@@ -102,7 +96,7 @@ class TeamController extends Controller
     {
         $this->authorize('update', $team);
 
-        $this->updateTeam->handle($request->toTeamDTO(), $team, $request->input('members', []));
+        $this->teamService->update($request->toTeamDTO(), $team, $request->input('members', []));
 
         $this->flash('success', 'Team updated successfully.');
 
@@ -116,7 +110,7 @@ class TeamController extends Controller
     {
         $this->authorize('delete', $team);
 
-        $isDeleted = $this->deleteTeam->handle($team);
+        $isDeleted = $this->teamService->destroy($team);
         if (! $isDeleted) {
             $this->flash('error', 'Failed to delete team and members.');
 

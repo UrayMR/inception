@@ -4,9 +4,8 @@ namespace App\Actions\Teams;
 
 use App\DTOs\Teams\StoreTeamDTO;
 use App\Models\Team;
-use App\Services\Teams\MemberService;
 use App\Repositories\Teams\TeamRepository;
-use Illuminate\Support\Facades\DB;
+use App\Services\Teams\MemberService;
 
 class StoreTeam
 {
@@ -17,24 +16,22 @@ class StoreTeam
 
   public function handle(StoreTeamDTO $dto, array $members = []): Team
   {
-    return DB::transaction(function () use ($dto, $members) {
-      $attributes = [
-        'competition_id' => $dto->competition_id,
-        'team_name' => $dto->team_name,
-        'leader_id' => $dto->leader_id,
-        'phone_number' => $dto->phone_number,
-        'institution' => $dto->institution,
-        'status' => $dto->status,
-      ];
+    $attributes = [
+      'competition_id' => $dto->competition_id,
+      'team_name' => $dto->team_name,
+      'leader_id' => $dto->leader_id,
+      'phone_number' => $dto->phone_number,
+      'institution' => $dto->institution,
+      'status' => $dto->status,
+    ];
 
-      $team = $this->teamRepository->store($attributes);
+    $team = $this->teamRepository->store($attributes);
 
-      if (! empty($members)) {
-        $this->memberService->createMany($team, $this->formatMembers($members));
-      }
+    if (! empty($members)) {
+      $this->memberService->createMany($team, $this->formatMembers($members));
+    }
 
-      return $team;
-    });
+    return $team;
   }
 
   protected function formatMembers(array $members): array

@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Actions\Competitions\StoreCompetition;
-use App\Actions\Competitions\DeleteCompetition;
-use App\Actions\Competitions\UpdateCompetition;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Competitions\StoreCompetitionRequest;
 use App\Http\Requests\Competitions\UpdateCompetitionRequest;
@@ -19,9 +16,6 @@ class CompetitionController extends Controller
 {
     public function __construct(
         protected CompetitionService $competitionService,
-        protected StoreCompetition $storeCompetition,
-        protected UpdateCompetition $updateCompetition,
-        protected DeleteCompetition $deleteCompetition,
     ) {}
 
     /**
@@ -55,10 +49,7 @@ class CompetitionController extends Controller
     {
         $this->authorize('create', Competition::class);
 
-        $this->storeCompetition->handle(
-            $request->toCompetitionDTO(),
-            $request->input('timelines', []),
-        );
+        $this->competitionService->store($request->toCompetitionDTO(), $request->input('timelines', []));
 
         $this->flash('success', 'Competition created successfully.');
 
@@ -100,11 +91,7 @@ class CompetitionController extends Controller
     {
         $this->authorize('update', $competition);
 
-        $this->updateCompetition->handle(
-            $request->toCompetitionDTO(),
-            $competition,
-            $request->toTimelineDTO($competition->id),
-        );
+        $this->competitionService->update($request->toCompetitionDTO(), $competition, $request->toTimelineDTO($competition->id));
 
         $this->flash('success', 'Competition updated successfully.');
 
@@ -118,7 +105,7 @@ class CompetitionController extends Controller
     {
         $this->authorize('delete', $competition);
 
-        $isDeleted = $this->deleteCompetition->handle($competition);
+        $isDeleted = $this->competitionService->destroy($competition);
         if (! $isDeleted) {
             $this->flash('error', 'Failed to delete competition timelines.');
 

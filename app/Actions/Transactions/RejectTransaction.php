@@ -18,16 +18,14 @@ class RejectTransaction
 
   public function handle(Transaction $transaction): Transaction
   {
-    return DB::transaction(function () use ($transaction) {
-      $updatedTransaction = $this->transactionRepository->update([
-        'status' => TransactionStatus::rejected->value,
-      ], $transaction);
+    $updatedTransaction = $this->transactionRepository->update([
+      'status' => TransactionStatus::rejected->value,
+    ], $transaction);
 
-      $this->teamRepository->update([
-        'status' => TeamStatus::rejected->value,
-      ], $updatedTransaction->team);
+    $this->teamRepository->update([
+      'status' => TeamStatus::rejected->value,
+    ], $updatedTransaction->team);
 
-      return $updatedTransaction;
-    });
+    return $updatedTransaction;
   }
 }

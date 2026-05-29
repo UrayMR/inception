@@ -6,7 +6,6 @@ use App\DTOs\Teams\UpdateTeamDTO;
 use App\Models\Team;
 use App\Repositories\Teams\TeamRepository;
 use App\Services\Teams\MemberService;
-use Illuminate\Support\Facades\DB;
 
 class UpdateTeam
 {
@@ -17,21 +16,19 @@ class UpdateTeam
 
   public function handle(UpdateTeamDTO $dto, Team $team, array $members = []): Team
   {
-    return DB::transaction(function () use ($dto, $team, $members) {
-      $updatedTeam = $this->teamRepository->update([
-        'competition_id' => $dto->competition_id,
-        'team_name' => $dto->team_name,
-        'phone_number' => $dto->phone_number,
-        'institution' => $dto->institution,
-        'status' => $dto->status,
-      ], $team);
+    $updatedTeam = $this->teamRepository->update([
+      'competition_id' => $dto->competition_id,
+      'team_name' => $dto->team_name,
+      'phone_number' => $dto->phone_number,
+      'institution' => $dto->institution,
+      'status' => $dto->status,
+    ], $team);
 
-      if (! empty($members)) {
-        $this->memberService->updateMany($updatedTeam, $this->formatMembers($members));
-      }
+    if (! empty($members)) {
+      $this->memberService->updateMany($updatedTeam, $this->formatMembers($members));
+    }
 
-      return $updatedTeam;
-    });
+    return $updatedTeam;
   }
 
   protected function formatMembers(array $members): array

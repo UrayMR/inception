@@ -1,298 +1,214 @@
-# Project Architecture: Controller, Service, Repository, DTO, and Action Pattern
+# Backend Architecture and Flow
 
-This project uses a layered backend architecture that separates HTTP concerns, application flow, data access, and input shaping. The current implementation combines the classic Controller-Service-Repository-DTO structure with an Action pattern for mutation-heavy workflows.
+This document is the single source of truth for backend architecture and request flow in this project.
 
-This design is used because the project has the potential to grow much larger over time. By structuring the flow cleanly from the start, future development becomes easier to extend, easier to read, and easier to maintain.
+For quick daily checks, use [backend-guidelines.md](backend-guidelines.md).
 
-The goal is not to put everything into one “service” class. Instead, each layer has a narrower responsibility so the code stays readable, testable, and easy to extend.
+## Goal
 
-## Core Idea
+The backend is intentionally layered so features stay readable, testable, and safe as the project grows.
 
-The architecture is built around these responsibilities:
+Core flow:
 
-- **Controller**: Handles the HTTP request lifecycle. It authorizes the request, calls the correct application class, and returns a response.
-- **DTO**: Carries validated data in a typed, explicit shape between layers.
-- **Action**: Orchestrates a single business use case, especially for create/update/delete flows. Actions are a good place for `DB::transaction` when multiple operations must succeed or fail together.
-- **Service**: Contains reusable application logic, especially read/query flows and shared operations that are not tied to one specific mutation use case.
-- **Repository**: Encapsulates database access and model persistence.
+Request (FormRequest) -> Controller -> DTO -> Service (guards + transaction + lock) -> Action(s) (write workers) -> Repository (data access)
+
+Apply this pattern consistently across domains: users, teams, competitions, transactions, and others.
 
 ## Why This Structure
 
-This structure is used because the project is expected to grow, and different kinds of logic do not belong in the same class:
-
-- Controllers should stay thin so HTTP code does not become a place for business rules.
-- Services should not grow into “god classes” that mix query logic, file handling, transactions, and multi-step write workflows.
-- Actions are better for mutation workflows because each action represents one concrete use case, such as “store user”, “update competition”, or “delete team”.
-- Repositories keep database access centralized, which makes persistence logic easier to change later.
-- DTOs make the input shape explicit and reduce the need to pass raw request arrays around.
-
-The practical result is easier maintenance now and a smoother development experience later:
-
-- you can change request validation without touching persistence,
-- you can change persistence without rewriting controllers,
-- you can wrap multi-step writes in a transaction at the exact use-case level,
-- and you can keep read flows separate from write flows.
+- Keep HTTP concerns out of business logic.
+- Keep write orchestration predictable and atomic.
+- Keep query logic centralized.
+- Prevent Service classes from becoming god classes.
+- Make mutation workflows easy to test and refactor.
 
 ## Layer Responsibilities
 
-### 1. Controller Layer
+### 1) Request (FormRequest)
 
-Controllers receive the request, authorize it, and delegate to the correct class.
+Request classes validate payload shape and UX-level constraints.
 
-They should not contain:
+Allowed:
 
-- SQL or query logic,
-- file storage logic,
-- DTO mapping logic beyond calling request helpers,
-- or transaction orchestration.
+- Required/optional fields and data types.
+- File validation rules.
+- Simple conditional UX checks using sanitized input.
 
-Example responsibilities in this project:
+Not allowed:
 
-- `Panel/UserController.php` delegates create, update, delete to user actions.
-- `Panel/CompetitionController.php` delegates competition mutations to competition actions.
-- `Panel/TeamController.php` delegates team mutations to team actions.
+- Business rules that affect domain state.
+- Query-based domain decisions as source of truth.
 
-### 2. DTO Layer
+Notes:
 
-DTOs define the exact data shape that an action or service expects.
+- `after()` should be used only for UX-level checks.
+- Business gates must be enforced in Service before any write.
 
-They are used to:
+### 2) Controller
 
-- avoid passing raw request arrays deeper into the application,
-- make the expected fields explicit,
-- reduce coupling to HTTP request objects,
-- and keep the write path predictable.
+Controllers are thin transport layers.
 
-Examples:
+Must do:
 
-- `StoreUserDTO` carries `name`, `email`, `password`, and `role`.
-- `StoreCompetitionDTO` carries competition fields and an optional uploaded file.
-- `StoreTeamDTO` carries team fields including `leader_id`.
+- Authorize request.
+- Map validated request to DTO(s).
+- Call Service.
+- Return HTTP response/resource/redirect.
 
-### 3. Action Layer
+Must not do:
 
-Actions are the main orchestration layer for mutation use cases.
+- Direct DB queries.
+- Business guard logic.
+- Transaction orchestration.
 
-Use an action when the operation:
+### 3) DTO
 
-- creates, updates, or deletes data,
-- needs a transaction,
-- touches more than one repository or service,
-- or has business rules that belong to one specific workflow.
+DTOs are typed input contracts passed from Controller to Service.
 
-Actions are especially useful when one use case includes multiple steps, for example:
+Guidelines:
 
-- create a record,
-- create related child records,
-- store or update an uploaded file,
-- and then commit everything together.
+- Prefer small DTOs per use case.
+- Do not pass Request objects to deeper layers.
+- Keep value shape explicit and stable.
 
-In this project, actions are used for:
+### 4) Service (Orchestrator)
 
-- user mutations,
-- team mutations,
-- and competition mutations.
+Service is the orchestration and guard layer.
 
-### 4. Service Layer
+Must do for write flows:
 
-Services remain useful for reusable application logic, especially read/query flows.
+- Enforce business guards.
+- Open one transaction boundary with `DB::transaction()`.
+- Acquire `lockForUpdate` when concurrency-sensitive rows are involved.
+- Delegate write steps to one or more Actions.
+- Throw validation-shaped domain errors via `App\Helpers\ThrowException` when appropriate.
 
-In the current structure, services typically handle:
+Must do for read flows:
 
-- filtering and pagination,
-- lookup methods like `findByIdOrFail`,
-- map builders for dropdowns,
-- or shared logic that is not tied to a single mutation use case.
+- Prepare filter/query payload.
+- Delegate query execution to Repository.
 
-Examples:
+### 5) Action
 
-- `UserService::index()` builds the filter payload and delegates to the repository.
-- `CompetitionService::index()`, `findByIdOrFail()`, and `getCompetitionMap()` are read-oriented helpers.
-- `TeamService::index()` is also query-focused.
+Actions are small write workers.
 
-### 5. Repository Layer
+Must do:
 
-Repositories own the persistence details.
+- Perform focused mutation or side effect.
+- Stay single-responsibility and independently testable.
+- Use repositories/services passed by orchestration.
 
-They should:
+Must not do by default:
 
-- create/update/delete models,
-- build queries,
-- and keep database-specific code out of controllers and actions.
+- Open nested transactions.
+- Re-implement business guards already owned by Service.
 
-Repositories do not decide use cases. They only do the storage work that the action or service asks for.
+Exception:
 
-## Mutation Flow Pattern
+- Independent async/background actions may own their own transaction if needed. Document this explicitly.
 
-For write operations, the current flow is usually:
+### 6) Repository
 
-1. **Form Request** validates the input.
-2. **Controller** authorizes access and calls an action.
-3. **Action** maps the DTO to attributes, coordinates related work, and wraps the workflow in `DB::transaction` when needed.
-4. **Repository** performs the actual persistence.
-5. **Action** returns the final model or result to the controller.
-6. **Controller** flashes a message or redirects.
+Repository owns data access details.
 
-Security and business gate checks that protect a write endpoint should also live in this path, ideally in the Form Request or in the endpoint's first validation layer. For example, a competition registration must only work when the competition status is `open`, that rule should be enforced on the registration write endpoint before the action or repository starts mutating data. This keeps the endpoint itself as the source of truth for access rules and avoids relying only on the UI.
+Must do:
 
-## Read Flow Pattern
+- Encapsulate Eloquent query logic.
+- Handle create/update/delete and query composition.
+- Keep persistence concerns out of Controller/Service/Action.
 
-For read operations, the flow is simpler:
+Must not do:
 
-1. **Controller** authorizes access.
-2. **Controller** calls a service.
-3. **Service** prepares filters or query parameters.
-4. **Repository** executes the query.
-5. **Controller** formats the response using a resource.
+- Enforce business guard decisions.
 
-## Examples From This Codebase
+## Canonical Flow Patterns
 
-### User Management
+### Write Flow (Create/Update/Delete/Register)
 
-User mutations now use actions:
+1. FormRequest validates payload and UX constraints.
+2. Controller authorizes and maps request to DTO.
+3. Service verifies business rules.
+4. Service opens `DB::transaction()`.
+5. Service acquires `lockForUpdate` if needed.
+6. Service calls Actions to perform writes.
+7. Actions write through repositories/services.
+8. Service returns result; controller returns response.
 
-- `Actions/Users/StoreUser.php`
-- `Actions/Users/UpdateUser.php`
-- `Actions/Users/DeleteUser.php`
+If any step throws, transaction is rolled back.
 
-Flow:
+### Read Flow (Index/Show/Lookup)
 
-- `StoreUserRequest` validates the form and builds `StoreUserDTO`.
-- `UserController` authorizes the request and calls `StoreUser`.
-- `StoreUser` maps the DTO to model attributes and calls `UserRepository::store()`.
-- `UserRepository` writes the data.
+1. Controller authorizes.
+2. Controller calls Service.
+3. Service prepares filters/options.
+4. Repository executes query.
+5. Controller returns resource/response.
 
-Why this is good:
+## Transactions and Concurrency
 
-- `UserService` no longer mixes create/update/delete with query logic.
-- each mutation has one explicit class,
-- and future changes like hashing, auditing, or notifications can stay localized.
+Rules:
 
-### Team Management
+- One transaction boundary per write flow, defined in Service.
+- Take `lockForUpdate` inside that Service transaction before competing writes.
+- Avoid nested `DB::transaction()` calls in Actions.
+- Re-check critical conditions inside the lock when preventing duplicate writes.
 
-Team mutations use actions because the workflow involves the team record plus member records.
+Rationale:
 
-Action classes:
+- Clear rollback boundary.
+- Consistent behavior across workflows.
+- Better resilience under parallel requests.
 
-- `Actions/Teams/CreateTeam.php`
-- `Actions/Teams/UpdateTeam.php`
-- `Actions/Teams/DeleteTeam.php`
+## Error Handling
 
-Flow:
+- Use `ThrowException::validation($field, $message)` for domain errors that should map to form fields.
+- Let unexpected exceptions bubble to Laravel handler for logging and proper server error responses.
 
-- `StoreTeamRequest` or `UpdateTeamRequest` validates input and builds DTO/member payload.
-- `TeamController` authorizes the request and calls the correct team action.
-- The action starts `DB::transaction`.
-- The action creates/updates/deletes the team.
-- The action also creates, updates, or deletes team members.
-- If any step fails, the transaction rolls back.
+## File and Naming Conventions
 
-Why this is good:
+- Actions: `app/Actions/<Domain>/...`
+- Services: `app/Services/<Domain>/...`
+- Repositories: `app/Repositories/<Domain>/...`
+- DTOs: `app/DTOs/<Domain>/...`
 
-- team and member data stay consistent,
-- the controller stays thin,
-- and the use case is easy to reason about because it lives in one class.
+For feature groups, use subfolders (example: `Registrations`).
 
-### Competition Management
+## Testing Strategy
 
-Competition mutations use actions because the workflow involves competition records, timelines, and file handling.
+- Unit test Actions and Repositories independently where practical.
+- Integration test Service-level write flows with a real DB transaction path.
+- Include concurrency-oriented tests for lock-sensitive workflows.
 
-Action classes:
+## Migration Notes (Refactoring Existing Code)
 
-- `Actions/Competitions/StoreCompetition.php`
-- `Actions/Competitions/UpdateCompetition.php`
-- `Actions/Competitions/DeleteCompetition.php`
+- If a flow has duplicated guards in Request + Service + Action, keep source of truth in Service.
+- If Actions open transactions inside a Service-orchestrated write flow, remove inner transactions.
+- Re-test mutation flows after refactor, especially where files, timelines, or related child writes are involved.
 
-Flow:
+## Example: Registration Pattern
 
-- `StoreCompetitionRequest` or `UpdateCompetitionRequest` validates the competition payload and timeline payload.
-- `CompetitionController` authorizes the request and calls the corresponding action.
-- The action starts `DB::transaction`.
-- The action stores or updates the competition through `CompetitionRepository`.
-- The action handles related timelines through `TimelineService`.
-- The action handles image storage or replacement through `FileService`.
-- If any step fails, the transaction rolls back.
+1. `RegisterCompetitionRequest` validates payload shape and uploads.
+2. Controller builds `RegisterCompetitionDTO` and calls registration service.
+3. Service checks business gates (status open, eligibility, duplicate prevention).
+4. Service opens transaction and takes required `lockForUpdate` locks.
+5. Service calls registration Actions to write team/member/transaction records.
+6. On error, transaction rolls back and error is propagated as validation or server error.
 
-Why this is good:
+## PR Checklist
 
-- competition, timelines, and file metadata are handled as one business operation,
-- the file handling remains reusable in `FileService`,
-- and the transaction boundary is placed exactly where the business process ends.
-
-## Why Image Handling Stays in FileService
-
-`FileService` is still the right place for low-level file operations such as store, update, and delete.
-
-That is because it represents infrastructure behavior, not a business use case.
-
-Use an action around it only when the file work is part of a larger workflow, such as:
-
-- store competition image + create competition + create timelines,
-- update competition image + update competition + update timelines,
-- delete competition timelines + delete competition image + delete competition.
-
-So the rule is:
-
-- **FileService** = how to manipulate files.
-- **Action** = when and why that file manipulation happens inside a business process.
-
-## Current Folder Map
-
-```
-app/
-  Actions/
-    Competitions/
-      StoreCompetition.php
-      UpdateCompetition.php
-      DeleteCompetition.php
-    Teams/
-      StoreTeam.php
-      UpdateTeam.php
-      DeleteTeam.php
-    Users/
-      StoreUser.php
-      UpdateUser.php
-      DeleteUser.php
-  Services/
-    Competitions/
-      CompetitionService.php
-      TimelineService.php
-    Teams/
-      TeamService.php
-    Users/
-      UserService.php
-  Repositories/
-    Competitions/
-    Teams/
-    Users/
-  DTOs/
-    Competitions/
-    Teams/
-    Users/
-```
-
-## Practical Rule of Thumb
-
-Use these guidelines when deciding where new logic belongs:
-
-- Put **request validation** in Form Requests.
-- Put **input shape** in DTOs.
-- Put **single-use-case mutations** in Actions.
-- Put **reusable query logic** in Services.
-- Put **database access** in Repositories.
-- Put **file storage primitives** in FileService.
-- Put **security or business gates for write endpoints** in the Form Request or the endpoint's first validation layer, so rules like `a competition should not be registered if the status is not open` fail before mutation logic runs.
+- [ ] Request validates payload and UX constraints only.
+- [ ] Controller maps Request to DTO and delegates to Service.
+- [ ] Service owns business guards and single transaction boundary.
+- [ ] Service applies `lockForUpdate` where concurrency matters.
+- [ ] Actions remain focused write workers without nested transactions.
+- [ ] Repositories keep query and persistence logic only.
+- [ ] Domain validation errors use `ThrowException` consistently.
 
 ## Summary
 
-The architecture is intentionally split this way because the project has both simple read flows and more complex write workflows, and it is likely to keep growing in size and complexity.
+This project uses Controller + DTO + Service + Action + Repository to keep responsibilities explicit.
 
-If everything stayed in services, the service layer would grow too broad and harder to maintain. Because this project is expected to grow further, moving mutation orchestration into actions keeps the flow tidy now and makes future changes much easier to implement.
+For write flows, Service is the source of truth for guards, transaction boundaries, and locking.
+For read flows, Service prepares queries and Repository executes data access.
 
-That is why the current structure is more scalable:
-
-- controllers stay thin,
-- services stay reusable,
-- actions stay focused on one workflow,
-- repositories stay persistence-only,
-- and DTOs keep data contracts explicit.
+Use [backend-guidelines.md](backend-guidelines.md) for a shorter operational checklist.

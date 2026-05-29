@@ -6,7 +6,6 @@ use App\Enums\CompetitionType;
 use App\Models\Team;
 use App\Repositories\Teams\TeamRepository;
 use App\Services\Teams\MemberService;
-use Illuminate\Support\Facades\DB;
 
 class DeleteTeam
 {
@@ -17,18 +16,16 @@ class DeleteTeam
 
   public function handle(Team $team): bool
   {
-    return DB::transaction(function () use ($team) {
-      $team->loadMissing('competition');
+    $team->loadMissing('competition');
 
-      if ($team->competition?->type === CompetitionType::team->value) {
-        $isMemberDeleted = $this->memberService->destroyMany($team);
+    if ($team->competition?->type === CompetitionType::team->value) {
+      $isMemberDeleted = $this->memberService->destroyMany($team);
 
-        if (! $isMemberDeleted) {
-          return false;
-        }
+      if (! $isMemberDeleted) {
+        return false;
       }
+    }
 
-      return $this->teamRepository->destroy($team);
-    });
+    return $this->teamRepository->destroy($team);
   }
 }

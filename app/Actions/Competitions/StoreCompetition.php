@@ -5,10 +5,9 @@ namespace App\Actions\Competitions;
 use App\DTOs\Competitions\StoreCompetitionDTO;
 use App\Models\Competition;
 use App\Repositories\Competitions\CompetitionRepository;
-use App\Services\Competitions\CompetitionService;
+use App\Utilities\SlugGenerator;
 use App\Services\Competitions\TimelineService;
 use App\Services\FileService;
-use Illuminate\Support\Facades\DB;
 
 class StoreCompetition
 {
@@ -17,36 +16,31 @@ class StoreCompetition
   public function __construct(
     protected FileService $fileService,
     protected CompetitionRepository $competitionRepository,
-    protected CompetitionService $competitionService,
     protected TimelineService $timelineService,
   ) {}
 
-  public function handle(StoreCompetitionDTO $dto, array $timelineAttributes = []): Competition
+  public function handle(StoreCompetitionDTO $dto, string $slug, array $timelineAttributes = []): Competition
   {
-    return DB::transaction(function () use ($dto, $timelineAttributes) {
-      $slug = $this->competitionService->generateUniqueSlug($dto->name);
+    $attributes = [
+      'name' => $dto->name,
+      'description' => $dto->description,
+      'slug' => $slug,
+      'type' => $dto->type,
+      'price' => $dto->price,
+      'status' => $dto->status,
+    ];
 
-      $attributes = [
-        'name' => $dto->name,
-        'description' => $dto->description,
-        'slug' => $slug,
-        'type' => $dto->type,
-        'price' => $dto->price,
-        'status' => $dto->status,
-      ];
+    if ($dto->image_file) {
+      $attributes['image_path'] = $this->fileService->store($dto->image_file, $this->directory);
+    }
 
-      if ($dto->image_file) {
-        $attributes['image_path'] = $this->fileService->store($dto->image_file, $this->directory);
-      }
+    $competition = $this->competitionRepository->store($attributes);
 
-      $competition = $this->competitionRepository->store($attributes);
+    if (! empty($timelineAttributes)) {
+      $this->timelineService->createMany($competition, $this->formatTimelines($timelineAttributes, $competition->id));
+    }
 
-      if (! empty($timelineAttributes)) {
-        $this->timelineService->createMany($competition, $this->formatTimelines($timelineAttributes, $competition->id));
-      }
-
-      return $competition;
-    });
+    return $competition;
   }
 
   protected function formatTimelines(array $timelines, string $competitionId): array

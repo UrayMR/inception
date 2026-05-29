@@ -18,16 +18,14 @@ class VerifyTransaction
 
   public function handle(Transaction $transaction): Transaction
   {
-    return DB::transaction(function () use ($transaction) {
-      $updatedTransaction = $this->transactionRepository->update([
-        'status' => TransactionStatus::verified->value,
-      ], $transaction);
+    $updatedTransaction = $this->transactionRepository->update([
+      'status' => TransactionStatus::verified->value,
+    ], $transaction);
 
-      $this->teamRepository->update([
-        'status' => TeamStatus::registered->value,
-      ], $updatedTransaction->team);
+    $this->teamRepository->update([
+      'status' => TeamStatus::registered->value,
+    ], $updatedTransaction->team);
 
-      return $updatedTransaction;
-    });
+    return $updatedTransaction;
   }
 }

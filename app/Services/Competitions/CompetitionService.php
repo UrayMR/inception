@@ -2,16 +2,27 @@
 
 namespace App\Services\Competitions;
 
+use App\Enums\CompetitionType;
 use App\Models\Competition;
 use App\Repositories\Competitions\CompetitionRepository;
+use App\Actions\Competitions\StoreCompetition;
+use App\Actions\Competitions\UpdateCompetition;
+use App\Actions\Competitions\DeleteCompetition;
+use App\DTOs\Competitions\StoreCompetitionDTO;
+use App\DTOs\Competitions\UpdateCompetitionDTO;
+use App\Helpers\ThrowException;
 use App\Utilities\SlugGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class CompetitionService
 {
     public function __construct(
         protected CompetitionRepository $competitionRepository,
+        protected StoreCompetition $storeCompetition,
+        protected UpdateCompetition $updateCompetition,
+        protected DeleteCompetition $deleteCompetition,
     ) {}
 
     public function index(Request $request, int $perPage = 10): LengthAwarePaginator
@@ -28,6 +39,34 @@ class CompetitionService
         return $this->competitionRepository->index($queryParams, $perPage);
     }
 
+    public function store(StoreCompetitionDTO $dto, array $timelineAttributes = []): Competition
+    {
+        $slug = $this->generateUniqueSlug($dto->name);
+
+        return DB::transaction(function () use ($dto, $slug, $timelineAttributes) {
+            return $this->storeCompetition->handle($dto, $slug, $timelineAttributes);
+        });
+    }
+
+    public function update(UpdateCompetitionDTO $dto, Competition $competition, array $timelineAttributes = []): Competition
+    {
+        $slug = null;
+        if ($dto->name !== $competition->name) {
+            $slug = $this->generateUniqueSlug($dto->name, $competition);
+        }
+
+        return DB::transaction(function () use ($dto, $competition, $slug, $timelineAttributes) {
+            return $this->updateCompetition->handle($dto, $competition, $slug, $timelineAttributes);
+        });
+    }
+
+    public function destroy(Competition $competition): bool
+    {
+        return DB::transaction(function () use ($competition) {
+            return $this->deleteCompetition->handle($competition);
+        });
+    }
+
     public function findByIdOrFail(string $id): Competition
     {
         return $this->competitionRepository->findByIdOrFail($id);
@@ -36,6 +75,29 @@ class CompetitionService
     public function getCompetitionMap(array $filters = []): array
     {
         return $this->competitionRepository->getCompetitionMap($filters);
+    }
+
+    public function ensureTeamCompetitionPayloadIsValid(string $competitionId, array $members = []): void
+    {
+        $competition = $this->findByIdOrFail($competitionId);
+
+        if ($competition->type === CompetitionType::solo->value) {
+            if (! empty($members)) {
+                ThrowException::validation(
+                    'members',
+                    'Members are not allowed for solo competitions.',
+                );
+            }
+
+            return;
+        }
+
+        if (empty($members)) {
+            ThrowException::validation(
+                'members',
+                'At least one team member is required for team competitions.',
+            );
+        }
     }
 
     public function generateUniqueSlug(string $name, ?Competition $ignoreCompetition = null): string

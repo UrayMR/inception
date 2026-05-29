@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Actions\Transactions\VerifyTransaction;
-use App\Actions\Transactions\RejectTransaction;
-use App\Actions\Transactions\DeleteTransaction;
 use App\Models\Transaction;
 use App\Resources\Transactions\IndexTransactionResource;
 use App\Resources\Transactions\ShowTransactionResource;
@@ -16,9 +13,6 @@ class TransactionController extends Controller
 {
   public function __construct(
     protected TransactionService $transactionService,
-    protected VerifyTransaction $verifyTransaction,
-    protected RejectTransaction $rejectTransaction,
-    protected DeleteTransaction $deleteTransaction,
   ) {}
 
   public function index(Request $request)
@@ -45,7 +39,7 @@ class TransactionController extends Controller
   {
     $this->authorize('update', $transaction);
 
-    $this->verifyTransaction->handle($transaction);
+    $this->transactionService->verify($transaction);
 
     $this->flash('success', 'Transaction verified successfully.');
 
@@ -56,7 +50,7 @@ class TransactionController extends Controller
   {
     $this->authorize('update', $transaction);
 
-    $this->rejectTransaction->handle($transaction);
+    $this->transactionService->reject($transaction);
 
     $this->flash('success', 'Transaction rejected successfully.');
 
@@ -67,7 +61,7 @@ class TransactionController extends Controller
   {
     $this->authorize('delete', $transaction);
 
-    $isDeleted = $this->deleteTransaction->handle($transaction);
+    $isDeleted = $this->transactionService->destroy($transaction);
     if (! $isDeleted) {
       $this->flash('error', 'Failed to delete transaction.');
 

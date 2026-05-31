@@ -3,6 +3,7 @@
 namespace App\Actions\Competitions;
 
 use App\DTOs\Competitions\StoreCompetitionDTO;
+use App\Enums\CompetitionType;
 use App\Models\Competition;
 use App\Repositories\Competitions\CompetitionRepository;
 use App\Utilities\SlugGenerator;
@@ -29,6 +30,12 @@ class StoreCompetition
       'price' => $dto->price,
       'status' => $dto->status,
     ];
+
+    if ($dto->max_member && $dto->type === CompetitionType::team->value) {
+      $attributes['max_member'] = $dto->max_member;
+    } else {
+      $attributes['max_member'] = 1;
+    }
 
     if ($dto->image_file) {
       $attributes['image_path'] = $this->fileService->store($dto->image_file, $this->directory);

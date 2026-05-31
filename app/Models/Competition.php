@@ -22,16 +22,29 @@ class Competition extends Model
         return 'slug';
     }
 
-    // TODO: Add Max Members
     protected $fillable = [
         'name',
         'description',
         'slug',
         'type',
+        'max_member',
         'image_path',
         'price',
         'status',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'price' => 'float',
+            'max_member' => 'integer',
+        ];
+    }
 
     public function timelines()
     {

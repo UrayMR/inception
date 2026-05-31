@@ -14,5 +14,6 @@ class UpdateCompetitionDTO
         public ?string $image_path,
         public ?float $price,
         public string $status,
+        public ?int $max_member,
     ) {}
 }

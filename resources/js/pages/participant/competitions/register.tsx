@@ -66,9 +66,15 @@ export default function RegisterCompetitionPage({
     );
 
     const selectedCompetitionType = selectedCompetition?.otherValues?.type;
+    const selectedCompetitionMaxMember = Number(
+        selectedCompetition?.otherValues?.max_member ?? 0,
+    );
 
     const { guard } = useZod<RegisterCompetitionSchemaType>(
-        RegisterCompetitionSchema(selectedCompetitionType),
+        RegisterCompetitionSchema(
+            selectedCompetitionType,
+            selectedCompetitionMaxMember,
+        ),
     );
 
     const isTeamCompetition =
@@ -81,13 +87,19 @@ export default function RegisterCompetitionPage({
             (item) => item.value === competitionId,
         );
 
+        const maxAdditionalMembers =
+            competition?.otherValues?.type === CompetitionTypeMap.Team.value &&
+            Number(competition?.otherValues?.max_member) >= 2
+                ? Number(competition?.otherValues?.max_member) - 1
+                : 0;
+
         form.setData((previous) => ({
             ...previous,
             competition_id: competitionId,
             members:
                 competition?.otherValues?.type === CompetitionTypeMap.Team.value
                     ? previous.members.length > 0
-                        ? previous.members
+                        ? previous.members.slice(0, maxAdditionalMembers)
                         : [{ member_name: '' }]
                     : [],
         }));

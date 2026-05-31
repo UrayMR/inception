@@ -46,6 +46,11 @@ export default function RegisterCompetitionForm({
     const leaderEmailLabel = isTeamCompetition ? 'Leader Email' : 'Your Email';
     const isQrisPayment =
         data.payment_method === TransactionPaymentMethodValue[0];
+    const maxAdditionalMembers =
+        isTeamCompetition &&
+        Number(selectedCompetition?.otherValues?.max_member) >= 2
+            ? Number(selectedCompetition?.otherValues?.max_member) - 1
+            : undefined;
 
     return (
         <div className="space-y-5 rounded-3xl border border-border/60 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.3)] dark:bg-[#111111]">
@@ -175,7 +180,7 @@ export default function RegisterCompetitionForm({
                         <DynamicTeamInput
                             id="members"
                             label="Team Members"
-                            hint={`Add up to ${selectedCompetition?.otherValues?.maxMembers || 1} members for this team competition.`}
+                            hint={`Add up to ${maxAdditionalMembers || 1} team members (leader is counted separately).`}
                             value={data.members}
                             error={errors}
                             onChange={(members) =>
@@ -183,13 +188,13 @@ export default function RegisterCompetitionForm({
                                     'members',
                                     members.slice(
                                         0,
-                                        selectedCompetition?.otherValues
-                                            ?.maxMembers || members.length,
+                                        maxAdditionalMembers || members.length,
                                     ),
                                 )
                             }
                             required
                             disabled={!canFillTeamDetails}
+                            maxItems={maxAdditionalMembers}
                         />
                     )}
 

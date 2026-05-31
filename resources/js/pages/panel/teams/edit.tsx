@@ -51,8 +51,14 @@ export default function EditTeamPage({
         (competition) => competition.value === form.data.competition_id,
     )?.otherValues?.type as CompetitionType | undefined;
 
+    const selectedCompetitionMaxMember = Number(
+        competitionMap.find(
+            (competition) => competition.value === form.data.competition_id,
+        )?.otherValues?.max_member ?? 0,
+    );
+
     const { guard } = useZod<UpdateTeamSchemaType>(
-        UpdateTeamSchema(selectedCompetitionType),
+        UpdateTeamSchema(selectedCompetitionType, selectedCompetitionMaxMember),
     );
 
     const handleSubmit = (e: React.SubmitEvent) => {

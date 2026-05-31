@@ -17,6 +17,8 @@ interface DynamicTeamInputProps {
     disabled?: boolean;
     readOnly?: boolean;
     hint?: string;
+    minItems?: number;
+    maxItems?: number;
 }
 
 export function DynamicTeamInput({
@@ -29,15 +31,24 @@ export function DynamicTeamInput({
     disabled,
     readOnly,
     hint,
+    minItems = 1,
+    maxItems,
 }: DynamicTeamInputProps) {
     const isDisabled = disabled || readOnly;
+    const canAddMore =
+        !isDisabled &&
+        (typeof maxItems !== 'number' || value.length < maxItems);
 
     const handleAddItem = useCallback(() => {
+        if (!canAddMore) {
+            return;
+        }
+
         const newItem: TeamMember = {
             member_name: '',
         };
         onChange?.([...value, newItem]);
-    }, [onChange, value]);
+    }, [canAddMore, onChange, value]);
 
     const handleRemoveItem = useCallback(
         (index: number) => {
@@ -86,7 +97,7 @@ export function DynamicTeamInput({
                                 <span className="text-xs font-medium text-muted-foreground">
                                     Member #{index + 1}
                                 </span>
-                                {!isDisabled && value.length > 1 && (
+                                {!isDisabled && value.length > minItems && (
                                     <Button
                                         type="button"
                                         variant="ghost"
@@ -135,6 +146,10 @@ export function DynamicTeamInput({
                 })}
             </div>
 
+            <p className="text-xs text-muted-foreground">
+                {value.length}/{maxItems} members added
+            </p>
+
             {!isDisabled && (
                 <Button
                     type="button"
@@ -142,6 +157,7 @@ export function DynamicTeamInput({
                     size="sm"
                     className="mt-2 w-fit"
                     onClick={handleAddItem}
+                    disabled={!canAddMore}
                 >
                     <Plus className="mr-2 h-4 w-4" /> Add Member
                 </Button>

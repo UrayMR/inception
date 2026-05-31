@@ -15,11 +15,24 @@ export const RegisterCompetitionBaseSchema = z.object({
         .mime(['image/png', 'image/jpeg', 'image/webp']),
 });
 
-export const RegisterCompetitionSchema = (competitionType?: CompetitionType) =>
+export const RegisterCompetitionSchema = (
+    competitionType?: CompetitionType,
+    maxMember?: number,
+) =>
     RegisterCompetitionBaseSchema.extend({
         members:
             competitionType === CompetitionTypeMap.Team.value
-                ? RegistrationMembersSchema.min(1)
+                ? (() => {
+                      let schema = RegistrationMembersSchema.min(1);
+
+                      if (typeof maxMember === 'number' && maxMember >= 2) {
+                          schema = schema.max(maxMember - 1, {
+                              message: `Team members cannot exceed ${maxMember - 1} (leader is counted separately).`,
+                          });
+                      }
+
+                      return schema;
+                  })()
                 : RegistrationMembersSchema.optional().default([]),
     })
         .refine(

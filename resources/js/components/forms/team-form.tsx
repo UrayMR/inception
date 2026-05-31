@@ -44,10 +44,23 @@ export function TeamForm({
         (competition) => competition.value === data.competition_id,
     );
 
-    const isSoloCompetition = showMode
-        ? data.competition?.otherValues?.type === CompetitionTypeMap.Solo.value
-        : selectedCompetition?.otherValues?.type ===
-          CompetitionTypeMap.Solo.value;
+    const selectedCompetitionType = showMode
+        ? data.competition?.otherValues?.type
+        : selectedCompetition?.otherValues?.type;
+
+    const isTeamCompetition =
+        selectedCompetitionType === CompetitionTypeMap.Team.value;
+
+    const selectedCompetitionMaxMember = Number(
+        (showMode
+            ? data.competition?.otherValues?.max_member
+            : selectedCompetition?.otherValues?.max_member) ?? 0,
+    );
+
+    const maxAdditionalMembers =
+        isTeamCompetition && selectedCompetitionMaxMember >= 2
+            ? selectedCompetitionMaxMember - 1
+            : undefined;
 
     const displayValue = showMode
         ? data.competition?.label
@@ -59,20 +72,32 @@ export function TeamForm({
         const newSelectedCompetition = competitionMap.find(
             (competition) => competition.value === value,
         );
+        const competitionType = newSelectedCompetition?.otherValues?.type;
+        const competitionMaxMember = Number(
+            newSelectedCompetition?.otherValues?.max_member ?? 0,
+        );
+        const maxMembersForPayload =
+            competitionType === CompetitionTypeMap.Team.value &&
+            competitionMaxMember >= 2
+                ? competitionMaxMember - 1
+                : 0;
 
         // If the newly selected competition is a solo type, clear the members array
-        if (
-            newSelectedCompetition?.otherValues?.type ===
-            CompetitionTypeMap.Solo.value
-        ) {
+        if (competitionType === CompetitionTypeMap.Solo.value) {
             onChange('members', []);
-        } else if (
-            newSelectedCompetition?.otherValues?.type ===
-            CompetitionTypeMap.Team.value
-        ) {
-            if (!data.members || data.members.length === 0) {
+        } else if (competitionType === CompetitionTypeMap.Team.value) {
+            const trimmedMembers = (data.members || []).slice(
+                0,
+                maxMembersForPayload,
+            );
+
+            if (trimmedMembers.length === 0 && maxMembersForPayload > 0) {
                 onChange('members', [{ member_name: '' }]);
+
+                return;
             }
+
+            onChange('members', trimmedMembers);
         }
     };
 
@@ -205,7 +230,7 @@ export function TeamForm({
                 />
             </FormField>
 
-            {!isSoloCompetition && (
+            {isTeamCompetition && (
                 <div>
                     <hr className="my-6 border-muted" />
 
@@ -213,14 +238,27 @@ export function TeamForm({
                         <DynamicTeamInput
                             id="members"
                             label="Team Members"
-                            hint="Manage team members for this competition."
+                            hint={
+                                maxAdditionalMembers
+                                    ? `Add up to ${maxAdditionalMembers} team members (leader is counted separately).`
+                                    : 'Manage team members for this competition.'
+                            }
                             value={data.members || []}
                             onChange={(updatedMembers) =>
-                                onChange('members', updatedMembers)
+                                onChange(
+                                    'members',
+                                    maxAdditionalMembers
+                                        ? updatedMembers.slice(
+                                              0,
+                                              maxAdditionalMembers,
+                                          )
+                                        : updatedMembers,
+                                )
                             }
                             error={errors}
-                            disabled={isReadOnly || isSoloCompetition}
-                            required={!isSoloCompetition}
+                            disabled={isReadOnly}
+                            required
+                            maxItems={maxAdditionalMembers}
                         />
                     </div>
                 </div>

@@ -16,20 +16,39 @@ export const TeamBaseSchema = z.object({
 
 const TeamMembersSchema = z.array(TeamMemberSchema);
 
-export const CreateTeamSchema = (competitionType?: CompetitionType) =>
+const getTeamMembersSchema = (
+    competitionType?: CompetitionType,
+    maxMember?: number,
+) => {
+    if (competitionType === CompetitionTypeMap.Solo.value) {
+        return TeamMembersSchema.optional().default([]);
+    }
+
+    let schema = TeamMembersSchema.min(1);
+
+    if (typeof maxMember === 'number' && maxMember >= 2) {
+        schema = schema.max(maxMember - 1, {
+            message: `Team members cannot exceed ${maxMember - 1} (leader is counted separately).`,
+        });
+    }
+
+    return schema;
+};
+
+export const CreateTeamSchema = (
+    competitionType?: CompetitionType,
+    maxMember?: number,
+) =>
     TeamBaseSchema.extend({
-        members:
-            competitionType === CompetitionTypeMap.Solo.value
-                ? TeamMembersSchema.optional().default([])
-                : TeamMembersSchema.min(1),
+        members: getTeamMembersSchema(competitionType, maxMember),
     });
 
-export const UpdateTeamSchema = (competitionType?: CompetitionType) =>
+export const UpdateTeamSchema = (
+    competitionType?: CompetitionType,
+    maxMember?: number,
+) =>
     TeamBaseSchema.extend({
-        members:
-            competitionType === CompetitionTypeMap.Solo.value
-                ? TeamMembersSchema.optional().default([])
-                : TeamMembersSchema.min(1),
+        members: getTeamMembersSchema(competitionType, maxMember),
     });
 
 export type CreateTeamSchemaType = z.infer<ReturnType<typeof CreateTeamSchema>>;

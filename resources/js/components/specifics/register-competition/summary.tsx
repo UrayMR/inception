@@ -1,4 +1,5 @@
 import { Badge } from '@/components/ui/badge';
+import capitalize from '@/helpers/capitalize';
 import formatCurrency from '@/helpers/format-currency';
 import type { Option } from '@/types';
 
@@ -25,23 +26,20 @@ export default function RegisterCompetitionSummary({
                             variant="outline"
                             className="rounded-full px-2.5 py-0.5"
                         >
-                            {selectedCompetition.otherValues?.type === 'team'
-                                ? 'Team'
-                                : 'Solo'}
+                            {capitalize(selectedCompetition.otherValues?.type)}
                         </Badge>
                         <Badge
                             variant="outline"
                             className="rounded-full px-2.5 py-0.5"
                         >
                             Max members:{' '}
-                            {selectedCompetition.otherValues?.max_members ||
-                                'Unlimited'}
+                            {selectedCompetition.otherValues?.max_member}
                         </Badge>
                     </div>
                     <p className="text-muted-foreground">
                         Fee:{' '}
                         {formatCurrency(
-                            selectedCompetition.otherValues?.price || 0,
+                            selectedCompetition.otherValues?.price,
                         )}
                     </p>
                 </div>

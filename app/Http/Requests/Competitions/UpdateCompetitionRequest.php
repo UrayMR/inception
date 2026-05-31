@@ -26,7 +26,7 @@ class UpdateCompetitionRequest extends FormRequest
             'image_file' => ['nullable', 'file', 'image', 'max:2048'], // Max 2MB
             'image_path' => ['nullable', 'string', 'max:255'],
             'price' => ['nullable', 'numeric', 'min:0'],
-            'max_member' => ['nullable', 'integer', 'min:1'],
+            'max_member' => ['required', 'integer', 'min:1'],
             'status' => ['required', 'string', Rule::in(CompetitionStatus::cases())],
         ];
 

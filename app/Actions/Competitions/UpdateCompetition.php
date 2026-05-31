@@ -28,13 +28,8 @@ class UpdateCompetition
       'type' => $dto->type,
       'price' => $dto->price,
       'status' => $dto->status,
+      'max_member' => $dto->max_member,
     ];
-
-    if ($dto->max_member && $dto->type === CompetitionType::team->value) {
-      $attributes['max_member'] = $dto->max_member;
-    } else {
-      $attributes['max_member'] = 1;
-    }
 
     if ($dto->name !== $competition->name) {
       $attributes['slug'] = $slug ?? SlugGenerator::make($dto->name);

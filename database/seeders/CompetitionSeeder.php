@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\CompetitionStatus;
 use App\Enums\CompetitionType;
 use App\Models\Competition;
 use App\Models\CompetitionTimeline;
@@ -15,6 +16,8 @@ class CompetitionSeeder extends Seeder
             ->count(5)
             ->create([
                 'type' => CompetitionType::solo->value,
+                'max_member' => 1,
+                'status' => CompetitionStatus::open->value,
             ])
             ->each(function (Competition $competition) {
                 CompetitionTimeline::factory()
@@ -27,6 +30,8 @@ class CompetitionSeeder extends Seeder
             ->count(5)
             ->create([
                 'type' => CompetitionType::team->value,
+                'max_member' => rand(2, 5),
+                'status' => CompetitionStatus::open->value,
             ])
             ->each(function (Competition $competition) {
                 CompetitionTimeline::factory()

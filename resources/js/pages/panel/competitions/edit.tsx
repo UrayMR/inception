@@ -29,6 +29,7 @@ export default function EditCompetitionPage({
         name: competition.name,
         description: competition.description,
         type: competition.type,
+        max_member: competition.max_member,
         image_file: undefined,
         price: competition.price,
         status: competition.status,

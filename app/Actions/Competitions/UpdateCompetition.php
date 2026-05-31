@@ -3,6 +3,7 @@
 namespace App\Actions\Competitions;
 
 use App\DTOs\Competitions\UpdateCompetitionDTO;
+use App\Enums\CompetitionType;
 use App\Models\Competition;
 use App\Repositories\Competitions\CompetitionRepository;
 use App\Utilities\SlugGenerator;
@@ -27,6 +28,7 @@ class UpdateCompetition
       'type' => $dto->type,
       'price' => $dto->price,
       'status' => $dto->status,
+      'max_member' => $dto->max_member,
     ];
 
     if ($dto->name !== $competition->name) {

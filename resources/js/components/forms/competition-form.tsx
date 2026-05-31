@@ -23,6 +23,7 @@ type CompetitionFormData = {
     image_file?: File | null;
     image_path?: string | null;
     price: number;
+    max_member?: number;
     status: CompetitionStatusType;
     timelines: CompetitionTimeline[];
 };
@@ -37,6 +38,26 @@ export function CompetitionForm({
 }: CompetitionFormProps) {
     const showMode = mode === 'show';
     const isReadOnly = showMode;
+
+    const isTeamType = data.type === CompetitionTypeMap.Team.value;
+    const fallbackMaxMember = isTeamType ? 2 : 1;
+
+    const handleTypeChange = (value: CompetitionType) => {
+        onChange('type', value);
+
+        if (value === CompetitionTypeMap.Solo.value) {
+            onChange('max_member', 1);
+
+            return;
+        }
+
+        if (
+            value === CompetitionTypeMap.Team.value &&
+            (!data.max_member || data.max_member < 2)
+        ) {
+            onChange('max_member', 2);
+        }
+    };
 
     return (
         <div className="space-y-5">
@@ -79,7 +100,7 @@ export function CompetitionForm({
                 <Select
                     value={data.type}
                     onValueChange={(value) =>
-                        onChange('type', value as CompetitionType)
+                        handleTypeChange(value as CompetitionType)
                     }
                     required
                 >
@@ -112,6 +133,31 @@ export function CompetitionForm({
                     readOnly={isReadOnly}
                     placeholder="Enter Price"
                     required
+                />
+            </FormField>
+
+            <FormField
+                name="max_member"
+                label="Max Members"
+                error={errors.max_member}
+                required={isTeamType}
+            >
+                <Input
+                    id="max_member"
+                    type="number"
+                    min={isTeamType ? 2 : 1}
+                    value={data.max_member ?? ''}
+                    onChange={(e) =>
+                        onChange(
+                            'max_member',
+                            e.target.value
+                                ? parseInt(e.target.value)
+                                : fallbackMaxMember,
+                        )
+                    }
+                    readOnly={isReadOnly || !isTeamType}
+                    placeholder="Enter maximum team members"
+                    required={isTeamType}
                 />
             </FormField>
 

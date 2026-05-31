@@ -41,6 +41,9 @@ class CompetitionService
 
     public function store(StoreCompetitionDTO $dto, array $timelineAttributes = []): Competition
     {
+        // Enforce max_member policy at service level (source of truth)
+        $this->validateMaxMemberForType($dto->type, $dto->max_member);
+
         $slug = $this->generateUniqueSlug($dto->name);
 
         return DB::transaction(function () use ($dto, $slug, $timelineAttributes) {
@@ -55,9 +58,39 @@ class CompetitionService
             $slug = $this->generateUniqueSlug($dto->name, $competition);
         }
 
+        $this->validateMaxMemberForType($dto->type, $dto->max_member);
+
         return DB::transaction(function () use ($dto, $competition, $slug, $timelineAttributes) {
             return $this->updateCompetition->handle($dto, $competition, $slug, $timelineAttributes);
         });
+    }
+
+    public function validateMaxMemberForType(string $type, ?int $maxMember = null): void
+    {
+        if ($type === CompetitionType::solo->value) {
+            if ($maxMember !== 1) {
+                ThrowException::validation(
+                    'max_member',
+                    'Solo competitions must have max member exactly 1 (the leader counts as the only member).'
+                );
+            }
+
+            return;
+        }
+
+        if ($maxMember === null) {
+            ThrowException::validation(
+                'max_member',
+                'Team competitions require max member of at least 2 (leader is counted separately).'
+            );
+        }
+
+        if ($maxMember < 2) {
+            ThrowException::validation(
+                'max_member',
+                'Team competitions must have max member of at least 2 (leader is counted separately).'
+            );
+        }
     }
 
     public function destroy(Competition $competition): bool
@@ -92,10 +125,27 @@ class CompetitionService
             return;
         }
 
+        // Team competitions: ensure competition is configured with sensible max_member
+        if ($competition->max_member <= 1) {
+            ThrowException::validation(
+                'max_member',
+                'This competition is configured as a team competition but has invalid max_member. Please contact the administrator.'
+            );
+        }
+
         if (empty($members)) {
             ThrowException::validation(
                 'members',
                 'At least one team member is required for team competitions.',
+            );
+        }
+
+        // leader counts as one; ensure submitted members don't exceed allowed slots
+        $maxAdditionalMembers = max(0, $competition->max_member - 1);
+        if (count($members) > $maxAdditionalMembers) {
+            ThrowException::validation(
+                'members',
+                sprintf('Too many members: maximum allowed (excluding leader) is %d.', $maxAdditionalMembers)
             );
         }
     }

@@ -23,6 +23,7 @@ export default function CreateCompetitionPage() {
         type: CompetitionTypeMap.Solo.value,
         image_file: undefined,
         price: 0,
+        max_member: 1,
         status: CompetitionStatusMap.Closed.value,
         timelines: [
             {

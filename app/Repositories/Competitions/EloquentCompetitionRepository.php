@@ -80,6 +80,7 @@ class EloquentCompetitionRepository implements CompetitionRepository
                         'slug' => $competition->slug,
                         'type' => $competition->type,
                         'price' => $competition->price,
+                        'max_member' => $competition->max_member,
                     ],
                 ];
             })

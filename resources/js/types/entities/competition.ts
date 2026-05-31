@@ -24,6 +24,7 @@ export interface ICompetitionShow extends ICompetitionIndex {
     description?: string | null;
     image_path?: string | null;
     price: number;
+    max_member: number;
     timelines: CompetitionTimeline[];
     created_at: string;
     updated_at: string;

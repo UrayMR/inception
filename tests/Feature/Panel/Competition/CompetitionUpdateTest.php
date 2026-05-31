@@ -29,11 +29,15 @@ class CompetitionUpdateTest extends CompetitionTestCase
   {
     // Arrange: Seed a competition with timelines and sign in as admin.
     $admin = $this->makeAdminUser();
+
+    $this->withoutVite();
+
     $competition = Competition::factory()->create([
       'name' => 'Old Cup',
       'slug' => 'old-cup',
       'type' => CompetitionType::solo->value,
       'status' => CompetitionStatus::closed->value,
+      'max_member' => 1,
     ]);
 
     CompetitionTimeline::factory()->create([
@@ -60,6 +64,7 @@ class CompetitionUpdateTest extends CompetitionTestCase
           ->where('competition.name', 'Old Cup')
           ->where('competition.type', CompetitionType::solo->value)
           ->where('competition.status', CompetitionStatus::closed->value)
+          ->where('competition.max_member', 1)
       );
   }
 
@@ -88,6 +93,7 @@ class CompetitionUpdateTest extends CompetitionTestCase
       'type' => CompetitionType::team->value,
       'status' => CompetitionStatus::open->value,
       'price' => 500000,
+      'max_member' => 4,
       'timelines' => [
         [
           'id' => $timeline->id,
@@ -115,6 +121,7 @@ class CompetitionUpdateTest extends CompetitionTestCase
     $this->assertSame('Updated Cup', $competition->name);
     $this->assertSame(CompetitionType::team->value, $competition->type);
     $this->assertSame(CompetitionStatus::open->value, $competition->status);
+    $this->assertSame(4, $competition->max_member);
     $this->assertDatabaseHas('competition_timelines', [
       'id' => $timeline->id,
       'competition_id' => $competition->id,
@@ -122,5 +129,44 @@ class CompetitionUpdateTest extends CompetitionTestCase
       'sequence' => 1,
     ]);
     $this->assertDatabaseCount('competition_timelines', 1);
+  }
+
+  public function test_admin_cannot_update_solo_competition_with_max_member_not_equal_one(): void
+  {
+    // Arrange: Seed a solo competition and sign in as admin.
+    $admin = $this->makeAdminUser();
+    $competition = Competition::factory()->create([
+      'name' => 'Solo Cup',
+      'slug' => 'solo-cup',
+      'type' => CompetitionType::solo->value,
+      'status' => CompetitionStatus::closed->value,
+      'max_member' => 1,
+    ]);
+
+    $payload = [
+      'name' => 'Solo Cup Revised',
+      'description' => 'Updated solo description.',
+      'type' => CompetitionType::solo->value,
+      'status' => CompetitionStatus::open->value,
+      'price' => 150000,
+      'max_member' => 8,
+    ];
+
+    // Act: Submit the update form.
+    $response = $this->actingAs($admin)
+      ->from(route('panel.competitions.edit', $competition))
+      ->put(route('panel.competitions.update', $competition), $payload);
+
+    // Assert: Solo competitions must reject max_member values other than 1.
+    $response
+      ->assertSessionHasErrors(['max_member'])
+      ->assertRedirect(route('panel.competitions.edit', $competition));
+
+    $competition->refresh();
+
+    $this->assertSame('Solo Cup', $competition->name);
+    $this->assertSame(CompetitionType::solo->value, $competition->type);
+    $this->assertSame(CompetitionStatus::closed->value, $competition->status);
+    $this->assertSame(1, $competition->max_member);
   }
 }

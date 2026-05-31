@@ -25,6 +25,8 @@ class CompetitionCreateTest extends CompetitionTestCase
     // Arrange: Sign in as admin.
     $admin = $this->makeAdminUser();
 
+    $this->withoutVite();
+
     // Act: Render the competition create page.
     $response = $this->actingAs($admin)->get(route('panel.competitions.create'));
 
@@ -49,6 +51,7 @@ class CompetitionCreateTest extends CompetitionTestCase
       'type' => CompetitionType::team->value,
       'status' => CompetitionStatus::open->value,
       'price' => 250000,
+      'max_member' => 3,
       'timelines' => [
         [
           'timeline_name' => 'Registration',
@@ -75,10 +78,49 @@ class CompetitionCreateTest extends CompetitionTestCase
     $this->assertSame('Inception Cup', $competition->name);
     $this->assertSame(CompetitionType::team->value, $competition->type);
     $this->assertSame(CompetitionStatus::open->value, $competition->status);
+    $this->assertSame(3, $competition->max_member);
     $this->assertDatabaseHas('competition_timelines', [
       'competition_id' => $competition->id,
       'timeline_name' => 'Registration',
       'sequence' => 1,
+    ]);
+  }
+
+  public function test_admin_cannot_store_solo_competition_with_max_member_not_equal_one(): void
+  {
+    // Arrange: Sign in as admin and prepare an invalid solo competition payload.
+    $admin = $this->makeAdminUser();
+
+    $payload = [
+      'name' => 'Solo Cup',
+      'description' => 'A sample solo competition.',
+      'type' => CompetitionType::solo->value,
+      'status' => CompetitionStatus::open->value,
+      'price' => 100000,
+      'max_member' => 9,
+      'timelines' => [
+        [
+          'timeline_name' => 'Registration',
+          'description' => 'Open registration period',
+          'sequence' => 1,
+          'start_at' => now()->addDay()->format('Y-m-d H:i:s'),
+          'end_at' => now()->addDays(2)->format('Y-m-d H:i:s'),
+        ],
+      ],
+    ];
+
+    // Act: Submit the create form.
+    $response = $this->actingAs($admin)
+      ->from(route('panel.competitions.create'))
+      ->post(route('panel.competitions.store'), $payload);
+
+    // Assert: Solo competitions must reject max_member values other than 1.
+    $response
+      ->assertSessionHasErrors(['max_member'])
+      ->assertRedirect(route('panel.competitions.create'));
+
+    $this->assertDatabaseMissing('competitions', [
+      'slug' => 'solo-cup',
     ]);
   }
 }

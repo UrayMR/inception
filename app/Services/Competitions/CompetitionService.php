@@ -42,7 +42,7 @@ class CompetitionService
     public function store(StoreCompetitionDTO $dto, array $timelineAttributes = []): Competition
     {
         // Enforce max_member policy at service level (source of truth)
-        $dto->max_member = $this->normalizeMaxMemberForType($dto->type, $dto->max_member);
+        $this->validateMaxMemberForType($dto->type, $dto->max_member);
 
         $slug = $this->generateUniqueSlug($dto->name);
 
@@ -57,32 +57,32 @@ class CompetitionService
         if ($dto->name !== $competition->name) {
             $slug = $this->generateUniqueSlug($dto->name, $competition);
         }
-        
-        $dto->max_member = $this->normalizeMaxMemberForType($dto->type, $dto->max_member);
+
+        $this->validateMaxMemberForType($dto->type, $dto->max_member);
 
         return DB::transaction(function () use ($dto, $competition, $slug, $timelineAttributes) {
             return $this->updateCompetition->handle($dto, $competition, $slug, $timelineAttributes);
         });
     }
 
-    /**
-     * Normalize and validate `max_member` according to competition type.
-     * - Solo competitions always have `max_member = 1` (leader counted).
-     * - Team competitions must have `max_member >= 2` (leader excluded), defaults to 2 when not provided.
-     *
-     * @param string $type
-     * @param int|null $maxMember
-     * @return int
-     */
-    public function normalizeMaxMemberForType(string $type, ?int $maxMember = null): int
+    public function validateMaxMemberForType(string $type, ?int $maxMember = null): void
     {
         if ($type === CompetitionType::solo->value) {
-            return 1;
+            if ($maxMember !== 1) {
+                ThrowException::validation(
+                    'max_member',
+                    'Solo competitions must have max member exactly 1 (the leader counts as the only member).'
+                );
+            }
+
+            return;
         }
 
-        // Team competitions
         if ($maxMember === null) {
-            return 2;
+            ThrowException::validation(
+                'max_member',
+                'Team competitions require max member of at least 2 (leader is counted separately).'
+            );
         }
 
         if ($maxMember < 2) {
@@ -91,8 +91,6 @@ class CompetitionService
                 'Team competitions must have max member of at least 2 (leader is counted separately).'
             );
         }
-
-        return $maxMember;
     }
 
     public function destroy(Competition $competition): bool

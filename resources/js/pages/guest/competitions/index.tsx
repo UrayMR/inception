@@ -5,66 +5,6 @@ import { DataTablePagination } from '@/components/data-table/data-table-paginati
 import AppLayout from '@/layouts/app-layout';
 import type { DataTableProps, ICompetitionShow } from '@/types';
 
-// TODO: Don't forget to remove this dummy data when the backend is ready and connected to the frontend
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const dummyCompetitions = [
-    {
-        name: 'HACKATHON: Build the Future',
-        type: 'Hackathon',
-        status: 'Open',
-        description:
-            'A weekend build sprint for teams that want to ship a polished product concept fast.',
-        startDate: '12 June 2026',
-        endDate: '13 June 2026',
-        reward: 'Rp. 1.0000.000 + Certificates',
-        accent: 'bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500',
-    },
-    {
-        name: 'DATSCI: Begin the Data Journey',
-        type: 'Data Science',
-        status: 'Open',
-        description:
-            'Compete to build the best model for a real-world dataset and show off your data science skills.',
-        startDate: '18 June 2026',
-        endDate: '19 June 2026',
-        reward: 'Rp. 1.0000.000 + Certificates',
-        accent: 'bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500',
-    },
-    {
-        name: 'UI/UX: Brighten the vision',
-        type: 'Design UI/UX',
-        status: 'Open',
-        description:
-            'Design a bold product UI concept with a strong story, system thinking, and motion.',
-        startDate: '01 July 2026',
-        endDate: '02 July 2026',
-        reward: 'Rp. 1.0000.000 + Certificates',
-        accent: 'bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500',
-    },
-    {
-        name: 'ESSAY: Share your vision',
-        type: 'Essay',
-        status: 'Open',
-        description:
-            'Bring your vision to life with a compelling essay that can inspire others to join you on the journey.',
-        startDate: '05 July 2026',
-        endDate: '06 July 2026',
-        reward: 'Rp. 1.0000.000 + Certificates',
-        accent: 'bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500',
-    },
-    {
-        name: 'BUSPLAN: Plan the future',
-        type: 'Business Plan',
-        status: 'Open',
-        description:
-            'Craft a solid business plan that can turn your vision into a viable startup with a clear path to market.',
-        startDate: '21 July 2026',
-        endDate: '22 July 2026',
-        reward: 'Rp. 1.0000.000 + Certificates',
-        accent: 'bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500',
-    },
-];
-
 export default function CompetitionsIndex() {
     const { competitions } = usePage<{
         competitions: DataTableProps<ICompetitionShow>;

@@ -5,7 +5,8 @@ import capitalize from '@/helpers/capitalize';
 import formatCurrency from '@/helpers/format-currency';
 import formatDate from '@/helpers/format-date';
 import AppLayout from '@/layouts/app-layout';
-import competitions from '@/routes/participant/competitions';
+import guestCompetitions from '@/routes/guest/competitions';
+import participantCompetitions from '@/routes/participant/competitions';
 import type { ICompetitionShow } from '@/types';
 
 type CompetitionShowPageProps = {
@@ -45,7 +46,9 @@ export default function CompetitionShowPage({
                                     </h1>
                                     <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
                                         {competition.description
-                                            ? capitalize(competition.description)
+                                            ? capitalize(
+                                                  competition.description,
+                                              )
                                             : 'No description has been provided for this competition yet.'}
                                     </p>
                                 </div>
@@ -56,11 +59,14 @@ export default function CompetitionShowPage({
                                         className="rounded-full px-5"
                                     >
                                         <Link
-                                            href={competitions.register.url({
-                                                query: {
-                                                    competition: competition.slug,
+                                            href={participantCompetitions.register.url(
+                                                {
+                                                    query: {
+                                                        competition:
+                                                            competition.slug,
+                                                    },
                                                 },
-                                            })}
+                                            )}
                                         >
                                             Register now
                                         </Link>
@@ -70,7 +76,9 @@ export default function CompetitionShowPage({
                                         asChild
                                         className="rounded-full px-5"
                                     >
-                                        <Link href="/competitions">
+                                        <Link
+                                            href={guestCompetitions.index.url()}
+                                        >
                                             Back to competitions
                                         </Link>
                                     </Button>

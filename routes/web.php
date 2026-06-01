@@ -12,6 +12,12 @@ Route::inertia('/', 'guest/main', [
     'canRegister' => Features::enabled(Features::registration()),
 ])->name('home');
 
+Route::as('guest.')->group(function () {
+    Route::controller(CompetitionRegistrationController::class)->group(function () {
+        Route::get('competitions', 'index')->name('competitions.index');
+    });
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('panel')->as('panel.')->group(function () {
         Route::middleware('role:admin')->group(function () {
@@ -32,14 +38,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::as('participant.')->group(function () {
         Route::controller(CompetitionRegistrationController::class)->group(function () {
-            Route::get('competitions', 'index')->name('competitions.index');
-
             Route::get('competitions/register', 'register')->name('competitions.register');
             Route::post('competitions/register', 'store')->name('competitions.register.store');
-
-            // Put this route after the register route to avoid conflict with the 'register' URI.
-            Route::get('competitions/{competition}', 'show')->name('competitions.show');
         });
+    });
+});
+
+Route::as('guest.')->group(function () {
+    Route::controller(CompetitionRegistrationController::class)->group(function () {
+        Route::get('competitions/{competition}', 'show')->name('competitions.show');
     });
 });
 

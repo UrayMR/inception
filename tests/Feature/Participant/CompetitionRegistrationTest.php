@@ -111,7 +111,7 @@ class CompetitionRegistrationTest extends TestCase
     // Assert: The registration is stored and the user is redirected back to the competition list.
     $response
       ->assertSessionHasNoErrors()
-      ->assertRedirect(route('participant.competitions.index'));
+      ->assertRedirect(route('guest.competitions.index'));
 
     $team = Team::query()->where('team_name', 'Alpha Team')->firstOrFail();
     $transaction = Transaction::query()->where('team_id', $team->id)->firstOrFail();

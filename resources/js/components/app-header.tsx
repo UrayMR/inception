@@ -32,8 +32,8 @@ import { UserMenuContent } from '@/components/user-menu-content';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
 import { cn, toUrl } from '@/lib/utils';
+import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
-import participant from '@/routes/participant';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
@@ -48,7 +48,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Competitions',
-        href: participant.competitions.index(),
+        href: competitions.index(),
     },
 ];
 

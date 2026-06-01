@@ -126,6 +126,7 @@ export function CompetitionForm({
                 <Input
                     id="price"
                     type="number"
+                    min={0}
                     value={data.price}
                     onChange={(e) =>
                         onChange('price', parseFloat(e.target.value))

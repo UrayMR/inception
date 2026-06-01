@@ -9,6 +9,7 @@ use App\Models\Competition;
 use App\Resources\Participant\Competitions\CompetitionListResource;
 use App\Resources\Participant\Competitions\CompetitionDetailResource;
 use App\Services\Competitions\CompetitionService;
+use App\Services\Competitions\GuestCompetitionService;
 use App\Services\Competitions\Registrations\RegisterCompetitionService;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,7 @@ class CompetitionRegistrationController extends Controller
 {
     public function __construct(
         protected CompetitionService $competitionService,
+        protected GuestCompetitionService $guestCompetitionService,
         protected RegisterCompetitionService $registerCompetitionService,
     ) {}
 
@@ -25,9 +27,9 @@ class CompetitionRegistrationController extends Controller
 
     public function index(Request $request)
     {
-        $competitions = $this->competitionService->index($request);
+        $competitions = $this->guestCompetitionService->index($request);
 
-        return $this->render('participant/competitions/index', [
+        return $this->render('guest/competitions/index', [
             'competitions' => CompetitionListResource::collection($competitions),
         ]);
     }
@@ -57,7 +59,7 @@ class CompetitionRegistrationController extends Controller
         $this->flash('success', 'Competition registration submitted successfully.');
         $this->flash('success', 'Please kindly wait for the verification of your transaction. Thank you!');
 
-        return redirect()->route('participant.competitions.index');
+        return redirect()->route('guest.competitions.index');
     }
 
     /**
@@ -67,7 +69,7 @@ class CompetitionRegistrationController extends Controller
     {
         $competition->load('timelines');
 
-        return $this->render('participant/competitions/show', [
+        return $this->render('guest/competitions/show', [
             'competition' => CompetitionDetailResource::make($competition)->resolve(),
         ]);
     }

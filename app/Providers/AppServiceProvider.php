@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\Competitions\CompetitionRepository;
 use App\Repositories\Competitions\EloquentCompetitionRepository;
+use App\Repositories\Competitions\EloquentGuestCompetitionRepository;
+use App\Repositories\Competitions\GuestCompetitionRepository;
 use App\Repositories\Competitions\Timelines\EloquentTimelineRepository;
 use App\Repositories\Competitions\Timelines\TimelineRepository;
 use App\Repositories\Teams\EloquentTeamRepository;
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->bind(CompetitionRepository::class, EloquentCompetitionRepository::class);
+        $this->app->bind(GuestCompetitionRepository::class, EloquentGuestCompetitionRepository::class);
         $this->app->bind(TimelineRepository::class, EloquentTimelineRepository::class);
         $this->app->bind(TeamRepository::class, EloquentTeamRepository::class);
         $this->app->bind(MemberRepository::class, EloquentMemberRepository::class);

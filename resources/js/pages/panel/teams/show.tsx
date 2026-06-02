@@ -11,7 +11,6 @@ interface ShowTeamForm {
     competition_id: string;
     competition: Option;
     team_name: string;
-    leader_name: string;
     institution?: string;
     status: TeamStatusType;
     phone_number: string;
@@ -35,7 +34,6 @@ export default function ShowTeamPage({ team }: ShowTeamPageProps) {
         competition_id: team.competition.value,
         team_name: team.team_name,
         competition: team.competition,
-        leader_name: team.leader_name,
         institution: team.institution || '',
         status: team.status || TeamStatusMap.Active.value,
         phone_number: team.phone_number,
@@ -56,6 +54,7 @@ export default function ShowTeamPage({ team }: ShowTeamPageProps) {
                         data={data}
                         errors={{}}
                         onChange={() => {}}
+                        leaderName={team.leader_name}
                     />
                 </MainContent.Section>
             </MainContent>

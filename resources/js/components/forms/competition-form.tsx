@@ -14,6 +14,7 @@ import type {
     FormProps,
 } from '@/types';
 import { CompetitionStatusMap, CompetitionTypeMap } from '@/types';
+import { ImageUploadField } from '../image-upload-field';
 import { DynamicTimelineInput } from '../specifics/dynamic-timeline-input';
 
 type CompetitionFormData = {
@@ -28,13 +29,16 @@ type CompetitionFormData = {
     timelines: CompetitionTimeline[];
 };
 
-type CompetitionFormProps = FormProps<CompetitionFormData>;
+type CompetitionFormProps = FormProps<CompetitionFormData> & {
+    imagePath?: string | null;
+};
 
 export function CompetitionForm({
     mode,
     data,
     errors,
     onChange,
+    imagePath,
 }: CompetitionFormProps) {
     const showMode = mode === 'show';
     const isReadOnly = showMode;
@@ -61,6 +65,20 @@ export function CompetitionForm({
 
     return (
         <div className="space-y-5">
+            <FormField
+                name="image_file"
+                label="Competition Image"
+                error={errors.image_file}
+                required={false}
+            >
+                <ImageUploadField
+                    value={data.image_file || imagePath || null}
+                    onChange={(file) => onChange('image_file', file as File)}
+                    placeholder="Upload Competition Image"
+                    disabled={isReadOnly}
+                />
+            </FormField>
+
             <FormField
                 name="name"
                 label="Competition Name"

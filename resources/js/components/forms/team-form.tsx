@@ -14,17 +14,16 @@ import { DynamicTeamInput } from '../specifics/dynamic-team-input';
 type TeamFormData = {
     competition_id: string;
     team_name: string;
-    leader_name?: string;
     institution?: string;
     phone_number: string;
     status: TeamStatusType;
-
     members?: TeamMember[];
     competition?: Option;
 };
 
 type TeamFormProps = FormProps<TeamFormData> & {
     competitions?: Option[];
+    leaderName?: string;
 };
 
 export function TeamForm({
@@ -33,6 +32,7 @@ export function TeamForm({
     errors,
     onChange,
     competitions,
+    leaderName,
 }: TeamFormProps) {
     const createMode = mode === 'create';
     const showMode = mode === 'show';
@@ -205,7 +205,7 @@ export function TeamForm({
                     <Input
                         id="leader_name"
                         type="text"
-                        value={data.leader_name || 'empty'}
+                        value={leaderName || 'empty'}
                         placeholder="Enter Leader Name"
                         readOnly
                         required

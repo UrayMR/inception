@@ -61,6 +61,7 @@ export default function ShowCompetitionPage({
                         data={data}
                         errors={{}}
                         onChange={() => {}}
+                        imagePath={data.image_path}
                     />
                 </MainContent.Section>
             </MainContent>

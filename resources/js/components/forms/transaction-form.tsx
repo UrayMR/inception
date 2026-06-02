@@ -13,6 +13,7 @@ import type {
     TransactionStatusType,
 } from '@/types';
 import { TransactionPaymentMethodMap, TransactionStatusMap } from '@/types';
+import { ImageUploadField } from '../image-upload-field';
 
 type TransactionFormData = {
     competition_name: string;
@@ -102,16 +103,9 @@ export function TransactionForm({
                 error={errors.payment_proof_path}
                 required
             >
-                <Input
-                    id="payment_proof_path"
-                    type="text"
-                    disabled={isReadOnly}
-                    onChange={(e) =>
-                        onChange('payment_proof_path', e.target.value)
-                    }
+                <ImageUploadField
                     value={data.payment_proof_path}
-                    placeholder="Enter Payment Proof URL"
-                    required
+                    disabled={isReadOnly}
                 />
             </FormField>
 

@@ -40,13 +40,14 @@ export default function EditCompetitionPage({
         UpdateCompetitionSchema,
     );
 
-    const handleSubmit = (e: React.SubmitEvent) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!guard(form.data, form.setError)) {
             return;
         }
 
+        // TODO: DONT EVER USE PUT FOR FILE UPLOAD
         form.put(competitions.update.url(competition.slug));
     };
 
@@ -67,6 +68,7 @@ export default function EditCompetitionPage({
                                 data={form.data}
                                 errors={form.errors}
                                 onChange={form.setData}
+                                imagePath={competition.image_path}
                             />
 
                             <div className="mt-4 flex justify-end">

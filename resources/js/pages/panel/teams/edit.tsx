@@ -16,10 +16,6 @@ import { TeamStatusMap } from '@/types';
 import { UpdateTeamSchema } from '@/validations/team-schema';
 import type { UpdateTeamSchemaType } from '@/validations/team-schema';
 
-type EditTeamFormData = UpdateTeamSchemaType & {
-    leader_name: string;
-};
-
 interface EditTeamPageProps {
     team: ITeamEdit;
     competitionMap: Option[];
@@ -37,10 +33,9 @@ export default function EditTeamPage({
         },
     ];
 
-    const form = useForm<EditTeamFormData>({
+    const form = useForm<UpdateTeamSchemaType>({
         team_name: team.team_name,
         competition_id: team.competition_id,
-        leader_name: team.leader_name,
         institution: team.institution || '',
         phone_number: team.phone_number,
         status: team.status || TeamStatusMap.Active.value,
@@ -89,6 +84,7 @@ export default function EditTeamPage({
                                 errors={form.errors}
                                 onChange={form.setData}
                                 competitions={competitionMap}
+                                leaderName={team.leader_name}
                             />
 
                             <div className="mt-4 flex justify-end">

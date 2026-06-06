@@ -4,6 +4,7 @@ namespace Tests\Feature\Participant;
 
 use App\Enums\CompetitionStatus;
 use App\Enums\CompetitionType;
+use App\Enums\TeamStatus;
 use App\Enums\TransactionMethod;
 use App\Enums\TransactionStatus;
 use App\Models\Competition;
@@ -76,7 +77,7 @@ class CompetitionRegistrationTest extends TestCase
   public function test_participant_can_submit_team_registration_successfully(): void
   {
     // Arrange: Prepare a participant, an open team competition, and a valid upload payload.
-    Storage::fake('public');
+    Storage::fake('local');
 
     $participant = User::factory()->create([
       'role' => 'participant',
@@ -121,6 +122,7 @@ class CompetitionRegistrationTest extends TestCase
     $this->assertSame('08123456789', $team->phone_number);
     $this->assertSame('Inception University', $team->institution);
     $this->assertSame(2, TeamMember::query()->where('team_id', $team->id)->count());
+    $this->assertSame($team->status, TeamStatus::registered->value);
 
     $this->assertDatabaseHas('team_members', [
       'team_id' => $team->id,
@@ -135,7 +137,90 @@ class CompetitionRegistrationTest extends TestCase
     $this->assertEquals($competition->price, $transaction->amount);
     $this->assertSame(TransactionMethod::qris->value, $transaction->payment_method);
     $this->assertSame(TransactionStatus::pending->value, $transaction->status);
-    $this->assertTrue(Storage::disk('public')->exists($transaction->payment_proof_path));
+    $this->assertTrue(Storage::disk('local')->exists($transaction->payment_proof_path));
+  }
+
+  public function test_rejected_participant_can_submit_team_registration_successfully(): void
+  {
+    // Arrange: Prepare a rejected participant, an open team competition, and a valid upload payload.
+    Storage::fake('local');
+
+    $participant = User::factory()->create([
+      'role' => 'participant',
+    ]);
+
+    $competition = Competition::factory()->create([
+      'name' => 'Inception Clash',
+      'slug' => 'inception-clash',
+      'type' => CompetitionType::team->value,
+      'status' => CompetitionStatus::open->value,
+      'price' => 150000,
+    ]);
+
+    $team = Team::factory()->create([
+      'competition_id' => $competition->id,
+      'team_name' => 'Beta Team',
+      'leader_id' => $participant->id,
+      'phone_number' => '08123456789',
+      'institution' => 'Inception University',
+      'status' => TeamStatus::rejected->value,
+    ]);
+
+    $team_member_1 = TeamMember::factory()->create([
+      'team_id' => $team->id,
+    ]);
+
+    $team_member_2 = TeamMember::factory()->create([
+      'team_id' => $team->id,
+    ]);
+
+    $payload = [
+      'competition_id' => $competition->id,
+      'team_name' => 'Beta Team',
+      'phone_number' => '08123456789',
+      'institution' => 'Inception University',
+      'payment_method' => TransactionMethod::qris->value,
+      'payment_proof_file' => UploadedFile::fake()->image('payment-proof.jpg'),
+      'members' => [
+        ['member_name' => $team_member_1->member_name],
+        ['member_name' => $team_member_2->member_name],
+      ],
+    ];
+
+    // Act: Submit the registration form.
+    $response = $this->actingAs($participant)
+      ->from(route('participant.competitions.register'))
+      ->post(route('participant.competitions.register.store'), $payload);
+
+    // Assert: The registration is stored and the user is redirected back to the competition list.
+    $response
+      ->assertSessionHasNoErrors()
+      ->assertRedirect(route('guest.competitions.index'));
+
+    $team = Team::query()->where('team_name', 'Beta Team')->firstOrFail();
+    $transaction = Transaction::query()->where('team_id', $team->id)->firstOrFail();
+
+    $this->assertSame($participant->id, $team->leader_id);
+    $this->assertSame($competition->id, $team->competition_id);
+    $this->assertSame('08123456789', $team->phone_number);
+    $this->assertSame('Inception University', $team->institution);
+    $this->assertSame(2, TeamMember::query()->where('team_id', $team->id)->count());
+    $this->assertSame($team->status, TeamStatus::registered->value);
+
+    $this->assertDatabaseHas('team_members', [
+      'team_id' => $team->id,
+      'member_name' => $team_member_1->member_name,
+    ]);
+
+    $this->assertDatabaseHas('team_members', [
+      'team_id' => $team->id,
+      'member_name' => $team_member_2->member_name,
+    ]);
+
+    $this->assertEquals($competition->price, $transaction->amount);
+    $this->assertSame(TransactionMethod::qris->value, $transaction->payment_method);
+    $this->assertSame(TransactionStatus::pending->value, $transaction->status);
+    $this->assertTrue(Storage::disk('local')->exists($transaction->payment_proof_path));
   }
 
   public function test_participant_cannot_submit_team_registration_without_team_name(): void

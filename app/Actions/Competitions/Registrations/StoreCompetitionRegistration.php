@@ -10,9 +10,6 @@ use App\Models\Team;
 
 class StoreCompetitionRegistration
 {
-  protected string $directory = 'transaction-payment-proofs';
-  protected string $disk = 'private';
-
   public function __construct(
     protected StoreTeam $storeTeam,
     protected StoreTransaction $storeTransaction,

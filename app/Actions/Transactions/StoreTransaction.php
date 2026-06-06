@@ -10,7 +10,7 @@ use App\Services\FileService;
 class StoreTransaction
 {
   protected string $directory = 'transaction-payment-proofs';
-  protected string $disk = 'private';
+  protected string $disk = 'local';
 
   public function __construct(
     protected TransactionRepository $transactionRepository,

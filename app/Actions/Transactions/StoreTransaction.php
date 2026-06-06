@@ -10,6 +10,7 @@ use App\Services\FileService;
 class StoreTransaction
 {
   protected string $directory = 'transaction-payment-proofs';
+  protected string $disk = 'private';
 
   public function __construct(
     protected TransactionRepository $transactionRepository,
@@ -25,6 +26,7 @@ class StoreTransaction
       'payment_proof_path' => $this->fileService->store(
         $dto->payment_proof_file,
         $this->directory,
+        $this->disk
       ),
       'status' => $dto->status,
     ];

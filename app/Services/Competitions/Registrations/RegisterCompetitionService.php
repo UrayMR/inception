@@ -65,7 +65,6 @@ class RegisterCompetitionService
     $hasActiveRegistration = Team::query()
       ->where('leader_id', $leaderId)
       ->whereIn('status', [
-        TeamStatus::active->value,
         TeamStatus::registered->value,
       ])
       ->exists();

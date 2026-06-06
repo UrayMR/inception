@@ -2,6 +2,8 @@
 
 namespace App\Actions\Competitions\Registrations;
 
+use App\Actions\Teams\UpdateTeam;
+use App\Actions\Transactions\StoreTransaction;
 use App\DTOs\Competitions\Registrations\RegisterCompetitionDTO;
 use App\Enums\TeamStatus;
 use App\Models\Competition;
@@ -16,43 +18,20 @@ class UpdateCompetitionRegistration
   protected string $directory = 'transaction-payment-proofs';
 
   public function __construct(
-    protected TeamRepository $teamRepository,
-    protected MemberRepository $memberRepository,
-    protected TransactionRepository $transactionRepository,
+    protected UpdateTeam $updateTeam,
+    protected StoreTransaction $storeTransaction,
     protected FileService $fileService,
   ) {}
 
   public function handle(RegisterCompetitionDTO $dto, Competition $competition, Team $team): Team
   {
-    $teamDTO = $dto->toTeamDTO($competition);
+    $teamDTO = $dto->toUpdateTeamDTO($competition);
 
-    $updatedTeam = $this->teamRepository->update([
-      'competition_id' => $competition->id,
-      'team_name' => $teamDTO->team_name,
-      'leader_id' => $teamDTO->leader_id,
-      'phone_number' => $teamDTO->phone_number,
-      'institution' => $teamDTO->institution,
-      'status' => TeamStatus::active->value,
-    ], $team);
-
-    $members = $dto->memberRows();
-
-    if (! empty($members)) {
-      $this->memberRepository->updateMany($updatedTeam, $members);
-    }
+    $updatedTeam = $this->updateTeam->handle($teamDTO, $team);
 
     $transactionDTO = $dto->toTransactionDTO($updatedTeam->id, $competition->price);
 
-    $this->transactionRepository->store([
-      'team_id' => $updatedTeam->id,
-      'amount' => $competition->price,
-      'payment_method' => $transactionDTO->payment_method,
-      'payment_proof_path' => $this->fileService->store(
-        $transactionDTO->payment_proof_file,
-        $this->directory,
-      ),
-      'status' => $transactionDTO->status,
-    ]);
+    $this->storeTransaction->handle($transactionDTO);
 
     return $updatedTeam;
   }

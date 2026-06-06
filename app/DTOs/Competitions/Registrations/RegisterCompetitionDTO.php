@@ -3,6 +3,7 @@
 namespace App\DTOs\Competitions\Registrations;
 
 use App\DTOs\Teams\StoreTeamDTO;
+use App\DTOs\Teams\UpdateTeamDTO;
 use App\DTOs\Transactions\StoreTransactionDTO;
 use App\Enums\CompetitionType;
 use App\Enums\TeamStatus;
@@ -31,7 +32,7 @@ class RegisterCompetitionDTO
       : trim((string) $this->team_name);
   }
 
-  public function toTeamDTO(Competition $competition): StoreTeamDTO
+  public function toStoreTeamDTO(Competition $competition): StoreTeamDTO
   {
     return new StoreTeamDTO(
       competition_id: $competition->id,
@@ -39,7 +40,18 @@ class RegisterCompetitionDTO
       leader_id: $this->leader_id,
       phone_number: $this->phone_number,
       institution: $this->institution,
-      status: TeamStatus::active->value,
+      status: TeamStatus::registered->value,
+    );
+  }
+
+  public function toUpdateTeamDTO(Competition $competition): UpdateTeamDTO
+  {
+    return new UpdateTeamDTO(
+      competition_id: $competition->id,
+      team_name: $this->teamNameFor($competition),
+      phone_number: $this->phone_number,
+      institution: $this->institution,
+      status: TeamStatus::registered->value,
     );
   }
 

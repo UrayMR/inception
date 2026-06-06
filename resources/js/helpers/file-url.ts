@@ -1,13 +1,13 @@
 type FileUrl = {
     url: string;
-    disk: 'public' | 'private';
+    disk: 'public' | 'local';
+    customUrl?: string;
 };
 
-export const getFileUrl = ({ url, disk }: FileUrl): string => {
+export const getFileUrl = ({ url, disk, customUrl }: FileUrl): string => {
     // if disk is public, return the url as is but prefix with /storage
-    if (disk === 'private') {
-        // if disk is private, return the url prefixed with /api/files/ and suffixed with ?download=true
-        return `/api/files/${url}?download=true`;
+    if (disk === 'local') {
+        return customUrl || `/files/${url}`;
     }
 
     return `/storage/${url}`;

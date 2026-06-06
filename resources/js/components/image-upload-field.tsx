@@ -10,7 +10,8 @@ type ImageUploadOverviewProps = {
     disabled?: boolean;
     placeholder?: string;
     required?: boolean;
-    disk?: 'public' | 'private';
+    disk?: 'public' | 'local';
+    customUrl?: string;
 };
 
 export function ImageUploadField({
@@ -19,6 +20,7 @@ export function ImageUploadField({
     disabled = false,
     required = false,
     disk = 'public',
+    customUrl,
 }: ImageUploadOverviewProps) {
     const [isImageError, setIsImageError] = useState(false);
 
@@ -66,10 +68,10 @@ export function ImageUploadField({
 
         const baseUrl = preview.isBlob
             ? preview.url
-            : getFileUrl({ url: preview.url, disk });
+            : getFileUrl({ url: preview.url, disk, customUrl });
 
         return retryKey > 0 ? `${baseUrl}?retry=${retryKey}` : baseUrl;
-    }, [preview, disk, retryKey]);
+    }, [preview, disk, retryKey, customUrl]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];

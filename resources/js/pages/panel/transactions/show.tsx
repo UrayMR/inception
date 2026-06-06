@@ -83,6 +83,7 @@ export default function ShowTransactionPage({
                         data={data}
                         errors={{}}
                         onChange={() => {}}
+                        transactionId={transaction.id}
                     />
                 </MainContent.Section>
                 <MainContent.Footer>

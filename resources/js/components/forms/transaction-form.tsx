@@ -7,6 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import utils from '@/routes/utils';
 import type {
     FormProps,
     TransactionPaymentMethodType,
@@ -24,7 +25,9 @@ type TransactionFormData = {
     status: TransactionStatusType;
 };
 
-type TransactionFormProps = FormProps<TransactionFormData>;
+type TransactionFormProps = FormProps<TransactionFormData> & {
+    transactionId: string;
+};
 
 // TODO: This form is used for show only. We need to create a reusable form for create and edit.
 export function TransactionForm({
@@ -32,6 +35,7 @@ export function TransactionForm({
     data,
     errors,
     onChange,
+    transactionId,
 }: TransactionFormProps) {
     const showMode = mode === 'show';
     const isReadOnly = showMode;
@@ -106,6 +110,10 @@ export function TransactionForm({
                 <ImageUploadField
                     value={data.payment_proof_path}
                     disabled={isReadOnly}
+                    disk="private"
+                    customUrl={utils.transactions.paymentProof.url(
+                        transactionId,
+                    )}
                 />
             </FormField>
 

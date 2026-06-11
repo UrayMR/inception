@@ -70,6 +70,7 @@ class RegisterCompetitionService
       ->exists();
 
     if ($hasActiveRegistration) {
+      // TODO: Change with flash toast message
       ThrowException::validation(
         'competition_id',
         'You already have a pending or verified registration.',

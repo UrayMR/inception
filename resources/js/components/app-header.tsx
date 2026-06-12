@@ -1,50 +1,28 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { useState } from 'react';
 import AppLogo from '@/components/app-logo';
-import AppLogoIcon from '@/components/app-logo-icon';
-import { Breadcrumbs } from '@/components/breadcrumbs';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuList,
-    navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@/components/ui/sheet';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { UserMenuContent } from '@/components/user-menu-content';
 import { useCurrentUrl } from '@/hooks/use-current-url';
-import { useInitials } from '@/hooks/use-initials';
-import { cn, toUrl } from '@/lib/utils';
+import { login } from '@/routes';
 import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
-import type { BreadcrumbItem, NavItem } from '@/types';
-
-type Props = {
-    breadcrumbs?: BreadcrumbItem[];
-};
+import type { NavItem } from '@/types';
+import { AvatarProfile } from './avatar-profile';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: panel.dashboard(),
-        icon: LayoutGrid,
+    },
+    {
+        title: 'About',
+        href: panel.competitions.index(),
     },
     {
         title: 'Competitions',
@@ -52,197 +30,294 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-const rightNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
-
-const activeItemStyles =
-    'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
-
-export function AppHeader({ breadcrumbs = [] }: Props) {
+export function AppHeader() {
     const page = usePage();
     const { auth } = page.props;
-    const getInitials = useInitials();
-    const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
+    const { isCurrentUrl } = useCurrentUrl();
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
         <>
-            <div className="border-b border-sidebar-border/80">
-                <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
-                    {/* Mobile Menu */}
-                    <div className="lg:hidden">
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="mr-2 h-8.5 w-8.5"
-                                >
-                                    <Menu className="h-5 w-5" />
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent
-                                side="left"
-                                className="flex h-full w-64 flex-col items-stretch justify-between bg-sidebar"
-                            >
-                                <SheetTitle className="sr-only">
-                                    Navigation menu
-                                </SheetTitle>
-                                <SheetHeader className="flex justify-start text-left">
-                                    <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" />
-                                </SheetHeader>
-                                <div className="flex h-full flex-1 flex-col space-y-4 p-4">
-                                    <div className="flex h-full flex-col justify-between text-sm">
-                                        <div className="flex flex-col space-y-4">
-                                            {mainNavItems.map((item) => (
-                                                <Link
-                                                    key={item.title}
-                                                    href={item.href}
-                                                    className="flex items-center space-x-2 font-medium"
-                                                >
-                                                    {item.icon && (
-                                                        <item.icon className="h-5 w-5" />
-                                                    )}
-                                                    <span>{item.title}</span>
-                                                </Link>
-                                            ))}
-                                        </div>
+            {/* ── Sticky header ── */}
+            <div
+                className="sticky top-0 z-50 w-full border-b"
+                style={{
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    background:
+                        'linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(5,0,36,0.6) 60%, rgba(0,0,0,0) 100%)',
+                    borderColor: 'rgba(55,0,92,0.5)',
+                }}
+            >
+                {/* Ambient Glow */}
+                <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 overflow-hidden"
+                >
+                    <div
+                        className="absolute -top-10 left-1/4 h-40 w-96 rounded-full blur-3xl"
+                        style={{ background: 'rgba(55,0,92,0.45)' }}
+                    />
+                    <div
+                        className="absolute -top-6 right-1/3 h-28 w-64 rounded-full blur-2xl"
+                        style={{ background: 'rgba(177,59,255,0.15)' }}
+                    />
+                </div>
 
-                                        <div className="flex flex-col space-y-4">
-                                            {rightNavItems.map((item) => (
-                                                <a
-                                                    key={item.title}
-                                                    href={toUrl(item.href)}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex items-center space-x-2 font-medium"
-                                                >
-                                                    {item.icon && (
-                                                        <item.icon className="h-5 w-5" />
-                                                    )}
-                                                    <span>{item.title}</span>
-                                                </a>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </SheetContent>
-                        </Sheet>
-                    </div>
-
+                <div className="relative mx-auto flex h-16 w-full items-center justify-between px-4 md:max-w-7xl">
+                    {/* ── Logo ── */}
                     <Link
                         href={panel.dashboard()}
                         prefetch
-                        className="flex items-center space-x-2"
+                        className="flex items-center justify-start space-x-2"
+                        style={{
+                            filter: 'drop-shadow(0 0 6px rgba(177,59,255,0.4))',
+                        }}
                     >
                         <AppLogo />
                     </Link>
 
-                    {/* Desktop Navigation */}
-                    <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
+                    {/* ── Desktop Navigation — centered ── */}
+                    <div className="hidden h-full w-full items-center justify-center lg:flex">
                         <NavigationMenu className="flex h-full items-stretch">
-                            <NavigationMenuList className="flex h-full items-stretch space-x-2">
-                                {mainNavItems.map((item, index) => (
-                                    <NavigationMenuItem
-                                        key={index}
-                                        className="relative flex h-full items-center"
-                                    >
-                                        <Link
-                                            href={item.href}
-                                            className={cn(
-                                                navigationMenuTriggerStyle(),
-                                                whenCurrentUrl(
-                                                    item.href,
-                                                    activeItemStyles,
-                                                ),
-                                                'h-9 cursor-pointer px-3',
-                                            )}
+                            <NavigationMenuList className="flex h-full items-stretch space-x-10">
+                                {mainNavItems.map((item, index) => {
+                                    const active = isCurrentUrl(item.href);
+
+                                    return (
+                                        <NavigationMenuItem
+                                            key={index}
+                                            className="relative flex h-full items-center"
                                         >
-                                            {item.icon && (
-                                                <item.icon className="mr-2 h-4 w-4" />
+                                            <Link
+                                                href={item.href}
+                                                className="relative flex h-9 cursor-pointer items-center rounded-md px-3 text-sm font-medium tracking-wide transition-all duration-200"
+                                                style={{
+                                                    color: active
+                                                        ? '#FFEF5F'
+                                                        : '#c4a8e8',
+                                                    background: active
+                                                        ? 'rgba(177,59,255,0.18)'
+                                                        : 'transparent',
+                                                    textShadow: active
+                                                        ? '0 0 12px rgba(255,239,95,0.5)'
+                                                        : 'none',
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    if (!active) {
+                                                        e.currentTarget.style.color =
+                                                            '#B13BFF';
+                                                        e.currentTarget.style.background =
+                                                            'rgba(177,59,255,0.10)';
+                                                    }
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    if (!active) {
+                                                        e.currentTarget.style.color =
+                                                            '#c4a8e8';
+                                                        e.currentTarget.style.background =
+                                                            'transparent';
+                                                    }
+                                                }}
+                                            >
+                                                {item.icon && (
+                                                    <item.icon className="mr-2 h-4 w-4" />
+                                                )}
+                                                {item.title}
+                                            </Link>
+
+                                            {active && (
+                                                <div
+                                                    className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px"
+                                                    style={{
+                                                        background: '#FFEF5F',
+                                                        boxShadow:
+                                                            '0 0 8px 2px rgba(255,239,95,0.6)',
+                                                    }}
+                                                />
                                             )}
-                                            {item.title}
-                                        </Link>
-                                        {isCurrentUrl(item.href) && (
-                                            <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
-                                        )}
-                                    </NavigationMenuItem>
-                                ))}
+                                        </NavigationMenuItem>
+                                    );
+                                })}
                             </NavigationMenuList>
                         </NavigationMenu>
                     </div>
 
-                    <div className="ml-auto flex items-center space-x-2">
-                        <div className="relative flex items-center space-x-1">
+                    {/* ── Right side ── */}
+                    <div className="ml-auto flex items-center justify-end space-x-2">
+                        <div className="hidden justify-end lg:flex">
+                            {auth.user ? (
+                                <AvatarProfile auth={auth} />
+                            ) : (
+                                <div>
+                                    <Link
+                                        href={login()}
+                                        className="text-c4a8e8 hover:text-B13BFF text-sm font-medium transition-colors duration-200"
+                                    >
+                                        Login
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* ── Hamburger ── */}
+                        <div className="flex justify-end lg:hidden">
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="group h-9 w-9 cursor-pointer"
+                                className="mr-2 h-9 w-9 rounded-md transition-all duration-200"
+                                style={{ color: '#c4a8e8', cursor: 'pointer' }}
+                                onClick={() => setMobileOpen(true)}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background =
+                                        'rgba(177,59,255,0.15)';
+                                    e.currentTarget.style.color = '#B13BFF';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background =
+                                        'transparent';
+                                    e.currentTarget.style.color = '#c4a8e8';
+                                }}
                             >
-                                <Search className="size-5! opacity-80 group-hover:opacity-100" />
+                                <Menu className="h-5 w-5" />
                             </Button>
-                            <div className="ml-1 hidden gap-1 lg:flex">
-                                {rightNavItems.map((item) => (
-                                    <Tooltip key={item.title}>
-                                        <TooltipTrigger>
-                                            <a
-                                                href={toUrl(item.href)}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="group inline-flex h-9 w-9 items-center justify-center rounded-md bg-transparent p-0 text-sm font-medium text-accent-foreground ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                            >
-                                                <span className="sr-only">
-                                                    {item.title}
-                                                </span>
-                                                {item.icon && (
-                                                    <item.icon className="size-5 opacity-80 group-hover:opacity-100" />
-                                                )}
-                                            </a>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>{item.title}</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                ))}
-                            </div>
                         </div>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    className="size-10 rounded-full p-1"
-                                >
-                                    <Avatar className="size-8 overflow-hidden rounded-full">
-                                        <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                            {getInitials(auth.user?.name ?? '')}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56" align="end">
-                                {auth.user && (
-                                    <UserMenuContent user={auth.user} />
-                                )}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
                     </div>
                 </div>
             </div>
-            {breadcrumbs.length > 1 && (
-                <div className="flex w-full border-b border-sidebar-border/70">
-                    <div className="mx-auto flex h-12 w-full items-center justify-start px-4 text-neutral-500 md:max-w-7xl">
-                        <Breadcrumbs breadcrumbs={breadcrumbs} />
-                    </div>
+
+            {/* Fullscreen Mobile Menu Overlay */}
+            <div
+                className="fixed inset-0 z-100 flex flex-col lg:hidden"
+                style={{
+                    background: '#050024',
+                    // slide in from left
+                    transform: mobileOpen
+                        ? 'translateX(0)'
+                        : 'translateX(-100%)',
+                    transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    // subtle nebula background
+                    backgroundImage:
+                        'radial-gradient(ellipse at 20% 0%, rgba(55,0,92,0.7) 0%, transparent 50%), radial-gradient(ellipse at 80% 100%, rgba(177,59,255,0.12) 0%, transparent 50%)',
+                }}
+                aria-hidden={!mobileOpen}
+            >
+                <div
+                    className="flex items-center justify-between px-5"
+                    style={{
+                        height: '64px',
+                        borderBottom: '1px solid rgba(55,0,92,0.5)',
+                        flexShrink: 0,
+                    }}
+                >
+                    <Link
+                        href={panel.dashboard()}
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center space-x-2"
+                        style={{
+                            filter: 'drop-shadow(0 0 6px rgba(177,59,255,0.4))',
+                        }}
+                    >
+                        <AppLogo className="h-10" />
+                    </Link>
+
+                    <Button
+                        onClick={() => setMobileOpen(false)}
+                        className="flex h-9 w-9 items-center justify-center rounded-md transition-all duration-200"
+                        style={{
+                            color: '#c4a8e8',
+                            background: 'transparent',
+                            border: 'none',
+                            cursor: 'pointer',
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background =
+                                'rgba(177,59,255,0.15)';
+                            e.currentTarget.style.color = '#B13BFF';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.color = '#c4a8e8';
+                        }}
+                        aria-label="Close menu"
+                    >
+                        <X className="h-5 w-5" />
+                    </Button>
                 </div>
+
+                {/* Nav items */}
+                <nav className="flex flex-1 flex-col overflow-y-auto">
+                    {mainNavItems.map((item, index) => {
+                        const active = isCurrentUrl(item.href);
+
+                        return (
+                            <Link
+                                key={item.title}
+                                href={item.href}
+                                onClick={() => setMobileOpen(false)}
+                                className="flex items-center px-6 transition-all duration-200"
+                                style={{
+                                    height: '72px',
+                                    borderBottom:
+                                        '1px solid rgba(55,0,92,0.35)',
+                                    color: active ? '#FFEF5F' : '#c4a8e8',
+                                    fontSize: '22px',
+                                    fontWeight: 500,
+                                    letterSpacing: '0.01em',
+                                    textShadow: active
+                                        ? '0 0 16px rgba(255,239,95,0.4)'
+                                        : 'none',
+                                    // staggered slide-in
+                                    transitionDelay: mobileOpen
+                                        ? `${index * 60}ms`
+                                        : '0ms',
+                                    opacity: mobileOpen ? 1 : 0,
+                                    transform: mobileOpen
+                                        ? 'translateX(0)'
+                                        : 'translateX(-16px)',
+                                }}
+                                onMouseEnter={(e) => {
+                                    if (!active) {
+                                        e.currentTarget.style.color = '#B13BFF';
+                                    }
+
+                                    e.currentTarget.style.paddingLeft = '28px';
+                                }}
+                                onMouseLeave={(e) => {
+                                    if (!active) {
+                                        e.currentTarget.style.color = '#c4a8e8';
+                                    }
+
+                                    e.currentTarget.style.paddingLeft = '24px';
+                                }}
+                            >
+                                {item.icon && (
+                                    <item.icon className="mr-3 h-5 w-5 opacity-60" />
+                                )}
+                                {item.title}
+                            </Link>
+                        );
+                    })}
+                </nav>
+
+                {/* TODO: Fix This */}
+                {auth.user && (
+                    <div
+                        className="flex items-center justify-between px-6 py-5"
+                        style={{ borderTop: '1px solid rgba(55,0,92,0.5)' }}
+                    >
+                        <AvatarProfile auth={auth} />
+                    </div>
+                )}
+            </div>
+
+            {/* Backdrop - overlay mobile menu */}
+            {mobileOpen && (
+                <div
+                    className="fixed inset-0 z-99 lg:hidden"
+                    style={{ background: 'rgba(0,0,0,0.4)' }}
+                    onClick={() => setMobileOpen(false)}
+                />
             )}
         </>
     );

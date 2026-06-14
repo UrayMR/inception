@@ -9,7 +9,7 @@ import {
     NavigationMenuList,
 } from '@/components/ui/navigation-menu';
 import { useCurrentUrl } from '@/hooks/use-current-url';
-import { login } from '@/routes';
+import { home, login } from '@/routes';
 import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
 import type { NavItem } from '@/types';
@@ -17,8 +17,8 @@ import { AvatarProfile } from './avatar-profile';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
-        href: panel.dashboard(),
+        title: 'Home',
+        href: home(),
     },
     {
         title: 'About',
@@ -40,7 +40,7 @@ export function AppHeader() {
         <>
             {/* ── Sticky header ── */}
             <div
-                className="sticky top-0 z-50 w-full border-b"
+                className="sticky top-0 z-50 w-full"
                 style={{
                     backdropFilter: 'blur(12px)',
                     WebkitBackdropFilter: 'blur(12px)',
@@ -50,7 +50,7 @@ export function AppHeader() {
                 }}
             >
                 {/* Ambient Glow */}
-                <div
+                {/* <div
                     aria-hidden
                     className="pointer-events-none absolute inset-0 overflow-hidden"
                 >
@@ -62,7 +62,7 @@ export function AppHeader() {
                         className="absolute -top-6 right-1/3 h-28 w-64 rounded-full blur-2xl"
                         style={{ background: 'rgba(177,59,255,0.15)' }}
                     />
-                </div>
+                </div> */}
 
                 <div className="relative mx-auto flex h-16 w-full items-center justify-between px-4 md:max-w-7xl">
                     {/* ── Logo ── */}

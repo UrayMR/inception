@@ -13,7 +13,18 @@ export function AppShell({ children, variant = 'sidebar' }: Props) {
 
     if (variant === 'header') {
         return (
-            <div className="flex min-h-screen w-full flex-col">{children}</div>
+            <div
+                className="flex min-h-screen w-full flex-col"
+                style={{
+                    background:
+                        'linear-gradient(160deg, #0d0035 0%, #050024 60%)',
+                    // Subtle inner border glow to frame content against surrounding layout
+                    boxShadow:
+                        'inset 0 0 0 1px rgba(55,0,92,0.5), inset 0 1px 0 0 rgba(177,59,255,0.12)',
+                }}
+            >
+                {children}
+            </div>
         );
     }
 

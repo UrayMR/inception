@@ -12,32 +12,28 @@ class CompetitionSeeder extends Seeder
 {
     public function run(): void
     {
-        Competition::factory()
-            ->count(5)
-            ->create([
-                'type' => CompetitionType::solo->value,
-                'max_member' => 1,
-                'status' => CompetitionStatus::open->value,
-            ])
-            ->each(function (Competition $competition) {
-                CompetitionTimeline::factory()
-                    ->count(3)
-                    ->for($competition)
-                    ->create();
-            });
+        $competitions = [
+            'Essay',
+            'Business Plan',
+            'UI/UX',
+            'Data Science',
+            'Hackathon',
+        ];
 
-        Competition::factory()
-            ->count(5)
-            ->create([
-                'type' => CompetitionType::team->value,
-                'max_member' => rand(2, 5),
-                'status' => CompetitionStatus::open->value,
-            ])
-            ->each(function (Competition $competition) {
-                CompetitionTimeline::factory()
-                    ->count(3)
-                    ->for($competition)
-                    ->create();
-            });
+        foreach ($competitions as $competitionName) {
+            Competition::factory()
+                ->create([
+                    'name' => $competitionName,
+                    'type' => CompetitionType::team->value,
+                    'max_member' => 4,
+                    'status' => CompetitionStatus::closed->value,
+                ])
+                ->each(function (Competition $competition) {
+                    CompetitionTimeline::factory()
+                        ->count(3)
+                        ->for($competition)
+                        ->create();
+                });
+        }
     }
 }

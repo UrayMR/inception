@@ -9,9 +9,10 @@ import {
     NavigationMenuList,
 } from '@/components/ui/navigation-menu';
 import { useCurrentUrl } from '@/hooks/use-current-url';
-import { home, login } from '@/routes';
+import { home, login, logout } from '@/routes';
 import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
+import profile from '@/routes/profile';
 import type { NavItem } from '@/types';
 import { AvatarProfile } from './avatar-profile';
 
@@ -30,17 +31,39 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
+const mobileAuthNavItems: NavItem[] = mainNavItems.concat([
+    {
+        title: 'Profile',
+        href: profile.edit(),
+    },
+    {
+        title: 'Logout',
+        href: logout(),
+    },
+]);
+
+const mobileNonAuthNavItems: NavItem[] = mainNavItems.concat([
+    {
+        title: 'Login',
+        href: login(),
+    },
+]);
+
 export function AppHeader() {
     const page = usePage();
     const { auth } = page.props;
     const { isCurrentUrl } = useCurrentUrl();
     const [mobileOpen, setMobileOpen] = useState(false);
 
+    const mobileNavItems = auth.user
+        ? mobileAuthNavItems
+        : mobileNonAuthNavItems;
+
     return (
         <>
             {/* ── Sticky header ── */}
             <div
-                className="sticky top-0 z-50 w-full"
+                className="sticky top-0 z-50 w-full p-2"
                 style={{
                     backdropFilter: 'blur(12px)',
                     WebkitBackdropFilter: 'blur(12px)',
@@ -65,7 +88,7 @@ export function AppHeader() {
                 </div> */}
 
                 <div className="relative mx-auto flex h-16 w-full items-center justify-between px-4 md:max-w-7xl">
-                    {/* ── Logo ── */}
+                    {/* Logo */}
                     <Link
                         href={panel.dashboard()}
                         prefetch
@@ -77,8 +100,8 @@ export function AppHeader() {
                         <AppLogo />
                     </Link>
 
-                    {/* ── Desktop Navigation — centered ── */}
-                    <div className="hidden h-full w-full items-center justify-center lg:flex">
+                    {/* Desktop Mode */}
+                    <div className="h-full items-center justify-end">
                         <NavigationMenu className="flex h-full items-stretch">
                             <NavigationMenuList className="flex h-full items-stretch space-x-10">
                                 {mainNavItems.map((item, index) => {
@@ -87,7 +110,7 @@ export function AppHeader() {
                                     return (
                                         <NavigationMenuItem
                                             key={index}
-                                            className="relative flex h-full items-center"
+                                            className="relative hidden h-full items-center lg:flex"
                                         >
                                             <Link
                                                 href={item.href}
@@ -139,56 +162,68 @@ export function AppHeader() {
                                         </NavigationMenuItem>
                                     );
                                 })}
+
+                                <NavigationMenuItem className="relative hidden h-full items-center lg:flex">
+                                    {auth.user ? (
+                                        <AvatarProfile auth={auth} />
+                                    ) : (
+                                        <Link
+                                            href={login()}
+                                            className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-lg px-5 text-sm font-semibold tracking-wide transition-all duration-300"
+                                            style={{
+                                                background:
+                                                    'linear-gradient(135deg, #B13BFF 0%, #8B2DCC 100%)',
+                                                color: '#F3E8FF',
+                                                boxShadow:
+                                                    '0 0 20px rgba(177,59,255,0.35)',
+                                            }}
+                                        >
+                                            <span className="relative z-10">
+                                                Login
+                                            </span>
+
+                                            {/* Shine effect */}
+                                            <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                                        </Link>
+                                    )}
+                                </NavigationMenuItem>
+
+                                {/* Mobile Hamburger */}
+                                <NavigationMenuItem className="relative flex h-full items-center lg:hidden">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-9 w-9 rounded-md transition-all duration-200"
+                                        style={{
+                                            color: '#c4a8e8',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() => setMobileOpen(true)}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background =
+                                                'rgba(177,59,255,0.15)';
+                                            e.currentTarget.style.color =
+                                                '#B13BFF';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background =
+                                                'transparent';
+                                            e.currentTarget.style.color =
+                                                '#c4a8e8';
+                                        }}
+                                    >
+                                        <Menu className="h-5 w-5" />
+                                    </Button>
+                                </NavigationMenuItem>
                             </NavigationMenuList>
                         </NavigationMenu>
-                    </div>
-
-                    {/* ── Right side ── */}
-                    <div className="ml-auto flex items-center justify-end space-x-2">
-                        <div className="hidden justify-end lg:flex">
-                            {auth.user ? (
-                                <AvatarProfile auth={auth} />
-                            ) : (
-                                <div>
-                                    <Link
-                                        href={login()}
-                                        className="text-c4a8e8 hover:text-B13BFF text-sm font-medium transition-colors duration-200"
-                                    >
-                                        Login
-                                    </Link>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* ── Hamburger ── */}
-                        <div className="flex justify-end lg:hidden">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="mr-2 h-9 w-9 rounded-md transition-all duration-200"
-                                style={{ color: '#c4a8e8', cursor: 'pointer' }}
-                                onClick={() => setMobileOpen(true)}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.background =
-                                        'rgba(177,59,255,0.15)';
-                                    e.currentTarget.style.color = '#B13BFF';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.background =
-                                        'transparent';
-                                    e.currentTarget.style.color = '#c4a8e8';
-                                }}
-                            >
-                                <Menu className="h-5 w-5" />
-                            </Button>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Fullscreen Mobile Menu Overlay */}
+            {/* Mobile Menu Overlay */}
             <div
-                className="fixed inset-0 z-100 flex flex-col lg:hidden"
+                className="fixed inset-0 z-100 flex flex-col gap-5 lg:hidden"
                 style={{
                     background: '#050024',
                     // slide in from left
@@ -203,11 +238,9 @@ export function AppHeader() {
                 aria-hidden={!mobileOpen}
             >
                 <div
-                    className="flex items-center justify-between px-5"
+                    className="flex items-center justify-between px-5 py-4"
                     style={{
-                        height: '64px',
                         borderBottom: '1px solid rgba(55,0,92,0.5)',
-                        flexShrink: 0,
                     }}
                 >
                     <Link
@@ -246,8 +279,8 @@ export function AppHeader() {
                 </div>
 
                 {/* Nav items */}
-                <nav className="flex flex-1 flex-col overflow-y-auto">
-                    {mainNavItems.map((item, index) => {
+                <nav className="flex flex-col" aria-label="Mobile navigation">
+                    {mobileNavItems.map((item, index) => {
                         const active = isCurrentUrl(item.href);
 
                         return (
@@ -258,8 +291,9 @@ export function AppHeader() {
                                 className="flex items-center px-6 transition-all duration-200"
                                 style={{
                                     height: '72px',
-                                    borderBottom:
-                                        '1px solid rgba(55,0,92,0.35)',
+                                    borderBottom: active
+                                        ? '2px solid rgba(255,239,95,0.6)'
+                                        : '1px solid rgba(55,0,92,0.35)',
                                     color: active ? '#FFEF5F' : '#c4a8e8',
                                     fontSize: '22px',
                                     fontWeight: 500,
@@ -278,6 +312,8 @@ export function AppHeader() {
                                 }}
                                 onMouseEnter={(e) => {
                                     if (!active) {
+                                        e.currentTarget.style.borderBottomColor =
+                                            'rgba(177,59,255,0.5)';
                                         e.currentTarget.style.color = '#B13BFF';
                                     }
 
@@ -285,6 +321,8 @@ export function AppHeader() {
                                 }}
                                 onMouseLeave={(e) => {
                                     if (!active) {
+                                        e.currentTarget.style.borderBottomColor =
+                                            'rgba(55,0,92,0.35)';
                                         e.currentTarget.style.color = '#c4a8e8';
                                     }
 
@@ -299,16 +337,6 @@ export function AppHeader() {
                         );
                     })}
                 </nav>
-
-                {/* TODO: Fix This */}
-                {auth.user && (
-                    <div
-                        className="flex items-center justify-between px-6 py-5"
-                        style={{ borderTop: '1px solid rgba(55,0,92,0.5)' }}
-                    >
-                        <AvatarProfile auth={auth} />
-                    </div>
-                )}
             </div>
 
             {/* Backdrop - overlay mobile menu */}

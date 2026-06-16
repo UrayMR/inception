@@ -1,9 +1,9 @@
 import type { ColumnDef } from '@tanstack/react-table';
+import { DeleteDialogButton } from '@/components/buttons/delete-dialog-button';
+import { EditButton } from '@/components/buttons/edit-button';
+import { ShowButton } from '@/components/buttons/show-button';
 import teams from '@/routes/panel/teams';
 import type { ITeamIndex, PaginationMeta } from '@/types';
-import { DeleteDialogButton } from '../buttons/delete-dialog-button';
-import { EditButton } from '../buttons/edit-button';
-import { ShowButton } from '../buttons/show-button';
 
 export const getTeamColumns = (
     meta: PaginationMeta,
@@ -41,7 +41,7 @@ export const getTeamColumns = (
             const status = row.original.status;
 
             return status.charAt(0).toUpperCase() + status.slice(1);
-        }
+        },
     },
     {
         header: 'Actions',

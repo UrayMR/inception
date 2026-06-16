@@ -1,9 +1,9 @@
 import type { ColumnDef } from '@tanstack/react-table';
+import { DeleteDialogButton } from '@/components/buttons/delete-dialog-button';
+import { EditButton } from '@/components/buttons/edit-button';
+import { ShowButton } from '@/components/buttons/show-button';
 import competitions from '@/routes/panel/competitions';
 import type { ICompetitionIndex, PaginationMeta } from '@/types';
-import { DeleteDialogButton } from '../buttons/delete-dialog-button';
-import { EditButton } from '../buttons/edit-button';
-import { ShowButton } from '../buttons/show-button';
 
 export const getCompetitionColumns = (
     meta: PaginationMeta,

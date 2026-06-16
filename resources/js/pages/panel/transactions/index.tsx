@@ -1,7 +1,7 @@
 import { Head, usePage } from '@inertiajs/react';
-import { getTransactionColumns } from '@/components/columns/transaction-column';
 import { DataTable } from '@/components/data-table/data-table';
 import { MainContent } from '@/components/main-content';
+import { getTransactionColumns } from '@/features/panel/transaction/column/transaction-column';
 import PanelLayout from '@/layouts/panel-layout';
 import transactions from '@/routes/panel/transactions';
 import type {

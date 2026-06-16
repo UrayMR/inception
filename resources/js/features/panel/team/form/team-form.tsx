@@ -7,9 +7,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { DynamicTeamInput } from '@/features/panel/team/components/dynamic-team-input';
 import type { FormProps, Option, TeamMember, TeamStatusType } from '@/types';
 import { CompetitionTypeMap, TeamStatusMap } from '@/types';
-import { DynamicTeamInput } from '../specifics/dynamic-team-input';
 
 type TeamFormData = {
     competition_id: string;

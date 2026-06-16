@@ -1,7 +1,7 @@
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
-import { CompetitionCard } from '@/components/cards/competition-card';
 import { DataTablePagination } from '@/components/data-table/data-table-pagination';
+import { CompetitionCard } from '@/features/guest/competition/components/competition-card';
 import AppLayout from '@/layouts/app-layout';
 import type { DataTableProps, ICompetitionShow } from '@/types';
 

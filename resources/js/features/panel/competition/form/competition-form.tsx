@@ -1,4 +1,5 @@
 import { FormField } from '@/components/form-field';
+import { ImageUploadField } from '@/components/image-upload-field';
 import { Input } from '@/components/ui/input';
 import {
     Select,
@@ -7,6 +8,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { DynamicTimelineInput } from '@/features/panel/competition/components/dynamic-timeline-input';
 import type {
     CompetitionStatusType,
     CompetitionTimeline,
@@ -14,8 +16,6 @@ import type {
     FormProps,
 } from '@/types';
 import { CompetitionStatusMap, CompetitionTypeMap } from '@/types';
-import { ImageUploadField } from '../image-upload-field';
-import { DynamicTimelineInput } from '../specifics/dynamic-timeline-input';
 
 type CompetitionFormData = {
     name: string;

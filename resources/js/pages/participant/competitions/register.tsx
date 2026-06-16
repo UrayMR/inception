@@ -1,10 +1,10 @@
 import { Head } from '@inertiajs/react';
 import { useForm } from '@inertiajs/react';
 import { useMemo } from 'react';
-import RegisterCompetitionForm from '@/components/forms/competition-registration-form';
-import RegisterCompetitionHero from '@/components/specifics/register-competition/hero';
-import RegisterCompetitionSummary from '@/components/specifics/register-competition/summary';
 import { Button } from '@/components/ui/button';
+import RegisterCompetitionHero from '@/features/participant/competitions/components/hero';
+import RegisterCompetitionSummary from '@/features/participant/competitions/components/summary';
+import RegisterCompetitionForm from '@/features/participant/competitions/form/competition-registration-form';
 import getQueryParam from '@/helpers/get-query-param';
 import { useZod } from '@/hooks/use-zod';
 import AppLayout from '@/layouts/app-layout';

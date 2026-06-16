@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
+import { ShowButton } from '@/components/buttons/show-button';
 import transactions from '@/routes/panel/transactions';
 import type { ITransactionIndex, PaginationMeta } from '@/types';
-import { ShowButton } from '../buttons/show-button';
 
 export const getTransactionColumns = (
     meta: PaginationMeta,

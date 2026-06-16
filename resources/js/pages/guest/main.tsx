@@ -1,6 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRightIcon, Calendar, Rocket, Trophy } from 'lucide-react';
-import CarouselSection from '@/components/landing-page/carousel-section';
+import CarouselSection from '@/features/guest/landing-page/carousel-section';
 import AppLayout from '@/layouts/app-layout';
 import { login } from '@/routes';
 import guest from '@/routes/guest';

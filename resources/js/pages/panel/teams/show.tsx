@@ -1,10 +1,16 @@
 import { Head } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
-import { TeamForm } from '@/components/forms/team-form';
 import { MainContent } from '@/components/main-content';
+import { TeamForm } from '@/features/panel/team/form/team-form';
 import PanelLayout from '@/layouts/panel-layout';
 import teams from '@/routes/panel/teams';
-import type { BreadcrumbItem, ITeamShow, Option, TeamMember, TeamStatusType } from '@/types';
+import type {
+    BreadcrumbItem,
+    ITeamShow,
+    Option,
+    TeamMember,
+    TeamStatusType,
+} from '@/types';
 import { TeamStatusMap } from '@/types';
 
 interface ShowTeamForm {

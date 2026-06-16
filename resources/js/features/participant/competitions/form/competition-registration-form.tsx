@@ -1,6 +1,5 @@
 import { usePage } from '@inertiajs/react';
 import { FormField } from '@/components/form-field';
-import { DynamicTeamInput } from '@/components/specifics/dynamic-team-input';
 import { Input } from '@/components/ui/input';
 import {
     Select,
@@ -9,6 +8,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { DynamicTeamInput } from '@/features/panel/team/components/dynamic-team-input';
 import {
     TransactionPaymentMethodMap,
     TransactionPaymentMethodValue,

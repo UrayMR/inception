@@ -14,7 +14,7 @@ import type {
     TransactionStatusType,
 } from '@/types';
 import { TransactionPaymentMethodMap, TransactionStatusMap } from '@/types';
-import { ImageUploadField } from '../image-upload-field';
+import { ImageUploadField } from '../../../../components/image-upload-field';
 
 type TransactionFormData = {
     competition_name: string;
@@ -110,7 +110,7 @@ export function TransactionForm({
                 <ImageUploadField
                     value={data.payment_proof_path}
                     disabled={isReadOnly}
-                    disk="private"
+                    disk="local"
                     customUrl={utils.transactions.paymentProof.url(
                         transactionId,
                     )}

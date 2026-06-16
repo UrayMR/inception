@@ -1,5 +1,5 @@
 import { Binary, Sparkles, Code2, Flag, BarChart3 } from 'lucide-react';
-import { CompetitionCarousel } from '@/components/specifics/competition-carousel';
+import { CompetitionCarousel } from '@/features/guest/landing-page/components/competition-carousel';
 
 const competitions = [
     {

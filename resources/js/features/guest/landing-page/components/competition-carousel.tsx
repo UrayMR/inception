@@ -3,8 +3,8 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { Rocket } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ComCard } from '../cards/comp-card';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
+import { ComCard } from '@/features/participant/competitions/components/comp-card';
 
 // Biggest / smallest scale factor for the carousel items
 const TWEEN_FACTOR_BASE = 0.24;

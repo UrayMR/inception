@@ -90,7 +90,7 @@ export function AppHeader() {
                 <div className="relative mx-auto flex h-16 w-full items-center justify-between px-4 md:max-w-7xl">
                     {/* Logo */}
                     <Link
-                        href={panel.dashboard()}
+                        href={home()}
                         prefetch
                         className="flex items-center justify-start space-x-2"
                         style={{

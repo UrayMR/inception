@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { MainContent } from '@/components/main-content';
-import { UserForm } from '@/features/panel/user/form/user-form';
+import { UserForm } from '@/features/panel/user';
 import PanelLayout from '@/layouts/panel-layout';
 import users from '@/routes/panel/users';
 import type { BreadcrumbItem, IUserShow } from '@/types';

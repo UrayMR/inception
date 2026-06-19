@@ -2,7 +2,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { SubmitButton } from '@/components/buttons/submit-button';
 import { MainContent } from '@/components/main-content';
-import { UserForm } from '@/features/panel/user/form/user-form';
+import { UserForm } from '@/features/panel/user';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
 import users from '@/routes/panel/users';

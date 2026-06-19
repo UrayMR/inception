@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { MainContent } from '@/components/main-content';
-import { TeamForm } from '@/features/panel/team/form/team-form';
+import { TeamForm } from '@/features/panel/team';
 import PanelLayout from '@/layouts/panel-layout';
 import teams from '@/routes/panel/teams';
 import type {

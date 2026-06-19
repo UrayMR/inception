@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { MainContent } from '@/components/main-content';
-import { CompetitionForm } from '@/features/panel/competition/form/competition-form';
+import { CompetitionForm } from '@/features/panel/competition';
 import PanelLayout from '@/layouts/panel-layout';
 import competitions from '@/routes/panel/competitions';
 import type { CompetitionTimeline } from '@/types';

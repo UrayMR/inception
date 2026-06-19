@@ -2,7 +2,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { SubmitButton } from '@/components/buttons/submit-button';
 import { MainContent } from '@/components/main-content';
-import { TeamForm } from '@/features/panel/team/form/team-form';
+import { TeamForm } from '@/features/panel/team';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
 import teams from '@/routes/panel/teams';

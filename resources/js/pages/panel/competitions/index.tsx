@@ -2,7 +2,7 @@ import { Head, usePage } from '@inertiajs/react';
 import { CreateButton } from '@/components/buttons/create-button';
 import { DataTable } from '@/components/data-table/data-table';
 import { MainContent } from '@/components/main-content';
-import { getCompetitionColumns } from '@/features/panel/competition/column/competition-column';
+import { getCompetitionColumns } from '@/features/panel/competition';
 import PanelLayout from '@/layouts/panel-layout';
 import competitions from '@/routes/panel/competitions';
 import type {

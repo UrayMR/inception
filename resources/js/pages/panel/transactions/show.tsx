@@ -2,7 +2,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { SubmitButton } from '@/components/buttons/submit-button';
 import { MainContent } from '@/components/main-content';
-import { TransactionForm } from '@/features/panel/transaction/form/transaction-form';
+import { TransactionForm } from '@/features/panel/transaction';
 import PanelLayout from '@/layouts/panel-layout';
 import transactions from '@/routes/panel/transactions';
 import { TransactionStatusMap } from '@/types';

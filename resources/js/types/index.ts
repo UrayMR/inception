@@ -32,3 +32,14 @@ export interface Option {
     label: string;
     otherValues?: Record<string, any>;
 }
+
+export interface TimelineEvent {
+    id: number;
+    title: string;
+    displayDate: string;
+    radius: number;
+    angle: number;
+    color: string;
+    size: number;
+    defaultPlanet?: boolean;
+}

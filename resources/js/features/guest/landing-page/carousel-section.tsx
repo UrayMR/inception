@@ -31,7 +31,7 @@ const competitions = [
 
 export default function CarouselSection() {
     return (
-        <section className="relative z-10 mx-auto w-full max-w-7xl overflow-hidden px-6 py-20 lg:px-8">
+        <section className="relative mx-auto w-full max-w-7xl overflow-hidden px-6 py-20 lg:px-8">
             <div className="mb-16 space-y-4 text-center">
                 <h2 className="text-3xl font-black tracking-widest text-white uppercase drop-shadow-[0_0_25px_rgba(168,85,247,0.6)] sm:text-5xl">
                     Choose Your Path

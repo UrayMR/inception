@@ -169,7 +169,7 @@ export function AppHeader() {
                                     ) : (
                                         <Link
                                             href={login()}
-                                            className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-lg px-5 text-sm font-semibold tracking-wide transition-all duration-300"
+                                            className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-lg px-5 text-sm font-medium tracking-wide transition-all duration-300"
                                             style={{
                                                 background:
                                                     'linear-gradient(135deg, #B13BFF 0%, #8B2DCC 100%)',

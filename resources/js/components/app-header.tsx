@@ -9,7 +9,7 @@ import {
     NavigationMenuList,
 } from '@/components/ui/navigation-menu';
 import { useCurrentUrl } from '@/hooks/use-current-url';
-import { home, login, logout } from '@/routes';
+import { home, logout, register } from '@/routes';
 import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
 import profile from '@/routes/profile';
@@ -37,15 +37,15 @@ const mobileAuthNavItems: NavItem[] = mainNavItems.concat([
         href: profile.edit(),
     },
     {
-        title: 'Logout',
+        title: 'Sign Out',
         href: logout(),
     },
 ]);
 
 const mobileNonAuthNavItems: NavItem[] = mainNavItems.concat([
     {
-        title: 'Login',
-        href: login(),
+        title: 'Sign Up',
+        href: register(),
     },
 ]);
 
@@ -168,7 +168,7 @@ export function AppHeader() {
                                         <AvatarProfile auth={auth} />
                                     ) : (
                                         <Link
-                                            href={login()}
+                                            href={register()}
                                             className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-lg px-5 text-sm font-medium tracking-wide transition-all duration-300"
                                             style={{
                                                 background:
@@ -179,7 +179,7 @@ export function AppHeader() {
                                             }}
                                         >
                                             <span className="relative z-10">
-                                                Sign In
+                                                Sign Up
                                             </span>
 
                                             {/* Shine effect */}

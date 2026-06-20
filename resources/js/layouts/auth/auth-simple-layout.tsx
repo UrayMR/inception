@@ -13,7 +13,10 @@ export default function AuthSimpleLayout({
         <AppShell variant="header">
             <AppHeader />
             <AppContent variant="header">
-                <div className="flex flex-col items-center min-h-[90vh] justify-center gap-6 p-6 text-white md:p-10">
+                <div className="relative flex min-h-[90vh] flex-col items-center justify-center gap-6 p-6 text-white md:p-10">
+                    <div className="pointer-events-none absolute -top-20 -left-20 h-96 w-96 rounded-full bg-purple-600/10 blur-[120px]" />
+                    <div className="pointer-events-none absolute -right-20 -bottom-20 h-96 w-96 rounded-full bg-indigo-600/10 blur-[120px]" />
+
                     <div className="w-full max-w-sm">
                         <div className="flex flex-col gap-8">
                             <div className="flex flex-col items-center gap-4">

@@ -179,7 +179,7 @@ export function AppHeader() {
                                             }}
                                         >
                                             <span className="relative z-10">
-                                                Login
+                                                Sign In
                                             </span>
 
                                             {/* Shine effect */}

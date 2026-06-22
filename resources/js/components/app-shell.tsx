@@ -14,7 +14,7 @@ export function AppShell({ children, variant = 'sidebar' }: Props) {
     if (variant === 'header') {
         return (
             <div
-                className="flex min-h-screen w-full flex-col overflow-x-hidden"
+                className="flex min-h-screen w-full flex-col"
                 style={{
                     background:
                         'linear-gradient(160deg, #0d0035 0%, #050024 60%)',

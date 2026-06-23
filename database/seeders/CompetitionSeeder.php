@@ -26,7 +26,10 @@ class CompetitionSeeder extends Seeder
                     'name' => $competitionName,
                     'type' => CompetitionType::team->value,
                     'max_member' => 4,
-                    'status' => CompetitionStatus::closed->value,
+                    'status' => fake()->randomElement([
+                        CompetitionStatus::open->value,
+                        CompetitionStatus::closed->value,
+                    ]),
                 ])
                 ->each(function (Competition $competition) {
                     CompetitionTimeline::factory()

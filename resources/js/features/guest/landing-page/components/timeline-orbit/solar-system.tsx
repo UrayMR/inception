@@ -69,11 +69,23 @@ const SolarSystem = forwardRef<SolarSystemRef, SolarSystemProps>(
             focusEvent(prev);
         };
 
+        // const [isMobile, setIsMobile] = useState(false);
+
+        // useEffect(() => {
+        //     const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        //     checkMobile();
+        //     window.addEventListener('resize', checkMobile);
+
+        //     return () => window.removeEventListener('resize', checkMobile);
+        // }, []);
+
         return (
             <Canvas
+                dpr={[1, 1.5]}
                 gl={{
                     alpha: true,
                     antialias: true,
+                    powerPreference: 'high-performance',
                 }}
                 style={{
                     background: 'transparent',
@@ -116,6 +128,7 @@ const SolarSystem = forwardRef<SolarSystemRef, SolarSystemProps>(
                     enableDamping
                     dampingFactor={0.05}
                 />
+                {/* {!isMobile && ( */}
                 <EffectComposer>
                     <Bloom
                         mipmapBlur
@@ -123,6 +136,7 @@ const SolarSystem = forwardRef<SolarSystemRef, SolarSystemProps>(
                         luminanceThreshold={0.6}
                     />
                 </EffectComposer>
+                {/* )} */}
             </Canvas>
         );
     },

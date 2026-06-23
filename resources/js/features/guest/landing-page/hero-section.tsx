@@ -6,34 +6,39 @@ import guest from '@/routes/guest';
 export default function HeroSection() {
     return (
         <section className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden px-6 py-12 text-center lg:px-8">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(88,28,135,0.15)_0%,rgba(0,0,0,0)_70%)]" />
-            <div className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-purple-600/10 blur-[100px]" />
-
-            <div className="relative mx-auto max-w-4xl space-y-6">
-                <h1 className="text-4xl font-extralight tracking-tight text-white sm:text-6xl lg:text-7xl">
-                    Power Your Innovation With{' '}
-                    <span className="mt-2 block bg-linear-to-r from-purple-400 via-yellow-300 to-indigo-400 bg-clip-text font-extrabold tracking-wider text-transparent">
+            <div className="relative mx-auto max-w-5xl space-y-10">
+                <h1 className="text-4xl leading-[1.15] font-extrabold tracking-tight text-white uppercase sm:text-6xl lg:text-7xl">
+                    Power Your Innovation <br />
+                    With{' '}
+                    <span className="relative inline-block bg-linear-to-r from-white via-purple-200 to-indigo-300 bg-clip-text font-black text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.15)]">
                         INCEPTION
                     </span>
                 </h1>
 
-                <p className="mx-auto max-w-2xl text-base leading-relaxed text-gray-400 sm:text-lg lg:text-xl">
-                    Kompetisi teknologi untuk menguji skill, kreativitas, dan
-                    solusi digital mutakhir. Tunjukkan kemampuan tim terbaikmu
-                    dan bawa pulang total hadiah puluhan juta rupiah.
+                <div className="mx-auto h-1 w-16 bg-amber-400/80 shadow-[0_0_10px_rgba(251,191,36,0.4)]" />
+
+                <p className="mx-auto max-w-2xl text-sm leading-relaxed tracking-wide text-purple-200/50 sm:text-base">
+                    Kompetisi teknologi untuk menguji kapabilitas, kreativitas,
+                    dan solusi digital mutakhir. Validasi kemampuan terbaik
+                    timmu dan klaim total hadiah puluhan juta rupiah.
                 </p>
 
-                <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+                <div className="mt-12 flex flex-col flex-wrap items-center justify-center gap-4 font-mono text-xs font-bold tracking-widest uppercase sm:flex-row">
                     <Link
                         href={login()}
-                        className="group relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-linear-to-r from-purple-600 to-indigo-600 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-900/40 transition-all hover:from-purple-500 hover:to-indigo-500"
+                        className="group relative inline-flex h-12 cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-linear-to-r from-purple-600 to-indigo-600 px-8 text-white transition-all duration-300 hover:from-purple-500 hover:to-indigo-500 hover:shadow-[0_0_25px_rgba(147,51,234,0.4)] active:scale-95"
                     >
-                        Daftar Sekarang
-                        <ArrowRightIcon className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                        <span className="relative z-10 inline-flex items-center gap-2">
+                            Daftar Sekarang
+                            <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                        </span>
+                        <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
                     </Link>
+
+                    {/* Secondary Button: Border Ghost Style */}
                     <Link
                         href={guest.competitions.index()}
-                        className="inline-flex items-center justify-center rounded-xl border border-gray-700 bg-slate-900/50 px-8 py-3.5 text-sm font-semibold text-gray-300 backdrop-blur-md hover:bg-slate-800 hover:text-white"
+                        className="inline-flex h-12 items-center justify-center rounded-xl border border-purple-900/40 bg-purple-950/10 px-8 text-purple-300 backdrop-blur-md transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-900/20 hover:text-white"
                     >
                         Lihat Bidang Lomba
                     </Link>

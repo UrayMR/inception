@@ -1,13 +1,20 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import AboutSection from '@/features/guest/landing-page/about-section';
-import CarouselSection from '@/features/guest/landing-page/carousel-section';
+import CompetitionSection from '@/features/guest/landing-page/competition-section';
 import { CtaSection } from '@/features/guest/landing-page/cta-section';
 import FaqSection from '@/features/guest/landing-page/faq-section';
 import HeroSection from '@/features/guest/landing-page/hero-section';
 import TimelineSection from '@/features/guest/landing-page/timeline-section';
 import AppLayout from '@/layouts/app-layout';
+import type { ICompetitionCard } from '@/types';
 
 export default function Main() {
+    const { competitions } = usePage<{
+        competitions: {
+            data: ICompetitionCard[];
+        };
+    }>().props;
+
     return (
         <AppLayout>
             <Head title="Welcome" />
@@ -19,7 +26,7 @@ export default function Main() {
             <AboutSection />
 
             {/* --- CAROUSEL SECTION --- */}
-            <CarouselSection />
+            <CompetitionSection items={competitions.data} />
 
             {/* --- TIMELINE SECTION --- */}
             <TimelineSection />

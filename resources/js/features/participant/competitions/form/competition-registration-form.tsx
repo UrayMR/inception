@@ -15,8 +15,11 @@ import {
 } from '@/types';
 import type { FormErrors, Option, TransactionPaymentMethodType } from '@/types';
 import type { RegisterCompetitionFormDataType } from '@/validations/register-competition-schema';
+import type { RegistrationStepId } from '../components/register-stepper';
+import StepCard from '../components/step-card';
 
 type RegisterCompetitionFormProps = {
+    step: RegistrationStepId;
     competitionMap: Option[];
     data: RegisterCompetitionFormDataType;
     errors: FormErrors<RegisterCompetitionFormDataType>;
@@ -31,6 +34,7 @@ type RegisterCompetitionFormProps = {
 };
 
 export default function RegisterCompetitionForm({
+    step,
     competitionMap,
     data,
     errors,
@@ -52,152 +56,187 @@ export default function RegisterCompetitionForm({
             ? Number(selectedCompetition?.otherValues?.max_member) - 1
             : undefined;
 
+    if (step === 'info') {
+        return (
+            <StepCard>
+                <div className="space-y-1 border-b border-zinc-800 pb-4">
+                    <h2 className="font-sans text-xl font-black text-white uppercase">
+                        Team Information
+                    </h2>
+                    <p className="font-mono text-xs text-zinc-500">
+                        FILL IN YOUR TEAM DETAILS TO CONTINUE.
+                    </p>
+                </div>
+
+                <div className="space-y-1.5">
+                    <FormField
+                        name="competition_id"
+                        label="Competition"
+                        error={errors.competition_id}
+                        required
+                    >
+                        <Select
+                            value={data.competition_id}
+                            onValueChange={onCompetitionChange}
+                            required
+                        >
+                            <SelectTrigger
+                                id="competition_id"
+                                className="w-full border-purple-500/20 focus-visible:border-0 focus-visible:ring-purple-500/20"
+                            >
+                                <SelectValue placeholder="Select a competition first" />
+                            </SelectTrigger>
+                            <SelectContent className="border-purple-500/20 bg-purple-950 text-white focus-visible:border-0 focus-visible:ring-purple-500/20">
+                                {competitionMap.map((competition) => (
+                                    <SelectItem
+                                        key={competition.value}
+                                        value={competition.value}
+                                        className="data-highlighted:bg-purple-500/20 data-highlighted:text-white"
+                                    >
+                                        {competition.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </FormField>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                    {isTeamCompetition && (
+                        <div className="sm:col-span-2">
+                            <FormField
+                                name="team_name"
+                                label="Team Name"
+                                error={errors.team_name}
+                                required
+                            >
+                                <Input
+                                    id="team_name"
+                                    value={data.team_name}
+                                    onChange={(event) =>
+                                        onChange(
+                                            'team_name',
+                                            event.target.value,
+                                        )
+                                    }
+                                    className="autofill:box-shadow border-purple-500/20 focus-visible:border-0 focus-visible:ring-purple-500/20"
+                                    placeholder="Your team name"
+                                    disabled={!canFillTeamDetails}
+                                    required
+                                />
+                            </FormField>
+                        </div>
+                    )}
+
+                    <FormField
+                        name="leader_name"
+                        label={leaderNameLabel}
+                        required
+                    >
+                        <Input
+                            id="leader_name"
+                            value={auth.user.name}
+                            placeholder="Your name"
+                            className="border-purple-500/20 focus-visible:border-0 focus-visible:ring-purple-500/20"
+                            readOnly
+                            disabled={!canFillTeamDetails}
+                        />
+                    </FormField>
+
+                    <FormField
+                        name="leader_email"
+                        label={leaderEmailLabel}
+                        required
+                    >
+                        <Input
+                            id="leader_email"
+                            value={auth.user.email}
+                            placeholder="Your email"
+                            className="border-purple-500/20 focus-visible:border-0 focus-visible:ring-purple-500/20"
+                            readOnly
+                            disabled={!canFillTeamDetails}
+                        />
+                    </FormField>
+
+                    <FormField
+                        name="phone_number"
+                        label="Phone Number"
+                        error={errors.phone_number}
+                        required
+                    >
+                        <Input
+                            id="phone_number"
+                            value={data.phone_number}
+                            onChange={(event) =>
+                                onChange('phone_number', event.target.value)
+                            }
+                            className="border-purple-500/20 focus-visible:border-0 focus-visible:ring-purple-500/20"
+                            placeholder="08xxxxxxxxxx"
+                            disabled={!canFillTeamDetails}
+                            required
+                        />
+                    </FormField>
+
+                    <FormField
+                        name="institution"
+                        label="Institution"
+                        error={errors.institution}
+                    >
+                        <Input
+                            id="institution"
+                            value={data.institution}
+                            onChange={(event) =>
+                                onChange('institution', event.target.value)
+                            }
+                            className="border-purple-500/20 focus-visible:border-0 focus-visible:ring-purple-500/20"
+                            placeholder="School / University / Community"
+                            disabled={!canFillTeamDetails}
+                            required
+                        />
+                    </FormField>
+
+                    {isTeamCompetition && (
+                        <div className="sm:col-span-2">
+                            <DynamicTeamInput
+                                id="members"
+                                label="Team Members"
+                                hint={`Add up to ${maxAdditionalMembers || 1} team members (leader is counted separately).`}
+                                value={data.members}
+                                error={errors}
+                                onChange={(members) =>
+                                    onChange(
+                                        'members',
+                                        members.slice(
+                                            0,
+                                            maxAdditionalMembers ||
+                                                members.length,
+                                        ),
+                                    )
+                                }
+                                required
+                                disabled={!canFillTeamDetails}
+                                maxItems={maxAdditionalMembers}
+                            />
+                        </div>
+                    )}
+                </div>
+            </StepCard>
+        );
+    }
+
     return (
-        <div className="space-y-5 rounded-3xl border border-border/60 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.3)] dark:bg-[#111111]">
-            <div className="space-y-1">
-                <h2 className="text-xl font-semibold tracking-tight">
-                    Team Information
+        <StepCard>
+            <div className="space-y-1 border-b border-zinc-800 pb-4">
+                <h2 className="font-sans text-xl font-black tracking-tight text-white uppercase">
+                    Payment
                 </h2>
-                <p className="text-sm text-muted-foreground">
-                    Fill in your team details to continue.
+                <p className="font-mono text-xs text-zinc-500">
+                    CHOOSE A PAYMENT METHOD AND UPLOAD YOUR PROOF.
                 </p>
             </div>
 
-            <div className="space-y-1.5">
-                <FormField
-                    name="competition_id"
-                    label="Competition"
-                    error={errors.competition_id}
-                    required
-                >
-                    <Select
-                        value={data.competition_id}
-                        onValueChange={onCompetitionChange}
-                        required
-                    >
-                        <SelectTrigger id="competition_id" className="w-full">
-                            <SelectValue placeholder="Select a competition first" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {competitionMap.map((competition) => (
-                                <SelectItem
-                                    key={competition.value}
-                                    value={competition.value}
-                                >
-                                    {competition.label}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </FormField>
-            </div>
-
             <div className="grid gap-4 sm:grid-cols-2">
-                {isTeamCompetition && (
-                    <div className="sm:col-span-2">
-                        <FormField
-                            name="team_name"
-                            label="Team Name"
-                            error={errors.team_name}
-                            required
-                        >
-                            <Input
-                                id="team_name"
-                                value={data.team_name}
-                                onChange={(event) =>
-                                    onChange('team_name', event.target.value)
-                                }
-                                placeholder="Your team name"
-                                disabled={!canFillTeamDetails}
-                                required
-                            />
-                        </FormField>
-                    </div>
-                )}
-
-                <FormField name="leader_name" label={leaderNameLabel} required>
-                    <Input
-                        id="leader_name"
-                        value={auth.user.name}
-                        placeholder="Your name"
-                        readOnly
-                        disabled={!canFillTeamDetails}
-                    />
-                </FormField>
-
-                <FormField
-                    name="leader_email"
-                    label={leaderEmailLabel}
-                    required
-                >
-                    <Input
-                        id="leader_email"
-                        value={auth.user.email}
-                        placeholder="Your email"
-                        readOnly
-                        disabled={!canFillTeamDetails}
-                    />
-                </FormField>
-
-                <FormField
-                    name="phone_number"
-                    label="Phone Number"
-                    error={errors.phone_number}
-                    required
-                >
-                    <Input
-                        id="phone_number"
-                        value={data.phone_number}
-                        onChange={(event) =>
-                            onChange('phone_number', event.target.value)
-                        }
-                        placeholder="08xxxxxxxxxx"
-                        disabled={!canFillTeamDetails}
-                        required
-                    />
-                </FormField>
-
-                <FormField
-                    name="institution"
-                    label="Institution"
-                    error={errors.institution}
-                    required
-                >
-                    <Input
-                        id="institution"
-                        value={data.institution}
-                        onChange={(event) =>
-                            onChange('institution', event.target.value)
-                        }
-                        placeholder="School / University / Community"
-                        disabled={!canFillTeamDetails}
-                        required
-                    />
-                </FormField>
-
-                <div className="space-y-4 sm:col-span-2">
-                    {isTeamCompetition && (
-                        <DynamicTeamInput
-                            id="members"
-                            label="Team Members"
-                            hint={`Add up to ${maxAdditionalMembers || 1} team members (leader is counted separately).`}
-                            value={data.members}
-                            error={errors}
-                            onChange={(members) =>
-                                onChange(
-                                    'members',
-                                    members.slice(
-                                        0,
-                                        maxAdditionalMembers || members.length,
-                                    ),
-                                )
-                            }
-                            required
-                            disabled={!canFillTeamDetails}
-                            maxItems={maxAdditionalMembers}
-                        />
-                    )}
-
+                <div className="sm:col-span-2">
                     <FormField
                         name="payment_method"
                         label="Payment Method"
@@ -217,15 +256,16 @@ export default function RegisterCompetitionForm({
                         >
                             <SelectTrigger
                                 id="payment_method"
-                                className="w-full"
+                                className="w-full border-purple-500/20 focus-visible:border-0 focus-visible:ring-purple-500/20"
                             >
                                 <SelectValue placeholder="Select payment method" />
                             </SelectTrigger>
 
-                            <SelectContent>
+                            <SelectContent className="border-purple-500/20 bg-purple-950 text-white focus-visible:border-0 focus-visible:ring-purple-500/20">
                                 {Object.values(TransactionPaymentMethodMap).map(
                                     (method) => (
                                         <SelectItem
+                                            className="data-highlighted:bg-purple-500/20 data-highlighted:text-white"
                                             key={method.value}
                                             value={method.value}
                                         >
@@ -239,22 +279,21 @@ export default function RegisterCompetitionForm({
                 </div>
 
                 {isQrisPayment && (
-                    <div className="rounded-2xl border border-border/70 bg-muted/30 p-4 sm:col-span-2">
-                        <div className="space-y-2">
-                            <p className="text-sm font-medium text-foreground">
+                    <div className="rounded-2xl border border-purple-900/30 bg-purple-950/10 p-4 sm:col-span-2">
+                        <div className="space-y-1">
+                            <p className="text-sm font-medium text-zinc-200">
                                 QRIS Payment
                             </p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-zinc-500">
                                 Scan this QRIS code to complete the payment.
                             </p>
                         </div>
 
                         <div className="mt-4 flex justify-center">
-                            {/* TODO: Change with real QRIS */}
                             <img
-                                src="https://chart.googleapis.com/chart?chs=320x320&cht=qr&chl=QRIS%20Payment%20Placeholder"
-                                alt="QRIS payment code"
-                                className="h-56 w-56 rounded-2xl border border-border bg-white p-3 shadow-sm"
+                                src="/assets/png/qris-payment-code.png"
+                                alt="QRIS Payment Code"
+                                className="h-80 rounded-2xl border border-purple-900/30 p-3"
                             />
                         </div>
                     </div>
@@ -277,12 +316,13 @@ export default function RegisterCompetitionForm({
                                     event.target.files?.[0],
                                 )
                             }
+                            className="border-purple-500/20 file:mr-2 file:border-r file:border-zinc-800 file:pr-2 file:text-zinc-200 focus-visible:border-0 focus-visible:ring-purple-500/20"
                             disabled={!canFillTeamDetails}
                             required
                         />
                     </FormField>
                 </div>
             </div>
-        </div>
+        </StepCard>
     );
 }

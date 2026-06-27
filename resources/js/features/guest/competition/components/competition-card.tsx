@@ -1,5 +1,6 @@
-import { PlayIcon, Rocket } from 'lucide-react';
+import { Rocket } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import CompetitionStatusBadge from '@/features/participant/competitions/components/competition-status-badge';
 import { CompetitionStatusMap } from '@/types';
 import type { ICompetitionCard } from '@/types';
 
@@ -77,21 +78,7 @@ export function CompetitionCard({
                     MISSION_STATUS //
                 </span>
 
-                <div className="flex items-center font-sans text-[10px] font-black tracking-widest">
-                    {isOpen ? (
-                        <div className="flex items-center gap-1.5">
-                            <PlayIcon className="h-3 -rotate-90 rounded-full text-emerald-400" />
-                            <span className="text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.2)]">
-                                OPEN
-                            </span>
-                        </div>
-                    ) : (
-                        <div className="flex items-center gap-1.5">
-                            <PlayIcon className="h-3 rotate-90 rounded-full text-zinc-500" />
-                            <span className="text-zinc-500/60">LOCKED</span>
-                        </div>
-                    )}
-                </div>
+                <CompetitionStatusBadge status={status} />
             </div>
         </div>
     );

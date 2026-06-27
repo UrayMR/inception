@@ -2,7 +2,6 @@ import { Plus, Trash2 } from 'lucide-react';
 import { useCallback } from 'react';
 import InputError from '@/components/input-error';
 import InputHint from '@/components/input-hint';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type { TeamMember } from '@/types';
@@ -74,7 +73,7 @@ export function DynamicTeamInput({
     );
 
     return (
-        <div className="flex flex-col space-y-4 rounded-lg border bg-muted/10 p-4">
+        <div className="flex flex-col space-y-4 rounded-lg border border-purple-500/20 bg-transparent p-4">
             <div>
                 <Label className="text-base font-semibold">
                     {label}{' '}
@@ -91,23 +90,21 @@ export function DynamicTeamInput({
                     return (
                         <div
                             key={index}
-                            className="group relative flex flex-col gap-3 rounded-md border bg-background p-3"
+                            className="group relative flex flex-col gap-3 rounded-md border border-muted/10 bg-transparent p-3"
                         >
-                            <div className="flex items-center justify-between border-b pb-2">
+                            <div className="flex items-center justify-between border-b border-muted/10 pb-2">
                                 <span className="text-xs font-medium text-muted-foreground">
                                     Member #{index + 1}
                                 </span>
                                 {!isDisabled && value.length > minItems && (
-                                    <Button
+                                    <button
                                         type="button"
-                                        variant="ghost"
-                                        size="icon"
                                         onClick={() => handleRemoveItem(index)}
-                                        className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                                        className="h-8 w-8 text-muted-foreground hover:text-red-500"
                                         aria-label="Remove member"
                                     >
                                         <Trash2 className="h-4 w-4" />
-                                    </Button>
+                                    </button>
                                 )}
                             </div>
 
@@ -133,6 +130,7 @@ export function DynamicTeamInput({
                                                 e.target.value,
                                             )
                                         }
+                                        className="border-purple-500/20 focus-visible:border-0 focus-visible:ring-purple-500/20"
                                         placeholder="Your member name"
                                         disabled={isDisabled}
                                     />
@@ -151,16 +149,16 @@ export function DynamicTeamInput({
             </p>
 
             {!isDisabled && (
-                <Button
+                <button
                     type="button"
-                    variant="outline"
-                    size="sm"
-                    className="mt-2 w-fit"
+                    className="w-full rounded-md border border-purple-500/20 bg-transparent px-4 py-2 text-center text-sm font-medium text-purple-500 transition-colors hover:bg-purple-500/10 disabled:cursor-not-allowed disabled:opacity-50"
                     onClick={handleAddItem}
                     disabled={!canAddMore}
                 >
-                    <Plus className="mr-2 h-4 w-4" /> Add Member
-                </Button>
+                    <span className="flex items-center justify-center">
+                        <Plus className="mr-2 h-4 w-4" /> Add Member
+                    </span>
+                </button>
             )}
         </div>
     );

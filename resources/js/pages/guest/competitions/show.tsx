@@ -1,202 +1,222 @@
 import { Head, Link } from '@inertiajs/react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import capitalize from '@/helpers/capitalize';
+import { Clock, ArrowLeft, DollarSign, Calendar } from 'lucide-react';
+import CompetitionStatusBadge from '@/features/participant/competitions/components/competition-status-badge';
+import CTAButton from '@/features/participant/competitions/components/cta-button';
+import TimelinePanel from '@/features/participant/competitions/components/timeline-panel';
 import { getFileUrl } from '@/helpers/file-url';
 import formatCurrency from '@/helpers/format-currency';
 import formatDate from '@/helpers/format-date';
 import AppLayout from '@/layouts/app-layout';
 import guestCompetitions from '@/routes/guest/competitions';
-import participantCompetitions from '@/routes/participant/competitions';
+import { register } from '@/routes/participant/competitions';
 import type { ICompetitionShow } from '@/types';
 
 type CompetitionShowPageProps = {
     competition: ICompetitionShow;
+    allCompetitions?: ICompetitionShow[];
 };
 
 export default function CompetitionShowPage({
     competition,
+    allCompetitions = [],
 }: CompetitionShowPageProps) {
+    const isOpen = competition.status === 'open';
+
     return (
         <AppLayout>
-            <Head title={competition.name} />
-            <div className="bg-[#FDFDFC] text-[#1b1b18] dark:bg-[#0a0a0a]">
-                <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
-                    <section className="overflow-hidden rounded-3xl border border-border/60 bg-white shadow-[0_24px_80px_-40px_rgba(15,23,42,0.35)] dark:bg-[#111111]">
-                        <div className="h-2 bg-linear-to-r from-violet-500 via-fuchsia-500 to-pink-500" />
-                        <div className="grid gap-8 p-6 md:grid-cols-[1.4fr_0.9fr] md:p-8">
-                            <div className="space-y-5">
-                                <div className="flex flex-wrap items-center gap-2">
-                                    <Badge
-                                        variant="outline"
-                                        className="rounded-full px-3 py-1"
-                                    >
-                                        {capitalize(competition.type)}
-                                    </Badge>
-                                    <Badge className="rounded-full px-3 py-1">
-                                        {capitalize(competition.status)}
-                                    </Badge>
-                                </div>
+            <Head title={`Mission Hub: ${competition.name}`} />
 
-                                <div className="space-y-3">
-                                    <p className="text-sm font-medium tracking-[0.22em] text-muted-foreground uppercase">
-                                        Competition Detail
-                                    </p>
-                                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                                        {capitalize(competition.name)}
-                                    </h1>
-                                    <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
-                                        {competition.description
-                                            ? capitalize(
-                                                  competition.description,
-                                              )
-                                            : 'No description has been provided for this competition yet.'}
-                                    </p>
-                                </div>
+            <div className="relative w-full bg-transparent py-6 text-zinc-100 selection:bg-purple-500/30 md:py-10">
+                <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6">
+                    <div className="flex items-center justify-between border-b border-zinc-800/40 pb-4">
+                        <Link
+                            href={guestCompetitions.index.url()}
+                            className="group inline-flex items-center gap-2 font-mono text-xs font-bold tracking-widest text-zinc-500 uppercase transition-colors hover:text-purple-400"
+                        >
+                            <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
+                            <span>[ RETURN_TO_DASHBOARD ]</span>
+                        </Link>
 
-                                <div className="flex flex-wrap gap-3">
-                                    <Button
-                                        asChild
-                                        className="rounded-full px-5"
-                                    >
-                                        <Link
-                                            href={participantCompetitions.register.url(
-                                                {
-                                                    query: {
-                                                        competition:
-                                                            competition.slug,
-                                                    },
-                                                },
-                                            )}
-                                        >
-                                            Register now
-                                        </Link>
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        asChild
-                                        className="rounded-full px-5"
-                                    >
-                                        <Link
-                                            href={guestCompetitions.index.url()}
-                                        >
-                                            Back to competitions
-                                        </Link>
-                                    </Button>
+                        <div className="hidden font-mono text-[10px] tracking-[0.25em] text-purple-400/50 uppercase sm:block">
+                            // SYSTEM_LAUNCH_SEQUENCE_V1.0
+                        </div>
+                    </div>
+
+                    <div className="grid items-start gap-6 lg:grid-cols-[1.5fr_1fr]">
+                        <div className="space-y-8 rounded-2xl border border-zinc-800/40 bg-zinc-950/20 p-6 backdrop-blur-md md:p-8">
+                            <div className="flex items-center gap-3">
+                                <span className="rounded border border-purple-500/20 bg-purple-950/10 px-2 py-0.5 font-mono text-[9px] font-black tracking-widest text-purple-400 uppercase">
+                                    {competition.type}
+                                </span>
+                                <span
+                                    className={`flex items-center gap-1 rounded border px-2 py-0.5 font-mono text-[9px] font-black tracking-widest uppercase ${
+                                        isOpen
+                                            ? 'border-emerald-500/20 bg-emerald-950/10 text-emerald-400'
+                                            : 'border-zinc-800 text-zinc-500'
+                                    }`}
+                                >
+                                    {competition.status}
+                                </span>
+                            </div>
+
+                            <div className="space-y-2">
+                                <h1 className="font-sans text-4xl leading-tight font-black tracking-tight text-white uppercase sm:text-5xl">
+                                    {competition.name}
+                                </h1>
+
+                                <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2 font-mono text-[11px] text-zinc-400">
+                                    <div className="flex items-center gap-1.5">
+                                        <DollarSign className="h-3.5 w-3.5 text-zinc-600" />
+                                        <span>
+                                            FEE:{' '}
+                                            <strong className="font-sans text-white">
+                                                {competition.price > 0
+                                                    ? formatCurrency(
+                                                          competition.price,
+                                                      )
+                                                    : 'Free'}
+                                            </strong>
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <Clock className="h-3.5 w-3.5 text-zinc-600" />
+                                        <span>
+                                            REFRESHED:{' '}
+                                            <span className="text-zinc-300">
+                                                {formatDate(
+                                                    competition.updated_at,
+                                                )}
+                                            </span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="grid gap-4 rounded-2xl bg-muted/40 p-5 text-sm">
-                                <div>
-                                    <p className="text-muted-foreground">
-                                        Prize
-                                    </p>
-                                    <p className="mt-1 text-base font-semibold text-foreground">
-                                        {competition.price > 0
-                                            ? formatCurrency(competition.price)
-                                            : 'Free registration'}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-muted-foreground">
-                                        Created at
-                                    </p>
-                                    <p className="mt-1 text-base font-semibold text-foreground">
-                                        {formatDate(competition.created_at)}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-muted-foreground">
-                                        Last updated
-                                    </p>
-                                    <p className="mt-1 text-base font-semibold text-foreground">
-                                        {formatDate(competition.updated_at)}
-                                    </p>
-                                </div>
+                            <div className="relative aspect-video max-h-75 w-full overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-3">
+                                <img
+                                    src={
+                                        competition.image_path
+                                            ? getFileUrl({
+                                                  url: competition.image_path,
+                                                  disk: 'public',
+                                              })
+                                            : '/assets/png/competition-icon.png'
+                                    }
+                                    alt={competition.name}
+                                    className="h-full w-full object-contain"
+                                    onError={(e) => {
+                                        const target =
+                                            e.target as HTMLImageElement;
+
+                                        if (
+                                            target.src !==
+                                            '/assets/png/competition-icon.png'
+                                        ) {
+                                            target.src =
+                                                '/assets/png/competition-icon.png';
+                                        }
+                                    }}
+                                />
+                            </div>
+
+                            <div className="space-y-3">
+                                <h3 className="font-mono text-[10px] font-bold tracking-[0.25em] text-zinc-500 uppercase">
+                                    // MISSION_OBJECTIVE
+                                </h3>
+                                <p className="font-sans text-sm leading-relaxed tracking-wide text-zinc-300 md:text-base">
+                                    {competition.description ||
+                                        'Operational target details have not been transmitted yet.'}
+                                </p>
+                            </div>
+
+                            <div className="justify-start pt-2">
+                                <CTAButton
+                                    href={register.url({
+                                        query: {
+                                            competition: competition.slug,
+                                        },
+                                    })}
+                                    isActive={isOpen}
+                                >
+                                    {isOpen ? 'REGISTER' : 'LOCKED'}
+                                </CTAButton>
                             </div>
                         </div>
-                    </section>
 
-                    <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-                        <div className="rounded-3xl border border-border/60 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.3)] dark:bg-[#111111]">
-                            <h2 className="text-xl font-semibold tracking-tight">
-                                Overview
-                            </h2>
-                            <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                                {competition.description
-                                    ? competition.description
-                                    : 'This competition does not have a longer overview yet.'}
-                            </p>
-                            <img
-                                src={getFileUrl({
-                                    url: competition.image_path || '',
-                                    disk: 'public',
-                                })}
-                                alt={competition.name}
-                                className="mt-5 h-auto w-full rounded-lg object-cover"
-                            />
+                        <div className="space-y-6">
+                            <div className="space-y-5 rounded-2xl border border-zinc-800/40 bg-zinc-950/10 p-6 backdrop-blur-md">
+                                <h3 className="flex items-center gap-2 font-mono text-[10px] font-bold tracking-[0.25em] text-zinc-400 uppercase">
+                                    <Calendar className="h-4 w-4 text-purple-500" />
+                                    <span>TIMELINE</span>
+                                </h3>
+                                <TimelinePanel
+                                    timelines={competition.timelines}
+                                />
+                            </div>
 
-                        </div>
+                            <div className="space-y-3">
+                                <h3 className="pl-1 font-mono text-[10px] font-bold tracking-[0.25em] text-zinc-500 uppercase">
+                                    // MISSION_HUB_INDEX
+                                </h3>
 
-                        <div className="rounded-3xl border border-border/60 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.3)] dark:bg-[#111111]">
-                            <h2 className="text-xl font-semibold tracking-tight">
-                                Timeline
-                            </h2>
-                            <div className="mt-5 space-y-4">
-                                {competition.timelines.length > 0 ? (
-                                    competition.timelines.map((timeline) => (
-                                        <div
-                                            key={timeline.timeline_name}
-                                            className="rounded-2xl bg-muted/50 p-4"
-                                        >
-                                            <div className="flex flex-wrap items-center justify-between gap-2">
-                                                <h3 className="font-medium text-foreground">
-                                                    {capitalize(
-                                                        timeline.timeline_name,
+                                <div className="space-y-2">
+                                    {allCompetitions.length > 0 ? (
+                                        allCompetitions.map((item, idx) => {
+                                            const isSelected =
+                                                item.id === competition.id;
+
+                                            return (
+                                                <Link
+                                                    prefetch
+                                                    key={item.id}
+                                                    href={guestCompetitions.show.url(
+                                                        item.slug,
                                                     )}
-                                                </h3>
-                                                <span className="text-xs text-muted-foreground">
-                                                    Step {timeline.sequence}
+                                                    className={`flex items-center justify-between rounded-xl border p-4 font-mono text-xs uppercase transition-all duration-200 hover:pl-5 ${
+                                                        isSelected
+                                                            ? 'border-l-2 border-purple-500/40 border-l-purple-500 bg-purple-950/20 text-white shadow-[0_0_15px_rgba(168,85,247,0.15)]'
+                                                            : 'border-l-2 border-zinc-800/40 border-l-transparent bg-zinc-900/10 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
+                                                    }`}
+                                                >
+                                                    {/* INFO KIRI */}
+                                                    <div className="flex flex-col gap-0.5">
+                                                        <span className="text-[9px] font-black tracking-[0.15em] text-zinc-600">
+                                                            MISSION_0{idx + 1}
+                                                        </span>
+                                                        <span className="font-sans font-bold tracking-wide text-zinc-200">
+                                                            {item.name}
+                                                        </span>
+                                                    </div>
+
+                                                    <CompetitionStatusBadge
+                                                        status={item.status}
+                                                    />
+                                                </Link>
+                                            );
+                                        })
+                                    ) : (
+                                        /* FALLBACK JIKA DATA KOSONG */
+                                        <div className="flex items-center justify-between rounded-xl border border-l-2 border-purple-500/40 border-l-purple-500 bg-purple-950/20 p-4 font-mono text-xs text-white uppercase">
+                                            <div className="flex flex-col gap-0.5">
+                                                <span className="text-[9px] font-black tracking-[0.15em] text-purple-400">
+                                                    ACTIVE_NODE
+                                                </span>
+                                                <span className="font-sans font-bold tracking-wide">
+                                                    {competition.name}
                                                 </span>
                                             </div>
-                                            {timeline.description ? (
-                                                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                                                    {timeline.description}
-                                                </p>
-                                            ) : null}
-                                            <div className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
-                                                <div>
-                                                    <p className="text-muted-foreground">
-                                                        Start
-                                                    </p>
-                                                    <p className="font-medium text-foreground">
-                                                        {formatDate(
-                                                            timeline.start_at,
-                                                        )}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-muted-foreground">
-                                                        End
-                                                    </p>
-                                                    <p className="font-medium text-foreground">
-                                                        {formatDate(
-                                                            timeline.end_at,
-                                                        )}
-                                                    </p>
-                                                </div>
+
+                                            <div className="flex w-16.25 shrink-0 items-center justify-end">
+                                                <span className="flex w-full items-center justify-center rounded border border-emerald-500/25 bg-emerald-950/30 py-0.5 text-[9px] font-bold tracking-wide text-emerald-400">
+                                                    {competition.status}
+                                                </span>
                                             </div>
                                         </div>
-                                    ))
-                                ) : (
-                                    <p className="text-sm text-muted-foreground">
-                                        No timeline has been published for this
-                                        competition yet.
-                                    </p>
-                                )}
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </section>
+                    </div>
                 </div>
             </div>
         </AppLayout>

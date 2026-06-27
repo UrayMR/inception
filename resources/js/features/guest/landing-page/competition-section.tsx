@@ -1,6 +1,6 @@
-import { Link } from '@inertiajs/react';
-import { PlayIcon } from 'lucide-react';
 import { useState } from 'react';
+import CompetitionStatusBadge from '@/features/participant/competitions/components/competition-status-badge';
+import CTAButton from '@/features/participant/competitions/components/cta-button';
 import competitions from '@/routes/guest/competitions';
 import type { ICompetitionCard } from '@/types';
 
@@ -35,19 +35,10 @@ export default function CompetitionSection({
                         <div className="pointer-events-none absolute top-0 left-0 h-12 w-12 rounded-tl-3xl border-t-2 border-l-2 border-purple-500/30" />
                         <div className="pointer-events-none absolute right-0 bottom-0 h-12 w-12 rounded-br-3xl border-r-2 border-b-2 border-purple-500/30" />
 
-                        <div className="flex items-center justify-between border-b border-purple-950/60 pb-4 font-mono text-[10px] tracking-[0.15em] text-purple-300/60">
+                        <div className="flex items-center justify-between border-b border-purple-950/60 pb-4 font-mono text-[10px] tracking-[0.15em] text-purple-300/60 uppercase">
                             <span>
                                 SYSTEM_CORE // MISSION-0
                                 {activeMission.id || 'X'}
-                            </span>
-                            <span
-                                className={`rounded-md px-3 py-1 text-[9px] font-bold tracking-widest uppercase ${
-                                    isOpen
-                                        ? 'border border-purple-500/40 bg-purple-500/20 text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.2)]'
-                                        : 'bg-zinc-900 text-zinc-500'
-                                }`}
-                            >
-                                REG_STATUS: {activeMission.status}
                             </span>
                         </div>
 
@@ -66,17 +57,15 @@ export default function CompetitionSection({
                                 SECURE_ENCRYPTION_NODE // ENABLED
                             </div>
 
-                            <Link
-                                href={competitions.show(activeMission.slug)}
-                                disabled={!isOpen}
-                                className={`flex items-center gap-2.5 rounded-xl px-8 py-3 font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 ${
-                                    isOpen
-                                        ? 'cursor-pointer bg-linear-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-500 hover:to-indigo-500 hover:shadow-[0_0_25px_rgba(147,51,234,0.5)] active:scale-95'
-                                        : 'cursor-not-allowed border border-zinc-800 bg-zinc-900/50 text-zinc-600'
-                                }`}
-                            >
-                                <span>INITIALIZE LAUNCH</span>
-                            </Link>
+                            <div className="flex items-center justify-end">
+                                <CTAButton
+                                    href={competitions.show.url(
+                                        activeMission.slug,
+                                    )}
+                                    isActive={isOpen}
+                                    noMargin={true}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,7 +74,6 @@ export default function CompetitionSection({
                 <div className="flex flex-col justify-center space-y-4 lg:order-2 lg:col-span-4">
                     {items.map((item, index) => {
                         const isSelected = activeMission.id === item.id;
-                        const isItemOpen = item.status === 'open';
 
                         return (
                             <button
@@ -97,7 +85,6 @@ export default function CompetitionSection({
                                         : 'border-purple-950/40 bg-[#0f0a26]/40 text-zinc-400 hover:border-purple-900/60 hover:text-white'
                                 }`}
                             >
-                                {/* Vertical Line Glow Indicator Button */}
                                 <div
                                     className={`absolute top-1/2 right-0 h-1/2 w-1 -translate-y-1/2 rounded-l bg-purple-500 shadow-[0_0_8px_#a855f7] transition-all duration-300 ${
                                         isSelected
@@ -115,25 +102,7 @@ export default function CompetitionSection({
                                     </span>
                                 </div>
 
-                                <span
-                                    className={`rounded-md px-2 py-0.5 font-mono text-[9px] font-bold tracking-widest uppercase ${
-                                        isItemOpen
-                                            ? 'border border-green-500/40 bg-green-500/20 text-green-300 shadow-[0_0_10px_rgba(34,197,94,0.2)]'
-                                            : 'bg-zinc-900/20 text-zinc-600'
-                                    }`}
-                                >
-                                    {isItemOpen ? (
-                                        <div className="flex items-center gap-1">
-                                            <PlayIcon className="h-3 w-3 -rotate-90 text-green-400" />
-                                            <span>OPEN</span>
-                                        </div>
-                                    ) : (
-                                        <div className="flex items-center gap-1">
-                                            <PlayIcon className="h-3 w-3 rotate-90 text-zinc-400" />
-                                            <span>LOCK</span>
-                                        </div>
-                                    )}
-                                </span>
+                                <CompetitionStatusBadge status={item.status} />
                             </button>
                         );
                     })}

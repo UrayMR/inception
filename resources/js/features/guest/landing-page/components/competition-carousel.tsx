@@ -1,8 +1,8 @@
-import { Link } from '@inertiajs/react';
 import type { EmblaCarouselType, EmblaEventType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { CompetitionCard } from '@/features/guest/competition/components/competition-card';
+import CTAButton from '@/features/participant/competitions/components/cta-button';
 import competitions from '@/routes/guest/competitions';
 import type { ICompetitionCard } from '@/types';
 
@@ -178,54 +178,21 @@ export function CompetitionCarousel({ items }: CompetitionCarouselProps) {
                                 <span className="transition-transform duration-300 group-hover:-translate-x-1.5 group-hover:text-purple-400/80">
                                     &lt;
                                 </span>
-                                <span className="after:h-pxter:w-0 relative after:absolute after:-bottom-0.5 after:left-0 after:bg-purple-500/50 after:transition-all after:duration-300 group-hover:after:w-full">
+                                <span className="relative after:absolute after:right-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-purple-500/50 after:transition-all after:duration-300 group-hover:after:w-full">
                                     PREV
                                 </span>
                             </button>
 
-                            <div className="min-w-60s-center flex justify-center sm:min-w-70">
-                                {isCurrentOpen ? (
-                                    <Link
-                                        href={competitions.show(
-                                            activeItem.slug,
-                                        )}
-                                        className="group relative inline-flex items-center justify-center px-6 py-2.5 text-sm font-black tracking-[0.35em] text-purple-400 uppercase transition-all duration-300 hover:text-white hover:drop-shadow-[0_0_15px_rgba(168,85,247,0.8)]"
-                                    >
-                                        <span className="text-lg text-purple-600 transition-colors duration-300 group-hover:text-purple-400">
-                                            [
-                                        </span>
-
-                                        <span className="relative px-3 transition-transform duration-300 group-hover:scale-105">
-                                            LAUNCH_MISSION
-                                            <span className="absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-linear-to-r from-transparent via-purple-400 to-transparent transition-all duration-300 group-hover:w-full" />
-                                        </span>
-
-                                        <span className="text-lg text-purple-600 transition-colors duration-300 group-hover:text-purple-400">
-                                            ]
-                                        </span>
-                                    </Link>
-                                ) : (
-                                    <div className="relative inline-flex items-center justify-center px-6 py-2.5 text-sm font-black tracking-[0.35em] text-zinc-600/60 uppercase select-none">
-                                        <span className="text-lg tracking-normal text-zinc-800">
-                                            [
-                                        </span>
-
-                                        <span className="relative flex items-center gap-2 px-3 text-zinc-600/80">
-                                            LOCKED_MISSION
-                                        </span>
-
-                                        <span className="text-lg tracking-normal text-zinc-800">
-                                            ]
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
+                            <CTAButton
+                                href={competitions.show.url(activeItem.slug)}
+                                isActive={isCurrentOpen}
+                            />
 
                             <button
                                 onClick={onNextClick}
                                 className="group flex cursor-pointer items-center gap-2 uppercase transition-all duration-250 hover:text-purple-400 active:scale-95 active:text-purple-300"
                             >
-                                <span className="relative after:absolute after:right-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-purple-500/50 after:transition-all after:duration-300 group-hover:after:w-full">
+                                <span className="relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-purple-500/50 after:transition-all after:duration-300 group-hover:after:w-full">
                                     NEXT
                                 </span>
                                 <span className="transition-transform duration-300 group-hover:translate-x-1.5 group-hover:text-purple-400/80">

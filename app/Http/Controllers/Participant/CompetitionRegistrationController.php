@@ -71,6 +71,7 @@ class CompetitionRegistrationController extends Controller
 
         return $this->render('guest/competitions/show', [
             'competition' => CompetitionDetailResource::make($competition)->resolve(),
+            'allCompetitions' => Competition::query()->get(),
         ]);
     }
 }

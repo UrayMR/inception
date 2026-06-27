@@ -3,7 +3,10 @@ import { CompetitionTypeMap, TeamStatusValue } from '@/types';
 import type { CompetitionType } from '@/types';
 
 export const TeamMemberSchema = z.object({
-    member_name: z.string().min(1).max(255),
+    member_name: z
+        .string()
+        .min(1, { message: 'Nama anggota wajib diisi.' })
+        .max(255, { message: 'Nama anggota maksimal 255 karakter.' }),
 });
 
 export const TeamBaseSchema = z.object({

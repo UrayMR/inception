@@ -3,6 +3,8 @@ import { CompetitionTypeMap, TransactionPaymentMethodValue } from '@/types';
 import type { CompetitionType } from '@/types';
 import { TeamMemberSchema } from './team-schema';
 
+// TODO: REFACTOR THIS FILE CUZ WHAT THE HELL IS THIS FILE, IT'S SO MESSY AND DUPLICATED WITH team-schema.ts
+
 // Helper untuk validasi file gambar (Best Practice Zod untuk File)
 const ImageFileSchema = z
     .instanceof(File, { message: 'Bukti pembayaran harus berupa file valid.' })

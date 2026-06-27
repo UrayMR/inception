@@ -18,7 +18,7 @@ Route::inertia('/', 'guest/main', [
 Route::as('guest.')->group(function () {
     Route::controller(CompetitionRegistrationController::class)->group(function () {
         Route::get('competitions', 'index')->name('competitions.index');
-        Route::get('competitions/{competition}', 'show')->name('competitions.show');
+        // Route::get('competitions/{competition}', 'show')->name('competitions.show');
     });
 });
 
@@ -45,6 +45,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('competitions/register', 'register')->name('competitions.register');
             Route::post('competitions/register', 'store')->name('competitions.register.store');
         });
+    });
+});
+
+Route::as('guest.')->group(function () {
+    Route::controller(CompetitionRegistrationController::class)->group(function () {
+        Route::get('competitions/{competition}', 'show')->name('competitions.show');
     });
 });
 

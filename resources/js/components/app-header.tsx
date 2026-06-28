@@ -22,12 +22,12 @@ const mainNavItems: NavItem[] = [
         href: '/#home',
     },
     {
-        title: 'About',
-        href: '/#about',
-    },
-    {
         title: 'Competitions',
         href: competitions.index.url(),
+    },
+    {
+        title: 'Contact',
+        href: '/contact',
     },
 ];
 

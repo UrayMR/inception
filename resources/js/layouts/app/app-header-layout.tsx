@@ -9,7 +9,7 @@ export default function AppHeaderLayout({ children }: AppLayoutProps) {
         <AppShell variant="header">
             <AppHeader />
             <AppContent variant="header">{children}</AppContent>
-            <AppFooter />
+            <AppFooter/>
         </AppShell>
     );
 }

@@ -1,46 +1,26 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Instagram, Linkedin, Youtube, Mail, Phone } from 'lucide-react';
+import capitalize from '@/helpers/capitalize';
+import { show } from '@/routes/guest/competitions';
+import type { ICompetitionCard } from '@/types';
 import AppLogo from './app-logo';
-
-const footerEvents = [
-    {
-        label: 'IT Talk',
-        href: '/events/it-talk',
-    },
-    {
-        label: 'Webinar',
-        href: '/events/webinar',
-    },
-    {
-        label: 'Workshop',
-        href: '/events/workshop',
-    },
-    {
-        label: 'Competition',
-        href: '/competitions',
-    },
-    {
-        label: 'Ranking',
-        href: '/rankings',
-    },
-];
 
 const footerExplore = [
     {
         label: 'About Us',
-        href: '/about',
+        href: '#about',
+    },
+    {
+        label: 'List of Competitions',
+        href: '#competitions',
+    },
+    {
+        label: 'Timelines',
+        href: '#timeline',
     },
     {
         label: 'FAQ',
-        href: '/faq',
-    },
-    {
-        label: 'Community',
-        href: '/teams',
-    },
-    {
-        label: 'Partners',
-        href: '/partners',
+        href: '#faq',
     },
     {
         label: 'Contact',
@@ -49,6 +29,12 @@ const footerExplore = [
 ];
 
 export function AppFooter() {
+    const { competitions } = usePage<{
+        competitions: {
+            data: ICompetitionCard[];
+        };
+    }>().props;
+
     return (
         <footer className="relative overflow-hidden border-t border-white/5 bg-[#020617]">
             <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-indigo-500/20 to-transparent" />
@@ -83,17 +69,17 @@ export function AppFooter() {
                         {/* Events */}
                         <div>
                             <h4 className="text-sm font-bold tracking-wider text-white uppercase">
-                                Events
+                                Competitions
                             </h4>
 
                             <ul className="mt-4 space-y-3 text-sm text-slate-400">
-                                {footerEvents.map((item) => (
-                                    <li key={item.label}>
+                                {competitions.data.map((item) => (
+                                    <li key={item.id}>
                                         <Link
-                                            href={item.href}
-                                            className="transition hover:text-indigo-400"
+                                            href={show(item.slug)}
+                                            className="transition hover:text-purple-400"
                                         >
-                                            {item.label}
+                                            {capitalize(item.name)}
                                         </Link>
                                     </li>
                                 ))}
@@ -111,7 +97,7 @@ export function AppFooter() {
                                     <li key={item.label}>
                                         <Link
                                             href={item.href}
-                                            className="transition hover:text-indigo-400"
+                                            className="transition hover:text-purple-400"
                                         >
                                             {item.label}
                                         </Link>
@@ -123,7 +109,7 @@ export function AppFooter() {
 
                     {/* Right Column */}
                     <div className="flex flex-col gap-8 lg:col-span-2">
-                        {/* Top Section */}
+                        {/* Social Media */}
                         <div>
                             <h4 className="text-sm font-bold tracking-wider text-white uppercase">
                                 Social Media
@@ -133,7 +119,7 @@ export function AppFooter() {
                                     href="https://instagram.com"
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="transition hover:text-white"
+                                    className="transition hover:text-purple-400"
                                 >
                                     <Instagram size={20} />
                                 </a>
@@ -141,7 +127,7 @@ export function AppFooter() {
                                     href="https://linkedin.com"
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="transition hover:text-white"
+                                    className="transition hover:text-purple-400"
                                 >
                                     <Linkedin size={20} />
                                 </a>
@@ -149,14 +135,14 @@ export function AppFooter() {
                                     href="https://youtube.com"
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="transition hover:text-white"
+                                    className="transition hover:text-purple-400"
                                 >
                                     <Youtube size={20} />
                                 </a>
                             </div>
                         </div>
 
-                        {/* Bottom Section */}
+                        {/* Contact Us */}
                         <div>
                             <h4 className="text-sm font-bold tracking-wider text-white uppercase">
                                 CONTACT US
@@ -169,7 +155,7 @@ export function AppFooter() {
                                     />
                                     <a
                                         href="mailto:inception@example.com"
-                                        className="break-all transition hover:text-indigo-400"
+                                        className="break-all transition hover:text-purple-400"
                                     >
                                         inception@gmail.com
                                     </a>
@@ -183,7 +169,7 @@ export function AppFooter() {
                                         href="https://wa.me/6285717791441"
                                         target="_blank"
                                         rel="noreferrer"
-                                        className="transition hover:text-indigo-400"
+                                        className="transition hover:text-purple-400"
                                     >
                                         +62 857-1779-1441
                                     </a>
@@ -203,7 +189,7 @@ export function AppFooter() {
                     <div>
                         <Link
                             href="/policy"
-                            className="transition hover:text-indigo-400"
+                            className="transition hover:text-purple-400"
                         >
                             Privacy Policy
                         </Link>

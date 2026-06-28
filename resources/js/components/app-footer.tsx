@@ -1,26 +1,44 @@
-import { Link, usePage } from '@inertiajs/react';
-import { Instagram, Linkedin, Youtube, Mail, Phone } from 'lucide-react';
+import { Link } from '@inertiajs/react';
+import { Mail, Phone } from 'lucide-react';
 import capitalize from '@/helpers/capitalize';
-import { show } from '@/routes/guest/competitions';
-import type { ICompetitionCard } from '@/types';
+import { index as competitionIndex } from '@/routes/guest/competitions';
 import AppLogo from './app-logo';
+import InstagramIcon from './svg/instagram-icon';
+
+const footerCompetitions = [
+    {
+        label: 'Essay',
+    },
+    {
+        label: 'Business Plan',
+    },
+    {
+        label: 'UI/UX',
+    },
+    {
+        label: 'Data Science',
+    },
+    {
+        label: 'Hackathon',
+    },
+];
 
 const footerExplore = [
     {
         label: 'About Us',
-        href: '#about',
+        href: '/#about',
     },
     {
         label: 'List of Competitions',
-        href: '#competitions',
+        href: '/#competitions',
     },
     {
         label: 'Timelines',
-        href: '#timeline',
+        href: '/#timeline',
     },
     {
         label: 'FAQ',
-        href: '#faq',
+        href: '/#faq',
     },
     {
         label: 'Contact',
@@ -29,12 +47,6 @@ const footerExplore = [
 ];
 
 export function AppFooter() {
-    const { competitions } = usePage<{
-        competitions: {
-            data: ICompetitionCard[];
-        };
-    }>().props;
-
     return (
         <footer className="relative overflow-hidden border-t border-white/5 bg-[#020617]">
             <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-indigo-500/20 to-transparent" />
@@ -73,13 +85,13 @@ export function AppFooter() {
                             </h4>
 
                             <ul className="mt-4 space-y-3 text-sm text-slate-400">
-                                {competitions.data.map((item) => (
-                                    <li key={item.id}>
+                                {footerCompetitions.map((item, index) => (
+                                    <li key={index}>
                                         <Link
-                                            href={show(item.slug)}
+                                            href={competitionIndex()}
                                             className="transition hover:text-purple-400"
                                         >
-                                            {capitalize(item.name)}
+                                            {capitalize(item.label)}
                                         </Link>
                                     </li>
                                 ))}
@@ -116,28 +128,12 @@ export function AppFooter() {
                             </h4>
                             <div className="mt-4 flex items-center gap-4 text-slate-400">
                                 <a
-                                    href="https://instagram.com"
+                                    href="https://www.instagram.com/himatifaupnvjatim"
                                     target="_blank"
                                     rel="noreferrer"
                                     className="transition hover:text-purple-400"
                                 >
-                                    <Instagram size={20} />
-                                </a>
-                                <a
-                                    href="https://linkedin.com"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="transition hover:text-purple-400"
-                                >
-                                    <Linkedin size={20} />
-                                </a>
-                                <a
-                                    href="https://youtube.com"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="transition hover:text-purple-400"
-                                >
-                                    <Youtube size={20} />
+                                    <InstagramIcon size={20} />
                                 </a>
                             </div>
                         </div>

@@ -28,9 +28,9 @@ const faqs = [
     },
 ];
 
-export default function FaqSection() {
+export default function FaqSection({id}: {id: string}) {
     return (
-        <section className="relative z-10 overflow-hidden py-24">
+        <section id={id} className="relative z-10 overflow-hidden py-24">
             <div className="relative mx-auto max-w-4xl px-6">
                 <div className="mb-16 space-y-3 text-center">
                     <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">

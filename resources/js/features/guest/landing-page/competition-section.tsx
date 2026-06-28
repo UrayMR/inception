@@ -5,8 +5,10 @@ import competitions from '@/routes/guest/competitions';
 import type { ICompetitionCard } from '@/types';
 
 export default function CompetitionSection({
+    id,
     items,
 }: {
+    id: string;
     items: ICompetitionCard[];
 }) {
     const [activeMission, setActiveMission] = useState<ICompetitionCard>(
@@ -15,7 +17,7 @@ export default function CompetitionSection({
     const isOpen = activeMission.status === 'open';
 
     return (
-        <section className="relative mx-auto w-full max-w-7xl px-6 pt-24 pb-24 lg:px-8">
+        <section id={id} className="relative mx-auto w-full max-w-7xl px-6 pt-24 pb-24 lg:px-8">
             {/* HEADER */}
             <div className="mb-12 space-y-3 text-center md:mr-0 md:ml-auto md:max-w-md md:text-right">
                 <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">

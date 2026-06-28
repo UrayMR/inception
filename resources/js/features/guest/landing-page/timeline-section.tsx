@@ -53,11 +53,11 @@ const events: TimelineEvent[] = [
     },
 ];
 
-export default function TimelineSection() {
+export default function TimelineSection({id}: {id: string}) {
     const solarRef = useRef<SolarSystemRef>(null);
 
     return (
-        <section className="relative z-10 overflow-hidden px-6 py-32">
+        <section id={id} className="relative z-10 overflow-hidden px-6 py-32">
             <div className="mb-20 space-y-3 text-center">
                 <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
                     // LOG_TIMELINE

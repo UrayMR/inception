@@ -1,4 +1,5 @@
-import { Head, usePage } from '@inertiajs/react';
+import { Head, usePage, WhenVisible } from '@inertiajs/react';
+import { Skeleton } from '@/components/ui/skeleton';
 import AboutSection from '@/features/guest/landing-page/about-section';
 import CompetitionSection from '@/features/guest/landing-page/competition-section';
 import { CtaSection } from '@/features/guest/landing-page/cta-section';
@@ -19,23 +20,52 @@ export default function Main() {
         <AppLayout>
             <Head title="Welcome" />
 
-            {/* --- HERO SECTION --- */}
-            <HeroSection />
+            <HeroSection id="home" />
 
-            {/* --- ABOUT SECTION --- */}
-            <AboutSection />
+            <AboutSection id="about" />
 
-            {/* --- CAROUSEL SECTION --- */}
-            <CompetitionSection items={competitions.data} />
+            <WhenVisible
+                fallback={
+                    <div className="container py-12">
+                        <Skeleton className="h-100 w-full" />
+                    </div>
+                }
+            >
+                <CompetitionSection
+                    id="competition"
+                    items={competitions.data}
+                />
+            </WhenVisible>
 
-            {/* --- TIMELINE SECTION --- */}
-            <TimelineSection />
+            <WhenVisible
+                fallback={
+                    <div className="container py-12">
+                        <Skeleton className="h-125 w-full" />
+                    </div>
+                }
+            >
+                <TimelineSection id="timeline" />
+            </WhenVisible>
 
-            {/* --- FAQ SECTION --- */}
-            <FaqSection />
+            <WhenVisible
+                fallback={
+                    <div className="container py-12">
+                        <Skeleton className="h-62.5 w-full" />
+                    </div>
+                }
+            >
+                <FaqSection id="faq" />
+            </WhenVisible>
 
-            {/* --- CTA SECTION --- */}
-            <CtaSection />
+            <WhenVisible
+                fallback={
+                    <div className="container py-12">
+                        <Skeleton className="h-62.5 w-full" />
+                    </div>
+                }
+            >
+                <CtaSection id="cta" />
+            </WhenVisible>
         </AppLayout>
     );
 }

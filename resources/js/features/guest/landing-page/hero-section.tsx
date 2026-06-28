@@ -3,9 +3,12 @@ import { ArrowRightIcon } from 'lucide-react';
 import { login } from '@/routes';
 import guest from '@/routes/guest';
 
-export default function HeroSection() {
+export default function HeroSection({ id }: { id: string }) {
     return (
-        <section className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden px-6 py-12 text-center lg:px-8">
+        <section
+            id={id}
+            className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden px-6 py-12 text-center lg:px-8"
+        >
             <div className="relative mx-auto max-w-5xl space-y-10">
                 <h1 className="text-4xl leading-[1.15] font-extrabold tracking-tight text-white uppercase sm:text-6xl lg:text-7xl">
                     Power Your Innovation <br />

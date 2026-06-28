@@ -1,8 +1,8 @@
 import { Link } from '@inertiajs/react';
 
-export function CtaSection() {
+export function CtaSection({ id }: { id: string }) {
     return (
-        <section className="relative z-10 overflow-hidden py-32">
+        <section id={id} className="relative z-10 overflow-hidden py-32">
             <div className="relative mx-auto max-w-5xl px-6">
                 <div className="relative overflow-hidden rounded-3xl border border-purple-900/40 bg-[#0d0829]/80 p-12 text-center shadow-[0_30px_70px_rgba(5,2,15,0.8)] backdrop-blur-2xl md:p-20">
                     <div className="pointer-events-none absolute top-0 left-0 h-12 w-12 rounded-tl-3xl border-t-2 border-l-2 border-purple-500/30" />

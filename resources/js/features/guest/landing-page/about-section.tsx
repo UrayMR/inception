@@ -1,6 +1,6 @@
-export default function AboutSection() {
+export default function AboutSection({id}: {id: string}) {
     return (
-        <section className="relative z-10 mx-auto max-w-7xl px-6 py-24 lg:px-8">
+        <section id={id} className="relative z-10 mx-auto max-w-7xl px-6 py-24 lg:px-8">
             <div className="mb-12 space-y-3 text-center md:text-left">
                 <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
                     // PROTOCOL_DATA

@@ -19,33 +19,33 @@ import { AvatarProfile } from './avatar-profile';
 const mainNavItems: NavItem[] = [
     {
         title: 'Home',
-        href: home(),
+        href: '/#home',
     },
     {
         title: 'About',
-        href: panel.competitions.index(),
+        href: '/#about',
     },
     {
         title: 'Competitions',
-        href: competitions.index(),
+        href: competitions.index.url(),
     },
 ];
 
 const mobileAuthNavItems: NavItem[] = mainNavItems.concat([
     {
         title: 'Profile',
-        href: profile.edit(),
+        href: profile.edit.url(),
     },
     {
         title: 'Sign Out',
-        href: logout(),
+        href: logout.url(),
     },
 ]);
 
 const mobileNonAuthNavItems: NavItem[] = mainNavItems.concat([
     {
         title: 'Sign Up',
-        href: register(),
+        href: register.url(),
     },
 ]);
 
@@ -61,9 +61,8 @@ export function AppHeader() {
 
     return (
         <>
-            {/* ── Sticky header ── */}
             <div
-                className="sticky top-0 z-50 w-full p-2"
+                className="sticky top-0 z-50 w-full px-2 pt-2"
                 style={{
                     backdropFilter: 'blur(12px)',
                     WebkitBackdropFilter: 'blur(12px)',
@@ -72,21 +71,6 @@ export function AppHeader() {
                     borderColor: 'rgba(55,0,92,0.5)',
                 }}
             >
-                {/* Ambient Glow */}
-                {/* <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 overflow-hidden"
-                >
-                    <div
-                        className="absolute -top-10 left-1/4 h-40 w-96 rounded-full blur-3xl"
-                        style={{ background: 'rgba(55,0,92,0.45)' }}
-                    />
-                    <div
-                        className="absolute -top-6 right-1/3 h-28 w-64 rounded-full blur-2xl"
-                        style={{ background: 'rgba(177,59,255,0.15)' }}
-                    />
-                </div> */}
-
                 <div className="relative mx-auto flex h-16 w-full items-center justify-between px-4 md:max-w-7xl">
                     {/* Logo */}
                     <Link
@@ -112,8 +96,8 @@ export function AppHeader() {
                                             key={index}
                                             className="relative hidden h-full items-center lg:flex"
                                         >
-                                            <Link
-                                                href={item.href}
+                                            <a
+                                                href={item.href as string}
                                                 className="relative flex h-9 cursor-pointer items-center rounded-md px-3 text-sm font-medium tracking-wide transition-all duration-200"
                                                 style={{
                                                     color: active
@@ -147,7 +131,7 @@ export function AppHeader() {
                                                     <item.icon className="mr-2 h-4 w-4" />
                                                 )}
                                                 {item.title}
-                                            </Link>
+                                            </a>
 
                                             {active && (
                                                 <div

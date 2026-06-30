@@ -19,11 +19,7 @@ export interface IUserIndex {
     role: UserRoleType;
 }
 
-export interface IUserAuth extends IUserIndex {
-    google_id?: string;
-    created_at: string;
-    updated_at: string;
-}
+export type IUserAuth = User;
 
 export interface IUserShow extends IUserIndex {
     created_at: string;

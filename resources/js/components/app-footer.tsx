@@ -184,7 +184,7 @@ export function AppFooter() {
 
                     <div>
                         <Link
-                            href="/policy"
+                            href="/privacy-policy"
                             className="transition hover:text-purple-400"
                         >
                             Privacy Policy

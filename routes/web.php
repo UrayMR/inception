@@ -16,6 +16,8 @@ Route::inertia('/', 'guest/main', [
 ])->name('home');
 
 Route::as('guest.')->group(function () {
+    Route::inertia('privacy-policy', 'guest/privacy-policy')->name('privacy-policy');
+
     Route::controller(CompetitionRegistrationController::class)->group(function () {
         Route::get('competitions', 'index')->name('competitions.index');
         // Route::get('competitions/{competition}', 'show')->name('competitions.show');

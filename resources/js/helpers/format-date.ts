@@ -4,7 +4,15 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
 });
 
-export default function formatDate(value: string | Date | null | undefined) {
+const shortDateFormatter = new Intl.DateTimeFormat('en-US', {
+    day: '2-digit',
+    month: 'long',
+});
+
+export default function formatDate(
+    value: string | Date | null | undefined,
+    options?: { short?: boolean },
+) {
     if (!value) {
         return '-';
     }
@@ -13,6 +21,10 @@ export default function formatDate(value: string | Date | null | undefined) {
 
     if (Number.isNaN(date.getTime())) {
         return String(value);
+    }
+
+    if (options?.short) {
+        return shortDateFormatter.format(date);
     }
 
     return dateFormatter.format(date);

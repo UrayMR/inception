@@ -59,10 +59,7 @@ export const RegisterCompetitionBaseSchema = z.object({
     phone_number: z
         .string()
         .min(1, { message: 'Nomor telepon wajib diisi.' })
-        .max(20, { message: 'Nomor telepon maksimal 20 karakter.' })
-        .regex(/^[0-9+\-\s]+$/, {
-            message: 'Format nomor telepon tidak valid.',
-        }),
+        .max(20, { message: 'Nomor telepon maksimal 20 karakter.' }),
     payment_method: z.literal(TransactionPaymentMethodValue[0], {
         message: 'Metode pembayaran yang dipilih tidak valid.',
     }),

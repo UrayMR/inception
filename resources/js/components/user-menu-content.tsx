@@ -9,7 +9,6 @@ import {
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { logout } from '@/routes';
-import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 
 type Props = {
@@ -41,7 +40,7 @@ export function UserMenuContent({ user }: Props) {
                 >
                     <Link
                         className="flex w-full cursor-pointer items-center px-2 py-2 font-sans text-xs font-medium tracking-wide text-zinc-300"
-                        href={edit()}
+                        href="/settings"
                         prefetch
                         onClick={cleanup}
                     >

@@ -129,15 +129,18 @@ export default function RegisterCompetitionPage({
     };
 
     const handleNext = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
         if (!guardInfoStep(form.data, form.setError)) {
             return;
         }
 
         setCurrentStep('payment');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleBack = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
         setCurrentStep('info');
     };
 

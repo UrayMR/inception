@@ -23,15 +23,15 @@ export default function SettingLayout({
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6">
                     <div className="flex items-center justify-between border-b border-purple-950/60 pb-4">
                         <Link
-                            href={'/settings'}
+                            href='/'
                             className="group inline-flex items-center gap-2 font-mono text-xs font-medium tracking-wide text-zinc-500 transition-colors hover:text-purple-400"
                         >
                             <ChevronLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
-                            <span>Back</span>
+                            <span>[ RETURN ]</span>
                         </Link>
 
                         <div className="hidden font-mono text-[10px] tracking-[0.2em] text-purple-400/40 uppercase sm:block">
-                            // SETTING
+                            // CONTROL_PANEL
                         </div>
                     </div>
 

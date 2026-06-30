@@ -22,6 +22,7 @@ class DashboardController extends Controller
     return Inertia::render('settings/dashboard', [
       'competition' => Auth::user()->team->competition ?? null,
       'schedule' => Auth::user()->team->competition->timelines ?? null,
+      'transaction' => Auth::user()->team->transactions()->latest()->first() ?? null,
     ]);
   }
 }

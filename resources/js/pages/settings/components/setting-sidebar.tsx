@@ -7,12 +7,18 @@ type NavItem = {
     label: string;
     href: string;
     icon: LucideIcon;
+    disabled?: boolean;
 };
 
 const NAV_ITEMS: NavItem[] = [
     { label: 'Dashboard', href: '/settings/dashboard', icon: LayoutDashboard },
-    { label: 'Profile', href: '/settings/profile', icon: User },
-    { label: 'Security', href: '/settings/security', icon: Lock },
+    { label: 'Profile', href: '/settings/profile', icon: User, disabled: true },
+    {
+        label: 'Security',
+        href: '/settings/security',
+        icon: Lock,
+        disabled: true,
+    },
 ];
 
 export default function SettingSidebar({
@@ -50,16 +56,20 @@ export default function SettingSidebar({
                     {NAV_ITEMS.map((item) => {
                         const isActive = isCurrentUrl(item.href);
                         const Icon = item.icon;
+                        const isDisabled = item.disabled;
 
                         return (
                             <Link
                                 key={item.href}
-                                href={item.href}
+                                href={isDisabled ? '#' : item.href}
                                 className={
-                                    isActive
-                                        ? 'flex items-center gap-3 rounded-lg border border-purple-500/30 bg-linear-to-r from-purple-950/40 to-transparent px-3 py-2 text-sm text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.15)]'
-                                        : 'flex items-center gap-3 rounded-lg border border-transparent px-3 py-2 text-sm text-zinc-400 transition-all duration-200 hover:border-purple-900/30 hover:bg-purple-950/20 hover:text-purple-300'
+                                    isDisabled
+                                        ? 'flex cursor-not-allowed items-center gap-3 px-3 py-2 text-sm text-zinc-600/50'
+                                        : isActive
+                                          ? 'flex items-center gap-3 rounded-lg border border-purple-500/30 bg-linear-to-r from-purple-950/40 to-transparent px-3 py-2 text-sm text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.15)]'
+                                          : 'flex items-center gap-3 rounded-lg border border-transparent px-3 py-2 text-sm text-zinc-400 transition-all duration-200 hover:border-purple-900/30 hover:bg-purple-950/20 hover:text-purple-300'
                                 }
+                                disabled={isDisabled}
                                 viewTransition
                                 prefetch
                                 preserveScroll

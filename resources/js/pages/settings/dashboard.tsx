@@ -1,7 +1,7 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Trophy, ClipboardList, ChevronRight } from 'lucide-react';
 import SettingLayout from '@/layouts/setting-layout';
-import type { ICompetitionIndex } from '@/types';
+import type { ICompetitionIndex, ITransactionIndex } from '@/types';
 
 type Assignment = {
     id: string;
@@ -22,7 +22,10 @@ const assignments: Assignment[] = [
 ];
 
 export default function Dashboard() {
-    const { competition } = usePage<{ competition: ICompetitionIndex }>().props;
+    const { competition, transaction } = usePage<{
+        competition: ICompetitionIndex;
+        transaction: ITransactionIndex;
+    }>().props;
 
     return (
         <SettingLayout>
@@ -49,9 +52,13 @@ export default function Dashboard() {
                         className="group flex items-center justify-between gap-4 rounded-lg border border-purple-900/30 bg-[#0d071a]/60 px-4 py-3 transition-colors hover:border-purple-500/40"
                     >
                         <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-between gap-2">
                                 <p className="truncate text-sm font-medium text-zinc-200">
                                     {competition.name}
+                                </p>
+
+                                <p className="text-xs text-zinc-500 uppercase">
+                                    {transaction.status}
                                 </p>
                             </div>
                         </div>

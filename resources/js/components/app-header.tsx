@@ -12,7 +12,6 @@ import { useCurrentUrl } from '@/hooks/use-current-url';
 import { home, logout, register } from '@/routes';
 import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
-import profile from '@/routes/profile';
 import type { NavItem } from '@/types';
 import { AvatarProfile } from './avatar-profile';
 
@@ -33,8 +32,8 @@ const mainNavItems: NavItem[] = [
 
 const mobileAuthNavItems: NavItem[] = mainNavItems.concat([
     {
-        title: 'Profile',
-        href: profile.edit.url(),
+        title: 'Settings',
+        href: '/settings',
     },
     {
         title: 'Sign Out',

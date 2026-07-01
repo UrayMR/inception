@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\GlobalException;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -28,5 +29,17 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $handler = app(GlobalException::class);
+
+        // Log all exceptions with detailed context and stack trace
+        $exceptions->report(fn(Throwable $e) => $handler->report($e))->stop();
+
+        // Determine when to render JSON responses for exceptions
+        $exceptions->shouldRenderJsonWhen(fn($request, Throwable $e) => $handler->shouldRenderJsonWhen($request, $e));
+
+        // API or JSON request exceptions will be rendered as JSON responses, while others will fall back to default rendering
+        $exceptions->render(fn(Throwable $e, $request) => $handler->render($e, $request));
+
+        // For Non API requests, rendering fallback error page with Inertia
+        $exceptions->respond(fn($response) => $handler->respond($response));
     })->create();

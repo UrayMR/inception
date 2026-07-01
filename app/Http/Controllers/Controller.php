@@ -32,7 +32,7 @@ abstract class Controller
      */
     protected function flash(string $type, string $message)
     {
-        FlashResponse::{$type}($message);
+        FlashResponse::make($type, $message);
 
         return $this;
     }

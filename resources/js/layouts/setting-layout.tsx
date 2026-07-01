@@ -1,7 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { ChevronLeft } from 'lucide-react';
-import ScheduleCalendar from '@/features/setting/components/schedule-calendar';
-import SettingSidebar from '@/features/setting/components/setting-sidebar';
+import { ScheduleCalendar, SettingSidebar } from '@/features/setting';
 import AppLayoutTemplate from '@/layouts/app/app-header-layout';
 import type { Auth, BreadcrumbItem, CompetitionTimeline } from '@/types';
 

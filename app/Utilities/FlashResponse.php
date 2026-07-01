@@ -6,18 +6,26 @@ use Inertia\Inertia;
 
 class FlashResponse
 {
-    public static function success(string $message)
+    public static function make(string $type, string $message): void
     {
-        return Inertia::flash('toast', ['type' => 'success', 'message' => $message]);
+        Inertia::flash('toast', [
+            'type' => $type,
+            'message' => $message,
+        ]);
     }
 
-    public static function info(string $message)
+    public static function success(string $message): void
     {
-        return Inertia::flash('toast', ['type' => 'info', 'message' => $message]);
+        self::make('success', $message);
     }
 
-    public static function error(string $message)
+    public static function info(string $message): void
     {
-        return Inertia::flash('toast', ['type' => 'error', 'message' => $message]);
+        self::make('info', $message);
+    }
+
+    public static function error(string $message): void
+    {
+        self::make('error', $message);
     }
 }

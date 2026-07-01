@@ -30,6 +30,7 @@ class CompetitionFactory extends Factory
             'image_path' => $this->faker->optional()->imageUrl(),
             'price' => $this->faker->randomFloat(2, 0, 1000000),
             'status' => $this->faker->randomElement(CompetitionStatus::cases()),
+            'max_member' => $this->faker->numberBetween(1, 6),
         ];
     }
 }

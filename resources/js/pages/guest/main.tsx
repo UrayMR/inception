@@ -1,56 +1,71 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, usePage, WhenVisible } from '@inertiajs/react';
+import { Skeleton } from '@/components/ui/skeleton';
+import AboutSection from '@/features/guest/landing-page/about-section';
+import CompetitionSection from '@/features/guest/landing-page/competition-section';
+import { CtaSection } from '@/features/guest/landing-page/cta-section';
+import FaqSection from '@/features/guest/landing-page/faq-section';
+import HeroSection from '@/features/guest/landing-page/hero-section';
+import TimelineSection from '@/features/guest/landing-page/timeline-section';
 import AppLayout from '@/layouts/app-layout';
-import { dashboard, login, lomba, register } from '@/routes';
+import type { ICompetitionCard } from '@/types';
 
-export default function Main({
-    canRegister = true,
-}: {
-    canRegister?: boolean;
-}) {
-    const { auth } = usePage().props;
+export default function Main() {
+    const { competitions } = usePage<{
+        competitions: {
+            data: ICompetitionCard[];
+        };
+    }>().props;
 
     return (
         <AppLayout>
             <Head title="Welcome" />
-            <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]">
-                <div className="mb-6 w-full">
-                    <div className="flex items-center justify-center gap-4">
-                        {auth.user ? (
-                            <Link
-                                href={dashboard()}
-                                className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                            >
-                                Dashboard
-                            </Link>
-                        ) : (
-                            <>
-                                <Link
-                                    href={lomba()}
-                                    className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-                                >
-                                    Daftar
-                                </Link>
 
-                                <Link
-                                    href={login()}
-                                    className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-                                >
-                                    Login
-                                </Link>
+            <HeroSection id="home" />
 
-                                {canRegister && (
-                                    <Link
-                                        href={register()}
-                                        className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                                    >
-                                        Register
-                                    </Link>
-                                )}
-                            </>
-                        )}
+            <AboutSection id="about" />
+
+            <WhenVisible
+                fallback={
+                    <div className="container py-12">
+                        <Skeleton className="h-100 w-full" />
                     </div>
-                </div>
-            </div>
+                }
+            >
+                <CompetitionSection
+                    id="competition"
+                    items={competitions.data}
+                />
+            </WhenVisible>
+
+            <WhenVisible
+                fallback={
+                    <div className="container py-12">
+                        <Skeleton className="h-125 w-full" />
+                    </div>
+                }
+            >
+                <TimelineSection id="timeline" />
+            </WhenVisible>
+
+            <WhenVisible
+                fallback={
+                    <div className="container py-12">
+                        <Skeleton className="h-62.5 w-full" />
+                    </div>
+                }
+            >
+                <FaqSection id="faq" />
+            </WhenVisible>
+
+            <WhenVisible
+                fallback={
+                    <div className="container py-12">
+                        <Skeleton className="h-62.5 w-full" />
+                    </div>
+                }
+            >
+                <CtaSection id="cta" />
+            </WhenVisible>
         </AppLayout>
     );
 }

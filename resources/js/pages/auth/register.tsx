@@ -1,29 +1,40 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
-import TextLink from '@/components/text-link';
+import GoogleIcon from '@/components/svg/google-icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import AuthLayout from '@/layouts/auth-layout';
 import { login } from '@/routes';
+import { redirect } from '@/routes/auth/google';
 import { store } from '@/routes/register';
 
 export default function Register() {
     return (
-        <>
+        <AuthLayout
+            title="Create an account"
+            description="Enter your details below to create your account"
+        >
             <Head title="Register" />
+
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
                 disableWhileProcessing
-                className="flex flex-col gap-6"
+                className="relative z-10 mx-auto flex w-full max-w-md flex-col gap-6"
             >
                 {({ processing, errors }) => (
                     <>
-                        <div className="grid gap-6">
+                        <div className="grid gap-5">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label
+                                    htmlFor="name"
+                                    className="text-sm font-medium text-gray-400/90"
+                                >
+                                    Name
+                                </Label>
                                 <Input
                                     id="name"
                                     type="text"
@@ -33,15 +44,21 @@ export default function Register() {
                                     autoComplete="name"
                                     name="name"
                                     placeholder="Full name"
+                                    className="h-11 border-gray-800 bg-slate-950/40 text-white transition-all duration-200 placeholder:text-gray-600 focus:border-purple-500/60 focus:ring-purple-500/10"
                                 />
                                 <InputError
                                     message={errors.name}
-                                    className="mt-2"
+                                    className="text-xs text-red-400"
                                 />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label
+                                    htmlFor="email"
+                                    className="text-sm font-medium text-gray-400/90"
+                                >
+                                    Email address
+                                </Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -50,12 +67,21 @@ export default function Register() {
                                     autoComplete="email"
                                     name="email"
                                     placeholder="email@example.com"
+                                    className="h-11 border-gray-800 bg-slate-950/40 text-white transition-all duration-200 placeholder:text-gray-600 focus:border-purple-500/60 focus:ring-purple-500/10"
                                 />
-                                <InputError message={errors.email} />
+                                <InputError
+                                    message={errors.email}
+                                    className="text-xs text-red-400"
+                                />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
+                                <Label
+                                    htmlFor="password"
+                                    className="text-sm font-medium text-gray-400/90"
+                                >
+                                    Password
+                                </Label>
                                 <PasswordInput
                                     id="password"
                                     required
@@ -63,12 +89,19 @@ export default function Register() {
                                     autoComplete="new-password"
                                     name="password"
                                     placeholder="Password"
+                                    className="h-11 border-gray-800 bg-slate-950/40 text-white transition-all duration-200 placeholder:text-gray-600 focus:border-purple-500/60 focus:ring-purple-500/10"
                                 />
-                                <InputError message={errors.password} />
+                                <InputError
+                                    message={errors.password}
+                                    className="text-xs text-red-400"
+                                />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password_confirmation">
+                                <Label
+                                    htmlFor="password_confirmation"
+                                    className="text-sm font-medium text-gray-400/90"
+                                >
                                     Confirm password
                                 </Label>
                                 <PasswordInput
@@ -78,37 +111,64 @@ export default function Register() {
                                     autoComplete="new-password"
                                     name="password_confirmation"
                                     placeholder="Confirm password"
+                                    className="h-11 border-gray-800 bg-slate-950/40 text-white transition-all duration-200 placeholder:text-gray-600 focus:border-purple-500/60 focus:ring-purple-500/10"
                                 />
                                 <InputError
                                     message={errors.password_confirmation}
+                                    className="text-xs text-red-400"
                                 />
                             </div>
 
                             <Button
                                 type="submit"
-                                className="mt-2 w-full"
+                                className="group relative mt-2 h-11 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-none"
                                 tabIndex={5}
+                                disabled={processing}
                                 data-test="register-user-button"
+                                style={{
+                                    background:
+                                        'linear-gradient(135deg, #B13BFF 0%, #8B2DCC 100%)',
+                                    color: '#F3E8FF',
+                                    boxShadow: '0 0 20px rgba(177,59,255,0.35)',
+                                }}
                             >
-                                {processing && <Spinner />}
-                                Create account
+                                {processing && (
+                                    <Spinner className="mr-2 h-4 w-4 text-white" />
+                                )}
+                                Sign Up
+                                <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                             </Button>
+
+                            <div className="relative flex items-center py-1 text-xs text-gray-600 uppercase">
+                                <div className="grow border-t border-gray-900"></div>
+                                <span className="mx-4 shrink text-gray-500">
+                                    or connect with
+                                </span>
+                                <div className="grow border-t border-gray-900"></div>
+                            </div>
+
+                            <Link
+                                href={redirect.url()}
+                                className="flex h-11 w-full items-center justify-center gap-2 rounded-md border border-gray-800 bg-slate-950/20 text-sm font-medium text-gray-400 transition-all duration-200 hover:border-gray-700 hover:bg-slate-900/40 hover:text-white"
+                            >
+                                <GoogleIcon />
+                                Daftar dengan Google
+                            </Link>
                         </div>
 
-                        <div className="text-center text-sm text-muted-foreground">
+                        <div className="mt-1 text-center text-sm text-gray-500">
                             Already have an account?{' '}
-                            <TextLink href={login()} tabIndex={6}>
-                                Log in
-                            </TextLink>
+                            <Link
+                                href={login()}
+                                tabIndex={6}
+                                className="font-medium text-purple-400/90 underline decoration-purple-500/30 underline-offset-4 transition-colors hover:text-purple-300"
+                            >
+                                Sign In
+                            </Link>
                         </div>
                     </>
                 )}
             </Form>
-        </>
+        </AuthLayout>
     );
 }
-
-Register.layout = {
-    title: 'Create an account',
-    description: 'Enter your details below to create your account',
-};

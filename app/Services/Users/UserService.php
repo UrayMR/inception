@@ -2,15 +2,24 @@
 
 namespace App\Services\Users;
 
+use App\Repositories\Users\UserRepository;
+use App\Actions\Users\StoreUser;
+use App\Actions\Users\UpdateUser;
+use App\Actions\Users\DeleteUser;
 use App\DTOs\Users\StoreUserDTO;
 use App\DTOs\Users\UpdateUserDTO;
 use App\Models\User;
-use App\Repositories\Users\UserRepository;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class UserService
 {
-    public function __construct(protected UserRepository $userRepository) {}
+    public function __construct(
+        protected UserRepository $userRepository,
+        protected StoreUser $storeUser,
+        protected UpdateUser $updateUser,
+        protected DeleteUser $deleteUser,
+    ) {}
 
     public function index(Request $request)
     {
@@ -26,35 +35,24 @@ class UserService
         return $this->userRepository->index($queryParams);
     }
 
-    public function create(StoreUserDTO $dto): User
+    public function store(StoreUserDTO $dto): User
     {
-        $attributes = [
-            'name' => $dto->name,
-            'email' => $dto->email,
-            'password' => $dto->password,
-            'role' => $dto->role->value,
-        ];
-
-        return $this->userRepository->store($attributes);
+        return DB::transaction(function () use ($dto) {
+            return $this->storeUser->handle($dto);
+        });
     }
 
     public function update(UpdateUserDTO $dto, User $user): User
     {
-        $attributes = [
-            'name' => $dto->name,
-            'email' => $dto->email,
-            'role' => $dto->role->value,
-        ];
-
-        if ($dto->password) {
-            $attributes['password'] = $dto->password;
-        }
-
-        return $this->userRepository->update($attributes, $user);
+        return DB::transaction(function () use ($dto, $user) {
+            return $this->updateUser->handle($dto, $user);
+        });
     }
 
     public function destroy(User $user): bool
     {
-        return $this->userRepository->destroy($user);
+        return DB::transaction(function () use ($user) {
+            return $this->deleteUser->handle($user);
+        });
     }
 }

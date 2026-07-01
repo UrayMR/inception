@@ -2,27 +2,30 @@
 
 namespace App\Services\Competitions;
 
-use App\DTOs\Competitions\StoreCompetitionDTO;
-use App\DTOs\Competitions\UpdateCompetitionDTO;
+use App\Enums\CompetitionType;
 use App\Models\Competition;
 use App\Repositories\Competitions\CompetitionRepository;
-use App\Services\FileService;
+use App\Actions\Competitions\StoreCompetition;
+use App\Actions\Competitions\UpdateCompetition;
+use App\Actions\Competitions\DeleteCompetition;
+use App\DTOs\Competitions\StoreCompetitionDTO;
+use App\DTOs\Competitions\UpdateCompetitionDTO;
+use App\Helpers\ThrowException;
 use App\Utilities\SlugGenerator;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class CompetitionService
 {
-    /**
-     * The default directory for storing competition-related files.
-     */
-    protected string $directory = 'competitions';
-
     public function __construct(
-        protected FileService $fileService,
         protected CompetitionRepository $competitionRepository,
+        protected StoreCompetition $storeCompetition,
+        protected UpdateCompetition $updateCompetition,
+        protected DeleteCompetition $deleteCompetition,
     ) {}
 
-    public function index(Request $request)
+    public function index(Request $request, int $perPage = 10): LengthAwarePaginator
     {
         // Only allow specific query params
         $queryParams = [
@@ -33,61 +36,131 @@ class CompetitionService
             ],
         ];
 
-        return $this->competitionRepository->index($queryParams);
+        return $this->competitionRepository->index($queryParams, $perPage);
     }
 
-    public function create(StoreCompetitionDTO $dto): Competition
+    public function store(StoreCompetitionDTO $dto, array $timelineAttributes = []): Competition
     {
-        $attributes = [
-            'name' => $dto->name,
-            'description' => $dto->description,
-            'slug' => SlugGenerator::make($dto->name),
-            'type' => $dto->type,
-            'price' => $dto->price,
-            'status' => $dto->status,
-        ];
+        // Enforce max_member policy at service level (source of truth)
+        $this->validateMaxMemberForType($dto->type, $dto->max_member);
 
-        if ($dto->image_file) {
-            $attributes['image_path'] = $this->fileService->store($dto->image_file, $this->directory);
-        }
+        $slug = $this->generateUniqueSlug($dto->name);
 
-        return $this->competitionRepository->store($attributes);
+        return DB::transaction(function () use ($dto, $slug, $timelineAttributes) {
+            return $this->storeCompetition->handle($dto, $slug, $timelineAttributes);
+        });
     }
 
-    public function update(UpdateCompetitionDTO $dto, Competition $competition): Competition
+    public function update(UpdateCompetitionDTO $dto, Competition $competition, array $timelineAttributes = []): Competition
     {
-        $attributes = [
-            'name' => $dto->name,
-            'description' => $dto->description,
-            'type' => $dto->type,
-            'price' => $dto->price,
-            'status' => $dto->status,
-        ];
-
+        $slug = null;
         if ($dto->name !== $competition->name) {
-            $attributes['slug'] = SlugGenerator::make($dto->name);
+            $slug = $this->generateUniqueSlug($dto->name, $competition);
         }
 
-        if ($dto->image_file) {
-            $attributes['image_path'] = $this->fileService->update($dto->image_file, $competition->image_path, $this->directory);
-        } elseif ($dto->image_path) {
-            $attributes['image_path'] = $dto->image_path;
+        $this->validateMaxMemberForType($dto->type, $dto->max_member);
+
+        return DB::transaction(function () use ($dto, $competition, $slug, $timelineAttributes) {
+            return $this->updateCompetition->handle($dto, $competition, $slug, $timelineAttributes);
+        });
+    }
+
+    public function validateMaxMemberForType(string $type, ?int $maxMember = null): void
+    {
+        if ($type === CompetitionType::solo->value) {
+            if ($maxMember !== 1) {
+                ThrowException::validation(
+                    'max_member',
+                    'Solo competitions must have max member exactly 1 (the leader counts as the only member).'
+                );
+            }
+
+            return;
         }
 
-        return $this->competitionRepository->update($attributes, $competition);
+        if ($maxMember === null) {
+            ThrowException::validation(
+                'max_member',
+                'Team competitions require max member of at least 2 (leader is counted separately).'
+            );
+        }
+
+        if ($maxMember < 2) {
+            ThrowException::validation(
+                'max_member',
+                'Team competitions must have max member of at least 2 (leader is counted separately).'
+            );
+        }
     }
 
     public function destroy(Competition $competition): bool
     {
-        if ($competition->image_path) {
-            $this->fileService->delete($competition->image_path);
-        }
-
-        return $this->competitionRepository->destroy($competition);
+        return DB::transaction(function () use ($competition) {
+            return $this->deleteCompetition->handle($competition);
+        });
     }
 
-    public function getCompetitionMap(): array
+    public function findByIdOrFail(string $id): Competition
     {
-        return $this->competitionRepository->getCompetitionMap();
+        return $this->competitionRepository->findByIdOrFail($id);
+    }
+
+    public function getCompetitionMap(array $filters = []): array
+    {
+        return $this->competitionRepository->getCompetitionMap($filters);
+    }
+
+    public function ensureTeamCompetitionPayloadIsValid(string $competitionId, array $members = []): void
+    {
+        $competition = $this->findByIdOrFail($competitionId);
+
+        if ($competition->type === CompetitionType::solo->value) {
+            if (! empty($members)) {
+                ThrowException::validation(
+                    'members',
+                    'Members are not allowed for solo competitions.',
+                );
+            }
+
+            return;
+        }
+
+        // Team competitions: ensure competition is configured with sensible max_member
+        if ($competition->max_member <= 1) {
+            ThrowException::validation(
+                'max_member',
+                'This competition is configured as a team competition but has invalid max_member. Please contact the administrator.'
+            );
+        }
+
+        if (empty($members)) {
+            ThrowException::validation(
+                'members',
+                'At least one team member is required for team competitions.',
+            );
+        }
+
+        // leader counts as one; ensure submitted members don't exceed allowed slots
+        $maxAdditionalMembers = max(0, $competition->max_member - 1);
+        if (count($members) > $maxAdditionalMembers) {
+            ThrowException::validation(
+                'members',
+                sprintf('Too many members: maximum allowed (excluding leader) is %d.', $maxAdditionalMembers)
+            );
+        }
+    }
+
+    public function generateUniqueSlug(string $name, ?Competition $ignoreCompetition = null): string
+    {
+        $baseSlug = SlugGenerator::make($name);
+        $slug = $baseSlug;
+        $suffix = 2;
+
+        while ($this->competitionRepository->slugExists($slug, $ignoreCompetition?->id)) {
+            $slug = sprintf('%s%s%d', $baseSlug, '-', $suffix);
+            $suffix++;
+        }
+
+        return $slug;
     }
 }

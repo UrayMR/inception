@@ -1,11 +1,11 @@
 import { Head, useForm } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { SubmitButton } from '@/components/buttons/submit-button';
-import { UserForm } from '@/components/forms/user-form';
 import { MainContent } from '@/components/main-content';
+import { UserForm } from '@/features/panel/user';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
-import users from '@/routes/users';
+import users from '@/routes/panel/users';
 import type { BreadcrumbItem } from '@/types';
 import { UserRoleMap } from '@/types';
 import { CreateUserSchema } from '@/validations/user-schema';

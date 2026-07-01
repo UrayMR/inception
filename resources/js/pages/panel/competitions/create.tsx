@@ -1,11 +1,11 @@
 import { Head, useForm } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { SubmitButton } from '@/components/buttons/submit-button';
-import { CompetitionForm } from '@/components/forms/competition-form';
 import { MainContent } from '@/components/main-content';
+import { CompetitionForm } from '@/features/panel/competition';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
-import competitions from '@/routes/competitions';
+import competitions from '@/routes/panel/competitions';
 import type { BreadcrumbItem } from '@/types';
 import { CompetitionStatusMap, CompetitionTypeMap } from '@/types';
 import { CreateCompetitionSchema } from '@/validations/competition-schema';
@@ -23,6 +23,7 @@ export default function CreateCompetitionPage() {
         type: CompetitionTypeMap.Solo.value,
         image_file: undefined,
         price: 0,
+        max_member: 1,
         status: CompetitionStatusMap.Closed.value,
         timelines: [
             {

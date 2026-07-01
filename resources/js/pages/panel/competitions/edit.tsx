@@ -1,11 +1,11 @@
 import { Head, useForm } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { SubmitButton } from '@/components/buttons/submit-button';
-import { CompetitionForm } from '@/components/forms/competition-form';
 import { MainContent } from '@/components/main-content';
+import { CompetitionForm } from '@/features/panel/competition';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
-import competitions from '@/routes/competitions';
+import competitions from '@/routes/panel/competitions';
 import type { BreadcrumbItem, ICompetitionEdit } from '@/types';
 import { UpdateCompetitionSchema } from '@/validations/competition-schema';
 import type { UpdateCompetitionSchemaType } from '@/validations/competition-schema';
@@ -29,6 +29,7 @@ export default function EditCompetitionPage({
         name: competition.name,
         description: competition.description,
         type: competition.type,
+        max_member: competition.max_member,
         image_file: undefined,
         price: competition.price,
         status: competition.status,
@@ -39,13 +40,14 @@ export default function EditCompetitionPage({
         UpdateCompetitionSchema,
     );
 
-    const handleSubmit = (e: React.SubmitEvent) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!guard(form.data, form.setError)) {
             return;
         }
 
+        // TODO: DONT EVER USE PUT FOR FILE UPLOAD
         form.put(competitions.update.url(competition.slug));
     };
 
@@ -66,6 +68,7 @@ export default function EditCompetitionPage({
                                 data={form.data}
                                 errors={form.errors}
                                 onChange={form.setData}
+                                imagePath={competition.image_path}
                             />
 
                             <div className="mt-4 flex justify-end">

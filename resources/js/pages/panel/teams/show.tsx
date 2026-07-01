@@ -1,16 +1,24 @@
 import { Head } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
-import { TeamForm } from '@/components/forms/team-form';
 import { MainContent } from '@/components/main-content';
+import { TeamForm } from '@/features/panel/team';
 import PanelLayout from '@/layouts/panel-layout';
-import teams from '@/routes/teams';
-import type { BreadcrumbItem, ITeamShow, Option, TeamMember } from '@/types';
+import teams from '@/routes/panel/teams';
+import type {
+    BreadcrumbItem,
+    ITeamShow,
+    Option,
+    TeamMember,
+    TeamStatusType,
+} from '@/types';
+import { TeamStatusMap } from '@/types';
 
 interface ShowTeamForm {
     competition_id: string;
     competition: Option;
     team_name: string;
-    leader_name: string;
+    institution?: string;
+    status: TeamStatusType;
     phone_number: string;
     members?: TeamMember[];
 }
@@ -32,7 +40,8 @@ export default function ShowTeamPage({ team }: ShowTeamPageProps) {
         competition_id: team.competition.value,
         team_name: team.team_name,
         competition: team.competition,
-        leader_name: team.leader_name,
+        institution: team.institution || '',
+        status: team.status || TeamStatusMap.Active.value,
         phone_number: team.phone_number,
         members: team.members || [],
     };
@@ -51,6 +60,7 @@ export default function ShowTeamPage({ team }: ShowTeamPageProps) {
                         data={data}
                         errors={{}}
                         onChange={() => {}}
+                        leaderName={team.leader_name}
                     />
                 </MainContent.Section>
             </MainContent>

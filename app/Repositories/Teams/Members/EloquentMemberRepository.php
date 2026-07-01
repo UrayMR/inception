@@ -16,20 +16,18 @@ class EloquentMemberRepository implements MemberRepository
 
     public function updateMany(Team $team, array $attributes): void
     {
-        DB::transaction(function () use ($team, $attributes) {
-            // TODO: This is a temporary solution to ensure that the team members are updated correctly.
-            //  We should implement a more efficient way to handle updates and deletions without deleting all members first.
-            $team->members()->delete();
+        // TODO: This is a temporary solution to ensure that the team members are updated correctly.
+        //  We should implement a more efficient way to handle updates and deletions without deleting all members first.
+        $team->members()->delete();
 
-            $formattedAttributes = array_map(function ($attribute) use ($team) {
-                $attribute['id'] = Str::uuid();
-                $attribute['team_id'] = $team->id;
+        $formattedAttributes = array_map(function ($attribute) use ($team) {
+            $attribute['id'] = Str::uuid();
+            $attribute['team_id'] = $team->id;
 
-                return $attribute;
-            }, $attributes);
+            return $attribute;
+        }, $attributes);
 
-            TeamMember::insert($formattedAttributes);
-        });
+        TeamMember::insert($formattedAttributes);
     }
 
     public function destroyMany(Team $team): bool

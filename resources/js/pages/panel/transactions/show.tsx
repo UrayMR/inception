@@ -1,10 +1,10 @@
 import { Head, useForm } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { SubmitButton } from '@/components/buttons/submit-button';
-import { TransactionForm } from '@/components/forms/transaction-form';
 import { MainContent } from '@/components/main-content';
+import { TransactionForm } from '@/features/panel/transaction';
 import PanelLayout from '@/layouts/panel-layout';
-import transactions from '@/routes/transactions';
+import transactions from '@/routes/panel/transactions';
 import { TransactionStatusMap } from '@/types';
 import type {
     BreadcrumbItem,
@@ -83,6 +83,7 @@ export default function ShowTransactionPage({
                         data={data}
                         errors={{}}
                         onChange={() => {}}
+                        transactionId={transaction.id}
                     />
                 </MainContent.Section>
                 <MainContent.Footer>

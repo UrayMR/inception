@@ -1,9 +1,9 @@
 import { Head } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
-import { CompetitionForm } from '@/components/forms/competition-form';
 import { MainContent } from '@/components/main-content';
+import { CompetitionForm } from '@/features/panel/competition';
 import PanelLayout from '@/layouts/panel-layout';
-import competitions from '@/routes/competitions';
+import competitions from '@/routes/panel/competitions';
 import type { CompetitionTimeline } from '@/types';
 import type {
     BreadcrumbItem,
@@ -61,6 +61,7 @@ export default function ShowCompetitionPage({
                         data={data}
                         errors={{}}
                         onChange={() => {}}
+                        imagePath={data.image_path}
                     />
                 </MainContent.Section>
             </MainContent>

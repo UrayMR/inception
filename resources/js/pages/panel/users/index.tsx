@@ -1,10 +1,10 @@
 import { Head, usePage } from '@inertiajs/react';
 import { CreateButton } from '@/components/buttons/create-button';
-import { getUserColumns } from '@/components/columns/user-column';
-import { DataTable } from '@/components/data-table';
+import { DataTable } from '@/components/data-table/data-table';
 import { MainContent } from '@/components/main-content';
+import { getUserColumns } from '@/features/panel/user';
 import PanelLayout from '@/layouts/panel-layout';
-import users from '@/routes/users';
+import users from '@/routes/panel/users';
 import type {
     Auth,
     BreadcrumbItem,

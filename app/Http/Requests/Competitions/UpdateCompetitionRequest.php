@@ -24,8 +24,8 @@ class UpdateCompetitionRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'type' => ['required', 'string', Rule::in(CompetitionType::cases())],
             'image_file' => ['nullable', 'file', 'image', 'max:2048'], // Max 2MB
-            'image_path' => ['nullable', 'string', 'max:255'],
             'price' => ['nullable', 'numeric', 'min:0'],
+            'max_member' => ['required', 'integer', 'min:1'],
             'status' => ['required', 'string', Rule::in(CompetitionStatus::cases())],
         ];
 
@@ -53,6 +53,7 @@ class UpdateCompetitionRequest extends FormRequest
             image_file: $this->file('image_file'),
             image_path: $this->input('image_path'),
             price: $this->input('price'),
+            max_member: $this->input('max_member'),
             status: $this->input('status'),
         );
     }
@@ -66,6 +67,7 @@ class UpdateCompetitionRequest extends FormRequest
 
         return array_map(function ($timeline) use ($competition_id) {
             $dto = new TimelineDTO(
+                id: $timeline['id'] ?? null,
                 competition_id: $competition_id,
                 timeline_name: $timeline['timeline_name'],
                 description: $timeline['description'] ?? null,

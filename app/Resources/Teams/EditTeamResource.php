@@ -23,11 +23,13 @@ class EditTeamResource extends JsonResource
             'team_name' => $this->team_name,
             'leader_name' => $this->leader?->name,
             'phone_number' => $this->phone_number,
+            'institution' => $this->institution,
             'members' => $isCompetitionSolo ? [] : $this->members->map(function ($member) {
                 return [
                     'member_name' => $member->member_name,
                 ];
             })->toArray(),
+            'status' => $this->status,
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
         ];

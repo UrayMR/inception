@@ -10,6 +10,9 @@ export type * from './enums/role';
 export * from './enums/competition';
 export type * from './enums/competition';
 
+export * from './enums/team';
+export type * from './enums/team';
+
 export * from './enums/transaction';
 export type * from './enums/transaction';
 
@@ -28,4 +31,15 @@ export interface Option {
     value: string;
     label: string;
     otherValues?: Record<string, any>;
+}
+
+export interface TimelineEvent {
+    id: number;
+    title: string;
+    displayDate: string;
+    radius: number;
+    angle: number;
+    color: string;
+    size: number;
+    defaultPlanet?: boolean;
 }

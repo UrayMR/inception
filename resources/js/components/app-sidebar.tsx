@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
     BookOpen,
     FolderArchive,
@@ -21,39 +21,46 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard, home } from '@/routes';
-import competitions from '@/routes/competitions';
-import teams from '@/routes/teams';
-import transactions from '@/routes/transactions';
-import users from '@/routes/users';
+import { home } from '@/routes';
+import panel from '@/routes/panel';
+import competitions from '@/routes/panel/competitions';
+import teams from '@/routes/panel/teams';
+import transactions from '@/routes/panel/transactions';
+import users from '@/routes/panel/users';
+import { UserRoleMap } from '@/types';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard(),
+        href: panel.dashboard(),
         icon: LayoutGrid,
+        roles: [UserRoleMap.Admin.value, UserRoleMap.Accountant.value],
     },
     {
         title: 'Users',
         href: users.index(),
         icon: Users,
+        roles: [UserRoleMap.Admin.value],
     },
     {
         title: 'Competitions',
         href: competitions.index(),
         icon: BookOpen,
+        roles: [UserRoleMap.Admin.value],
     },
     {
         title: 'Teams',
         href: teams.index(),
         icon: Group,
+        roles: [UserRoleMap.Admin.value],
     },
     {
         title: 'Transactions',
         href: transactions.index(),
         icon: FolderArchive,
-    }
+        roles: [UserRoleMap.Admin.value, UserRoleMap.Accountant.value],
+    },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -75,13 +82,19 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const user = usePage().props.auth.user;
+
+    const filteredMainNav = user?.role
+        ? mainNavItems.filter((item) => item.roles?.includes(user?.role))
+        : [];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={panel.dashboard()} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
@@ -90,7 +103,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={filteredMainNav} />
             </SidebarContent>
 
             <SidebarFooter>

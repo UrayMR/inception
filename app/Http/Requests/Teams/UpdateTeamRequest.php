@@ -4,8 +4,7 @@ namespace App\Http\Requests\Teams;
 
 use App\DTOs\Teams\Members\MemberDTO;
 use App\DTOs\Teams\UpdateTeamDTO;
-use App\Enums\CompetitionType;
-use App\Models\Competition;
+use App\Enums\TeamStatus;
 use App\Models\Team;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -19,36 +18,20 @@ class UpdateTeamRequest extends FormRequest
 
     public function rules(): array
     {
-        $isSoloCompetition = $this->isSoloCompetition();
-
         $teamRules = [
             'competition_id' => ['required', 'string', Rule::exists('competitions', 'id')],
             'team_name' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:20'],
+            'institution' => ['nullable', 'string', 'max:255'],
+            'status' => ['required', 'string', Rule::in(TeamStatus::cases())],
         ];
 
         $memberRules = [
-            'members' => $isSoloCompetition ? ['prohibited'] : ['required', 'array', 'min:1'],
-            'members.*.member_name' => $isSoloCompetition ? ['prohibited'] : ['required', 'string', 'max:255'],
+            'members' => ['nullable', 'array'],
+            'members.*.member_name' => ['required', 'string', 'max:255'],
         ];
 
         return array_merge($teamRules, $memberRules);
-    }
-
-    /**
-     * Check if the competition is a solo type
-     */
-    protected function isSoloCompetition(): bool
-    {
-        $competitionId = $this->input('competition_id');
-
-        if (! $competitionId) {
-            return false;
-        }
-
-        return Competition::query()
-            ->whereKey($competitionId)
-            ->value('type') === CompetitionType::solo->value;
     }
 
     /**
@@ -60,6 +43,8 @@ class UpdateTeamRequest extends FormRequest
             competition_id: $this->input('competition_id'),
             team_name: $this->input('team_name'),
             phone_number: $this->input('phone_number'),
+            institution: $this->input('institution'),
+            status: $this->input('status'),
         );
     }
 

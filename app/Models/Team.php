@@ -17,6 +17,8 @@ class Team extends Model
         'team_name',
         'leader_id',
         'phone_number',
+        'institution',
+        'status',
     ];
 
     public function competition()

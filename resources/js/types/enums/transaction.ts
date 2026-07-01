@@ -2,7 +2,9 @@ export const TransactionPaymentMethodValue = ['qris', 'bank_transfer'] as const;
 
 export const TransactionPaymentMethodMap = {
     qris: { value: 'qris', label: 'QRIS' },
-    bank_transfer: { value: 'bank_transfer', label: 'Bank Transfer' },
+
+    // Disable this payment method for now, cause its only QRIS.
+    // bank_transfer: { value: 'bank_transfer', label: 'Bank Transfer' },
 } as const;
 
 export type TransactionPaymentMethodType =

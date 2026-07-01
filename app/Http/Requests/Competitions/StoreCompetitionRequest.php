@@ -25,6 +25,7 @@ class StoreCompetitionRequest extends FormRequest
             'type' => ['required', 'string', Rule::in(CompetitionType::cases())],
             'image_file' => ['nullable', 'file', 'image', 'max:2048'], // Max 2MB
             'price' => ['nullable', 'numeric', 'min:0'],
+            'max_member' => ['required', 'integer', 'min:1'],
             'status' => ['required', 'string', Rule::in(CompetitionStatus::cases())],
         ];
 
@@ -51,6 +52,7 @@ class StoreCompetitionRequest extends FormRequest
             type: $this->input('type'),
             image_file: $this->file('image_file'),
             price: $this->input('price'),
+            max_member: $this->input('max_member'),
             status: $this->input('status'),
         );
     }
@@ -64,6 +66,7 @@ class StoreCompetitionRequest extends FormRequest
 
         return array_map(function ($timeline) use ($competition_id) {
             $dto = new TimelineDTO(
+                id: null,
                 competition_id: $competition_id,
                 timeline_name: $timeline['timeline_name'],
                 description: $timeline['description'] ?? null,

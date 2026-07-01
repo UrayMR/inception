@@ -2,30 +2,39 @@
 
 namespace App\Utilities;
 
-use Inertia\Inertia;
+use Inertia\Support\SessionKey;
 
 class FlashResponse
 {
-    public static function make(string $type, string $message): void
+    private static function push(string $type, string $message): void
     {
-        Inertia::flash('toast', [
+        $session = request()->session();
+        $flashed = $session->get(SessionKey::FLASH_DATA, []);
+        $toasts = $flashed['toasts'] ?? [];
+
+        $toasts[] = [
             'type' => $type,
             'message' => $message,
+        ];
+
+        $session->flash(SessionKey::FLASH_DATA, [
+            ...$flashed,
+            'toasts' => $toasts,
         ]);
     }
 
     public static function success(string $message): void
     {
-        self::make('success', $message);
+        self::push('success', $message);
     }
 
     public static function info(string $message): void
     {
-        self::make('info', $message);
+        self::push('info', $message);
     }
 
     public static function error(string $message): void
     {
-        self::make('error', $message);
+        self::push('error', $message);
     }
 }

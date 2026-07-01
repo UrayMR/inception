@@ -9,5 +9,7 @@ class StoreTeamDTO
         public string $team_name,
         public string $leader_id,
         public string $phone_number,
+        public ?string $institution,
+        public string $status
     ) {}
 }

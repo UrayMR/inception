@@ -16,8 +16,8 @@ export const CreateUserSchema = UserBaseSchema.extend({
 });
 
 export const UpdateUserSchema = UserBaseSchema.extend({
-    password: z.string().min(8).max(255).nullish(),
-    password_confirmation: z.string().min(8).max(255).nullish(),
+    password: z.string().min(8).max(255).optional(),
+    password_confirmation: z.string().min(8).max(255).optional(),
 }).refine((data) => data.password === data.password_confirmation, {
     message: 'Password does not match',
     path: ['password_confirmation'],

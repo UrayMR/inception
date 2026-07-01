@@ -2,24 +2,25 @@
 
 namespace App\Services\Teams;
 
+use App\Actions\Teams\StoreTeam;
+use App\Actions\Teams\DeleteTeam;
+use App\Actions\Teams\UpdateTeam;
 use App\DTOs\Teams\StoreTeamDTO;
 use App\DTOs\Teams\UpdateTeamDTO;
 use App\Models\Team;
 use App\Repositories\Teams\TeamRepository;
+use App\Services\Competitions\CompetitionService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class TeamService
 {
-    // NOTE:
-    // TeamService can be reusable accross different role controllers (Admin, Participant, etc.)
-    // Just called the function when trying to perform team related operations, and the service will handle the rest
-
-    // Example:
-    // in TeamController.php (admin controller), we can call $this->teamService->create($dto) to create a team.
-    // in Participant/ParticipantTeamController.php (participant controller), we can also call $this->teamService->create($dto) to create a team.
-
     public function __construct(
         protected TeamRepository $teamRepository,
+        protected CompetitionService $competitionService,
+        protected StoreTeam $storeTeam,
+        protected UpdateTeam $updateTeam,
+        protected DeleteTeam $deleteTeam,
     ) {}
 
     public function index(Request $request)
@@ -36,31 +37,28 @@ class TeamService
         return $this->teamRepository->index($queryParams);
     }
 
-    public function create(StoreTeamDTO $dto): Team
+    public function store(StoreTeamDTO $dto, array $members = [])
     {
-        $attributes = [
-            'competition_id' => $dto->competition_id,
-            'team_name' => $dto->team_name,
-            'leader_id' => $dto->leader_id,
-            'phone_number' => $dto->phone_number,
-        ];
+        $this->competitionService->ensureTeamCompetitionPayloadIsValid($dto->competition_id, $members);
 
-        return $this->teamRepository->store($attributes);
+        return DB::transaction(function () use ($dto, $members) {
+            return $this->storeTeam->handle($dto, $members);
+        });
     }
 
-    public function update(UpdateTeamDTO $dto, Team $team): Team
+    public function update(UpdateTeamDTO $dto, Team $team, array $members = []): Team
     {
-        $attributes = [
-            'competition_id' => $dto->competition_id,
-            'team_name' => $dto->team_name,
-            'phone_number' => $dto->phone_number,
-        ];
+        $this->competitionService->ensureTeamCompetitionPayloadIsValid($dto->competition_id, $members);
 
-        return $this->teamRepository->update($attributes, $team);
+        return DB::transaction(function () use ($dto, $team, $members) {
+            return $this->updateTeam->handle($dto, $team, $members);
+        });
     }
 
     public function destroy(Team $team): bool
     {
-        return $this->teamRepository->destroy($team);
+        return DB::transaction(function () use ($team) {
+            return $this->deleteTeam->handle($team);
+        });
     }
 }

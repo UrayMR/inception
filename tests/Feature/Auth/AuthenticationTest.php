@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\RateLimiter;
@@ -19,17 +20,43 @@ class AuthenticationTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_users_can_authenticate_using_the_login_screen()
+    public function test_admins_can_authenticate_using_the_login_screen_and_redirect_to_dashboard()
     {
-        $user = User::factory()->create();
+        $admin = User::factory()->create([
+            'role' => UserRole::admin->value,
+        ]);
 
         $response = $this->post(route('login.store'), [
-            'email' => $user->email,
+            'email' => $admin->email,
             'password' => 'password',
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $response->assertRedirect(route('panel.dashboard', absolute: false));
+    }
+
+    public function test_participants_can_authenticate_using_the_login_screen_and_redirect_to_home()
+    {
+        $participant = User::factory()->create([
+            'role' => UserRole::participant->value,
+        ]);
+
+        $response = $this->post(route('login.store'), [
+            'email' => $participant->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('home', absolute: false));
+    }
+
+    public function test_authenticated_user_cannot_access_login_screen()
+    {
+        $admin = User::factory()->create();
+
+        $response = $this->actingAs($admin)->get(route('login'));
+
+        $response->assertRedirect(route('home', absolute: false));
     }
 
     public function test_users_with_two_factor_enabled_are_redirected_to_two_factor_challenge()
@@ -85,7 +112,7 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        RateLimiter::increment(md5('login'.implode('|', [$user->email, '127.0.0.1'])), amount: 5);
+        RateLimiter::increment(md5('login' . implode('|', [$user->email, '127.0.0.1'])), amount: 5);
 
         $response = $this->post(route('login.store'), [
             'email' => $user->email,

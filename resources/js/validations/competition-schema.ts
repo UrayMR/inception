@@ -23,15 +23,60 @@ export const CompetitionBaseSchema = z.object({
         .mime(['image/jpeg', 'image/png', 'image/webp'])
         .nullish(),
     price: z.number().min(0),
+    max_member: z.number().int().min(1),
     status: z.enum(CompetitionStatusValue),
 });
 
 export const CreateCompetitionSchema = CompetitionBaseSchema.extend({
     timelines: z.array(CompetitionTimelineSchema).min(1),
+}).superRefine((data, ctx) => {
+    if (data.type === 'solo' && data.max_member !== 1) {
+        ctx.addIssue({
+            code: 'invalid_value',
+            values: [1],
+            input: data.max_member,
+            message: 'Solo competition must have only 1 member',
+            path: ['max_member'],
+        });
+    }
+
+    if (data.type === 'team' && data.max_member < 2) {
+        ctx.addIssue({
+            code: 'too_small',
+            origin: 'number',
+            minimum: 2,
+            inclusive: true,
+            input: data.max_member,
+            message: 'Team competition must have at least 2 members',
+            path: ['max_member'],
+        });
+    }
 });
 
 export const UpdateCompetitionSchema = CompetitionBaseSchema.extend({
     timelines: z.array(CompetitionTimelineSchema).min(1),
+}).superRefine((data, ctx) => {
+    if (data.type === 'solo' && data.max_member !== 1) {
+        ctx.addIssue({
+            code: 'invalid_value',
+            values: [1],
+            input: data.max_member,
+            message: 'Solo competition must have only 1 member',
+            path: ['max_member'],
+        });
+    }
+
+    if (data.type === 'team' && data.max_member < 2) {
+        ctx.addIssue({
+            code: 'too_small',
+            origin: 'number',
+            minimum: 2,
+            inclusive: true,
+            input: data.max_member,
+            message: 'Team competition must have at least 2 members',
+            path: ['max_member'],
+        });
+    }
 });
 
 export type CreateCompetitionSchemaType = z.infer<

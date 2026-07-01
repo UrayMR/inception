@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('slug')->unique();
             $table->string('type'); // solo, team
+            $table->integer('max_member')->default(1);
             $table->string('image_path')->nullable();
             $table->float('price')->default(0);
             $table->string('status')->default('closed'); // closed, open, ongoing, completed

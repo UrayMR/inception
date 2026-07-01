@@ -13,5 +13,6 @@ class StoreCompetitionDTO
         public ?UploadedFile $image_file,
         public ?float $price,
         public string $status,
+        public ?int $max_member,
     ) {}
 }

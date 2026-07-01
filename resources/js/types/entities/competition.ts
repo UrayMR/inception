@@ -4,6 +4,7 @@ import type {
 } from '../enums/competition';
 
 export interface CompetitionTimeline {
+    id?: string;
     timeline_name: string;
     description?: string | null;
     sequence: number;
@@ -23,9 +24,15 @@ export interface ICompetitionShow extends ICompetitionIndex {
     description?: string | null;
     image_path?: string | null;
     price: number;
+    max_member: number;
     timelines: CompetitionTimeline[];
     created_at: string;
     updated_at: string;
 }
 
 export type ICompetitionEdit = ICompetitionShow;
+export type ICompetitionRegister = ICompetitionShow;
+
+export type ICompetitionCard = ICompetitionIndex & {
+    description?: string | null;
+};

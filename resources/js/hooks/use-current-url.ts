@@ -28,42 +28,51 @@ export type UseCurrentUrlReturn = {
 
 export function useCurrentUrl(): UseCurrentUrlReturn {
     const page = usePage();
-    const currentUrlPath = new URL(
-        page.url,
-        typeof window !== 'undefined'
-            ? window.location.origin
-            : 'http://localhost',
-    ).pathname;
+    const currentUrl = page.url;
 
     const isCurrentUrl: IsCurrentUrlFn = (
         urlToCheck: NonNullable<InertiaLinkProps['href']>,
-        currentUrl?: string,
+        urlOverride?: string,
         startsWith: boolean = false,
     ) => {
-        const urlToCompare = currentUrl ?? currentUrlPath;
+        const baseCompareUrl = urlOverride ?? currentUrl;
         const urlString = toUrl(urlToCheck);
 
-        const comparePath = (path: string): boolean =>
-            startsWith ? urlToCompare.startsWith(path) : path === urlToCompare;
+        let targetPathname = urlString;
+        let comparePathname = baseCompareUrl;
 
-        if (!urlString.startsWith('http')) {
-            return comparePath(urlString);
+        try {
+            targetPathname = new URL(urlString, 'http://localhost').pathname;
+        } catch {
+            targetPathname = urlString.split('?')[0];
         }
 
         try {
-            const absoluteUrl = new URL(urlString);
-
-            return comparePath(absoluteUrl.pathname);
+            comparePathname = new URL(baseCompareUrl, 'http://localhost')
+                .pathname;
         } catch {
+            comparePathname = baseCompareUrl.split('?')[0];
+        }
+
+        if (!startsWith) {
+            return comparePathname === targetPathname;
+        }
+
+        const targetSegments = targetPathname.split('/').filter(Boolean);
+        const compareSegments = comparePathname.split('/').filter(Boolean);
+
+        if (targetSegments.length > compareSegments.length) {
             return false;
         }
+
+        return targetSegments.every((seg, idx) => compareSegments[idx] === seg);
     };
 
     const isCurrentOrParentUrl: IsCurrentOrParentUrlFn = (
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
-        currentUrl?: string,
+        urlToCheck,
+        urlOverride,
     ) => {
-        return isCurrentUrl(urlToCheck, currentUrl, true);
+        return isCurrentUrl(urlToCheck, urlOverride, true);
     };
 
     const whenCurrentUrl: WhenCurrentUrlFn = <TIfTrue, TIfFalse = null>(
@@ -75,7 +84,7 @@ export function useCurrentUrl(): UseCurrentUrlReturn {
     };
 
     return {
-        currentUrl: currentUrlPath,
+        currentUrl,
         isCurrentUrl,
         isCurrentOrParentUrl,
         whenCurrentUrl,

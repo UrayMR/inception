@@ -1,12 +1,13 @@
 import { Head, useForm } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { SubmitButton } from '@/components/buttons/submit-button';
-import { TeamForm } from '@/components/forms/team-form';
 import { MainContent } from '@/components/main-content';
+import { TeamForm } from '@/features/panel/team';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
-import teams from '@/routes/teams';
+import teams from '@/routes/panel/teams';
 import type { BreadcrumbItem, CompetitionType, Option } from '@/types';
+import { TeamStatusMap } from '@/types';
 import { CreateTeamSchema } from '@/validations/team-schema';
 import type { CreateTeamSchemaType } from '@/validations/team-schema';
 
@@ -25,7 +26,9 @@ export default function CreateTeamPage({
     const form = useForm<CreateTeamSchemaType>({
         competition_id: '',
         team_name: '',
+        institution: '',
         phone_number: '',
+        status: TeamStatusMap.Active.value,
         members: [
             {
                 member_name: '',
@@ -37,8 +40,14 @@ export default function CreateTeamPage({
         (competition) => competition.value === form.data.competition_id,
     )?.otherValues?.type as CompetitionType | undefined;
 
+    const selectedCompetitionMaxMember = Number(
+        competitionMap.find(
+            (competition) => competition.value === form.data.competition_id,
+        )?.otherValues?.max_member ?? 0,
+    );
+
     const { guard } = useZod<CreateTeamSchemaType>(
-        CreateTeamSchema(selectedCompetitionType),
+        CreateTeamSchema(selectedCompetitionType, selectedCompetitionMaxMember),
     );
 
     const handleSubmit = (e: React.SubmitEvent) => {

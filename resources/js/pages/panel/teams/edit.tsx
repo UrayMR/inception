@@ -1,23 +1,20 @@
 import { Head, useForm } from '@inertiajs/react';
 import { BackButton } from '@/components/buttons/back-button';
 import { SubmitButton } from '@/components/buttons/submit-button';
-import { TeamForm } from '@/components/forms/team-form';
 import { MainContent } from '@/components/main-content';
+import { TeamForm } from '@/features/panel/team';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
-import teams from '@/routes/teams';
+import teams from '@/routes/panel/teams';
 import type {
     BreadcrumbItem,
     CompetitionType,
     ITeamEdit,
     Option,
 } from '@/types';
+import { TeamStatusMap } from '@/types';
 import { UpdateTeamSchema } from '@/validations/team-schema';
 import type { UpdateTeamSchemaType } from '@/validations/team-schema';
-
-type EditTeamFormData = UpdateTeamSchemaType & {
-    leader_name: string;
-};
 
 interface EditTeamPageProps {
     team: ITeamEdit;
@@ -36,11 +33,12 @@ export default function EditTeamPage({
         },
     ];
 
-    const form = useForm<EditTeamFormData>({
+    const form = useForm<UpdateTeamSchemaType>({
         team_name: team.team_name,
         competition_id: team.competition_id,
-        leader_name: team.leader_name,
+        institution: team.institution || '',
         phone_number: team.phone_number,
+        status: team.status || TeamStatusMap.Active.value,
         members: team.members || [],
     });
 
@@ -48,8 +46,14 @@ export default function EditTeamPage({
         (competition) => competition.value === form.data.competition_id,
     )?.otherValues?.type as CompetitionType | undefined;
 
+    const selectedCompetitionMaxMember = Number(
+        competitionMap.find(
+            (competition) => competition.value === form.data.competition_id,
+        )?.otherValues?.max_member ?? 0,
+    );
+
     const { guard } = useZod<UpdateTeamSchemaType>(
-        UpdateTeamSchema(selectedCompetitionType),
+        UpdateTeamSchema(selectedCompetitionType, selectedCompetitionMaxMember),
     );
 
     const handleSubmit = (e: React.SubmitEvent) => {
@@ -80,6 +84,7 @@ export default function EditTeamPage({
                                 errors={form.errors}
                                 onChange={form.setData}
                                 competitions={competitionMap}
+                                leaderName={team.leader_name}
                             />
 
                             <div className="mt-4 flex justify-end">

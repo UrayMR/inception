@@ -1,6 +1,6 @@
 <?php
 
-use App\Exceptions\GlobalExceptionHandler;
+use App\Exceptions\GlobalException;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -25,7 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $handler = app(GlobalExceptionHandler::class);
+        $handler = app(GlobalException::class);
 
         // Log all exceptions with detailed context and stack trace
         $exceptions->report(fn(Throwable $e) => $handler->report($e))->stop();

@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
-class GlobalExceptionHandler
+class GlobalException
 {
   /**
    * Log all exceptions with detailed context and stack trace

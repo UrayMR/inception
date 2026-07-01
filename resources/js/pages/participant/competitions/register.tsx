@@ -1,6 +1,13 @@
 import { Head, useForm, Link } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight, Loader2, RefreshCw } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import {
+    CompetitionSummaryPanel,
+    MobileSummarySheet,
+    RegisterCompetitionForm,
+    RegisterStepper,
+} from '@/features/participant/competitions';
+import type { RegisterStepId } from '@/features/participant/competitions';
 import getQueryParam from '@/helpers/get-query-param';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useZod } from '@/hooks/use-zod';
@@ -20,13 +27,6 @@ import {
     RegisterCompetitionPaymentStepSchema,
     RegisterCompetitionSchema,
 } from '@/validations/register-competition-schema';
-import {
-    CompetitionSummaryPanel,
-    MobileSummarySheet,
-    RegisterCompetitionForm,
-    RegisterStepper,
-} from '@/features/participant/competitions';
-import type { RegisterStepId } from '@/features/participant/competitions';
 
 interface RegisterCompetitionPageProps {
     competitionMap: Option[];

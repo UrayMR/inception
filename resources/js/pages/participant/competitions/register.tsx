@@ -1,11 +1,6 @@
 import { Head, useForm, Link } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight, Loader2, RefreshCw } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import CompetitionSummaryPanel from '@/features/participant/competitions/components/competition-summary-panel';
-import { MobileSummarySheet } from '@/features/participant/competitions/components/mobile-summary-sheets';
-import type { RegistrationStepId } from '@/features/participant/competitions/components/register-stepper';
-import RegistrationStepper from '@/features/participant/competitions/components/register-stepper';
-import RegisterCompetitionForm from '@/features/participant/competitions/form/competition-registration-form';
 import getQueryParam from '@/helpers/get-query-param';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useZod } from '@/hooks/use-zod';
@@ -25,6 +20,13 @@ import {
     RegisterCompetitionPaymentStepSchema,
     RegisterCompetitionSchema,
 } from '@/validations/register-competition-schema';
+import {
+    CompetitionSummaryPanel,
+    MobileSummarySheet,
+    RegisterCompetitionForm,
+    RegisterStepper,
+} from '@/features/participant/competitions';
+import type { RegisterStepId } from '@/features/participant/competitions';
 
 interface RegisterCompetitionPageProps {
     competitionMap: Option[];
@@ -51,7 +53,7 @@ export default function RegisterCompetitionPage({
             competition.otherValues?.slug === preselectedCompetitionSlug,
     );
 
-    const [currentStep, setCurrentStep] = useState<RegistrationStepId>('info');
+    const [currentStep, setCurrentStep] = useState<RegisterStepId>('info');
 
     const isMobile = useIsMobile();
 
@@ -140,7 +142,7 @@ export default function RegisterCompetitionPage({
 
     const handleBack = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        
+
         setCurrentStep('info');
     };
 
@@ -216,7 +218,7 @@ export default function RegisterCompetitionPage({
                         className="grid items-start gap-6 lg:grid-cols-[1.3fr_0.7fr]"
                     >
                         <div className="space-y-6">
-                            <RegistrationStepper currentStep={currentStep} />
+                            <RegisterStepper currentStep={currentStep} />
 
                             <RegisterCompetitionForm
                                 step={currentStep}

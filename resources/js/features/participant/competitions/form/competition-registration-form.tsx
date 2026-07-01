@@ -15,11 +15,11 @@ import {
 } from '@/types';
 import type { FormErrors, Option, TransactionPaymentMethodType } from '@/types';
 import type { RegisterCompetitionFormDataType } from '@/validations/register-competition-schema';
-import type { RegistrationStepId } from '../components/register-stepper';
+import type { RegisterStepId } from '../components/register-stepper';
 import StepCard from '../components/step-card';
 
 type RegisterCompetitionFormProps = {
-    step: RegistrationStepId;
+    step: RegisterStepId;
     competitionMap: Option[];
     data: RegisterCompetitionFormDataType;
     errors: FormErrors<RegisterCompetitionFormDataType>;

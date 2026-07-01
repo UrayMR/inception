@@ -5,12 +5,12 @@ export const REGISTRATION_STEPS = [
     { id: 'payment', label: 'Pembayaran' },
 ] as const;
 
-export type RegistrationStepId = (typeof REGISTRATION_STEPS)[number]['id'];
+export type RegisterStepId = (typeof REGISTRATION_STEPS)[number]['id'];
 
-export default function RegistrationStepper({
+export default function RegisterStepper({
     currentStep,
 }: {
-    currentStep: RegistrationStepId;
+    currentStep: RegisterStepId;
 }) {
     const currentIndex = REGISTRATION_STEPS.findIndex(
         (step) => step.id === currentStep,

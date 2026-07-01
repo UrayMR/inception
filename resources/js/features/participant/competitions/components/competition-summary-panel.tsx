@@ -3,13 +3,13 @@ import type { Option } from '@/types';
 import CompetitionStatusBadge from './competition-status-badge';
 import TimelinePanel from './timeline-panel';
 
-type RegisterCompetitionSummaryProps = {
+type CompetitionSummaryPanelProps = {
     selectedCompetition?: Option;
 };
 
-export default function RegisterCompetitionSummary({
+export default function CompetitionSummaryPanel({
     selectedCompetition,
-}: RegisterCompetitionSummaryProps) {
+}: CompetitionSummaryPanelProps) {
     return (
         <aside className="space-y-5 rounded-2xl border border-purple-900/20 bg-zinc-950/40 p-6 md:p-8">
             <div className="flex items-center justify-between border-b border-zinc-800 pb-3 font-sans">

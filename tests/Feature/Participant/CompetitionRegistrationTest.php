@@ -74,6 +74,33 @@ class CompetitionRegistrationTest extends TestCase
       );
   }
 
+  public function test_participant_with_active_registration_is_redirected_from_competition_register_page(): void
+  {
+    // Arrange: Seed an open competition and an already active registration for the participant.
+    $participant = User::factory()->create([
+      'role' => 'participant',
+    ]);
+
+    $competition = Competition::factory()->create([
+      'name' => 'Open Cup',
+      'slug' => 'open-cup',
+      'type' => CompetitionType::team->value,
+      'status' => CompetitionStatus::open->value,
+    ]);
+
+    Team::factory()->create([
+      'competition_id' => $competition->id,
+      'leader_id' => $participant->id,
+      'status' => TeamStatus::active->value,
+    ]);
+
+    // Act: Request the registration page while the participant already has a verified team.
+    $response = $this->actingAs($participant)->get(route('participant.competitions.register'));
+
+    // Assert: The participant is redirected away from the register page.
+    $response->assertRedirect(route('guest.competitions.index'));
+  }
+
   public function test_participant_can_submit_team_registration_successfully(): void
   {
     // Arrange: Prepare a participant, an open team competition, and a valid upload payload.

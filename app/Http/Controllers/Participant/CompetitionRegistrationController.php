@@ -12,6 +12,7 @@ use App\Services\Competitions\CompetitionService;
 use App\Services\Competitions\GuestCompetitionService;
 use App\Services\Competitions\Registrations\RegisterCompetitionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CompetitionRegistrationController extends Controller
 {
@@ -39,6 +40,12 @@ class CompetitionRegistrationController extends Controller
      */
     public function register()
     {
+        if (Auth::check() && ! $this->registerCompetitionService->isCanRegister()) {
+            $this->flash('error', 'You already have a pending or verified registration.');
+
+            return back();
+        }
+
         return $this->render('participant/competitions/register', [
             'competitionMap' => $this->competitionService->getCompetitionMap([
                 'status' => CompetitionStatus::open->value,

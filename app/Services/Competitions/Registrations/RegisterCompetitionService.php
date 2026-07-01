@@ -8,10 +8,12 @@ use App\DTOs\Competitions\Registrations\RegisterCompetitionDTO;
 use App\Enums\CompetitionStatus;
 use App\Enums\CompetitionType;
 use App\Enums\TeamStatus;
+use App\Exceptions\BusinessException;
 use App\Helpers\ThrowException;
 use App\Models\Competition;
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RegisterCompetitionService
@@ -20,6 +22,21 @@ class RegisterCompetitionService
     protected StoreCompetitionRegistration $storeCompetitionRegistration,
     protected UpdateCompetitionRegistration $updateCompetitionRegistration,
   ) {}
+
+  public function isCanRegister(): bool
+  {
+    $userId = Auth::id();
+
+    if (! $userId) {
+      return false;
+    }
+
+    if (! $this->hasOpenCompetition()) {
+      return false;
+    }
+
+    return ! $this->hasBlockingRegistration($userId);
+  }
 
   public function register(RegisterCompetitionDTO $dto, Competition $competition): void
   {
@@ -62,20 +79,29 @@ class RegisterCompetitionService
 
   protected function ensureLeaderCanRegister(string $leaderId): void
   {
-    $hasActiveRegistration = Team::query()
-      ->where('leader_id', $leaderId)
-      ->whereIn('status', [
-        TeamStatus::registered->value,
-      ])
-      ->exists();
-
-    if ($hasActiveRegistration) {
-      // TODO: Change with flash toast message
-      ThrowException::validation(
-        'competition_id',
+    if ($this->hasBlockingRegistration($leaderId)) {
+      throw new BusinessException(
         'You already have a pending or verified registration.',
       );
     }
+  }
+
+  protected function hasOpenCompetition(): bool
+  {
+    return Competition::query()
+      ->where('status', CompetitionStatus::open->value)
+      ->exists();
+  }
+
+  protected function hasBlockingRegistration(string $leaderId): bool
+  {
+    return Team::query()
+      ->where('leader_id', $leaderId)
+      ->whereIn('status', [
+        TeamStatus::registered->value,
+        TeamStatus::active->value,
+      ])
+      ->exists();
   }
 
   protected function ensureTeamCompetitionPayloadIsValid(RegisterCompetitionDTO $dto, Competition $competition): void

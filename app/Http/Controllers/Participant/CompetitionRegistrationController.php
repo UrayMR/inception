@@ -40,6 +40,7 @@ class CompetitionRegistrationController extends Controller
      */
     public function register()
     {
+        // TODO: is this really necessary? how about policy? or middleware?
         if (Auth::check() && ! $this->registerCompetitionService->isCanRegister()) {
             $this->flash('error', 'You already have a pending or verified registration.');
 

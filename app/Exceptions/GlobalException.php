@@ -129,11 +129,12 @@ class GlobalException
     }
 
     return match ($response->getStatusCode()) {
-      403 => $this->renderErrorPage('errors/403', $request, 403),
-      404 => $this->renderErrorPage('errors/404', $request, 404),
-      419 => $this->renderErrorPage('errors/419', $request, 419),
-      500 => $this->renderErrorPage('errors/500', $request, 500),
-      503 => $this->renderErrorPage('errors/503', $request, 503),
+      403, 404, 419, 429, 500, 503
+      => $this->renderErrorPage(
+        $request,
+        $response->getStatusCode()
+      ),
+
       default => $response,
     };
   }
@@ -141,11 +142,60 @@ class GlobalException
   /**
    * Render fallback error page with Inertia
    */
-  private function renderErrorPage(string $page, Request $request, int $status): Response
+  private function renderErrorPage(Request $request, int $status): Response
   {
-    $response = Inertia::render($page)->toResponse($request);
-    $response->setStatusCode($status);
+    return Inertia::render('errors/error-page', [
+      'error' => $this->getErrorData($status),
+    ])->toResponse($request)->setStatusCode($status);
+  }
 
-    return $response;
+  /**
+   * Get error data based on status code
+   */
+  private function getErrorData(int $status): array
+  {
+    return match ($status) {
+      403 => [
+        'status' => 403,
+        'title' => 'Akses Ditolak',
+        'description' => 'Anda tidak memiliki izin untuk mengakses halaman ini.',
+      ],
+
+      404 => [
+        'status' => 404,
+        'title' => 'Halaman Tidak Ditemukan',
+        'description' => 'Halaman yang Anda cari tidak tersedia.',
+      ],
+
+      419 => [
+        'status' => 419,
+        'title' => 'Sesi Berakhir',
+        'description' => 'Silakan refresh halaman dan coba kembali.',
+      ],
+
+      429 => [
+        'status' => 429,
+        'title' => 'Terlalu Banyak Permintaan',
+        'description' => 'Silakan tunggu beberapa saat sebelum mencoba lagi.',
+      ],
+
+      500 => [
+        'status' => 500,
+        'title' => 'Terjadi Kesalahan',
+        'description' => 'Terjadi kesalahan pada server.',
+      ],
+
+      503 => [
+        'status' => 503,
+        'title' => 'Maintenance',
+        'description' => 'Aplikasi sedang dalam pemeliharaan.',
+      ],
+
+      default => [
+        'status' => $status,
+        'title' => 'Terjadi Kesalahan',
+        'description' => 'Terjadi kesalahan yang tidak diketahui.',
+      ],
+    };
   }
 }

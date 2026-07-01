@@ -18,10 +18,15 @@ use Throwable;
 class GlobalException
 {
   /**
-   * Log all exceptions with detailed context and stack trace
+   * Log all exceptions with detailed context and stack trace 
+   * Except for BusinessException which is handled differently
    */
   public function report(Throwable $e): void
   {
+    if ($e instanceof BusinessException) {
+      return;
+    }
+
     $context = [
       'error' => $e->getMessage(),
       'trace' => $e->getTraceAsString(),
@@ -46,10 +51,26 @@ class GlobalException
   }
 
   /**
-   * Render exceptions as JSON responses for API requests, and let non-API requests fall back to default rendering
+   * Render JSON responses for exceptions based on their type and context
+   * For API requests or when the client expects JSON, return structured JSON responses.
+   * For non-API requests, return null to allow Inertia to handle the response.
    */
   public function render(Throwable $e, Request $request): ?Response
   {
+    if ($e instanceof BusinessException) {
+
+      if ($request->expectsJson()) {
+        return response()->json([
+          'success' => false,
+          'message' => $e->getMessage(),
+        ], $e->status());
+      }
+
+      FlashResponse::error($e->getMessage());
+
+      return back();
+    }
+
     if (! $request->is('api/*') && ! $request->expectsJson()) {
       return null;
     }
@@ -83,31 +104,12 @@ class GlobalException
       ], 404);
     }
 
-    if ($e instanceof BusinessException) {
-
-      if ($request->expectsJson()) {
-        return response()->json([
-          'success' => false,
-          'message' => $e->getMessage(),
-        ], $e->status());
-      }
-
-      FlashResponse::error($e->getMessage());
-
-      return back()->setStatusCode($e->status());
-    }
-
     if ($e instanceof HttpException) {
       return response()->json([
         'success' => false,
         'message' => $e->getMessage() ?: 'HTTP error.',
       ], $e->getStatusCode());
     }
-
-    Log::error('Unexpected JSON Exception', [
-      'error' => $e->getMessage(),
-      'trace' => $e->getTraceAsString(),
-    ]);
 
     return response()->json([
       'success' => false,

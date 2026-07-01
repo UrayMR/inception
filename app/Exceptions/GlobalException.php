@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Utilities\FlashResponse;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -80,6 +81,20 @@ class GlobalException
         'success' => false,
         'message' => 'Data tidak ditemukan.',
       ], 404);
+    }
+
+    if ($e instanceof BusinessException) {
+
+      if ($request->expectsJson()) {
+        return response()->json([
+          'success' => false,
+          'message' => $e->getMessage(),
+        ], $e->status());
+      }
+
+      FlashResponse::error($e->getMessage());
+
+      return back()->setStatusCode($e->status());
     }
 
     if ($e instanceof HttpException) {

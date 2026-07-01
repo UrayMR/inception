@@ -50,7 +50,7 @@ const mobileNonAuthNavItems: NavItem[] = mainNavItems.concat([
 
 export function AppHeader() {
     const page = usePage();
-    const { auth } = page.props;
+    const auth = page.props.auth ?? {};
     const { isCurrentUrl } = useCurrentUrl();
     const [mobileOpen, setMobileOpen] = useState(false);
 

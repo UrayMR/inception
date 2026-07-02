@@ -57,7 +57,7 @@ export default function TimelineSection({id}: {id: string}) {
     const solarRef = useRef<SolarSystemRef>(null);
 
     return (
-        <section id={id} className="relative z-10 overflow-hidden px-6 py-32 max-w-7xl mx-auto">
+        <section id={id} className="relative z-10 mx-auto max-w-7xl px-6 w-full py-32">
             <div className="mb-20 space-y-3 text-center">
                 <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
                     // LOG_TIMELINE

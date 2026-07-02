@@ -69,9 +69,15 @@ export function AppFooter() {
                                 Presented by
                             </span>
                             <div className="flex items-center gap-4">
-                                <AppLogo className="h-10 grayscale" />
-                                <AppLogo className="h-10 grayscale" />
-                                <AppLogo className="h-10 grayscale" />
+                                <img
+                                    src="assets/HIMATIFA.png"
+                                    className="h-10"
+                                />
+                                <img
+                                    src="assets/kabinet.png"
+                                    className="h-10"
+                                />
+                                <img src="assets/UPN.png" className="h-10" />
                             </div>
                         </div>
                     </div>

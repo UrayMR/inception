@@ -92,7 +92,7 @@ export default function CompetitionShowPage({
                                 </div>
                             </div>
 
-                            <div className="relative aspect-video max-h-75 w-full overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-900/10 p-3">
+                            <div className="relative aspect-video max-h-75 w-full overflow-hidden rounded-xl p-3">
                                 <img
                                     src={
                                         competition.image_path

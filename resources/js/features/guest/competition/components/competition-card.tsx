@@ -7,7 +7,6 @@ import type { ICompetitionCard } from '@/types';
 type CompetitionCardProps = ICompetitionCard & {
     icon?: LucideIcon;
     isActive: boolean;
-    color?: string;
 };
 
 export function CompetitionCard({
@@ -15,7 +14,6 @@ export function CompetitionCard({
     description,
     status,
     image_path,
-    color = 'from-purple-500 to-pink-500',
     isActive,
 }: CompetitionCardProps) {
     const isOpen = status === CompetitionStatusMap.Open.value;
@@ -43,15 +41,7 @@ export function CompetitionCard({
                 />
             )}
 
-            <div className="relative mt-2 mb-6 flex items-center justify-center overflow-hidden rounded-2xl border border-zinc-800 bg-slate-900 p-6 transition-all duration-500 transform-3d">
-                <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] bg-size-[8px_8px]" />
-
-                {isActive && (
-                    <div
-                        className={`absolute inset-0 rounded-2xl bg-linear-to-br ${color} opacity-15 blur-xl`}
-                    />
-                )}
-
+            <div className="relative mt-2 mb-6 flex items-center justify-center overflow-hidden rounded-2xl p-6 transition-all duration-500 transform-3d">
                 <img
                     src={
                         image_path
@@ -61,10 +51,10 @@ export function CompetitionCard({
                               })
                             : '/assets/png/competition-icon.png'
                     }
-                    className={`relative z-10 h-12 w-12 transition-all duration-500 ${
+                    className={`relative z-10 h-50 transition-all duration-500 ${
                         isActive
-                            ? 'text-purple-300 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]'
-                            : 'text-zinc-500'
+                            ? 'drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]'
+                            : 'drop-shadow-[0_0_12px_rgba(0,0,0,0.6)]'
                     }`}
                 />
             </div>

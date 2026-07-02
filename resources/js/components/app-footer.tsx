@@ -69,13 +69,13 @@ export function AppFooter() {
                                 Presented by
                             </span>
                             <div className="flex items-center gap-4">
-                                <img src="assets/png/UPN.png" className="h-8" />
+                                <img src="/assets/png/UPN.png" className="h-8" />
                                 <img
-                                    src="assets/png/HIMATIFA.png"
+                                    src="/assets/png/HIMATIFA.png"
                                     className="h-8"
                                 />
                                 <img
-                                    src="assets/png/kabinet.png"
+                                    src="/assets/png/kabinet.png"
                                     className="h-8"
                                 />
                             </div>

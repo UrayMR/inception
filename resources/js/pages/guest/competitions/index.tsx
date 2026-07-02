@@ -12,8 +12,8 @@ export default function CompetitionsIndex({
         <AppLayout>
             <Head title="Choose Your Mission" />
 
-            <div className="relative flex w-full flex-col justify-between overflow-hidden bg-transparent py-4">
-                <div className="relative z-20 mx-auto flex w-full max-w-5xl flex-col items-center justify-center gap-2 px-6 pb-5 select-none md:flex-row md:items-end">
+            <div className="relative flex w-full flex-col justify-between overflow-hidden bg-transparent py-6 md:py-10">
+                <div className="relative z-20 mx-auto flex w-full flex-col items-center justify-center gap-2 px-6 pb-5 select-none md:flex-row md:items-end">
                     <div className="flex flex-col items-center text-center">
                         <p className="font-mono text-[10px] font-black tracking-[0.3em] text-purple-400 uppercase">
                             // MISSION HUB V1.0

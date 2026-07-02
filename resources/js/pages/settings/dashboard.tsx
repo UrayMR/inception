@@ -23,9 +23,11 @@ const assignments: Assignment[] = [
 
 export default function Dashboard() {
     const { competition, transaction } = usePage<{
-        competition: ICompetitionIndex;
-        transaction: ITransactionIndex;
+        competition: ICompetitionIndex | null;
+        transaction: ITransactionIndex | null;
     }>().props;
+
+    const hasCompetition = Boolean(competition);
 
     return (
         <SettingLayout>
@@ -46,24 +48,45 @@ export default function Dashboard() {
                 </div>
 
                 <div className="space-y-3">
-                    <Link
-                        href={`/competitions/${competition.slug}`}
-                        key={competition.id}
-                        className="group flex items-center justify-between gap-4 rounded-lg border border-purple-900/30 bg-[#0d071a]/60 px-4 py-3 transition-colors hover:border-purple-500/40"
-                    >
-                        <div className="min-w-0 flex-1">
-                            <div className="flex items-center justify-between gap-2">
-                                <p className="truncate text-sm font-medium text-zinc-200">
-                                    {competition.name}
-                                </p>
+                    {hasCompetition && competition ? (
+                        <Link
+                            href={`/competitions/${competition.slug}`}
+                            key={competition.id}
+                            className="group flex items-center justify-between gap-4 rounded-lg border border-purple-900/30 bg-[#0d071a]/60 px-4 py-3 transition-colors hover:border-purple-500/40"
+                        >
+                            <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between gap-2">
+                                    <p className="truncate text-sm font-medium text-zinc-200">
+                                        {competition.name}
+                                    </p>
 
-                                <p className="text-xs text-zinc-500 uppercase">
-                                    {transaction.status}
-                                </p>
+                                    <p className="text-xs text-zinc-500 uppercase">
+                                        {transaction?.status ??
+                                            'No transaction'}
+                                    </p>
+                                </div>
                             </div>
+                            <ChevronRight className="h-4 w-4 shrink-0 text-zinc-600 transition-colors group-hover:text-purple-400" />
+                        </Link>
+                    ) : (
+                        <div className="rounded-lg border border-dashed border-purple-900/30 bg-[#0d071a]/40 px-4 py-5 text-center">
+                            <p className="text-sm font-medium text-zinc-200">
+                                Kamu belum mengikuti kompetisi apa pun.
+                            </p>
+                            <p className="mt-1 text-xs text-zinc-500">
+                                Daftar kompetisi dulu untuk melihat detail,
+                                status pembayaran, dan agenda.
+                            </p>
+
+                            <Link
+                                href="/competitions"
+                                className="mt-4 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-xs font-medium text-purple-300 transition-colors hover:border-purple-400/50 hover:bg-purple-500/15 hover:text-purple-200"
+                            >
+                                Lihat kompetisi
+                                <ChevronRight className="h-3.5 w-3.5" />
+                            </Link>
                         </div>
-                        <ChevronRight className="h-4 w-4 shrink-0 text-zinc-600 transition-colors group-hover:text-purple-400" />
-                    </Link>
+                    )}
                 </div>
             </div>
 

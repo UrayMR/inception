@@ -19,10 +19,14 @@ class DashboardController extends Controller
    */
   public function index(): Response
   {
+    $user = Auth::user();
+    $team = $user?->team;
+    $competition = $team?->competition;
+
     return Inertia::render('settings/dashboard', [
-      'competition' => Auth::user()->team->competition ?? null,
-      'schedule' => Auth::user()->team->competition->timelines ?? null,
-      'transaction' => Auth::user()->team->transactions()->latest()->first() ?? null,
+      'competition' => $competition,
+      'schedule' => $competition?->timelines,
+      'transaction' => $team?->transactions()->latest()->first(),
     ]);
   }
 }

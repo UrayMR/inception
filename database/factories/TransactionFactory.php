@@ -23,7 +23,7 @@ class TransactionFactory extends Factory
     return [
       'team_id' => Team::factory(),
       'amount' => $this->faker->randomFloat(2, 10000, 1000000),
-      'payment_method' => $this->faker->randomElement(TransactionMethod::cases()),
+      'payment_method' =>  TransactionMethod::qris->value,
       'payment_proof_path' => 'transactions/' . $this->faker->uuid() . '.jpg',
       'status' => $this->faker->randomElement(TransactionStatus::cases()),
     ];

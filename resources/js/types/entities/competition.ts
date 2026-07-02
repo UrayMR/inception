@@ -35,4 +35,5 @@ export type ICompetitionRegister = ICompetitionShow;
 
 export type ICompetitionCard = ICompetitionIndex & {
     description?: string | null;
+    image_path?: string | null;
 };

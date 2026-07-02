@@ -1,6 +1,6 @@
-import { Rocket } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import CompetitionStatusBadge from '@/features/participant/competitions/components/competition-status-badge';
+import { getFileUrl } from '@/helpers/file-url';
 import { CompetitionStatusMap } from '@/types';
 import type { ICompetitionCard } from '@/types';
 
@@ -14,7 +14,7 @@ export function CompetitionCard({
     name,
     description,
     status,
-    icon: CompetitionIcon = Rocket,
+    image_path,
     color = 'from-purple-500 to-pink-500',
     isActive,
 }: CompetitionCardProps) {
@@ -52,7 +52,15 @@ export function CompetitionCard({
                     />
                 )}
 
-                <CompetitionIcon
+                <img
+                    src={
+                        image_path
+                            ? getFileUrl({
+                                  url: image_path,
+                                  disk: 'public',
+                              })
+                            : '/assets/png/competition-icon.png'
+                    }
                     className={`relative z-10 h-12 w-12 transition-all duration-500 ${
                         isActive
                             ? 'text-purple-300 drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]'

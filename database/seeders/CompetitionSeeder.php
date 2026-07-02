@@ -48,6 +48,7 @@ class CompetitionSeeder extends Seeder
                         'end_at'   => Carbon::create(2026, 8, 1, 23, 59, 59),
                     ],
                 ],
+                'image_path' => 'competitions/essay.svg',
             ],
             'Business Plan' => [
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -65,6 +66,7 @@ class CompetitionSeeder extends Seeder
                         'end_at'   => Carbon::create(2026, 8, 5, 23, 59, 59),
                     ],
                 ],
+                'image_path' => 'competitions/business_plan.svg',
             ],
             'UI/UX' => [
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -82,6 +84,7 @@ class CompetitionSeeder extends Seeder
                         'end_at'   => Carbon::create(2026, 8, 10, 23, 59, 59),
                     ],
                 ],
+                'image_path' => 'competitions/ui_ux.svg',
             ],
             'Data Science' => [
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -99,6 +102,7 @@ class CompetitionSeeder extends Seeder
                         'end_at'   => Carbon::create(2026, 8, 12, 23, 59, 59),
                     ],
                 ],
+                'image_path' => 'competitions/data_science.svg',
             ],
             'Hackathon' => [
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -116,6 +120,7 @@ class CompetitionSeeder extends Seeder
                         'end_at'   => Carbon::create(2026, 8, 15, 23, 59, 59),
                     ],
                 ],
+                'image_path' => 'competitions/hackathon.svg',
             ],
         ];
 
@@ -129,6 +134,7 @@ class CompetitionSeeder extends Seeder
                     CompetitionStatus::open->value,
                     CompetitionStatus::closed->value,
                 ]),
+                'image_path' => $details['image_path'],
             ]);
 
             $allTimelines = [

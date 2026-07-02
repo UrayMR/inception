@@ -19,6 +19,7 @@ class CompetitionListResource extends JsonResource
       'id' => $this->id,
       'slug' => $this->slug,
       'name' => $this->name,
+      'image_path' => $this->image_path,
       'description' => $this->description,
       'type' => $this->type,
       'status' => $this->status,

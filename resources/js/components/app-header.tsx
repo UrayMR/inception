@@ -95,7 +95,8 @@ export function AppHeader() {
                                             key={index}
                                             className="relative hidden h-full items-center lg:flex"
                                         >
-                                            <a
+                                            <Link
+                                                prefetch
                                                 href={item.href as string}
                                                 className="relative flex h-9 cursor-pointer items-center rounded-md px-3 text-sm font-medium tracking-wide transition-all duration-200"
                                                 style={{
@@ -130,7 +131,7 @@ export function AppHeader() {
                                                     <item.icon className="mr-2 h-4 w-4" />
                                                 )}
                                                 {item.title}
-                                            </a>
+                                            </Link>
 
                                             {active && (
                                                 <div

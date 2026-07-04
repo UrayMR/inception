@@ -1,6 +1,10 @@
 export type * from './auth';
 export type * from './navigation';
 export type * from './ui';
+
+export * from './space';
+export type * from './space';
+
 export type * from './data-table';
 export type * from './form';
 

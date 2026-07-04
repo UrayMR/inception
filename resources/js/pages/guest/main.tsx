@@ -26,7 +26,7 @@ export default function Main() {
 
             <WhenVisible
                 fallback={
-                    <div className="container py-12">
+                    <div className="container py-12 mx-auto">
                         <Skeleton className="mx-auto h-100 w-full max-w-7xl" />
                     </div>
                 }
@@ -39,7 +39,7 @@ export default function Main() {
 
             <WhenVisible
                 fallback={
-                    <div className="container py-12">
+                    <div className="container py-12 mx-auto">
                         <Skeleton className="mx-auto h-125 w-full max-w-7xl" />
                     </div>
                 }
@@ -49,7 +49,7 @@ export default function Main() {
 
             <WhenVisible
                 fallback={
-                    <div className="container py-12">
+                    <div className="container py-12 mx-auto">
                         <Skeleton className="mx-auto h-62.5 w-full max-w-7xl" />
                     </div>
                 }
@@ -59,7 +59,7 @@ export default function Main() {
 
             <WhenVisible
                 fallback={
-                    <div className="container py-12">
+                    <div className="container py-12 mx-auto">
                         <Skeleton className="mx-auto h-62.5 w-full max-w-7xl" />
                     </div>
                 }

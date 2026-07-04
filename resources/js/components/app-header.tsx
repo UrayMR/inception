@@ -65,8 +65,8 @@ export function AppHeader() {
                 style={{
                     backdropFilter: 'blur(12px)',
                     WebkitBackdropFilter: 'blur(12px)',
-                    background:
-                        'linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(5,0,36,0.6) 60%, rgba(0,0,0,0) 100%)',
+                    // background:
+                    //     'linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(5,0,36,0.6) 60%, rgba(0,0,0,0) 100%)',
                     borderColor: 'rgba(55,0,92,0.5)',
                 }}
             >

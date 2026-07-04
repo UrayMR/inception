@@ -43,7 +43,7 @@ export default function HeroSection({ id }: { id: string }) {
                         href={guest.competitions.index()}
                         className="inline-flex h-12 items-center justify-center rounded-xl border border-purple-900/40 bg-purple-950/10 px-8 text-purple-300 backdrop-blur-md transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-900/20 hover:text-white"
                     >
-                        Lihat Bidang Lomba
+                        Jelajahi Bidang Lomba
                     </Link>
                 </div>
             </div>

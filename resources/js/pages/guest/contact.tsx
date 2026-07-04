@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 
 const CONTACTS = [
@@ -120,21 +120,6 @@ export default function Contact() {
                                 </span>
                             </a>
                         ))}
-                    </div>
-
-                    {/* footer cta */}
-                    <div className="mt-20 text-center">
-                        <p className="font-mono text-xs tracking-widest text-purple-500/60 uppercase">
-                            SECURE_ENCRYPTION_NODE // ENABLED
-                        </p>
-                        <div className="mt-6 flex flex-col items-center justify-center gap-4 font-mono sm:flex-row">
-                            <Link
-                                href="/"
-                                className="inline-flex h-12 items-center justify-center rounded-xl border border-purple-900/60 bg-purple-950/20 px-8 text-xs font-bold tracking-widest text-purple-200 uppercase transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-900/30 hover:text-white"
-                            >
-                                Back to Home
-                            </Link>
-                        </div>
                     </div>
                 </div>
             </main>

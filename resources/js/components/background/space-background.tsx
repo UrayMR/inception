@@ -380,7 +380,7 @@ export default function SpaceBackground() {
             }}
             viewport={{ amount: 0.05 }}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }} // Biarkan framer-motion yang handle transisi visual tanpa reset context canvas
+            animate={{ opacity: 1 }}
             transition={{ duration: 1.2, ease: 'easeOut' }}
             style={{
                 position: 'fixed',

@@ -1,4 +1,7 @@
 import { Link } from '@inertiajs/react';
+import { ArrowRightIcon } from 'lucide-react';
+import { contact } from '@/routes/guest';
+import { register } from '@/routes/participant/competitions';
 
 export function CtaSection({ id }: { id: string }) {
     return (
@@ -26,20 +29,29 @@ export function CtaSection({ id }: { id: string }) {
                         tunjukkan kemampuan terbaikmu di panggung nasional!
                     </p>
 
-                    <div className="mt-10 flex flex-col items-center justify-center gap-4 font-mono sm:flex-row">
+                    <div className="mt-10 flex flex-col items-center justify-center gap-4 font-sans text-xs font-semibold tracking-wider uppercase sm:flex-row">
                         <Link
-                            href="/contact"
-                            className="inline-flex h-12 items-center justify-center rounded-xl border border-purple-900/60 bg-purple-950/20 px-8 text-xs font-bold tracking-widest text-purple-200 uppercase transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-900/30 hover:text-white"
+                            href={contact()}
+                            className="inline-flex h-11 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-950/10 px-7 text-purple-300 backdrop-blur-xs transition-all duration-300 hover:border-purple-500/50 hover:bg-purple-900/20 hover:text-white"
                         >
-                            Contact Us
+                            Hubungi Kami
                         </Link>
 
                         <Link
-                            href="/register"
-                            className="group relative inline-flex h-12 cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-linear-to-r from-purple-600 to-indigo-600 px-8 text-xs font-bold tracking-widest text-white uppercase transition-all duration-300 hover:from-purple-500 hover:to-indigo-500 hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] active:scale-95"
+                            href={register()}
+                            className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-xl px-7 transition-all duration-300 active:scale-97"
+                            style={{
+                                background:
+                                    'linear-gradient(135deg, #B13BFF 0%, #8B2DCC 100%)',
+                                color: '#F3E8FF',
+                                boxShadow: '0 0 20px rgba(177,59,255,0.35)',
+                            }}
                         >
-                            <span className="relative z-10">Register Now</span>
-                            <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                            <span className="relative z-10">
+                                Daftar Sekarang
+                            </span>
+                            <ArrowRightIcon className="mb-[0.8px] h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                            <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                         </Link>
                     </div>
                 </div>

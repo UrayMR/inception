@@ -9,7 +9,7 @@ import {
     NavigationMenuList,
 } from '@/components/ui/navigation-menu';
 import { useCurrentUrl } from '@/hooks/use-current-url';
-import { home, logout, register } from '@/routes';
+import { home, login, logout } from '@/routes';
 import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
 import type { NavItem } from '@/types';
@@ -43,8 +43,8 @@ const mobileAuthNavItems: NavItem[] = mainNavItems.concat([
 
 const mobileNonAuthNavItems: NavItem[] = mainNavItems.concat([
     {
-        title: 'Sign Up',
-        href: register.url(),
+        title: 'Sign In',
+        href: login.url(),
     },
 ]);
 
@@ -152,8 +152,8 @@ export function AppHeader() {
                                         <AvatarProfile auth={auth} />
                                     ) : (
                                         <Link
-                                            href={register()}
-                                            className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-lg px-5 text-sm font-medium tracking-wide transition-all duration-300"
+                                            href={login()}
+                                            className="group/signin relative inline-flex h-10 items-center justify-center overflow-hidden rounded-lg px-5 text-sm font-medium tracking-wide transition-all duration-300"
                                             style={{
                                                 background:
                                                     'linear-gradient(135deg, #B13BFF 0%, #8B2DCC 100%)',
@@ -163,11 +163,11 @@ export function AppHeader() {
                                             }}
                                         >
                                             <span className="relative z-10">
-                                                Sign Up
+                                                Sign In
                                             </span>
 
                                             {/* Shine effect */}
-                                            <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                                            <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover/signin:translate-x-full" />
                                         </Link>
                                     )}
                                 </NavigationMenuItem>

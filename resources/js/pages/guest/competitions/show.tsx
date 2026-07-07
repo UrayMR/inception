@@ -28,7 +28,7 @@ export default function CompetitionShowPage({
 
             <div className="relative w-full bg-transparent py-6 text-zinc-100 selection:bg-purple-500/30 md:py-10">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6">
-                    <div className="flex items-center justify-between border-b border-purple-500/20 pb-4">
+                    <div className="flex items-center justify-between border-b border-purple-950/60 pb-4">
                         <Link
                             href={guestCompetitions.index.url()}
                             className="group inline-flex items-center gap-2 font-mono text-xs font-bold tracking-widest text-zinc-500 uppercase transition-colors hover:text-purple-400"

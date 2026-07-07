@@ -18,7 +18,7 @@ export default function HeroSection({ id }: { id: string }) {
                     </span>
                 </h1>
 
-                <div className="mx-auto h-1 w-16 rounded-full bg-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.6)]" />
+                <div className="mx-auto h-1 w-16 rounded-full bg-amber-400" />
 
                 <p className="mx-auto max-w-xl text-xs leading-relaxed tracking-wide text-purple-100/70 sm:text-sm">
                     Kompetisi teknologi untuk menguji kapabilitas, kreativitas,

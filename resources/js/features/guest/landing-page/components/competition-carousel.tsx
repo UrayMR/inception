@@ -156,7 +156,7 @@ export function CompetitionCarousel({ items }: CompetitionCarouselProps) {
                         <div
                             key={item.id}
                             onClick={() => onCardClick(index)}
-                            className="min-w-0 shrink-0 grow-0 basis-[80%] px-6 transform-3d focus:outline-none sm:basis-[52%] md:basis-[40%] lg:basis-[32%]"
+                            className="min-w-0 shrink-0 grow-0 basis-[80%] px-6 transform-3d focus:outline-none sm:basis-[52%] md:basis-[40%] lg:basis-[28%]"
                         >
                             <div className="carousel-card flex flex-col items-center gap-6 transition-all duration-300 ease-out will-change-transform transform-3d">
                                 <CompetitionCard

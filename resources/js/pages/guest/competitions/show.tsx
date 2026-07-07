@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { Clock, ArrowLeft, DollarSign, Calendar } from 'lucide-react';
+import { Clock, ArrowLeft, DollarSign } from 'lucide-react';
 import CompetitionStatusBadge from '@/features/participant/competitions/components/competition-status-badge';
 import CTAButton from '@/features/participant/competitions/components/cta-button';
 import TimelinePanel from '@/features/participant/competitions/components/timeline-panel';
@@ -24,7 +24,7 @@ export default function CompetitionShowPage({
 
     return (
         <AppLayout>
-            <Head title={`Mission Hub: ${competition.name}`} />
+            <Head title={competition.name} />
 
             <div className="relative w-full bg-transparent py-6 text-zinc-100 selection:bg-purple-500/30 md:py-10">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6">
@@ -38,7 +38,7 @@ export default function CompetitionShowPage({
                         </Link>
 
                         <div className="hidden font-mono text-[10px] tracking-[0.25em] text-purple-400/50 uppercase sm:block">
-                            // SYSTEM_LAUNCH_SEQUENCE_V1.0
+                            // MISSION_SELECTOR
                         </div>
                     </div>
 
@@ -103,7 +103,7 @@ export default function CompetitionShowPage({
                                             : '/assets/png/competition-icon.png'
                                     }
                                     alt={competition.name}
-                                    className="h-full w-full object-contain"
+                                    className="h-full w-full object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.5)]"
                                     onError={(e) => {
                                         const target =
                                             e.target as HTMLImageElement;
@@ -145,10 +145,6 @@ export default function CompetitionShowPage({
 
                         <div className="space-y-6">
                             <div className="space-y-5 rounded-2xl border border-zinc-800/40 bg-zinc-950/10 p-6 backdrop-blur-md">
-                                <h3 className="flex items-center gap-2 font-mono text-[10px] font-bold tracking-[0.25em] text-zinc-400 uppercase">
-                                    <Calendar className="h-4 w-4 text-purple-500" />
-                                    <span>TIMELINE</span>
-                                </h3>
                                 <TimelinePanel
                                     timelines={competition.timelines}
                                 />

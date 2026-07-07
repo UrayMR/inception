@@ -78,9 +78,7 @@ export default function Contact() {
                         </h1>
                         <div className="mx-auto mt-6 h-1 w-24 rounded-full bg-amber-400" />
                         <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-purple-200/60">
-                            Ada pertanyaan seputar kompetisi, kerja sama, atau
-                            hal lainnya? Hubungi tim Arkavidia lewat salah satu
-                            kanal di bawah ini.
+                            Any questions, collaboration, or other inquiries? Contact us via any of the channels below.
                         </p>
                     </div>
 

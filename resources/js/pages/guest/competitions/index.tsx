@@ -13,16 +13,17 @@ export default function CompetitionsIndex({
             <Head title="Choose Your Mission" />
 
             <div className="relative flex w-full flex-col justify-between overflow-hidden bg-transparent py-6 md:py-10">
-                <div className="relative z-20 mx-auto flex w-full flex-col items-center justify-center gap-2 px-6 pb-5 select-none md:flex-row md:items-end">
-                    <div className="flex flex-col items-center text-center">
-                        <p className="font-mono text-[10px] font-black tracking-[0.3em] text-purple-400 uppercase">
-                            // MISSION HUB V1.0
-                        </p>
-                        <h1 className="relative mt-1 pb-2 text-3xl font-black tracking-wide text-white uppercase sm:text-4xl">
-                            CHOOSE YOUR MISSION
-                            <span className="absolute bottom-0 left-1/2 h-1 w-20 -translate-x-1/2 bg-amber-400 md:w-32" />
-                        </h1>
-                    </div>
+                <div className="mb-16 text-center">
+                    <span className="mb-4 block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
+                        // MISSION_HUB_v1.0
+                    </span>
+                    <h1 className="mx-auto text-4xl leading-tight font-black tracking-widest text-white uppercase md:text-6xl">
+                        Choose Your Mission
+                    </h1>
+                    <div className="mx-auto mt-6 h-1 w-24 rounded-full bg-amber-400" />
+                    <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-purple-200/60">
+                        Explore our competitions and find the perfect challenge for you!
+                    </p>
                 </div>
 
                 <div className="my-auto w-full">

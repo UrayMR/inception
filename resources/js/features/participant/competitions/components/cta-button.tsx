@@ -24,8 +24,10 @@ export default function CTAButton({
                         </span>
                     )}
 
-                    <span className="relative max-w-full truncate px-1.5 transition-transform duration-300 group-hover:scale-105 sm:px-3">
-                        {children ?? 'LAUNCH_MISSION'}
+                    <span className="relative px-1.5 transition-transform duration-300 group-hover:scale-105 sm:px-3">
+                        <span className="block max-w-full truncate">
+                            {children ?? 'LAUNCH_MISSION'}
+                        </span>
                         <span className="absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-linear-to-r from-transparent via-purple-400 to-transparent transition-all duration-300 group-hover:w-full" />
                     </span>
 
@@ -44,7 +46,9 @@ export default function CTAButton({
                     )}
 
                     <span className="relative flex max-w-full items-center justify-center gap-2 truncate px-1.5 text-zinc-600/80 sm:px-3">
-                        {children ?? 'LOCKED_MISSION'}
+                        <span className="block max-w-full truncate">
+                            {children ?? 'LOCKED_MISSION'}
+                        </span>
                     </span>
 
                     {!noMargin && (

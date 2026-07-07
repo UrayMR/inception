@@ -53,11 +53,14 @@ const events: TimelineEvent[] = [
     },
 ];
 
-export default function TimelineSection({id}: {id: string}) {
+export default function TimelineSection({ id }: { id: string }) {
     const solarRef = useRef<SolarSystemRef>(null);
 
     return (
-        <section id={id} className="relative z-10 mx-auto max-w-7xl px-6 w-full py-32">
+        <section
+            id={id}
+            className="relative z-10 mx-auto w-full max-w-7xl px-6 py-32"
+        >
             <div className="mb-20 space-y-3 text-center">
                 <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
                     // LOG_TIMELINE
@@ -68,7 +71,7 @@ export default function TimelineSection({id}: {id: string}) {
                 <div className="mx-auto h-1 w-20 rounded-full bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.6)]" />
             </div>
 
-            <div className="relative h-[60vh] overflow-hidden rounded-3xl border border-purple-950/40 bg-[#0d0829]/30 shadow-[inset_0_0_40px_rgba(147,51,234,0.05)] backdrop-blur-md">
+            <div className="relative h-[50vh] overflow-hidden rounded-3xl border border-purple-950/40 bg-[#0d0829]/30 shadow-[inset_0_0_40px_rgba(147,51,234,0.05)] backdrop-blur-md sm:h-[60vh]">
                 <div className="pointer-events-none absolute top-4 left-4 font-mono text-[9px] tracking-widest text-purple-400/40 uppercase">
                     SYS_ORBIT // LOG_READ
                 </div>

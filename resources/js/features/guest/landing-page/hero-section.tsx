@@ -9,9 +9,9 @@ export default function HeroSection({ id }: { id: string }) {
             id={id}
             className="relative flex min-h-screen flex-col items-center justify-center bg-transparent px-6 py-12 text-center lg:px-8"
         >
-            <div className="relative mx-auto max-w-5xl space-y-8">
-                <h1 className="text-4xl leading-tight font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
-                    POWER YOUR INNOVATION <br />
+            <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center space-y-8">
+                <h1 className="text-3xl leading-tight font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+                    POWER YOUR INNOVATION <br className="hidden sm:inline" />
                     WITH{' '}
                     <span className="bg-linear-to-r from-purple-300 via-indigo-200 to-purple-400 bg-clip-text text-transparent">
                         INCEPTION
@@ -26,10 +26,10 @@ export default function HeroSection({ id }: { id: string }) {
                     timmu dan klaim total hadiah puluhan juta rupiah.
                 </p>
 
-                <div className="mt-10 flex flex-col items-center justify-center gap-4 font-sans text-xs font-semibold tracking-wider uppercase sm:flex-row">
+                <div className="mt-10 flex w-full max-w-sm flex-col items-center justify-center gap-4 font-sans text-xs font-semibold tracking-wider uppercase sm:max-w-none sm:flex-row">
                     <Link
                         href={login()}
-                        className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-xl px-7 transition-all duration-300 active:scale-97"
+                        className="group relative inline-flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl px-7 transition-all duration-300 active:scale-97 sm:w-auto"
                         style={{
                             background:
                                 'linear-gradient(135deg, #B13BFF 0%, #8B2DCC 100%)',
@@ -44,7 +44,7 @@ export default function HeroSection({ id }: { id: string }) {
 
                     <Link
                         href={guest.competitions.index()}
-                        className="inline-flex h-11 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-950/10 px-7 text-purple-300 backdrop-blur-xs transition-all duration-300 hover:border-purple-500/50 hover:bg-purple-900/20 hover:text-white"
+                        className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-purple-500/30 bg-purple-950/10 px-7 text-purple-300 backdrop-blur-xs transition-all duration-300 hover:border-purple-500/50 hover:bg-purple-900/20 hover:text-white sm:w-auto"
                     >
                         Jelajahi Bidang Lomba
                     </Link>

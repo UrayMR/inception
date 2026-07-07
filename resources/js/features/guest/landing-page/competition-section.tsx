@@ -21,7 +21,7 @@ export default function CompetitionSection({
             {/* HEADER */}
             <div className="mb-12 space-y-3 text-center md:mr-0 md:ml-auto md:max-w-md md:text-right">
                 <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
-                    // MISSION HUB v1.0
+                    // MISSION_HUB_v1.0
                 </span>
                 <h2 className="text-4xl font-extrabold tracking-wider text-white uppercase sm:text-5xl">
                     Choose Your Mission

@@ -66,8 +66,8 @@ export default function Contact() {
         <AppLayout>
             <Head title="Contact" />
 
-            <main className="relative min-h-screen overflow-hidden p-6 text-white md:px-12">
-                <div className="relative z-10 mx-auto max-w-5xl">
+            <main className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden p-6 text-white md:px-12">
+                <div className="relative z-10 mx-auto max-w-7xl w-full">
                     {/* header */}
                     <div className="mb-16 text-center">
                         <span className="mb-4 block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
@@ -78,7 +78,8 @@ export default function Contact() {
                         </h1>
                         <div className="mx-auto mt-6 h-1 w-24 rounded-full bg-amber-400" />
                         <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-purple-200/60">
-                            Any questions, collaboration, or other inquiries? Contact us via any of the channels below.
+                            Any questions, collaboration, or other inquiries?
+                            Contact us via any of the channels below.
                         </p>
                     </div>
 

@@ -182,11 +182,10 @@ export default function RegisterCompetitionPage({
 
     return (
         <AppLayout>
-            <Head title="Initialize Mission Deployment" />
+            <Head title="Participant Registration" />
 
             <div className="relative w-full bg-transparent py-6 text-zinc-100 md:py-10">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6">
-                    {/* TOP CONTROL NAVIGATION */}
                     <div className="flex items-center justify-between border-b border-purple-950/60 pb-4">
                         <Link
                             href={guestCompetitions.index.url()}
@@ -201,16 +200,10 @@ export default function RegisterCompetitionPage({
                         </div>
                     </div>
 
-                    <div className="border-b border-purple-950/60 pb-4">
-                        <h2 className="flex items-center gap-2 font-sans text-xl font-black tracking-tight text-white uppercase">
-                            <span className="font-mono text-sm text-purple-500">
-                                //
-                            </span>
-                            REGISTRATION_MANIFEST
-                        </h2>
-                        <p className="mt-1 font-mono text-xs text-purple-300/50">
-                            FILL OUT ALL FIELD UNITS ACCORDINGLY.
-                        </p>
+                    <div className="pb-4">
+                        <h1 className="flex items-center gap-2 font-sans text-2xl font-black tracking-wider text-white uppercase">
+                            PARTICIPANT REGISTRATION
+                        </h1>
                     </div>
 
                     <form
@@ -239,7 +232,7 @@ export default function RegisterCompetitionPage({
                                     className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-purple-900/40 bg-purple-950/10 px-5 font-mono text-xs font-bold tracking-widest text-zinc-400 uppercase transition-all hover:bg-purple-950/30 hover:text-zinc-200"
                                 >
                                     <RefreshCw className="h-3.5 w-3.5" />
-                                    RESET_MANIFEST
+                                    RESET
                                 </button>
 
                                 <div className="flex gap-3">

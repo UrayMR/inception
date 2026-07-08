@@ -64,7 +64,8 @@ export default function RegisterCompetitionForm({
                         Team Information
                     </h2>
                     <p className="font-mono text-xs text-zinc-500">
-                        FILL IN YOUR TEAM DETAILS TO CONTINUE.
+                        Please fill in the team details and make sure all the
+                        data is correct before proceeding to the next step.
                     </p>
                 </div>
 

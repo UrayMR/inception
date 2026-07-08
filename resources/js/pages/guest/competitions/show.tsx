@@ -34,7 +34,7 @@ export default function CompetitionShowPage({
                             className="group inline-flex items-center gap-2 font-mono text-xs font-bold tracking-widest text-zinc-500 uppercase transition-colors hover:text-purple-400"
                         >
                             <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
-                            <span>[ RETURN_TO_DASHBOARD ]</span>
+                            <span>[ RETURN_TO_HOME ]</span>
                         </Link>
 
                         <div className="hidden font-mono text-[10px] tracking-[0.25em] text-purple-400/50 uppercase sm:block">

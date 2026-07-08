@@ -14,9 +14,7 @@ class TransactionPaymentProofController extends Controller
    */
   public function show(Transaction $transaction): BinaryFileResponse
   {
-    // 1. Otorisasi (Pastikan hanya pemilik atau admin yang bisa lihat)
-    // abort_if($transaction->user_id !== auth()->user()->id, 403, 'Akses ditolak.');
-    // TODO: Implement proper authorization logic with policy here.
+    $this->authorize('view', $transaction);
 
     $path = $transaction->payment_proof_path;
 

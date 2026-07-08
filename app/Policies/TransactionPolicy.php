@@ -21,7 +21,14 @@ class TransactionPolicy
    */
   public function view(User $user, Transaction $transaction): bool
   {
-    return $user->role === UserRole::admin->value || $user->role === UserRole::accountant->value;
+    if (in_array($user->role, [
+      UserRole::admin->value,
+      UserRole::accountant->value,
+    ], true)) {
+      return true;
+    }
+
+    return $transaction->team?->leader_id === $user->id;
   }
 
   /**

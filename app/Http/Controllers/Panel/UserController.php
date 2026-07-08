@@ -25,7 +25,8 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $users = $this->userService->index($request);
+        $queryParams = $request->all();
+        $users = $this->userService->index($queryParams);
 
         return $this->render('panel/users/index', [
             'users' => IndexUserResource::collection($users),

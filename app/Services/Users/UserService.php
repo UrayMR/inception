@@ -21,18 +21,18 @@ class UserService
         protected DeleteUser $deleteUser,
     ) {}
 
-    public function index(Request $request)
+    public function index(array $queryParams)
     {
         // Only allow specific query params
-        $queryParams = [
-            'search' => $request->query('search'),
+        $cleanParams = [
+            'search' => $queryParams['search'] ?? null,
             'filters' => [
-                'role' => $request->query('role'),
+                'role' => $queryParams['filters']['role'] ?? null,
                 // Add more filters if needed
             ],
         ];
 
-        return $this->userRepository->index($queryParams);
+        return $this->userRepository->index($cleanParams);
     }
 
     public function store(StoreUserDTO $dto): User

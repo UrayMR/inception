@@ -19,7 +19,8 @@ class TransactionController extends Controller
   {
     $this->authorize('viewAny', Transaction::class);
 
-    $transactions = $this->transactionService->index($request);
+    $queryParams = $request->all();
+    $transactions = $this->transactionService->index($queryParams);
 
     return $this->render('panel/transactions/index', [
       'transactions' => IndexTransactionResource::collection($transactions),

@@ -11,7 +11,6 @@ use App\Models\Team;
 use App\Repositories\Teams\TeamRepository;
 use App\Services\Competitions\CompetitionService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 
 class TeamService
 {
@@ -23,18 +22,18 @@ class TeamService
         protected DeleteTeam $deleteTeam,
     ) {}
 
-    public function index(Request $request)
+    public function index(array $queryParams)
     {
         // Only allow specific query params
-        $queryParams = [
-            'search' => $request->query('search'),
+        $cleanParams = [
+            'search' => $queryParams['search'] ?? null,
             'filters' => [
-                'type' => $request->query('type'),
+                'type' => $queryParams['filters']['type'] ?? null,
                 // Add more filters if needed
             ],
         ];
 
-        return $this->teamRepository->index($queryParams);
+        return $this->teamRepository->index($cleanParams);
     }
 
     public function store(StoreTeamDTO $dto, array $members = [])

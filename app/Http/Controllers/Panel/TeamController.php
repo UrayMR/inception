@@ -27,7 +27,8 @@ class TeamController extends Controller
     {
         $this->authorize('viewAny', Team::class);
 
-        $teams = $this->teamService->index($request);
+        $queryParams = $request->all();
+        $teams = $this->teamService->index($queryParams);
 
         return $this->render('panel/teams/index', [
             'teams' => IndexTeamResource::collection($teams),

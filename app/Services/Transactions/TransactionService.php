@@ -19,16 +19,16 @@ class TransactionService
     protected DeleteTransaction $deleteTransaction,
   ) {}
 
-  public function index(Request $request)
+  public function index(array $queryParams)
   {
-    $queryParams = [
-      'search' => $request->query('search'),
+    $cleanParams = [
+      'search'  => $queryParams['search'] ?? null,
       'filters' => [
-        'status' => $request->query('status'),
+        'status' => $queryParams['filters']['status'] ?? null,
       ],
     ];
 
-    return $this->transactionRepository->index($queryParams);
+    return $this->transactionRepository->index($cleanParams);
   }
 
   public function verify(Transaction $transaction): Transaction

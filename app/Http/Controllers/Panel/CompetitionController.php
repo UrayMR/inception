@@ -25,7 +25,8 @@ class CompetitionController extends Controller
     {
         $this->authorize('viewAny', Competition::class);
 
-        $competitions = $this->competitionService->index($request);
+        $queryParams = $request->all();
+        $competitions = $this->competitionService->index($queryParams);
 
         return $this->render('panel/competitions/index', [
             'competitions' => IndexCompetitionResource::collection($competitions),

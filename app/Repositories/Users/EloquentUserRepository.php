@@ -10,7 +10,7 @@ class EloquentUserRepository implements UserRepository
 {
     /**
      * @param  array  $queryParams  (optional: ['search' => '', 'filters' => ['role' => '', 'status' => '']])
-     * @param  int  $perPage  (optional, default 15)
+     * @param  int  $perPage  (optional, default 10)
      */
     public function index(array $queryParams = [], int $perPage = 10): LengthAwarePaginator
     {
@@ -25,9 +25,13 @@ class EloquentUserRepository implements UserRepository
             });
         }
 
-        // Filter by role
-        if (! empty($queryParams['filters']['role'])) {
-            $query->where('role', $queryParams['filters']['role']);
+        // Filters
+        if (! empty($queryParams['filters'])) {
+            foreach ($queryParams['filters'] as $key => $value) {
+                if ($value !== null && $value !== '') {
+                    $query->where($key, $value);
+                }
+            }
         }
 
         return $query->orderByDesc('updated_at')->paginate($perPage);

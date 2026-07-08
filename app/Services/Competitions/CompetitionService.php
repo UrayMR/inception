@@ -25,18 +25,18 @@ class CompetitionService
         protected DeleteCompetition $deleteCompetition,
     ) {}
 
-    public function index(Request $request, int $perPage = 10): LengthAwarePaginator
+    public function index(array $queryParams): LengthAwarePaginator
     {
         // Only allow specific query params
-        $queryParams = [
-            'search' => $request->query('search'),
+        $cleanParams = [
+            'search' => $queryParams['search'] ?? null,
             'filters' => [
-                'type' => $request->query('type'),
+                'type' => $queryParams['filters']['type'] ?? null,
                 // Add more filters if needed
             ],
         ];
 
-        return $this->competitionRepository->index($queryParams, $perPage);
+        return $this->competitionRepository->index($cleanParams);
     }
 
     public function store(StoreCompetitionDTO $dto, array $timelineAttributes = []): Competition

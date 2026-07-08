@@ -18,6 +18,14 @@ class EloquentTransactionRepository implements TransactionRepository
       });
     }
 
+    if (! empty($queryParams['filters'])) {
+      foreach ($queryParams['filters'] as $key => $value) {
+        if ($value !== null && $value !== '') {
+          $query->where($key, $value);
+        }
+      }
+    }
+
     return $query->orderByDesc('created_at')->paginate($perPage);
   }
 

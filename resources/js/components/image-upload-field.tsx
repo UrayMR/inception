@@ -8,7 +8,6 @@ type ImageUploadOverviewProps = {
     value?: string | File | null;
     onChange?: (value: File | string) => void;
     disabled?: boolean;
-    placeholder?: string;
     required?: boolean;
     disk?: 'public' | 'local';
     customUrl?: string;

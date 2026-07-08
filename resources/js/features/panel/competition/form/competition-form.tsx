@@ -74,7 +74,6 @@ export function CompetitionForm({
                 <ImageUploadField
                     value={data.image_file || imagePath || null}
                     onChange={(file) => onChange('image_file', file as File)}
-                    placeholder="Upload Competition Image"
                     disabled={isReadOnly}
                 />
             </FormField>

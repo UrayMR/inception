@@ -47,8 +47,18 @@ export default function EditCompetitionPage({
             return;
         }
 
-        // TODO: DONT EVER USE PUT FOR FILE UPLOAD
-        form.put(competitions.update.url(competition.slug));
+        const options: Record<string, boolean> = {};
+
+        if (form.data.image_file instanceof File) {
+            options.forceFormData = true;
+        }
+
+        form.transform((data) => ({
+            ...data,
+            _method: 'put',
+        }));
+
+        form.post(competitions.update.url(competition.slug), options);
     };
 
     return (

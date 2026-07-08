@@ -1,5 +1,5 @@
 import { Link, router } from '@inertiajs/react';
-import { LogOut, Settings } from 'lucide-react';
+import { LayoutDashboard, LogOut, Settings } from 'lucide-react';
 import {
     DropdownMenuGroup,
     DropdownMenuItem,
@@ -9,6 +9,8 @@ import {
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { logout } from '@/routes';
+import { dashboard } from '@/routes/panel';
+import { UserRoleMap } from '@/types';
 import type { User } from '@/types';
 
 type Props = {
@@ -23,6 +25,8 @@ export function UserMenuContent({ user }: Props) {
         router.flushAll();
     };
 
+    const isAdmin = user.role === UserRoleMap.Admin.value;
+
     return (
         <>
             <DropdownMenuLabel className="p-0 font-normal">
@@ -33,7 +37,24 @@ export function UserMenuContent({ user }: Props) {
 
             <DropdownMenuSeparator className="bg-purple-500/20" />
 
-            <DropdownMenuGroup>
+            <DropdownMenuGroup className="space-y-1">
+                {isAdmin && (
+                    <DropdownMenuItem
+                        asChild
+                        className="rounded-lg transition-colors duration-200 focus:bg-purple-900/40 focus:text-white data-highlighted:bg-purple-900/40 data-highlighted:text-white"
+                    >
+                        <Link
+                            className="flex w-full cursor-pointer items-center px-2 py-2 font-sans text-xs font-medium tracking-wide text-zinc-300"
+                            href={dashboard()}
+                            prefetch
+                            onClick={cleanup}
+                        >
+                            <LayoutDashboard className="mr-2.5 h-4 w-4 text-purple-400" />
+                            <span>Dashboard</span>
+                        </Link>
+                    </DropdownMenuItem>
+                )}
+
                 <DropdownMenuItem
                     asChild
                     className="rounded-lg transition-colors duration-200 focus:bg-purple-900/40 focus:text-white data-highlighted:bg-purple-900/40 data-highlighted:text-white"

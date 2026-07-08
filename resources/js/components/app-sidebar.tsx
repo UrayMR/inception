@@ -2,7 +2,6 @@ import { Link, usePage } from '@inertiajs/react';
 import {
     BookOpen,
     FolderArchive,
-    FolderGit2,
     Group,
     House,
     LayoutGrid,
@@ -68,16 +67,6 @@ const footerNavItems: NavItem[] = [
         title: 'Beranda',
         href: home(),
         icon: House,
-    },
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
     },
 ];
 

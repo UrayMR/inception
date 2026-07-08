@@ -1,5 +1,15 @@
 import { usePage } from '@inertiajs/react';
+import { Maximize2 } from 'lucide-react';
+import { useState } from 'react';
 import { FormField } from '@/components/form-field';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import {
     Select,
@@ -9,6 +19,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { DynamicTeamInput } from '@/features/panel/team/components/dynamic-team-input';
+import formatCurrency from '@/helpers/format-currency';
 import {
     TransactionPaymentMethodMap,
     TransactionPaymentMethodValue,
@@ -25,7 +36,12 @@ type RegisterCompetitionFormProps = {
     errors: FormErrors<RegisterCompetitionFormDataType>;
     isTeamCompetition: boolean;
     canFillTeamDetails: boolean;
-    selectedCompetition?: Option;
+    selectedCompetition?: Option & {
+        otherValues?: {
+            max_member?: string;
+            price?: number | string;
+        };
+    };
     onCompetitionChange: (competitionId: string) => void;
     onChange: <K extends keyof RegisterCompetitionFormDataType>(
         key: K,
@@ -45,6 +61,7 @@ export default function RegisterCompetitionForm({
     onChange,
 }: RegisterCompetitionFormProps) {
     const auth = usePage().props.auth;
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const leaderNameLabel = isTeamCompetition ? 'Leader Name' : 'Your Name';
     const leaderEmailLabel = isTeamCompetition ? 'Leader Email' : 'Your Email';
@@ -55,6 +72,9 @@ export default function RegisterCompetitionForm({
         Number(selectedCompetition?.otherValues?.max_member) >= 2
             ? Number(selectedCompetition?.otherValues?.max_member) - 1
             : undefined;
+
+    const rawPrice = selectedCompetition?.otherValues?.price;
+    const formattedPrice = rawPrice ? formatCurrency(Number(rawPrice)) : 'Rp 0';
 
     if (step === 'info') {
         return (
@@ -232,7 +252,8 @@ export default function RegisterCompetitionForm({
                     Payment
                 </h2>
                 <p className="font-mono text-xs text-zinc-500">
-                    CHOOSE A PAYMENT METHOD AND UPLOAD YOUR PROOF.
+                    Select your preferred payment method and upload the payment
+                    proof to complete the registration process.
                 </p>
             </div>
 
@@ -280,22 +301,96 @@ export default function RegisterCompetitionForm({
                 </div>
 
                 {isQrisPayment && (
-                    <div className="rounded-2xl border border-purple-900/30 bg-purple-950/10 p-4 sm:col-span-2">
-                        <div className="space-y-1">
-                            <p className="text-sm font-medium text-zinc-200">
-                                QRIS Payment
-                            </p>
-                            <p className="text-sm text-zinc-500">
-                                Scan this QRIS code to complete the payment.
-                            </p>
+                    <div className="flex flex-col items-center justify-between gap-5 rounded-2xl border border-purple-900/30 bg-purple-950/10 p-5 sm:col-span-2 md:flex-row">
+                        <div className="flex-1 space-y-3">
+                            <div className="space-y-1">
+                                <div className="flex items-center gap-2 text-zinc-200">
+                                    <p className="text-sm font-semibold">
+                                        QRIS Payment
+                                    </p>
+                                </div>
+                                <p className="text-xs text-zinc-400">
+                                    Scan QRIS code di samping untuk
+                                    menyelesaikan pembayaran pendaftaran lomba.
+                                </p>
+                            </div>
+
+                            <div className="rounded-lg border border-purple-500/10 bg-purple-950/40 p-3">
+                                <span className="mb-0.5 block text-xs text-zinc-400">
+                                    Total Tagihan:
+                                </span>
+                                <span className="font-mono text-lg font-bold text-purple-400">
+                                    {formattedPrice}
+                                </span>
+                            </div>
+
+                            <div className="space-y-1 rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 text-xs text-amber-400">
+                                <p className="font-semibold">PENTING :</p>
+                                <p>
+                                    Pastikan Anda mengambil{' '}
+                                    <strong>
+                                        Screenshot (Tangkapan Layar)
+                                    </strong>{' '}
+                                    bukti transfer setelah pembayaran berhasil
+                                    untuk diunggah di bawah.
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="mt-4 flex justify-center">
-                            <img
-                                src="/assets/png/qris-payment-code.png"
-                                alt="QRIS Payment Code"
-                                className="h-80 rounded-2xl border border-purple-900/30 p-3"
-                            />
+                        {/* QR Code Trigger Grid */}
+                        <div className="flex flex-col items-center gap-2">
+                            <Dialog
+                                open={isModalOpen}
+                                onOpenChange={setIsModalOpen}
+                            >
+                                <DialogTrigger asChild>
+                                    <div className="group relative cursor-pointer overflow-hidden rounded-xl border border-purple-900/30 bg-white p-2.5 transition-transform">
+                                        <img
+                                            src="/assets/png/qris-payment-code.png"
+                                            alt="QRIS Payment Code"
+                                            className="h-44 w-44 object-cover"
+                                        />
+                                        <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                                            <Maximize2 className="h-5 w-5 text-white" />
+                                        </div>
+                                    </div>
+                                </DialogTrigger>
+
+                                <DialogContent className="border-purple-900/40 bg-zinc-950 text-zinc-100 sm:max-w-106.25">
+                                    <DialogHeader>
+                                        <DialogTitle className="text-base text-zinc-200">
+                                            QRIS Payment Code
+                                        </DialogTitle>
+                                        <DialogDescription className="text-xs text-zinc-400">
+                                            Pindai kode QR di bawah ini sebesar{' '}
+                                            <span className="font-semibold text-purple-400">
+                                                {formattedPrice}
+                                            </span>
+                                            .
+                                        </DialogDescription>
+                                    </DialogHeader>
+
+                                    <div className="flex flex-col items-center justify-center gap-4 py-4">
+                                        <div className="rounded-2xl border border-purple-500/20 bg-white p-4 shadow-xl">
+                                            <img
+                                                src="/assets/png/qris-payment-code.png"
+                                                alt="QRIS Payment Code Large"
+                                                className="mx-auto h-auto w-full max-w-70 object-contain"
+                                            />
+                                        </div>
+                                        <div className="w-full space-y-1 rounded-lg border border-amber-500/10 bg-amber-500/5 p-3 text-center">
+                                            <p className="text-xs font-medium text-amber-400">
+                                                Jangan lupa{' '}
+                                                <strong>Screenshoot</strong>{' '}
+                                                setelah pembayaran sukses!
+                                            </p>
+                                        </div>
+                                    </div>
+                                </DialogContent>
+                            </Dialog>
+                            <span className="font-mono text-[10px] text-zinc-500">
+                                Klik QR untuk memperbesar
+                            </span>
                         </div>
                     </div>
                 )}

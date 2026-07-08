@@ -9,26 +9,19 @@ import { TransactionStatusMap } from '@/types';
 import type {
     BreadcrumbItem,
     ITransactionShow,
-    TransactionPaymentMethodType,
     TransactionStatusType,
 } from '@/types';
-
-interface ShowTransactionForm {
-    competition_name: string;
-    team_name: string;
-    amount: number;
-    payment_method: TransactionPaymentMethodType;
-    payment_proof_path: string;
-    status: TransactionStatusType;
-}
 
 interface ShowTransactionPageProps {
     transaction: ITransactionShow;
 }
 
-// TODO:Refactor about logic for verify and reject, maybe can be put in one function with parameter action = 'verify' | 'reject'
-// And refactor about the handleSubmit reject and verify for reusability.
-// Refactor the disabled button logic.
+type VerificationAction = 'verify' | 'reject';
+
+const isFinalized = (status: TransactionStatusType) =>
+    status === TransactionStatusMap.verified.value ||
+    status === TransactionStatusMap.rejected.value;
+
 export default function ShowTransactionPage({
     transaction,
 }: ShowTransactionPageProps) {
@@ -40,34 +33,29 @@ export default function ShowTransactionPage({
         },
     ];
 
-    const data: ShowTransactionForm = {
-        competition_name: transaction.competition_name,
-        team_name: transaction.team_name,
-        amount: transaction.amount,
-        payment_method: transaction.payment_method,
-        payment_proof_path: transaction.payment_proof_path,
-        status: transaction.status,
-    };
-
     const form = useForm<{ status: TransactionStatusType }>({
         status: transaction.status,
     });
 
-    const handleVerifySubmit = (e: React.SubmitEvent) => {
+    const handleVerificationSubmit = (
+        e: React.SubmitEvent,
+        action: VerificationAction,
+    ) => {
         e.preventDefault();
 
-        if (form.data.status === TransactionStatusMap.Pending.value) {
-            form.patch(transactions.verify.url(transaction.id));
+        if (form.data.status !== TransactionStatusMap.pending.value) {
+            return;
         }
+
+        const url =
+            action === 'verify'
+                ? transactions.verify.url(transaction.id)
+                : transactions.reject.url(transaction.id);
+
+        form.patch(url);
     };
 
-    const handleRejectSubmit = (e: React.SubmitEvent) => {
-        e.preventDefault();
-
-        if (form.data.status === TransactionStatusMap.Pending.value) {
-            form.patch(transactions.reject.url(transaction.id));
-        }
-    };
+    const actionsDisabled = isFinalized(form.data.status);
 
     return (
         <PanelLayout breadcrumbs={breadcrumbs}>
@@ -80,7 +68,7 @@ export default function ShowTransactionPage({
                 <MainContent.Section>
                     <TransactionForm
                         mode="show"
-                        data={data}
+                        data={transaction}
                         errors={{}}
                         onChange={() => {}}
                         transactionId={transaction.id}
@@ -88,33 +76,33 @@ export default function ShowTransactionPage({
                 </MainContent.Section>
                 <MainContent.Footer>
                     <div className="mt-4 flex justify-end">
-                        <form onSubmit={handleVerifySubmit} className="mr-2">
+                        <form
+                            onSubmit={(e) =>
+                                handleVerificationSubmit(e, 'verify')
+                            }
+                            className="mr-2"
+                        >
                             <SubmitButton
                                 label="Verify"
                                 loading={form.processing}
                                 variant="default"
                                 loadingLabel="Verifying..."
-                                disabled={
-                                    form.data.status ===
-                                        TransactionStatusMap.Verified.value ||
-                                    form.data.status ===
-                                        TransactionStatusMap.Rejected.value
-                                }
+                                disabled={actionsDisabled}
                             />
                         </form>
 
-                        <form onSubmit={handleRejectSubmit} className="ml-2">
+                        <form
+                            onSubmit={(e) =>
+                                handleVerificationSubmit(e, 'reject')
+                            }
+                            className="ml-2"
+                        >
                             <SubmitButton
                                 label="Reject"
                                 loading={form.processing}
                                 variant="destructive"
                                 loadingLabel="Rejecting..."
-                                disabled={
-                                    form.data.status ===
-                                        TransactionStatusMap.Rejected.value ||
-                                    form.data.status ===
-                                        TransactionStatusMap.Verified.value
-                                }
+                                disabled={actionsDisabled}
                             />
                         </form>
                     </div>

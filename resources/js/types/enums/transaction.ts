@@ -1,4 +1,6 @@
-export const TransactionPaymentMethodValue = ['qris', 'bank_transfer'] as const;
+export const TransactionPaymentMethodValue = ['qris', 
+    // 'bank_transfer'
+] as const;
 
 export const TransactionPaymentMethodMap = {
     qris: { value: 'qris', label: 'QRIS' },
@@ -11,9 +13,9 @@ export type TransactionPaymentMethodType =
     (typeof TransactionPaymentMethodValue)[number];
 
 export const TransactionStatusMap = {
-    Pending: { value: 'pending', label: 'Pending' },
-    Verified: { value: 'verified', label: 'Verified' },
-    Rejected: { value: 'rejected', label: 'Rejected' },
+    pending: { value: 'pending', label: 'Pending' },
+    verified: { value: 'verified', label: 'Verified' },
+    rejected: { value: 'rejected', label: 'Rejected' },
 } as const;
 
 export const TransactionStatusValue = [

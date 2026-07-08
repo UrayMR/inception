@@ -31,6 +31,12 @@ class TransactionController extends Controller
   {
     $this->authorize('view', $transaction);
 
+    $transaction->load([
+      'team.competition',
+      'team.leader',
+      'team.members',
+    ]);
+
     return $this->render('panel/transactions/show', [
       'transaction' => ShowTransactionResource::make($transaction)->resolve(),
     ]);

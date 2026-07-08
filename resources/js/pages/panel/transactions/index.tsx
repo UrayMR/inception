@@ -4,6 +4,7 @@ import { MainContent } from '@/components/main-content';
 import { getTransactionColumns } from '@/features/panel/transaction';
 import PanelLayout from '@/layouts/panel-layout';
 import transactions from '@/routes/panel/transactions';
+import { TransactionStatusMap } from '@/types';
 import type {
     Auth,
     BreadcrumbItem,
@@ -37,6 +38,18 @@ export default function IndexTransactionsPage() {
                         data={props.transactions.data}
                         meta={props.transactions.meta}
                         links={props.transactions.links}
+                        filtersSchema={[
+                            {
+                                key: 'status',
+                                label: 'Status',
+                                values: Object.values(TransactionStatusMap).map(
+                                    (status) => ({
+                                        label: status.label,
+                                        value: status.value,
+                                    }),
+                                ),
+                            },
+                        ]}
                     />
                 </MainContent.Section>
             </MainContent>

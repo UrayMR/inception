@@ -11,7 +11,7 @@ export default function AuthSimpleLayout({
 }: AuthLayoutProps) {
     return (
         <AppShell variant="header">
-            <div className="relative flex flex-1 flex-col overflow-x-hidden">
+            <div className="relative flex flex-1 flex-col overflow-hidden">
                 <div className="pointer-events-none absolute inset-0 z-0">
                     <div className="absolute -top-20 -left-20 h-96 w-96 rounded-full bg-purple-600/10 blur-[120px]" />
                     <div className="absolute -right-20 -bottom-20 h-96 w-96 rounded-full bg-indigo-600/10 blur-[120px]" />

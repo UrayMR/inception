@@ -139,13 +139,13 @@ export default function Login({
                                 <div className="grow border-t border-gray-900"></div>
                             </div>
 
-                            <Link
+                            <a
                                 href={redirect.url()}
                                 className="flex h-11 w-full items-center justify-center gap-2 rounded-md border border-gray-800 bg-slate-950/20 text-sm font-medium text-gray-400 transition-all duration-200 hover:border-gray-700 hover:bg-slate-900/40 hover:text-white"
                             >
                                 <GoogleIcon />
                                 Masuk dengan Google
-                            </Link>
+                            </a>
                         </div>
 
                         {canRegister && (

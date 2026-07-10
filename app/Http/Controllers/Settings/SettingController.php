@@ -11,6 +11,7 @@ use Inertia\Response;
 
 class SettingController extends Controller
 {
+  // TODO: Use a good authorization method & use the app's pattern here (services, repositories, etc.)
   public function index(Request $request): Response
   {
     $user = Auth::user();

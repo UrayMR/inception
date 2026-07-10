@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { Trophy, ChevronRight, ClipboardList } from 'lucide-react';
 import type { ICompetitionIndex, TransactionStatusType } from '@/types';
 
+// TODO: Fix this hella props use from types
 export type TransactionProps = {
     id: string;
     team_name: string;

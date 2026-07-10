@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Guest\HomeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Participant\CompetitionRegistrationController;
 use App\Http\Controllers\Panel\CompetitionController;
 use App\Http\Controllers\Panel\TeamController;

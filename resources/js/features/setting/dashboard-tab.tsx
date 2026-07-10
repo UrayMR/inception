@@ -1,7 +1,20 @@
-import { Head, Link, usePage } from '@inertiajs/react';
-import { Trophy, ClipboardList, ChevronRight } from 'lucide-react';
-import SettingLayout from '@/layouts/setting-layout';
-import type { ICompetitionIndex, ITransactionIndex } from '@/types';
+import { Link } from '@inertiajs/react';
+import { Trophy, ChevronRight, ClipboardList } from 'lucide-react';
+import type { ICompetitionIndex, TransactionStatusType } from '@/types';
+
+export type TransactionProps = {
+    id: string;
+    team_name: string;
+    competition_name: string;
+    amount: number;
+    status: TransactionStatusType;
+    created_at: string;
+};
+
+type DashboardTabProps = {
+    competition: ICompetitionIndex | null;
+    transaction: TransactionProps | null;
+};
 
 type Assignment = {
     id: string;
@@ -21,18 +34,14 @@ const assignments: Assignment[] = [
     },
 ];
 
-export default function Dashboard() {
-    const { competition, transaction } = usePage<{
-        competition: ICompetitionIndex | null;
-        transaction: ITransactionIndex | null;
-    }>().props;
-
+export default function DashboardTab({
+    competition,
+    transaction,
+}: DashboardTabProps) {
     const hasCompetition = Boolean(competition);
 
     return (
-        <SettingLayout>
-            <Head title="Dashboard" />
-
+        <>
             {/* Competitions */}
             <div className="rounded-xl border border-purple-500/20 bg-black/30 p-6 backdrop-blur-md">
                 <div className="mb-5 flex items-center justify-between border-b border-purple-950/60 pb-3">
@@ -48,10 +57,14 @@ export default function Dashboard() {
                 </div>
 
                 <div className="space-y-3">
-                    {hasCompetition && competition ? (
+                    {hasCompetition && competition && transaction ? (
                         <Link
-                            href={`/competitions/${competition.slug}`}
-                            key={competition.id}
+                            href={`/settings?tab=transaction-detail&id=${transaction.id}`}
+                            only={['tab', 'transactionDetail']}
+                            preserveState
+                            preserveScroll
+                            replace
+                            viewTransition
                             className="group flex items-center justify-between gap-4 rounded-lg border border-purple-900/30 bg-[#0d071a]/60 px-4 py-3 transition-colors hover:border-purple-500/40"
                         >
                             <div className="min-w-0 flex-1">
@@ -61,8 +74,7 @@ export default function Dashboard() {
                                     </p>
 
                                     <p className="text-xs text-zinc-500 uppercase">
-                                        {transaction?.status ??
-                                            'No transaction'}
+                                        {transaction.status}
                                     </p>
                                 </div>
                             </div>
@@ -132,6 +144,6 @@ export default function Dashboard() {
                     })}
                 </div>
             </div>
-        </SettingLayout>
+        </>
     );
 }

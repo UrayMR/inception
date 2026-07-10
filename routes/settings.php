@@ -1,14 +1,15 @@
 <?php
 
 use App\Http\Controllers\Settings\DashboardController;
-use App\Http\Controllers\Settings\ProfileController;
-use App\Http\Controllers\Settings\SecurityController;
+use App\Http\Controllers\Settings\SettingController;
+use App\Http\Controllers\Settings\TransactionHistoryController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->as('settings.')->group(function () {
     Route::redirect('settings', '/settings/dashboard');
 
-    Route::get('settings/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('settings', [SettingController::class, 'index'])->name('index');
+
     // Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
 });

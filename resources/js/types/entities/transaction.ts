@@ -22,7 +22,7 @@ export interface ITransactionShow {
     updated_at: string;
 
     competition_name: string;
-    competition_type?: string;
+    competition_type: string;
     competition_price?: number;
 
     team_name: string;

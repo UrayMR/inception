@@ -1,17 +1,23 @@
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
+const dateFormatter = new Intl.DateTimeFormat('id-ID', {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
 });
 
-const shortDateFormatter = new Intl.DateTimeFormat('en-US', {
+const longDateFormatter = new Intl.DateTimeFormat('id-ID', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone: 'Asia/Jakarta',
+});
+
+const shortDateFormatter = new Intl.DateTimeFormat('id-ID', {
     day: '2-digit',
-    month: 'long',
+    month: 'short',
 });
 
 export default function formatDate(
     value: string | Date | null | undefined,
-    options?: { short?: boolean },
+    options?: { short?: boolean; long?: boolean },
 ) {
     if (!value) {
         return '-';
@@ -21,6 +27,10 @@ export default function formatDate(
 
     if (Number.isNaN(date.getTime())) {
         return String(value);
+    }
+
+    if (options?.long) {
+        return longDateFormatter.format(date);
     }
 
     if (options?.short) {

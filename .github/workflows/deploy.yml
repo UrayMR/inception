@@ -1,0 +1,92 @@
+name: CI/CD Deploy
+
+on:
+  push:
+    branches:
+      - staging
+      - production
+
+jobs:
+  deploy:
+    name: Deploy to ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+
+    environment: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, bcmath, xml, ctype, json, tokenizer, fileinfo, curl, zip, gd, pdo, pdo_mysql
+          ini-values: |
+            post_max_size=256M
+            upload_max_filesize=256M
+            memory_limit=512M
+            max_execution_time=300
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Build Vite
+        run: npm run build
+
+      - name: Deploy Laravel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+
+          protocol: ftps
+
+          server-dir: /
+
+          local-dir: ./
+
+          exclude: |
+            .git/**
+            .github/**
+            node_modules/**
+            tests/**
+            docs/**
+            storage/logs/**
+            storage/framework/cache/**
+            storage/framework/sessions/**
+            storage/framework/views/**
+            vendor/**
+            public/build/**
+            .editorconfig
+            .gitattributes
+            .gitignore
+            .prettierignore
+            .prettierrc
+            README.md
+            LICENSE
+
+      - name: Upload Vite Build
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+
+          protocol: ftps
+
+          server-dir: /public/build/
+          local-dir: ./public/build/
+
+          dangerous-clean-slate: true

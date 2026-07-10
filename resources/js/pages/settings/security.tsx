@@ -1,7 +1,7 @@
 import { Form, Head } from '@inertiajs/react';
 import { ShieldCheck, KeyRound, Smartphone } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
+// import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
@@ -71,7 +71,7 @@ export default function Security({
                     </div>
 
                     <Form
-                        {...SecurityController.update.form()}
+                        // {...SecurityController.update.form()}
                         options={{
                             preserveScroll: true,
                         }}

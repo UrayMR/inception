@@ -1,19 +1,14 @@
 <?php
 
+use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Participant\CompetitionRegistrationController;
 use App\Http\Controllers\Panel\CompetitionController;
 use App\Http\Controllers\Panel\TeamController;
 use App\Http\Controllers\Panel\TransactionController;
 use App\Http\Controllers\Panel\UserController;
-use App\Models\Competition;
-use App\Resources\Participant\Competitions\CompetitionListResource;
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Features;
 
-Route::inertia('/', 'guest/main', [
-    'canRegister' => Features::enabled(Features::registration()),
-    'competitions' => CompetitionListResource::collection(Competition::query()->get()),
-])->name('home');
+Route::get('/', HomeController::class)->name('home');
 
 Route::as('guest.')->group(function () {
     Route::inertia('privacy-policy', 'guest/privacy-policy')->name('privacy-policy');

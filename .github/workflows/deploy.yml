@@ -44,18 +44,16 @@ jobs:
         run: npm run build
 
       - name: Deploy Laravel
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-
-          protocol: ftps
-
-          server-dir: /
-
+          protocol: ftp
+          port: 21
+          timeout: 180000
+          server-dir: ./
           local-dir: ./
-
           exclude: |
             .git/**
             .github/**

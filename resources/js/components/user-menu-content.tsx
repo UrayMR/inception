@@ -38,22 +38,20 @@ export function UserMenuContent({ user }: Props) {
             <DropdownMenuSeparator className="bg-purple-500/20" />
 
             <DropdownMenuGroup className="space-y-1">
-                {isAdmin && (
-                    <DropdownMenuItem
-                        asChild
-                        className="rounded-lg transition-colors duration-200 focus:bg-purple-900/40 focus:text-white data-highlighted:bg-purple-900/40 data-highlighted:text-white"
+                <DropdownMenuItem
+                    asChild
+                    className="rounded-lg transition-colors duration-200 focus:bg-purple-900/40 focus:text-white data-highlighted:bg-purple-900/40 data-highlighted:text-white"
+                >
+                    <Link
+                        className="flex w-full cursor-pointer items-center px-2 py-2 font-sans text-xs font-medium tracking-wide text-zinc-300"
+                        href={isAdmin ? dashboard() : '/settings?tab=dashboard'}
+                        prefetch
+                        onClick={cleanup}
                     >
-                        <Link
-                            className="flex w-full cursor-pointer items-center px-2 py-2 font-sans text-xs font-medium tracking-wide text-zinc-300"
-                            href={dashboard()}
-                            prefetch
-                            onClick={cleanup}
-                        >
-                            <LayoutDashboard className="mr-2.5 h-4 w-4 text-purple-400" />
-                            <span>Dashboard</span>
-                        </Link>
-                    </DropdownMenuItem>
-                )}
+                        <LayoutDashboard className="mr-2.5 h-4 w-4 text-purple-400" />
+                        <span>Dashboard</span>
+                    </Link>
+                </DropdownMenuItem>
 
                 <DropdownMenuItem
                     asChild

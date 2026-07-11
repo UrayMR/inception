@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { Clock, ArrowLeft, DollarSign } from 'lucide-react';
+import ContactBanner from '@/components/contact-banner';
 import CompetitionStatusBadge from '@/features/participant/competitions/components/competition-status-badge';
 import CTAButton from '@/features/participant/competitions/components/cta-button';
 import TimelinePanel from '@/features/participant/competitions/components/timeline-panel';
@@ -211,6 +212,12 @@ export default function CompetitionShowPage({
                                     )}
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div className="border-t border-purple-950/60">
+                        <div className="py-8">
+                            <ContactBanner />
                         </div>
                     </div>
                 </div>

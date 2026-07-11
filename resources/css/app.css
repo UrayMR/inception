@@ -143,6 +143,7 @@
 @layer base {
     * {
         @apply border-border;
+        @apply selection:bg-purple-500/30!;
     }
 
     body {
@@ -153,3 +154,5 @@
 html {
     scroll-behavior: smooth;
 }
+
+

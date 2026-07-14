@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Panel\AssignmentController;
 use App\Http\Controllers\Participant\CompetitionRegistrationController;
 use App\Http\Controllers\Panel\CompetitionController;
 use App\Http\Controllers\Panel\TeamController;
@@ -27,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('users', UserController::class)->names('users');
             Route::resource('competitions', CompetitionController::class)->names('competitions');
             Route::resource('teams', TeamController::class)->names('teams');
+            Route::resource('assignments', AssignmentController::class)->names('assignments');
         });
 
         Route::middleware('role:admin,accountant')->group(function () {

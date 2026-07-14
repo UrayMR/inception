@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('competition_id')->constrained('competitions', 'id')->onDelete('cascade');
             $table->string('name');
+            $table->string('assignment_guide_link');
             $table->string('status'); // active, inactive
             $table->timestamp('due_at');
             $table->timestamps();

@@ -15,6 +15,7 @@ class Assignment extends Model
     protected $fillable = [
         'competition_id',
         'name',
+        'assignment_guide_link',
         'status',
         'due_at',
     ];
@@ -31,7 +32,7 @@ class Assignment extends Model
         ];
     }
 
-    public function competitions()
+    public function competition()
     {
         return $this->belongsTo(Competition::class);
     }

@@ -22,6 +22,7 @@ class AssignmentFactory extends Factory
     return [
       'competition_id' => Competition::factory(),
       'name' => $this->faker->name(),
+      'assignment_guide_link' => $this->faker->url(),
       'status' => $this->faker->randomElement(AssignmentStatus::cases()),
       'due_at' => $this->faker->dateTimeBetween('now', '+1 month'),
     ];

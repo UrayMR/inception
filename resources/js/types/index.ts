@@ -20,10 +20,14 @@ export type * from './enums/team';
 export * from './enums/transaction';
 export type * from './enums/transaction';
 
+export * from './enums/assignment';
+export type * from './enums/assignment';
+
 export type * from './entities/user';
 export type * from './entities/competition';
 export type * from './entities/team';
 export type * from './entities/transaction';
+export type * from './entities/assignment';
 
 export interface SearchParams {
     search?: string;

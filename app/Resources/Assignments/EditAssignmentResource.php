@@ -22,6 +22,7 @@ class EditAssignmentResource extends JsonResource
         'label' => $this->competition?->name,
       ],
       'name' => $this->name,
+      'assignment_guide_link' => $this->assignment_guide_link,
       'status' => $this->status,
       'due_at' => $this->due_at,
       'created_at' => $this->created_at?->toDateTimeString(),

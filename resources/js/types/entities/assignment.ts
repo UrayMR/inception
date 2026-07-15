@@ -11,7 +11,8 @@ export interface IAssignmentIndex {
 }
 
 export interface IAssignmentShow extends IAssignmentIndex {
-    due_at: string;
+    competition_id: string;
+    due_at: Date;
     assignment_guide_link: string;
     created_at: string;
     updated_at: string;

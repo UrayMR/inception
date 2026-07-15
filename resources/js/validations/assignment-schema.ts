@@ -9,8 +9,8 @@ export const AssignmentBaseSchema = z.object({
     status: z.enum(AssignmentStatusValue),
 });
 
-export const CreateAssignmentSchema = AssignmentBaseSchema.partial();
-export const UpdateAssignmentSchema = AssignmentBaseSchema.partial();
+export const CreateAssignmentSchema = AssignmentBaseSchema;
+export const UpdateAssignmentSchema = AssignmentBaseSchema;
 
 export type CreateAssignmentSchemaType = z.infer<typeof CreateAssignmentSchema>;
 export type UpdateAssignmentSchemaType = z.infer<typeof UpdateAssignmentSchema>;

@@ -1,3 +1,4 @@
+import { DateTimePicker } from '@/components/date-time-picker';
 import { FormField } from '@/components/form-field';
 import { Input } from '@/components/ui/input';
 import {
@@ -16,14 +17,14 @@ type AssignmentFormData = {
     assignment_guide_link: string;
     status: AssignmentStatusType;
     due_at: Date;
-    competition: Option;
+    competition?: Option;
 };
 
 type AssignmentFormProps = FormProps<AssignmentFormData> & {
     competitions?: Option[];
 };
 
-export function AssignmentForm({
+export default function AssignmentForm({
     mode,
     data,
     errors,
@@ -45,6 +46,10 @@ export function AssignmentForm({
 
     const handleCompetitionChange = (value: string) => {
         onChange('competition_id', value);
+    };
+
+    const handleFieldChange = (value: Date) => {
+        onChange('due_at', value);
     };
 
     return (
@@ -114,6 +119,19 @@ export function AssignmentForm({
                     readOnly={isReadOnly}
                     placeholder="Enter Assignment Guide Link"
                     required
+                />
+            </FormField>
+
+            <FormField
+                name="due_at"
+                label="Due At"
+                error={errors.due_at}
+                required
+            >
+                <DateTimePicker
+                    date={data.due_at ? new Date(data.due_at) : undefined}
+                    setDate={handleFieldChange}
+                    disabled={isReadOnly}
                 />
             </FormField>
 

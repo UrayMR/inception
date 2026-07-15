@@ -17,9 +17,10 @@ class ShowAssignmentResource extends JsonResource
   {
     return [
       'id' => $this->id,
+      'competition_id' => $this->competition_id,
       'competition' => [
-        'value' => $this->competition?->id,
         'label' => $this->competition?->name,
+        'value' => $this->competition?->id,
       ],
       'name' => $this->name,
       'assignment_guide_link' => $this->assignment_guide_link,

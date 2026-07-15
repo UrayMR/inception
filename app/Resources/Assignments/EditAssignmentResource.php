@@ -17,10 +17,7 @@ class EditAssignmentResource extends JsonResource
   {
     return [
       'id' => $this->id,
-      'competition' => [
-        'value' => $this->competition?->id,
-        'label' => $this->competition?->name,
-      ],
+      'competition_id' => $this->competition_id,
       'name' => $this->name,
       'assignment_guide_link' => $this->assignment_guide_link,
       'status' => $this->status,

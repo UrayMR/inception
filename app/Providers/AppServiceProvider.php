@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Assignments\AssignmentRepository;
+use App\Repositories\Assignments\EloquentAssignmentRepository;
 use App\Repositories\Competitions\CompetitionRepository;
 use App\Repositories\Competitions\EloquentCompetitionRepository;
 use App\Repositories\Competitions\EloquentGuestCompetitionRepository;
@@ -36,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TeamRepository::class, EloquentTeamRepository::class);
         $this->app->bind(MemberRepository::class, EloquentMemberRepository::class);
         $this->app->bind(TransactionRepository::class, EloquentTransactionRepository::class);
+        $this->app->bind(AssignmentRepository::class, EloquentAssignmentRepository::class);
 
         // ... Bind other repositories here
     }

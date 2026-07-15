@@ -10,12 +10,14 @@ use App\Resources\Assignments\EditAssignmentResource;
 use App\Resources\Assignments\IndexAssignmentResource;
 use App\Resources\Assignments\ShowAssignmentResource;
 use App\Services\Assignments\AssignmentService;
+use App\Services\Competitions\CompetitionService;
 use Illuminate\Http\Request;
 
 class AssignmentController extends Controller
 {
   public function __construct(
     protected AssignmentService $assignmentService,
+    protected CompetitionService $competitionService,
   ) {}
 
   /**
@@ -40,7 +42,9 @@ class AssignmentController extends Controller
   {
     $this->authorize('create', Assignment::class);
 
-    return $this->render('panel/assignments/create');
+    return $this->render('panel/assignments/create', [
+      'competitions' => $this->competitionService->getCompetitionMap(),
+    ]);
   }
 
   /**
@@ -67,7 +71,7 @@ class AssignmentController extends Controller
     $assignment->load('competition');
 
     return $this->render('panel/assignments/show', [
-      'competition' => ShowAssignmentResource::make($assignment)->resolve(),
+      'assignment' => ShowAssignmentResource::make($assignment)->resolve(),
     ]);
   }
 
@@ -82,6 +86,7 @@ class AssignmentController extends Controller
 
     return $this->render('panel/assignments/edit', [
       'assignment' => EditAssignmentResource::make($assignment)->resolve(),
+      'competitions' => $this->competitionService->getCompetitionMap(),
     ]);
   }
 

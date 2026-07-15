@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
-use App\Models\User;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +21,8 @@ class AssignmentSubmissionFactory extends Factory
   {
     return [
       'assignment_id' => Assignment::factory(),
-      'user_id' => User::factory(),
+      'team_id' => Team::factory(),
+      'submission_link' => $this->faker->url(),
     ];
   }
 }

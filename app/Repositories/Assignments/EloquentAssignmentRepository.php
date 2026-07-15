@@ -14,7 +14,7 @@ class EloquentAssignmentRepository implements AssignmentRepository
    */
   public function index(array $queryParams = [], int $perPage = 10): LengthAwarePaginator
   {
-    $query = Assignment::query()->with('timelines');
+    $query = Assignment::query()->with('competition');
 
     // Searching
     if (! empty($queryParams['search'])) {
@@ -45,13 +45,13 @@ class EloquentAssignmentRepository implements AssignmentRepository
 
   /**
    * @param  array  $attributes  (data sent from form)
-   * @param  Assignment  $Assignment  (to be updated)
+   * @param  Assignment  $assignment  (to be updated)
    */
-  public function update(array $attributes, Assignment $Assignment): Assignment
+  public function update(array $attributes, Assignment $assignment): Assignment
   {
-    $Assignment->update($attributes);
+    $assignment->update($attributes);
 
-    return $Assignment;
+    return $assignment;
   }
 
   /**

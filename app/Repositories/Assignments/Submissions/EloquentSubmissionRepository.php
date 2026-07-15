@@ -13,7 +13,7 @@ class EloquentSubmissionRepository implements SubmissionRepository
    */
   public function index(array $queryParams = [], int $perPage = 10): LengthAwarePaginator
   {
-    $query = AssignmentSubmission::query()->with('competition');
+    $query = AssignmentSubmission::query()->with(['assignment.competition', 'team']);
 
     // Searching
     if (! empty($queryParams['search'])) {

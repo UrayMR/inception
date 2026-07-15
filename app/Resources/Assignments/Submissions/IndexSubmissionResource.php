@@ -17,9 +17,9 @@ class IndexSubmissionResource extends JsonResource
   {
     return [
       'id' => $this->id,
-      'assignment' => [
-        'value' => $this->assignment?->id,
-        'label' => $this->assignment?->name,
+      'competition' => [
+        'value' => $this->assignment?->competition?->id,
+        'label' => $this->assignment?->competition?->name,
       ],
       'team' => [
         'value' => $this->team?->id,

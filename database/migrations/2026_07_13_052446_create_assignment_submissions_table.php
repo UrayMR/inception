@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('assignment_submissions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('assignment_id')->constrained('assignments', 'id')->onDelete('cascade');
-            $table->foreignUuid('user_id')->constrained('users', 'id')->onDelete('cascade');
+            $table->foreignUuid('team_id')->constrained('teams', 'id')->onDelete('cascade');
+            $table->string('submission_link');
             $table->timestamps();
         });
     }

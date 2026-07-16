@@ -14,7 +14,8 @@ class AssignmentSubmission extends Model
 
     protected $fillable = [
         'assignment_id',
-        'user_id',
+        'team_id',
+        'submission_link',
     ];
 
     public function assignment()
@@ -22,8 +23,8 @@ class AssignmentSubmission extends Model
         return $this->belongsTo(Assignment::class);
     }
 
-    public function user()
+    public function team()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Team::class);
     }
 }

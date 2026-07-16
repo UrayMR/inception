@@ -22,10 +22,10 @@ class SubmissionController extends Controller
     $this->authorize('viewAny', Assignment::class);
 
     $queryParams = $request->all();
-    $assignments = $this->submissionService->index($queryParams);
+    $submissions = $this->submissionService->index($queryParams);
 
-    return $this->render('panel/assignments/index', [
-      'assignments' => IndexSubmissionResource::collection($assignments),
+    return $this->render('panel/submissions/index', [
+      'submissions' => IndexSubmissionResource::collection($submissions),
     ]);
   }
 }

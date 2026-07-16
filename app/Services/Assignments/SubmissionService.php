@@ -2,12 +2,12 @@
 
 namespace App\Services\Assignments;
 
-use App\Repositories\Assignments\AssignmentRepository;
+use App\Repositories\Assignments\Submissions\SubmissionRepository;
 
 class SubmissionService
 {
   public function __construct(
-    protected AssignmentRepository $assignmentRepository,
+    protected SubmissionRepository $submissionRepository,
   ) {}
 
   public function index(array $queryParams)
@@ -21,6 +21,6 @@ class SubmissionService
       ],
     ];
 
-    return $this->assignmentRepository->index($cleanParams);
+    return $this->submissionRepository->index($cleanParams);
   }
 }

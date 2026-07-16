@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Assignments;
+namespace App\Repositories\Assignments\Submissions;
 
 use App\Models\AssignmentSubmission;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

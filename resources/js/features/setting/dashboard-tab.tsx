@@ -1,45 +1,51 @@
 import { Link } from '@inertiajs/react';
 import { Trophy, ChevronRight, ClipboardList } from 'lucide-react';
-import type { ICompetitionIndex, TransactionStatusType } from '@/types';
+import { useEffect, useState } from 'react';
+import { Accordion } from '@/components/ui/accordion';
+import type {
+    ICompetitionIndex,
+    ITransactionIndex,
+    IAssignmentShow,
+} from '@/types';
+import AssignmentItem from './components/assignment-item';
 
-// TODO: Fix this hella props use from types
-export type TransactionProps = {
-    id: string;
-    team_name: string;
-    competition_name: string;
-    amount: number;
-    status: TransactionStatusType;
+export type TransactionProps = ITransactionIndex & {
     created_at: string;
+};
+
+export type AssignmentProps = IAssignmentShow & {
+    due_at: string;
+    submission: {
+        id: number;
+        submission_link: string;
+        updated_at: string;
+        created_at: string;
+    } | null;
 };
 
 type DashboardTabProps = {
     competition: ICompetitionIndex | null;
     transaction: TransactionProps | null;
+    assignments: AssignmentProps[] | null;
 };
-
-type Assignment = {
-    id: string;
-    title: string;
-    competition: string;
-    dueDate: string;
-    status: 'pending' | 'in_review' | 'done';
-};
-
-const assignments: Assignment[] = [
-    {
-        id: 'a1',
-        title: 'Submit prototype design document',
-        competition: 'UI/UX',
-        dueDate: 'Jul 3',
-        status: 'pending',
-    },
-];
 
 export default function DashboardTab({
     competition,
     transaction,
+    assignments,
 }: DashboardTabProps) {
+    const [now, setNow] = useState(() => new Date());
+
     const hasCompetition = Boolean(competition);
+    const hasAssignments = Array.isArray(assignments) && assignments.length > 0;
+
+    useEffect(() => {
+        const intervalId = window.setInterval(() => {
+            setNow(new Date());
+        }, 1000);
+
+        return () => window.clearInterval(intervalId);
+    }, []);
 
     return (
         <>
@@ -73,7 +79,6 @@ export default function DashboardTab({
                                     <p className="truncate text-sm font-medium text-zinc-200">
                                         {competition.name}
                                     </p>
-
                                     <p className="text-xs text-zinc-500 uppercase">
                                         {transaction.status}
                                     </p>
@@ -87,10 +92,9 @@ export default function DashboardTab({
                                 Kamu belum mengikuti kompetisi apa pun.
                             </p>
                             <p className="mt-1 text-xs text-zinc-500">
-                                Daftar kompetisi dulu untuk melihat detail,
-                                status pembayaran, dan agenda.
+                                Daftar kompetisi untuk melihat detail, status
+                                pembayaran, dan agenda.
                             </p>
-
                             <Link
                                 href="/competitions"
                                 className="mt-4 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-xs font-medium text-purple-300 transition-colors hover:border-purple-400/50 hover:bg-purple-500/15 hover:text-purple-200"
@@ -117,32 +121,44 @@ export default function DashboardTab({
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    {assignments.map((task) => {
-                        return (
-                            <div
-                                key={task.id}
-                                className="flex items-center gap-3 rounded-lg border border-purple-900/30 bg-[#0d071a]/60 px-4 py-3"
-                            >
-                                <div className="min-w-0 flex-1">
-                                    <p className="truncate text-sm text-zinc-200">
-                                        {task.title}
-                                    </p>
-                                    <p className="mt-0.5 truncate text-xs text-zinc-500">
-                                        {task.competition}
-                                    </p>
-                                </div>
-                                <div className="shrink-0 text-right">
-                                    <p className="text-xs font-medium text-zinc-400 uppercase">
-                                        {task.status}
-                                    </p>
-                                    <p className="mt-0.5 font-mono text-[11px] text-zinc-500">
-                                        Due {task.dueDate}
-                                    </p>
-                                </div>
-                            </div>
-                        );
-                    })}
+                <div className="w-full">
+                    {hasAssignments && hasCompetition ? (
+                        <Accordion
+                            type="single"
+                            collapsible
+                            className="w-full space-y-2"
+                        >
+                            {assignments.map((assignment, index) => (
+                                <AssignmentItem
+                                    key={assignment.id}
+                                    assignment={assignment}
+                                    index={index}
+                                    now={now}
+                                />
+                            ))}
+                        </Accordion>
+                    ) : hasCompetition ? (
+                        <div className="rounded-lg border border-dashed border-purple-900/30 bg-[#0d071a]/40 px-4 py-5 text-center">
+                            <p className="text-sm font-medium text-zinc-200">
+                                Kamu belum memiliki tugas apa pun.
+                            </p>
+                            <p className="mt-1 text-xs text-zinc-500">
+                                Tugas akan muncul di sini ketika ada yang perlu
+                                kamu kerjakan.
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="rounded-lg border border-dashed border-purple-900/30 bg-[#0d071a]/40 px-4 py-5 text-center">
+                            <p className="text-sm font-medium text-zinc-200">
+                                Kamu tidak memiliki kompetisi atau tugas apa
+                                pun.
+                            </p>
+                            <p className="mt-1 text-xs text-zinc-500">
+                                Daftar kompetisi untuk melihat detail, status
+                                pembayaran, dan agenda.
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

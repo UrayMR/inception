@@ -40,4 +40,9 @@ class Team extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function submissions()
+    {
+        return $this->hasMany(AssignmentSubmission::class);
+    }
 }

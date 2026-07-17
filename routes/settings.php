@@ -6,9 +6,8 @@ use App\Http\Controllers\Settings\TransactionHistoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->as('settings.')->group(function () {
-    Route::redirect('settings', '/settings/dashboard');
-
     Route::get('settings', [SettingController::class, 'index'])->name('index');
+    Route::post('assignments/{assignment}/submit', [SettingController::class, 'submission'])->name('assignments.submission');
 
     // Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -38,6 +38,7 @@ export default function EditTeamPage({
         competition_id: team.competition_id,
         institution: team.institution || '',
         phone_number: team.phone_number,
+        requirement_link: team.requirement_link,
         status: team.status || TeamStatusMap.Active.value,
         members: team.members || [],
     });

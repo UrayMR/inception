@@ -16,6 +16,7 @@ export interface ITeamIndex {
 export interface ITeamShow extends ITeamIndex {
     institution?: string;
     phone_number: string;
+    requirement_link: string;
     members?: TeamMember[];
     created_at: string;
     updated_at: string;
@@ -25,6 +26,7 @@ export interface ITeamEdit extends ITeamIndex {
     competition_id: string;
     institution?: string;
     phone_number: string;
+    requirement_link: string;
     members?: TeamMember[];
     created_at: string;
     updated_at: string;

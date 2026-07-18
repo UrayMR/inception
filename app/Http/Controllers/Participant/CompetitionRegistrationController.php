@@ -67,7 +67,7 @@ class CompetitionRegistrationController extends Controller
         $this->flash('success', 'Competition registration submitted successfully.');
         $this->flash('success', 'Please kindly wait for the verification of your transaction. Thank you!');
 
-        return redirect()->route('guest.competitions.index');
+        return redirect()->route('settings.index');
     }
 
     /**

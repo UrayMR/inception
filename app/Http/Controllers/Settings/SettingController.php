@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use App\Models\Team;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -89,6 +90,17 @@ class SettingController extends Controller
 
     if ($assignment->competition_id !== $competition->id) {
       $this->flash('error', 'This assignment does not belong to your competition.');
+      return redirect()->back();
+    }
+
+    // Check if transaction is verified before allowing submission
+    $isTransactionVerified = $team->transactions()
+      ->where('competition_id', $competition->id)
+      ->where('status', 'verified')
+      ->exists();
+
+    if (!$isTransactionVerified) {
+      $this->flash('error', 'Your team payment transaction has not been verified yet.');
       return redirect()->back();
     }
 

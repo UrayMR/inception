@@ -78,7 +78,7 @@ export function AppFooter() {
                                     className="h-8"
                                 />
                                 <img
-                                    src="/assets/png/kabinet.png"
+                                    src="/assets/png/KABINET.png"
                                     className="h-8"
                                 />
                             </div>

@@ -31,6 +31,7 @@ class CompetitionFactory extends Factory
             'price' => $this->faker->randomFloat(2, 0, 1000000),
             'status' => $this->faker->randomElement(CompetitionStatus::cases()),
             'max_member' => $this->faker->numberBetween(1, 6),
+            'guidebook_link' => $this->faker->optional()->url(),
         ];
     }
 }

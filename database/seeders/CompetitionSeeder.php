@@ -48,6 +48,7 @@ class CompetitionSeeder extends Seeder
                         'end_at'   => Carbon::create(2026, 8, 1, 23, 59, 59),
                     ],
                 ],
+                'status' => CompetitionStatus::closed->value,
                 'image_path' => 'competitions/essay.svg',
             ],
             'Business Plan' => [
@@ -130,10 +131,7 @@ class CompetitionSeeder extends Seeder
                 'description' => $details['description'],
                 'type' => $details['type'],
                 'max_member' => $details['max_member'],
-                'status' => fake()->randomElement([
-                    CompetitionStatus::open->value,
-                    CompetitionStatus::closed->value,
-                ]),
+                'status' => $details['status'] ?? CompetitionStatus::open->value,
                 'image_path' => $details['image_path'],
             ]);
 

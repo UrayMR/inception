@@ -13,6 +13,7 @@ class UpdateCompetitionDTO
         public ?UploadedFile $image_file,
         public ?string $image_path,
         public ?float $price,
+        public ?string $guidebook_link,
         public string $status,
         public ?int $max_member,
     ) {}

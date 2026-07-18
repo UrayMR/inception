@@ -22,6 +22,7 @@ class StoreTeam
       'leader_id' => $dto->leader_id,
       'phone_number' => $dto->phone_number,
       'institution' => $dto->institution,
+      'requirement_link' => $dto->requirement_link,
       'status' => $dto->status,
     ];
 

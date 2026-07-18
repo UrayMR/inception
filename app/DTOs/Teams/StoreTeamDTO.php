@@ -10,6 +10,7 @@ class StoreTeamDTO
         public string $leader_id,
         public string $phone_number,
         public ?string $institution,
+        public string $requirement_link,
         public string $status
     ) {}
 }

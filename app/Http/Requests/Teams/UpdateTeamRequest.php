@@ -23,6 +23,7 @@ class UpdateTeamRequest extends FormRequest
             'team_name' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:20'],
             'institution' => ['nullable', 'string', 'max:255'],
+            'requirement_link' => ['required', 'url'],
             'status' => ['required', 'string', Rule::in(TeamStatus::cases())],
         ];
 
@@ -44,6 +45,7 @@ class UpdateTeamRequest extends FormRequest
             team_name: $this->input('team_name'),
             phone_number: $this->input('phone_number'),
             institution: $this->input('institution'),
+            requirement_link: $this->input('requirement_link'),
             status: $this->input('status'),
         );
     }

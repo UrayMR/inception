@@ -8,6 +8,7 @@ import { getFileUrl } from '@/helpers/file-url';
 import formatCurrency from '@/helpers/format-currency';
 import formatDate from '@/helpers/format-date';
 import AppLayout from '@/layouts/app-layout';
+import { cn } from '@/lib/utils';
 import guestCompetitions from '@/routes/guest/competitions';
 import { register } from '@/routes/participant/competitions';
 import type { ICompetitionShow } from '@/types';
@@ -22,6 +23,9 @@ export default function CompetitionShowPage({
     allCompetitions = [],
 }: CompetitionShowPageProps) {
     const isOpen = competition.status === 'open';
+
+    const isGuideBook =
+        competition.guidebook_link && competition.guidebook_link.trim() !== '';
 
     return (
         <AppLayout>
@@ -130,16 +134,26 @@ export default function CompetitionShowPage({
                                 </p>
                             </div>
 
-                            <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-                                <a
-                                    href="https://example.com/guidebook.pdf" // Ganti dengan URL guidebook Anda nanti
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-purple-500/30 bg-purple-950/10 px-6 py-3 font-mono text-xs font-bold tracking-widest text-purple-400 uppercase transition-all duration-200 hover:border-purple-500/60 hover:bg-purple-950/30 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] sm:w-fit"
-                                >
-                                    <FileText className="h-4 w-4" />
-                                    <span>GUIDEBOOK</span>
-                                </a>
+                            <div
+                                className={cn(
+                                    'flex flex-col items-center sm:flex-row',
+                                    isGuideBook
+                                        ? 'justify-between'
+                                        : 'justify-end',
+                                    'gap-3',
+                                )}
+                            >
+                                {isGuideBook && (
+                                    <a
+                                        href={competition.guidebook_link || ''}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-purple-500/30 bg-purple-950/10 px-6 py-3 font-mono text-xs font-bold tracking-widest text-purple-400 uppercase transition-all duration-200 hover:border-purple-500/60 hover:bg-purple-950/30 hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] sm:w-fit"
+                                    >
+                                        <FileText className="h-4 w-4" />
+                                        <span>GUIDEBOOK</span>
+                                    </a>
+                                )}
                                 <div className="flex items-center gap-2">
                                     <CTAButton
                                         href={register.url({

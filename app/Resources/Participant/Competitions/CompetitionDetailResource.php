@@ -23,6 +23,8 @@ class CompetitionDetailResource extends JsonResource
       'type' => $this->type,
       'image_path' => $this->image_path,
       'price' => $this->price,
+      'guidebook_link' => $this->guidebook_link,
+      'max_members' => $this->max_members,
       'status' => $this->status,
       'timelines' => collect($this->timelines)->sortBy('sequence')->values()->map(function ($timeline) {
         return [

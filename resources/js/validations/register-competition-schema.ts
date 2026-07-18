@@ -28,10 +28,7 @@ const getMembersSchema = (
     maxMember?: number,
 ) => {
     if (competitionType === CompetitionTypeMap.Team.value) {
-        let schema = RegistrationMembersSchema.min(1, {
-            message:
-                'Kompetisi tim wajib memiliki minimal 1 anggota (selain ketua).',
-        });
+        let schema = RegistrationMembersSchema;
 
         if (typeof maxMember === 'number' && maxMember >= 2) {
             schema = schema.max(maxMember - 1, {
@@ -39,7 +36,7 @@ const getMembersSchema = (
             });
         }
 
-        return schema;
+        return schema.optional().default([]);
     }
 
     return RegistrationMembersSchema.optional().default([]);
@@ -60,9 +57,9 @@ export const RegisterCompetitionBaseSchema = z.object({
         .string()
         .min(1, { message: 'Nomor telepon wajib diisi.' })
         .max(20, { message: 'Nomor telepon maksimal 20 karakter.' }),
-    requirement_link: z
-        .url({ message: 'Link persyaratan harus berupa URL valid.' })
-        .min(1, { message: 'Link persyaratan wajib diisi.' }),
+    requirement_link: z.url({
+        message: 'Link persyaratan harus berupa URL valid.',
+    }),
     payment_method: z.literal(TransactionPaymentMethodValue[0], {
         message: 'Metode pembayaran yang dipilih tidak valid.',
     }),

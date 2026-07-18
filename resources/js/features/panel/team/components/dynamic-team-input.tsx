@@ -30,7 +30,7 @@ export function DynamicTeamInput({
     disabled,
     readOnly,
     hint,
-    minItems = 1,
+    minItems = 0,
     maxItems,
 }: DynamicTeamInputProps) {
     const isDisabled = disabled || readOnly;

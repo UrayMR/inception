@@ -188,7 +188,7 @@ export default function RegisterCompetitionInfoStep({
                         <DynamicTeamInput
                             id="members"
                             label="Team Members"
-                            hint={`Add up to ${maxAdditionalMembers || 1} team members (leader is counted separately).`}
+                            hint={`Add your team members here. You can add up to ${maxAdditionalMembers} additional members.`}
                             value={data.members}
                             error={errors}
                             onChange={(members) =>
@@ -200,7 +200,6 @@ export default function RegisterCompetitionInfoStep({
                                     ),
                                 )
                             }
-                            required
                             disabled={!canFillTeamDetails}
                             maxItems={maxAdditionalMembers}
                         />

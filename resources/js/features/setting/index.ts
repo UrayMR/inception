@@ -1,4 +1,4 @@
-import ScheduleCalendar from './components/schedule-calendar';
+import ScheduleTimeline from './components/schedule-timeline';
 import SettingSidebar from './components/setting-sidebar';
 
-export { ScheduleCalendar, SettingSidebar };
+export {SettingSidebar, ScheduleTimeline };

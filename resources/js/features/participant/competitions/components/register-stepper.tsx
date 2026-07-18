@@ -2,6 +2,7 @@ import { CheckIcon } from 'lucide-react';
 
 export const REGISTRATION_STEPS = [
     { id: 'info', label: 'Informasi' },
+    { id: 'requirement', label: 'Syarat' },
     { id: 'payment', label: 'Pembayaran' },
 ] as const;
 

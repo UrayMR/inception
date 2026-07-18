@@ -69,7 +69,10 @@ export function AppFooter() {
                                 Presented by
                             </span>
                             <div className="flex items-center gap-4">
-                                <img src="/assets/png/UPN.png" className="h-8" />
+                                <img
+                                    src="/assets/png/UPN.png"
+                                    className="h-8"
+                                />
                                 <img
                                     src="/assets/png/HIMATIFA.png"
                                     className="h-8"
@@ -139,7 +142,7 @@ export function AppFooter() {
                                     rel="noreferrer"
                                     className="transition hover:text-purple-400"
                                 >
-                                    <InstagramIcon size={20} />
+                                    <InstagramIcon />
                                 </a>
                             </div>
                         </div>

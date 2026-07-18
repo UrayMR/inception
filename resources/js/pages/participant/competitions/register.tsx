@@ -2,6 +2,16 @@ import { Head, useForm, Link } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight, Loader2, RefreshCw } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
     CompetitionSummaryPanel,
     MobileSummarySheet,
     RegisterCompetitionForm,
@@ -25,6 +35,7 @@ import type { RegisterCompetitionSchemaType } from '@/validations/register-compe
 import {
     RegisterCompetitionInfoStepSchema,
     RegisterCompetitionPaymentStepSchema,
+    RegisterCompetitionRequirementStepSchema,
     RegisterCompetitionSchema,
 } from '@/validations/register-competition-schema';
 
@@ -40,6 +51,7 @@ type RegisterCompetitionFormDataType = {
     phone_number: string;
     payment_method: TransactionPaymentMethodType;
     payment_proof_file?: File;
+    requirement_link: string;
     members: TeamMember[];
 };
 
@@ -53,7 +65,10 @@ export default function RegisterCompetitionPage({
             competition.otherValues?.slug === preselectedCompetitionSlug,
     );
 
+    const STEP_ORDER: RegisterStepId[] = ['info', 'requirement', 'payment'];
     const [currentStep, setCurrentStep] = useState<RegisterStepId>('info');
+
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
     const isMobile = useIsMobile();
 
@@ -64,11 +79,8 @@ export default function RegisterCompetitionPage({
         phone_number: '',
         payment_method: TransactionPaymentMethodMap.qris.value,
         payment_proof_file: undefined,
-        members:
-            preselectedCompetition?.otherValues?.type ===
-            CompetitionTypeMap.Team.value
-                ? [{ member_name: '' }]
-                : [],
+        requirement_link: '',
+        members: [],
     });
 
     const selectedCompetition = useMemo(
@@ -96,6 +108,10 @@ export default function RegisterCompetitionPage({
             selectedCompetitionType,
             selectedCompetitionMaxMember,
         ),
+    );
+
+    const { guard: guardRequirementStep } = useZod(
+        RegisterCompetitionRequirementStepSchema,
     );
 
     const { guard: guardPaymentStep } = useZod(
@@ -130,36 +146,82 @@ export default function RegisterCompetitionPage({
         }));
     };
 
+    const stepGuards: Partial<
+        Record<
+            RegisterStepId,
+            (
+                data: RegisterCompetitionFormDataType,
+                setError: typeof form.setError,
+            ) => boolean
+        >
+    > = {
+        info: guardInfoStep,
+        requirement: guardRequirementStep,
+        payment: guardPaymentStep,
+    };
+
+    const currentStepIndex = STEP_ORDER.indexOf(currentStep);
+    const isFirstStep = currentStepIndex === 0;
+    const isLastStep = currentStepIndex === STEP_ORDER.length - 1;
+
     const handleNext = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        if (!guardInfoStep(form.data, form.setError)) {
+        const guard = stepGuards[currentStep];
+
+        if (guard && !guard(form.data, form.setError)) {
             return;
         }
 
-        setCurrentStep('payment');
+        if (currentStep === 'requirement') {
+            setIsConfirmOpen(true);
+
+            return;
+        }
+
+        const nextStep = STEP_ORDER[currentStepIndex + 1];
+
+        if (nextStep) {
+            setCurrentStep(nextStep);
+        }
     };
 
     const handleBack = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        setCurrentStep('info');
+        const prevStep = STEP_ORDER[currentStepIndex - 1];
+
+        if (prevStep) {
+            setCurrentStep(prevStep);
+        }
     };
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (currentStep === 'info') {
+        if (!isLastStep) {
             handleNext();
 
             return;
         }
 
-        if (!guardPaymentStep(form.data, form.setError)) {
+        if (!guardFullForm(form.data, form.setError)) {
             return;
         }
 
-        if (!guardFullForm(form.data, form.setError)) {
+        setIsConfirmOpen(true);
+    };
+
+    const handleConfirmSubmit = () => {
+        setIsConfirmOpen(false);
+
+        if (currentStep === 'requirement') {
+            const nextStep = STEP_ORDER[currentStepIndex + 1];
+
+            if (nextStep) {
+                setCurrentStep(nextStep);
+            }
+
             return;
         }
 
@@ -172,11 +234,12 @@ export default function RegisterCompetitionPage({
             'institution',
             'phone_number',
             'payment_method',
+            'requirement_link',
             'payment_proof_file',
             'members',
         );
         form.setData('members', isTeamCompetition ? [{ member_name: '' }] : []);
-        setCurrentStep('info');
+        setCurrentStep(STEP_ORDER[0]);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -236,7 +299,7 @@ export default function RegisterCompetitionPage({
                                 </button>
 
                                 <div className="flex gap-3">
-                                    {currentStep === 'payment' && (
+                                    {!isFirstStep && (
                                         <button
                                             type="button"
                                             onClick={handleBack}
@@ -247,7 +310,7 @@ export default function RegisterCompetitionPage({
                                         </button>
                                     )}
 
-                                    {currentStep === 'info' ? (
+                                    {!isLastStep ? (
                                         <button
                                             type="button"
                                             onClick={handleNext}
@@ -312,6 +375,66 @@ export default function RegisterCompetitionPage({
                     )}
                 </div>
             </div>
+
+            <AlertDialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
+                <AlertDialogContent className="border-zinc-800 bg-zinc-950 text-zinc-100">
+                    <AlertDialogHeader>
+                        <AlertDialogTitle className="font-sans tracking-wide text-white uppercase">
+                            {currentStep === 'requirement'
+                                ? 'VALIDASI TAUTAN BERKAS'
+                                : 'KONFIRMASI REGISTRASI'}
+                        </AlertDialogTitle>
+
+                        {currentStep === 'requirement' ? (
+                            <>
+                                <AlertDialogDescription className="text-zinc-400">
+                                    Pastikan tautan (link) Google Drive yang
+                                    Anda masukkan sudah diatur ke status{' '}
+                                    <span className="font-bold text-purple-400">
+                                        Public (Anyone with the link / Siapa
+                                        saja yang memiliki link)
+                                    </span>{' '}
+                                    agar panitia dapat memeriksa berkas
+                                    persyaratan Anda.
+                                </AlertDialogDescription>
+                                <AlertDialogDescription className="mt-2 text-xs text-rose-500">
+                                    Tautan yang tidak dapat diakses akan
+                                    menyebabkan pendaftaran Anda ditolak.
+                                </AlertDialogDescription>
+                            </>
+                        ) : (
+                            <>
+                                <AlertDialogDescription className="text-zinc-400">
+                                    Apakah Anda yakin semua data yang diisi
+                                    telah benar? Anda akan didaftarkan ke
+                                    kompetisi{' '}
+                                    <span className="font-semibold text-purple-400">
+                                        {selectedCompetition?.label}
+                                    </span>
+                                    .
+                                </AlertDialogDescription>
+                                <AlertDialogDescription className="mt-2 text-xs text-rose-500">
+                                    Data yang sudah dikirim tidak dapat diubah
+                                    kembali.
+                                </AlertDialogDescription>
+                            </>
+                        )}
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className="gap-2">
+                        <AlertDialogCancel className="border-zinc-800 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100">
+                            Kembali
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={handleConfirmSubmit}
+                            className="bg-purple-600 font-semibold text-white hover:bg-purple-700"
+                        >
+                            {currentStep === 'requirement'
+                                ? 'Sudah, Lanjutkan'
+                                : 'Ya, Kirim'}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </AppLayout>
     );
 }

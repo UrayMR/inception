@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignUuid('leader_id')->constrained('users', 'id')->onDelete('cascade');
             $table->string('phone_number');
             $table->string('institution')->nullable();
+            $table->string('requirement_link');
             $table->string('status')->default('active'); // registered, active, rejected
             $table->timestamps();
         });

@@ -28,10 +28,7 @@ const getMembersSchema = (
     maxMember?: number,
 ) => {
     if (competitionType === CompetitionTypeMap.Team.value) {
-        let schema = RegistrationMembersSchema.min(1, {
-            message:
-                'Kompetisi tim wajib memiliki minimal 1 anggota (selain ketua).',
-        });
+        let schema = RegistrationMembersSchema;
 
         if (typeof maxMember === 'number' && maxMember >= 2) {
             schema = schema.max(maxMember - 1, {
@@ -39,7 +36,7 @@ const getMembersSchema = (
             });
         }
 
-        return schema;
+        return schema.optional().default([]);
     }
 
     return RegistrationMembersSchema.optional().default([]);
@@ -60,6 +57,9 @@ export const RegisterCompetitionBaseSchema = z.object({
         .string()
         .min(1, { message: 'Nomor telepon wajib diisi.' })
         .max(20, { message: 'Nomor telepon maksimal 20 karakter.' }),
+    requirement_link: z.url({
+        message: 'Link persyaratan harus berupa URL valid.',
+    }),
     payment_method: z.literal(TransactionPaymentMethodValue[0], {
         message: 'Metode pembayaran yang dipilih tidak valid.',
     }),
@@ -94,6 +94,7 @@ export type RegisterCompetitionFormDataType = {
     phone_number: string;
     payment_method: (typeof TransactionPaymentMethodValue)[number];
     payment_proof_file?: File;
+    requirement_link: string;
     members: z.infer<typeof TeamMemberSchema>[];
 };
 
@@ -119,6 +120,11 @@ export const RegisterCompetitionInfoStepSchema = (
                 message: 'Nama tim wajib diisi untuk kompetisi kategori tim.',
             },
         );
+
+export const RegisterCompetitionRequirementStepSchema =
+    RegisterCompetitionBaseSchema.pick({
+        requirement_link: true,
+    });
 
 export const RegisterCompetitionPaymentStepSchema =
     RegisterCompetitionBaseSchema.pick({

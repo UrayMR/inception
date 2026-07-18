@@ -9,6 +9,7 @@ class UpdateTeamDTO
         public string $team_name,
         public string $phone_number,
         public ?string $institution,
+        public string $requirement_link,
         public string $status
     ) {}
 }

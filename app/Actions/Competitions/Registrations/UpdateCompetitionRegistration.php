@@ -15,8 +15,6 @@ use App\Services\FileService;
 
 class UpdateCompetitionRegistration
 {
-  protected string $directory = 'transaction-payment-proofs';
-
   public function __construct(
     protected UpdateTeam $updateTeam,
     protected StoreTransaction $storeTransaction,

@@ -21,6 +21,7 @@ class RegisterCompetitionRequest extends FormRequest
       'team_name' => ['nullable', 'string', 'max:255'],
       'phone_number' => ['required', 'string', 'max:20'],
       'institution' => ['nullable', 'string', 'max:255'],
+      'requirement_link' => ['required', 'url'],
       'payment_method' => [
         'required',
         'string',
@@ -28,7 +29,7 @@ class RegisterCompetitionRequest extends FormRequest
       ],
       'payment_proof_file' => ['required', 'file', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
       'members' => ['nullable', 'array'],
-      'members.*.member_name' => ['required', 'string', 'max:255'],
+      'members.*.member_name' => ['required_with:members', 'string', 'max:255'],
     ];
   }
 
@@ -40,6 +41,7 @@ class RegisterCompetitionRequest extends FormRequest
       leader_id: $this->user()->id,
       leader_name: $this->user()->name,
       phone_number: $this->input('phone_number'),
+      requirement_link: $this->input('requirement_link'),
       institution: $this->input('institution'),
       payment_method: $this->input('payment_method'),
       payment_proof_file: $this->file('payment_proof_file'),

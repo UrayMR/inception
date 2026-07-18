@@ -1,24 +1,40 @@
-import { User } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import InstagramIcon from './svg/instagram-icon';
+import WhatsappIcon from './svg/whatsapp-icon';
+import { Icon } from './ui/icon';
 
-const CONTACTS = [
-    {
-        label: 'Email',
-        value: 'inception@gmail.com',
-        href: 'mailto:inception@gmail.com',
-    },
-    {
-        label: 'WhatsApp',
-        value: '+62 811-3491-880',
-        href: 'https://wa.me/628113491880',
-    },
-    {
-        label: 'Instagram',
-        value: '@inception',
-        href: 'https://instagram.com/inception',
-    },
-];
+export default function ContactBanner({
+    contacts,
+}: {
+    contacts?: {
+        icon: LucideIcon;
+        label: string;
+        value: string;
+        href: string;
+    }[];
+}) {
+    const contactsMap = contacts ?? [
+        {
+            icon: Mail,
+            label: 'Email',
+            value: 'inception@gmail.com',
+            href: 'mailto:inception@gmail.com',
+        },
+        {
+            icon: WhatsappIcon as unknown as LucideIcon,
+            label: 'WhatsApp',
+            value: '+62 811-3491-880',
+            href: 'https://wa.me/628113491880',
+        },
+        {
+            icon: InstagramIcon as unknown as LucideIcon,
+            label: 'Instagram',
+            value: '@inception',
+            href: 'https://instagram.com/inception',
+        },
+    ];
 
-export default function ContactBanner() {
     return (
         <div className="relative overflow-hidden rounded-2xl border border-zinc-800/40 bg-zinc-950/40 p-8 backdrop-blur-md md:p-12">
             {/* decorative blobs */}
@@ -43,7 +59,7 @@ export default function ContactBanner() {
                 </p>
 
                 <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
-                    {CONTACTS.map((c) => (
+                    {contactsMap.map((c) => (
                         <a
                             key={c.label}
                             href={c.href}
@@ -52,7 +68,7 @@ export default function ContactBanner() {
                             className="group flex items-center gap-2 rounded-full border border-zinc-800/60 bg-zinc-900/30 px-4 py-2.5 transition-all duration-200 hover:border-purple-500/40 hover:bg-purple-950/20"
                         >
                             <span className="flex h-5 w-5 items-center justify-center rounded-full text-purple-400 transition-colors group-hover:text-amber-400">
-                                <User className="h-4 w-4" />
+                                <Icon iconNode={c.icon} className="h-4 w-4" />
                             </span>
                             <span className="font-mono text-xs font-bold tracking-wide text-zinc-200 uppercase transition-colors group-hover:text-white">
                                 {c.label}

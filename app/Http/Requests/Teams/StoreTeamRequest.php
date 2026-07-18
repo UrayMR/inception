@@ -23,6 +23,7 @@ class StoreTeamRequest extends FormRequest
             'team_name' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:20'],
             'institution' => ['nullable', 'string', 'max:255'],
+            'requirement_link' => ['required', 'url'],
             'status' => ['required', 'string', Rule::in(TeamStatus::cases())],
         ];
 
@@ -45,7 +46,8 @@ class StoreTeamRequest extends FormRequest
             leader_id: $this->user()->id,
             phone_number: $this->input('phone_number'),
             institution: $this->input('institution'),
-            status: TeamStatus::active->value,
+            requirement_link: $this->input('requirement_link'),
+            status: $this->input('status'),
         );
     }
 

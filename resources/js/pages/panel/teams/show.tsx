@@ -20,6 +20,7 @@ interface ShowTeamForm {
     institution?: string;
     status: TeamStatusType;
     phone_number: string;
+    requirement_link: string;
     members?: TeamMember[];
 }
 
@@ -43,6 +44,7 @@ export default function ShowTeamPage({ team }: ShowTeamPageProps) {
         institution: team.institution || '',
         status: team.status || TeamStatusMap.Active.value,
         phone_number: team.phone_number,
+        requirement_link: team.requirement_link,
         members: team.members || [],
     };
 

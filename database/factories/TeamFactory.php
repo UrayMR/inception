@@ -26,6 +26,7 @@ class TeamFactory extends Factory
             'leader_id' => User::factory(),
             'phone_number' => $this->faker->phoneNumber(),
             'institution' => $this->faker->optional()->company(),
+            'requirement_link' => $this->faker->url(),
             'status' => $this->faker->randomElement(TeamStatus::cases()),
         ];
     }

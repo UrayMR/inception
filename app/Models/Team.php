@@ -18,6 +18,7 @@ class Team extends Model
         'leader_id',
         'phone_number',
         'institution',
+        'requirement_link',
         'status',
     ];
 
@@ -39,5 +40,10 @@ class Team extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(AssignmentSubmission::class);
     }
 }

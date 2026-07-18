@@ -28,6 +28,7 @@ export default function CreateTeamPage({
         team_name: '',
         institution: '',
         phone_number: '',
+        requirement_link: '',
         status: TeamStatusMap.Active.value,
         members: [
             {

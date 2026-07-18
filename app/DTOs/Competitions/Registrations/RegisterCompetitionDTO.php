@@ -20,6 +20,7 @@ class RegisterCompetitionDTO
     public string $leader_name,
     public string $phone_number,
     public ?string $institution,
+    public string $requirement_link,
     public string $payment_method,
     public UploadedFile $payment_proof_file,
     public array $members = [],
@@ -38,6 +39,7 @@ class RegisterCompetitionDTO
       competition_id: $competition->id,
       team_name: $this->teamNameFor($competition),
       leader_id: $this->leader_id,
+      requirement_link: $this->requirement_link,
       phone_number: $this->phone_number,
       institution: $this->institution,
       status: TeamStatus::registered->value,
@@ -49,6 +51,7 @@ class RegisterCompetitionDTO
     return new UpdateTeamDTO(
       competition_id: $competition->id,
       team_name: $this->teamNameFor($competition),
+      requirement_link: $this->requirement_link,
       phone_number: $this->phone_number,
       institution: $this->institution,
       status: TeamStatus::registered->value,

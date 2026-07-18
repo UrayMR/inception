@@ -1,9 +1,12 @@
 import { Head, usePage } from '@inertiajs/react';
-import type { TransactionProps } from '@/features/setting/dashboard-tab';
+import type {
+    AssignmentProps,
+    TransactionProps,
+} from '@/features/setting/dashboard-tab';
 import DashboardTab from '@/features/setting/dashboard-tab';
+import TransactionDetailTab from '@/features/setting/transaction-detail-tab';
 import SettingLayout from '@/layouts/setting-layout';
 import type { ICompetitionIndex, ITransactionShow } from '@/types';
-import TransactionDetailTab from '@/features/setting/transaction-detail-tab';
 
 // TODO: Fix this hella props use from types
 type SettingsPageProps = {
@@ -11,10 +14,11 @@ type SettingsPageProps = {
     competition: ICompetitionIndex | null;
     transaction: TransactionProps | null;
     transactionDetail: ITransactionShow | null;
+    assignments: AssignmentProps[] | null;
 };
 
 export default function Settings() {
-    const { tab, competition, transaction, transactionDetail } =
+    const { tab, competition, transaction, transactionDetail, assignments } =
         usePage<SettingsPageProps>().props;
 
     return (
@@ -27,6 +31,7 @@ export default function Settings() {
                 <DashboardTab
                     competition={competition}
                     transaction={transaction}
+                    assignments={assignments}
                 />
             )}
         </SettingLayout>

@@ -125,7 +125,6 @@ class CompetitionService
             return;
         }
 
-        // Team competitions: ensure competition is configured with sensible max_member
         if ($competition->max_member <= 1) {
             ThrowException::validation(
                 'max_member',
@@ -133,12 +132,12 @@ class CompetitionService
             );
         }
 
-        if (empty($members)) {
-            ThrowException::validation(
-                'members',
-                'At least one team member is required for team competitions.',
-            );
-        }
+        // if (empty($members)) {
+        //     ThrowException::validation(
+        //         'members',
+        //         'At least one team member is required for team competitions.',
+        //     );
+        // }
 
         // leader counts as one; ensure submitted members don't exceed allowed slots
         $maxAdditionalMembers = max(0, $competition->max_member - 1);

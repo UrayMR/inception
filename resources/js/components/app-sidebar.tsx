@@ -5,6 +5,8 @@ import {
     Group,
     House,
     LayoutGrid,
+    PenBox,
+    PenToolIcon,
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -22,7 +24,9 @@ import {
 } from '@/components/ui/sidebar';
 import { home } from '@/routes';
 import panel from '@/routes/panel';
+import assignments from '@/routes/panel/assignments';
 import competitions from '@/routes/panel/competitions';
+import submissions from '@/routes/panel/submissions';
 import teams from '@/routes/panel/teams';
 import transactions from '@/routes/panel/transactions';
 import users from '@/routes/panel/users';
@@ -49,9 +53,21 @@ const mainNavItems: NavItem[] = [
         roles: [UserRoleMap.Admin.value],
     },
     {
+        title: 'Assignments',
+        href: assignments.index(),
+        icon: PenBox,
+        roles: [UserRoleMap.Admin.value],
+    },
+    {
         title: 'Teams',
         href: teams.index(),
         icon: Group,
+        roles: [UserRoleMap.Admin.value],
+    },
+    {
+        title: 'Submissions',
+        href: submissions.index(),
+        icon: PenToolIcon,
         roles: [UserRoleMap.Admin.value],
     },
     {

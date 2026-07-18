@@ -50,4 +50,9 @@ class Competition extends Model
     {
         return $this->hasMany(CompetitionTimeline::class);
     }
+
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
 }

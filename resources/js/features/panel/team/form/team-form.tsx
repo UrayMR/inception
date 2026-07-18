@@ -17,6 +17,7 @@ type TeamFormData = {
     institution?: string;
     phone_number: string;
     status: TeamStatusType;
+    requirement_link: string;
     members?: TeamMember[];
     competition?: Option;
 };
@@ -133,6 +134,25 @@ export function TeamForm({
                     onChange={(e) => onChange('institution', e.target.value)}
                     readOnly={isReadOnly}
                     placeholder="Enter Institution"
+                />
+            </FormField>
+
+            <FormField
+                name="requirement_link"
+                label="Requirement Link"
+                error={errors.requirement_link}
+                required
+            >
+                <Input
+                    id="requirement_link"
+                    type="text"
+                    value={data.requirement_link}
+                    onChange={(e) =>
+                        onChange('requirement_link', e.target.value)
+                    }
+                    readOnly={isReadOnly}
+                    placeholder="Enter Requirement Link"
+                    required
                 />
             </FormField>
 

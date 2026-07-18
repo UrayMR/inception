@@ -7,25 +7,28 @@ import {
     XIcon,
 } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import {
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion';
 import formatDate from '@/helpers/format-date';
-import type { AssignmentProps } from '../dashboard-tab';
 import { submission } from '@/routes/settings/assignments';
+import type { AssignmentProps } from '../dashboard-tab';
 
 interface AssignmentItemProps {
     assignment: AssignmentProps;
     index: number;
     now: Date;
+    disabled: boolean;
 }
 
 export default function AssignmentItem({
     assignment,
     index,
     now,
+    disabled = false,
 }: AssignmentItemProps) {
     const [isEditing, setIsEditing] = useState(false);
 
@@ -59,6 +62,18 @@ export default function AssignmentItem({
         e.preventDefault();
 
         if (isPastDue) {
+            toast.error(
+                'Waktu pengumpulan telah berakhir. Tidak dapat mengirim link.',
+            );
+
+            return;
+        }
+
+        if (disabled) {
+            toast.error(
+                'Aksi ini tidak dapat dilakukan saat ini. Silakan coba lagi nanti.',
+            );
+
             return;
         }
 
@@ -73,7 +88,10 @@ export default function AssignmentItem({
             value={assignment.id.toString()}
             className="group rounded-lg border border-purple-900/30 bg-[#0d071a]/60 px-4 transition-all hover:bg-[#120a24]/50 data-[state=open]:bg-[#120a24]/80"
         >
-            <AccordionTrigger className="flex cursor-pointer items-center gap-4 py-4 text-left hover:no-underline [&[data-state=open]>svg]:rotate-180">
+            <AccordionTrigger
+                className="flex cursor-pointer items-center gap-4 py-4 text-left hover:no-underline [&[data-state=open]>svg]:rotate-180"
+                disabled={disabled}
+            >
                 <div className="w-6 shrink-0 font-mono text-xs font-semibold text-purple-400">
                     {String(index + 1).padStart(2, '0')}
                 </div>
@@ -184,7 +202,9 @@ export default function AssignmentItem({
                                     />
                                     <button
                                         type="submit"
-                                        disabled={processing || isPastDue}
+                                        disabled={
+                                            processing || isPastDue || disabled
+                                        }
                                         className="relative -ml-px inline-flex items-center gap-1 rounded-r-md border border-purple-800 bg-purple-900/40 px-4 py-2 text-xs font-semibold text-purple-200 transition-all hover:bg-purple-900/60 active:scale-95 disabled:pointer-events-none disabled:opacity-50"
                                     >
                                         {processing ? 'Mengirim...' : 'Kirim'}
@@ -225,6 +245,7 @@ export default function AssignmentItem({
 
                                 {!isPastDue && (
                                     <button
+                                        disabled={disabled}
                                         type="button"
                                         onClick={() => setIsEditing(true)}
                                         aria-label="Edit link pengumpulan"

@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { Trophy, ChevronRight, ClipboardList } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Accordion } from '@/components/ui/accordion';
+import { TransactionStatusMap } from '@/types';
 import type {
     ICompetitionIndex,
     ITransactionIndex,
@@ -38,6 +39,9 @@ export default function DashboardTab({
 
     const hasCompetition = Boolean(competition);
     const hasAssignments = Array.isArray(assignments) && assignments.length > 0;
+
+    const isVerifyTransaction =
+        transaction?.status === TransactionStatusMap.verified.value;
 
     useEffect(() => {
         const intervalId = window.setInterval(() => {
@@ -134,6 +138,7 @@ export default function DashboardTab({
                                     assignment={assignment}
                                     index={index}
                                     now={now}
+                                    disabled={!isVerifyTransaction}
                                 />
                             ))}
                         </Accordion>

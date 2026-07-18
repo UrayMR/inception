@@ -18,6 +18,7 @@ class Team extends Model
         'leader_id',
         'phone_number',
         'institution',
+        'requirement_link',
         'status',
     ];
 

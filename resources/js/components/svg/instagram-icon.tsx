@@ -1,10 +1,10 @@
-export default function InstagramIcon({ size = 24 }: { size?: number }) {
+export default function InstagramIcon() {
     return (
         <svg
             role="img"
             viewBox="0 0 24 24"
-            width={size}
-            height={size}
+            width="15"
+            height="15"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
         >

@@ -80,11 +80,7 @@ export default function RegisterCompetitionPage({
         payment_method: TransactionPaymentMethodMap.qris.value,
         payment_proof_file: undefined,
         requirement_link: '',
-        members:
-            preselectedCompetition?.otherValues?.type ===
-            CompetitionTypeMap.Team.value
-                ? [{ member_name: '' }]
-                : [],
+        members: [],
     });
 
     const selectedCompetition = useMemo(

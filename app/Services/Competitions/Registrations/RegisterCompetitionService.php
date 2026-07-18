@@ -117,10 +117,18 @@ class RegisterCompetitionService
       );
     }
 
-    if (count($dto->members) < 1) {
+    // if (count($dto->members) < 1) {
+    //   ThrowException::validation(
+    //     'members',
+    //     'At least one team member is required for team competitions.',
+    //   );
+    // }
+
+    $maxAdditionalMembers = max(0, $competition->max_member - 1);
+    if (count($dto->members) > $maxAdditionalMembers) {
       ThrowException::validation(
         'members',
-        'At least one team member is required for team competitions.',
+        sprintf('Too many members: maximum allowed (excluding leader) is %d.', $maxAdditionalMembers)
       );
     }
   }

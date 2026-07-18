@@ -29,7 +29,7 @@ class RegisterCompetitionRequest extends FormRequest
       ],
       'payment_proof_file' => ['required', 'file', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
       'members' => ['nullable', 'array'],
-      'members.*.member_name' => ['required', 'string', 'max:255'],
+      'members.*.member_name' => ['required_with:members', 'string', 'max:255'],
     ];
   }
 

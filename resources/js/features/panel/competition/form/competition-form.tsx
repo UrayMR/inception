@@ -24,7 +24,8 @@ type CompetitionFormData = {
     image_file?: File | null;
     image_path?: string | null;
     price: number;
-    max_member?: number;
+    guidebook_link?: string | null;
+    max_member?: number | null;
     status: CompetitionStatusType;
     timelines: CompetitionTimeline[];
 };
@@ -151,6 +152,23 @@ export function CompetitionForm({
                     readOnly={isReadOnly}
                     placeholder="Enter Price"
                     required
+                />
+            </FormField>
+
+            <FormField
+                name="guidebook_link"
+                label="Guidebook Link"
+                error={errors.guidebook_link}
+                required={false}
+            >
+                <Input
+                    id="guidebook_link"
+                    type="url"
+                    value={data.guidebook_link || ''}
+                    onChange={(e) => onChange('guidebook_link', e.target.value)}
+                    readOnly={isReadOnly}
+                    placeholder="Enter Guidebook Link"
+                    required={false}
                 />
             </FormField>
 

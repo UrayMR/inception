@@ -24,6 +24,7 @@ export default function CreateCompetitionPage() {
         image_file: undefined,
         price: 0,
         max_member: 1,
+        guidebook_link: '',
         status: CompetitionStatusMap.Closed.value,
         timelines: [
             {

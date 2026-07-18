@@ -30,6 +30,7 @@ class StoreCompetition
       'price' => $dto->price,
       'status' => $dto->status,
       'max_member' => $dto->max_member,
+      'guidebook_link' => $dto->guidebook_link,
     ];
 
     if ($dto->image_file) {

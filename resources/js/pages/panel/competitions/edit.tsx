@@ -32,6 +32,7 @@ export default function EditCompetitionPage({
         max_member: competition.max_member,
         image_file: undefined,
         price: competition.price,
+        guidebook_link: competition.guidebook_link || '',
         status: competition.status,
         timelines: competition.timelines,
     });

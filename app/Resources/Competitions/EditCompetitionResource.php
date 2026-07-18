@@ -24,6 +24,7 @@ class EditCompetitionResource extends JsonResource
             'image_path' => $this->image_path,
             'price' => $this->price,
             'max_member' => $this->max_member,
+            'guidebook_link' => $this->guidebook_link,
             'status' => $this->status,
             'timelines' => collect($this->timelines)->sortBy('sequence')->values()->map(function ($timeline) {
                 return [

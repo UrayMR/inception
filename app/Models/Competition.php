@@ -30,6 +30,7 @@ class Competition extends Model
         'max_member',
         'image_path',
         'price',
+        'guidebook_link',
         'status',
     ];
 

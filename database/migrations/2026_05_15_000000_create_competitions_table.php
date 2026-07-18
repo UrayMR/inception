@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('max_member')->default(1);
             $table->string('image_path')->nullable();
             $table->float('price')->default(0);
+            $table->string('guidebook_link')->nullable();
             $table->string('status')->default('closed'); // closed, open, ongoing, completed
             $table->timestamps();
         });

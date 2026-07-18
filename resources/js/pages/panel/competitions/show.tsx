@@ -18,6 +18,8 @@ interface ShowCompetitionForm {
     type: CompetitionType;
     image_path?: string;
     price: number;
+    guidebook_link?: string;
+    max_member?: number;
     status: CompetitionStatusType;
     timelines: CompetitionTimeline[];
 }
@@ -44,7 +46,9 @@ export default function ShowCompetitionPage({
         price: competition.price,
         status: competition.status,
         image_path: competition.image_path || '',
-        timelines: competition.timelines,
+        guidebook_link: competition.guidebook_link || '',
+        max_member: competition.max_member,
+        timelines: competition.timelines || [],
     };
 
     return (

@@ -24,6 +24,7 @@ export const CompetitionBaseSchema = z.object({
         .nullish(),
     price: z.number().min(0),
     max_member: z.number().int().min(1),
+    guidebook_link: z.string().optional(),
     status: z.enum(CompetitionStatusValue),
 });
 

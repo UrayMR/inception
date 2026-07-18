@@ -7,7 +7,7 @@ export default function AppLogo({ className, style }: AppLogoProps) {
     return (
         <>
             <img
-                src="/favicon.svg"
+                src="/assets/svg/logo.svg"
                 alt="Inception Logo"
                 className={`size-15 ${className}`}
                 style={style}

@@ -86,7 +86,9 @@ export default function ShowTransactionPage({
     const handleVerify = () => {
         verifyForm.patch(transactions.verify.url(transaction.id), {
             onSuccess: () => {
-                openWhatsapp(verifyMessage);
+                if (verifyForm.data.notify_whatsapp) {
+                    openWhatsapp(verifyMessage);
+                }
             },
         });
     };
@@ -94,7 +96,9 @@ export default function ShowTransactionPage({
     const handleReject = () => {
         rejectForm.patch(transactions.reject.url(transaction.id), {
             onSuccess: () => {
-                openWhatsapp(rejectMessage);
+                if (rejectForm.data.notify_whatsapp) {
+                    openWhatsapp(rejectMessage);
+                }
             },
         });
     };

@@ -48,14 +48,14 @@ class SettingController extends Controller
           ],
           'name' => $assignment->name,
           'status' => $assignment->status,
-          'due_at' => $assignment->due_at?->toDateTimeString(),
+          'due_at' => $assignment->due_at,
           'assignment_guide_link' => $assignment->assignment_guide_link,
           'submission' => $submissions->has($assignment->id)
             ? [
               'id' => $submissions->get($assignment->id)->id,
               'submission_link' => $submissions->get($assignment->id)->submission_link,
-              'updated_at' => $submissions->get($assignment->id)->updated_at?->toDateTimeString(),
-              'created_at' => $submissions->get($assignment->id)->created_at?->toDateTimeString(),
+              'updated_at' => $submissions->get($assignment->id)->updated_at,
+              'created_at' => $submissions->get($assignment->id)->created_at,
             ]
             : null,
         ])

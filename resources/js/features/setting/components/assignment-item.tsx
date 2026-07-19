@@ -114,7 +114,7 @@ export default function AssignmentItem({
 
             <AccordionContent className="mt-1 border-t border-purple-950/50 pt-3 pb-5">
                 <div className="space-y-4">
-                    {assignment.assignment_guide_link && (
+                    {assignment.assignment_guide_link && !disabled && (
                         <div className="flex items-center justify-between gap-4 rounded-md border border-zinc-800/50 bg-zinc-900/40 p-3">
                             <div className="flex min-w-0 items-center gap-2.5">
                                 <div className="min-w-0">
@@ -196,7 +196,9 @@ export default function AssignmentItem({
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={processing || isPastDue}
+                                        disabled={
+                                            processing || isPastDue || disabled
+                                        }
                                         className="block w-full min-w-0 rounded-l-md border border-purple-900/40 bg-[#07030e] px-3 py-2 text-xs text-zinc-100 placeholder-zinc-600 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none disabled:opacity-50"
                                         required
                                     />

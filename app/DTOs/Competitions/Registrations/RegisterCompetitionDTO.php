@@ -18,6 +18,7 @@ class RegisterCompetitionDTO
     public ?string $team_name,
     public string $leader_id,
     public string $leader_name,
+    public string $leader_email,
     public string $phone_number,
     public ?string $institution,
     public string $requirement_link,

@@ -8,9 +8,68 @@ export default function CompetitionsIndex({
 }: {
     competitions: { data: ICompetitionCard[] };
 }) {
+    const pageUrl = 'https://inception.himatifaupnvjt.org/competitions';
+    const pageTitle = 'Choose Your Mission - INCEPTION';
+    const pageDescription =
+        'Explore our national tech competitions and find the perfect challenge for you! Choose your mission and compete in Web Development, UI/UX, Competitive Programming, and more.';
+
+    const schemaData = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: pageTitle,
+        description: pageDescription,
+        url: pageUrl,
+        mainEntity: {
+            '@type': 'ItemList',
+            itemListElement: competitions.data.map((item, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                name: item.name,
+                url: `${pageUrl}/${item.slug}`,
+            })),
+        },
+    };
+
     return (
         <AppLayout>
-            <Head title="Choose Your Mission" />
+            <Head title="Choose Your Mission">
+                <meta name="robots" content="index, follow" />
+                <link rel="canonical" href={pageUrl} />
+                <meta name="description" content={pageDescription} />
+                <meta
+                    name="keywords"
+                    content="competition list, tech competition, mission hub, web development, ui ux, competitive programming, ctf, inception"
+                />
+                <meta name="author" content="Inception" />
+
+                <meta property="og:title" content={pageTitle} />
+                <meta property="og:description" content={pageDescription} />
+                <meta property="og:image" content="/assets/png/og-image.png" />
+                <meta
+                    property="og:image:alt"
+                    content="INCEPTION - Choose Your Mission"
+                />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+                <meta property="og:url" content={pageUrl} />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="INCEPTION" />
+
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={pageTitle} />
+                <meta name="twitter:description" content={pageDescription} />
+                <meta name="twitter:image" content="/assets/png/og-image.png" />
+                <meta
+                    name="twitter:image:alt"
+                    content="INCEPTION - Choose Your Mission"
+                />
+                <meta name="twitter:site" content="@inception" />
+                <meta name="twitter:creator" content="@inception" />
+
+                <script type="application/ld+json">
+                    {JSON.stringify(schemaData)}
+                </script>
+            </Head>
 
             <div className="relative flex w-full flex-col justify-between overflow-hidden bg-transparent py-10 md:py-16">
                 <div className="mb-10 px-4 text-center sm:mb-16">
@@ -30,7 +89,7 @@ export default function CompetitionsIndex({
                     </p>
                 </div>
 
-                <div className="my-auto w-full mx-auto">
+                <div className="mx-auto my-auto w-full">
                     <CompetitionCarousel items={competitions.data} />
                 </div>
             </div>

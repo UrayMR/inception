@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import CompetitionStatusBadge from '@/features/participant/competitions/components/competition-status-badge';
 import CTAButton from '@/features/participant/competitions/components/cta-button';
 import competitions from '@/routes/guest/competitions';
+import { CompetitionStatusMap } from '@/types';
 import type { ICompetitionCard } from '@/types';
 
 export default function CompetitionSection({
@@ -14,7 +15,7 @@ export default function CompetitionSection({
     const [activeMission, setActiveMission] = useState<ICompetitionCard>(
         items[0] || {},
     );
-    const isOpen = activeMission.status === 'open';
+    const isOpen = activeMission.status === CompetitionStatusMap.Open.value;
     const tabsContainerRef = useRef<HTMLDivElement>(null);
 
     const handleTabClick = (

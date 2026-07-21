@@ -21,6 +21,7 @@ class EloquentGuestCompetitionRepository implements GuestCompetitionRepository
     }
 
     return $query
+      ->orderByRaw("CASE WHEN name = 'Hackathon' THEN 0 ELSE 1 END")
       ->orderByRaw('CASE WHEN status = ? THEN 0 ELSE 1 END', [CompetitionStatus::open->value])
       ->orderByRaw('CASE WHEN timelines_min_start_at IS NULL THEN 1 ELSE 0 END')
       ->orderBy('timelines_min_start_at')

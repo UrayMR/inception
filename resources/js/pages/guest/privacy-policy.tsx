@@ -14,7 +14,7 @@ export default function PrivacyPolicy() {
                         <p className="mb-3 font-mono text-xs tracking-[0.3em] text-purple-400">
                             // LEGAL_DOCUMENT V1.0
                         </p>
-                        <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
+                        <h1 className="leading-widest font-avalors text-4xl font-bold tracking-wide md:text-5xl">
                             PRIVACY POLICY
                         </h1>
                         <div className="mt-4 h-1 w-24 bg-amber-400" />

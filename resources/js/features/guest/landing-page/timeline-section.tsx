@@ -65,7 +65,7 @@ export default function TimelineSection({ id }: { id: string }) {
                 <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
                     // LOG_TIMELINE
                 </span>
-                <h2 className="text-4xl font-extrabold tracking-wider text-white uppercase sm:text-5xl">
+                <h2 className="text-4xl font-extrabold tracking-wider font-avalors text-white uppercase sm:text-5xl">
                     MISSION TIMELINE
                 </h2>
                 <div className="mx-auto h-1 w-20 rounded-full bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.6)]" />

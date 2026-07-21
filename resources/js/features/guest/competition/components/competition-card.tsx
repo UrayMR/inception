@@ -59,7 +59,7 @@ export function CompetitionCard({
                 />
             </div>
 
-            <h3 className="line-clamp-2 flex min-h-12 items-center justify-center px-1 text-base font-black tracking-tight text-white uppercase transition-colors duration-300 sm:min-h-14 sm:text-lg">
+            <h3 className="line-clamp-2 flex min-h-12 font-avalors items-center justify-center px-1 text-base font-black tracking-widest text-white uppercase transition-colors duration-300 sm:min-h-14 sm:text-lg">
                 {name}
             </h3>
 

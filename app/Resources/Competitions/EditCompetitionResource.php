@@ -32,12 +32,12 @@ class EditCompetitionResource extends JsonResource
                     'timeline_name' => $timeline->timeline_name,
                     'description' => $timeline->description,
                     'sequence' => $timeline->sequence,
-                    'start_at' => $timeline->start_at->toDateTimeString(),
-                    'end_at' => $timeline->end_at->toDateTimeString(),
+                    'start_at' => $timeline->start_at,
+                    'end_at' => $timeline->end_at,
                 ];
             }),
-            'created_at' => $this->created_at?->toDateTimeString(),
-            'updated_at' => $this->updated_at?->toDateTimeString(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

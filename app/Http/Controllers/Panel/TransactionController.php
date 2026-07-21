@@ -8,6 +8,7 @@ use App\Resources\Transactions\ShowTransactionResource;
 use App\Services\Transactions\TransactionService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\MailService;
 
 class TransactionController extends Controller
 {
@@ -42,24 +43,36 @@ class TransactionController extends Controller
     ]);
   }
 
-  public function verify(Transaction $transaction)
+  public function verify(Transaction $transaction, Request $request)
   {
     $this->authorize('update', $transaction);
 
-    $this->transactionService->verify($transaction);
+    $notifyEmail = (bool) $request->query('notify_email', false);
+
+    $this->transactionService->verify($transaction, $notifyEmail);
 
     $this->flash('success', 'Transaction verified successfully.');
+
+    if ($notifyEmail) {
+      $this->flash('success', 'Notification email sent to the team leader.');
+    }
 
     return redirect()->route('panel.transactions.index');
   }
 
-  public function reject(Transaction $transaction)
+  public function reject(Transaction $transaction, Request $request)
   {
     $this->authorize('update', $transaction);
 
-    $this->transactionService->reject($transaction);
+    $notifyEmail = (bool) $request->query('notify_email', false);
+
+    $this->transactionService->reject($transaction, $notifyEmail);
 
     $this->flash('success', 'Transaction rejected successfully.');
+
+    if ($notifyEmail) {
+      $this->flash('success', 'Notification email sent to the team leader.');
+    }
 
     return redirect()->route('panel.transactions.index');
   }

@@ -40,6 +40,7 @@ class RegisterCompetitionRequest extends FormRequest
       team_name: $this->input('team_name'),
       leader_id: $this->user()->id,
       leader_name: $this->user()->name,
+      leader_email: $this->user()->email,
       phone_number: $this->input('phone_number'),
       requirement_link: $this->input('requirement_link'),
       institution: $this->input('institution'),

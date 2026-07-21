@@ -26,8 +26,8 @@ class ShowAssignmentResource extends JsonResource
       'assignment_guide_link' => $this->assignment_guide_link,
       'status' => $this->status,
       'due_at' => $this->due_at,
-      'created_at' => $this->created_at?->toDateTimeString(),
-      'updated_at' => $this->updated_at?->toDateTimeString(),
+      'created_at' => $this->created_at,
+      'updated_at' => $this->updated_at,
     ];
   }
 }

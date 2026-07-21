@@ -30,8 +30,8 @@ class EditTeamResource extends JsonResource
                 ];
             })->toArray(),
             'status' => $this->status,
-            'created_at' => $this->created_at?->toDateTimeString(),
-            'updated_at' => $this->updated_at?->toDateTimeString(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

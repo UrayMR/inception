@@ -70,6 +70,7 @@ class CompetitionSeeder extends Seeder
                 'image_path' => 'competitions/business_plan.svg',
             ],
             'UI/UX' => [
+                'slug' => 'ui-ux',
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                 'type' => CompetitionType::team->value,
                 'max_member' => 4,
@@ -128,6 +129,7 @@ class CompetitionSeeder extends Seeder
         foreach ($competitions as $name => $details) {
             $competition = Competition::factory()->create([
                 'name' => $name,
+                'slug' => $details['slug'] ?? strtolower(str_replace(' ', '-', $name)),
                 'description' => $details['description'],
                 'type' => $details['type'],
                 'max_member' => $details['max_member'],

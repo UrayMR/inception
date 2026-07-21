@@ -65,7 +65,7 @@ export default function CompetitionShowPage({
                             </div>
 
                             <div className="space-y-2">
-                                <h1 className="font-sans text-4xl leading-tight font-black tracking-tight text-white uppercase sm:text-5xl">
+                                <h1 className="font-avalors text-4xl leading-tight font-black tracking-widest text-white uppercase sm:text-5xl">
                                     {competition.name}
                                 </h1>
 

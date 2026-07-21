@@ -5,7 +5,7 @@ export default function AboutSection({id}: {id: string}) {
                 <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
                     // PROTOCOL_DATA
                 </span>
-                <h2 className="text-4xl font-extrabold tracking-wider text-white sm:text-5xl md:max-w-md">
+                <h2 className="text-4xl font-extrabold tracking-wider font-avalors text-white sm:text-5xl md:max-w-md">
                     IT'S ABOUT INCEPTION
                 </h2>
                 <div className="mx-auto h-1 w-20 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.6)] md:mx-0" />

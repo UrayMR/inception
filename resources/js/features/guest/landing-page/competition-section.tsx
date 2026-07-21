@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import CompetitionStatusBadge from '@/features/participant/competitions/components/competition-status-badge';
 import CTAButton from '@/features/participant/competitions/components/cta-button';
 import competitions from '@/routes/guest/competitions';
+import { CompetitionStatusMap } from '@/types';
 import type { ICompetitionCard } from '@/types';
 
 export default function CompetitionSection({
@@ -14,7 +15,7 @@ export default function CompetitionSection({
     const [activeMission, setActiveMission] = useState<ICompetitionCard>(
         items[0] || {},
     );
-    const isOpen = activeMission.status === 'open';
+    const isOpen = activeMission.status === CompetitionStatusMap.Open.value;
     const tabsContainerRef = useRef<HTMLDivElement>(null);
 
     const handleTabClick = (
@@ -50,7 +51,7 @@ export default function CompetitionSection({
                 <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
                     // MISSION_HUB_v1.0
                 </span>
-                <h2 className="text-3xl font-extrabold tracking-wider text-white uppercase sm:text-5xl">
+                <h2 className="text-3xl font-extrabold tracking-wider font-avalors text-white uppercase sm:text-5xl">
                     Choose Your Mission
                 </h2>
                 <div className="mx-auto h-1 w-20 rounded-full bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.6)] md:mx-0 md:ml-auto" />
@@ -138,7 +139,7 @@ export default function CompetitionSection({
                         </div>
 
                         <div className="my-auto space-y-4 py-6">
-                            <h3 className="font-mono text-2xl tracking-widest text-white uppercase sm:text-4xl">
+                            <h3 className="font-avalors text-2xl tracking-widest text-white uppercase sm:text-4xl">
                                 {activeMission.name}
                             </h3>
                             <p className="max-w-xl font-mono text-xs leading-relaxed tracking-wide text-purple-100/70 sm:text-sm">

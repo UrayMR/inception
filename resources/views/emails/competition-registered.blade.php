@@ -9,20 +9,19 @@
 	<meta name="color-scheme" content="light">
 	<meta name="supported-color-schemes" content="light">
 	<!--[if mso]>
-	<noscript>
-		<xml>
-			<o:OfficeDocumentSettings>
-				<o:PixelsPerInch>96</o:PixelsPerInch>
-			</o:OfficeDocumentSettings>
-		</xml>
-	</noscript>
-	<style>
-		table, td { border-collapse: collapse; }
-		* { font-family: Arial, sans-serif !important; }
-	</style>
-	<![endif]-->
+				<noscript>
+								<xml>
+												<o:OfficeDocumentSettings>
+																<o:PixelsPerInch>96</o:PixelsPerInch>
+												</o:OfficeDocumentSettings>
+								</xml>
+				</noscript>
+				<style>
+								table, td { border-collapse: collapse; }
+								* { font-family: Arial, sans-serif !important; }
+				</style>
+				<![endif]-->
 	<title>INCEPTION - Pendaftaran Kompetisi</title>
-	<!-- Gmail webmail & app both support <style> + media queries, so we layer responsive tweaks on top of the inline styles -->
 	<style>
 		@media only screen and (max-width: 480px) {
 			.container-card {
@@ -52,9 +51,19 @@
 <body
 	style="margin: 0; padding: 0; background-color: #0c0214; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
 
-	<!-- Preheader text: shown in inbox preview, hidden in the email body -->
+	@php
+		$rawStatus = strtolower(trim($transaction_status ?? ''));
+	@endphp
+
+	<!-- Preheader text -->
 	<div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#0c0214;">
-		Pendaftaran tim {{ $team_name }} untuk kompetisi {{ $competition_name }} berhasil &amp; sedang diverifikasi.
+		@if ($rawStatus === 'verified')
+			Selamat! Pendaftaran Anda untuk {{ $competition_name }} telah terverifikasi.
+		@elseif ($rawStatus === 'rejected')
+			Pemberitahuan terkait status pendaftaran {{ $competition_name }}.
+		@else
+			Pendaftaran Anda untuk {{ $competition_name }} berhasil &amp; sedang diverifikasi.
+		@endif
 	</div>
 	<div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
 		&#8199;&#8199;&#8199;&#8199;&#8199;&#8199;&#8199;&#8199;&#8199;&#8199;&#8199;&#8199;&#8199;&#8199;&#8199;
@@ -66,8 +75,8 @@
 			<td align="center" bgcolor="#0c0214" style="padding: 30px 10px;">
 
 				<!--[if mso]>
-				<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" align="center"><tr><td>
-				<![endif]-->
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" align="center"><tr><td>
+								<![endif]-->
 				<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#0f051d"
 					class="container-card"
 					style="max-width: 600px; background-color: #0f051d; border: 1px solid rgba(177, 59, 255, 0.15); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border-collapse: collapse;">
@@ -76,7 +85,13 @@
 						<td align="center" class="hero-pad" style="padding: 40px 20px 15px 20px;">
 							<p
 								style="margin: 0; font-family: 'Courier New', Courier, monospace; font-size: 11px; font-weight: bold; color: #b13bff; letter-spacing: 3px; text-transform: uppercase; mso-line-height-rule: exactly;">
-								// INITIALIZE_LAUNCH_SUCCESS
+								@if ($rawStatus === 'verified')
+									// STATUS_VERIFIED_SUCCESS
+								@elseif ($rawStatus === 'rejected')
+									// STATUS_MISMATCH_ERROR
+								@else
+									// INITIALIZE_LAUNCH_SUCCESS
+								@endif
 							</p>
 						</td>
 					</tr>
@@ -99,67 +114,122 @@
 
 					<tr>
 						<td class="body-pad" style="padding: 10px 30px 30px 30px; text-align: center;">
+
+							<!-- Pembuka Dinamis -->
 							<p
 								style="margin: 0 0 15px 0; font-size: 15px; color: #f7f4e9; line-height: 1.6; font-weight: 300; mso-line-height-rule: exactly;">
-								Halo Tim <strong style="color: #ffffff; font-weight: 600;">{{ $team_name }}</strong>,
-							</p>
-							<p
-								style="margin: 0 0 30px 0; font-size: 14px; color: #b5a9c2; line-height: 1.6; font-weight: 300; mso-line-height-rule: exactly;">
-								Selamat! Pendaftaran tim Anda untuk kompetisi <strong
-									style="color: #ffffff; font-weight: 600;">{{ $competition_name }}</strong> telah berhasil. Tim Anda sekarang
-								berada dalam proses verifikasi berkas oleh tim kami.
+								@if ($competition_type === 'solo')
+									Halo <strong style="color: #ffffff; font-weight: 600;">{{ $team_name }}</strong>,
+								@else
+									Halo Tim <strong style="color: #ffffff; font-weight: 600;">{{ $team_name }}</strong>,
+								@endif
 							</p>
 
+							<!-- Deskripsi Dinamis Berdasarkan Status -->
+							<p
+								style="margin: 0 0 30px 0; font-size: 14px; color: #b5a9c2; line-height: 1.6; font-weight: 300; mso-line-height-rule: exactly;">
+								@if ($rawStatus === 'verified')
+									@if ($competition_type === 'solo')
+										Selamat! Berkas pendaftaran Anda untuk kompetisi <strong
+											style="color: #ffffff; font-weight: 600;">{{ $competition_name }}</strong> telah berhasil diverifikasi.
+										Anda kini telah resmi terdaftar sebagai peserta.
+									@else
+										Selamat! Berkas pendaftaran tim Anda untuk kompetisi <strong
+											style="color: #ffffff; font-weight: 600;">{{ $competition_name }}</strong> telah berhasil diverifikasi.
+										Tim Anda resmi terdaftar sebagai peserta.
+									@endif
+								@elseif ($rawStatus === 'rejected')
+									@if ($competition_type === 'solo')
+										Mohon maaf, berkas pendaftaran Anda untuk kompetisi <strong
+											style="color: #ffffff; font-weight: 600;">{{ $competition_name }}</strong> belum dapat disetujui karena
+										terdapat ketidaksesuaian data atau dokumen.
+									@else
+										Mohon maaf, berkas pendaftaran tim Anda untuk kompetisi <strong
+											style="color: #ffffff; font-weight: 600;">{{ $competition_name }}</strong> belum dapat disetujui karena
+										terdapat ketidaksesuaian data atau dokumen.
+									@endif
+								@else
+									@if ($competition_type === 'solo')
+										Selamat! Pendaftaran Anda untuk kompetisi <strong
+											style="color: #ffffff; font-weight: 600;">{{ $competition_name }}</strong> telah berhasil. Berkas Anda saat
+										ini sedang berada dalam proses verifikasi oleh panitia.
+									@else
+										Selamat! Pendaftaran tim Anda untuk kompetisi <strong
+											style="color: #ffffff; font-weight: 600;">{{ $competition_name }}</strong> telah berhasil. Berkas tim Anda
+										saat ini sedang dalam proses verifikasi oleh panitia.
+									@endif
+								@endif
+							</p>
+
+							<!-- Box Informasi Dinamis -->
 							<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"
 								style="background-color: rgba(15, 5, 29, 0.6); border: 1px solid rgba(177, 59, 255, 0.1); border-radius: 10px; margin-bottom: 30px; border-collapse: collapse;">
 								<tr>
 									<td style="padding: 20px; text-align: left;">
 										<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"
 											style="border-collapse: collapse;">
-											<tr>
-												<td width="30%"
-													style="padding-bottom: 8px; font-size: 12px; color: #726285; font-family: monospace; vertical-align: top;">
-													[TEAM_NAME]</td>
-												<td width="70%"
-													style="padding-bottom: 8px; font-size: 14px; color: #ffffff; font-weight: bold; vertical-align: top;">
-													{{ $team_name }}</td>
-											</tr>
-											<tr>
-												<td width="30%"
-													style="padding-bottom: 8px; font-size: 12px; color: #726285; font-family: monospace; vertical-align: top;">
-													[LEADER]</td>
-												<td width="70%"
-													style="padding-bottom: 8px; font-size: 14px; color: #ffffff; font-weight: bold; vertical-align: top;">
-													{{ $leader_name }}
-												</td>
-											</tr>
+
+											@if ($competition_type === 'solo')
+												<tr>
+													<td width="30%"
+														style="padding-bottom: 8px; font-size: 12px; color: #726285; font-family: monospace; vertical-align: top;">
+														[NAME]</td>
+													<td width="70%"
+														style="padding-bottom: 8px; font-size: 14px; color: #ffffff; font-weight: bold; vertical-align: top;">
+														{{ $team_name }}</td>
+												</tr>
+											@else
+												<tr>
+													<td width="30%"
+														style="padding-bottom: 8px; font-size: 12px; color: #726285; font-family: monospace; vertical-align: top;">
+														[TEAM_NAME]</td>
+													<td width="70%"
+														style="padding-bottom: 8px; font-size: 14px; color: #ffffff; font-weight: bold; vertical-align: top;">
+														{{ $team_name }}</td>
+												</tr>
+												<tr>
+													<td width="30%"
+														style="padding-bottom: 8px; font-size: 12px; color: #726285; font-family: monospace; vertical-align: top;">
+														[LEADER]</td>
+													<td width="70%"
+														style="padding-bottom: 8px; font-size: 14px; color: #ffffff; font-weight: bold; vertical-align: top;">
+														{{ $leader_name }}</td>
+												</tr>
+											@endif
+
 											<tr>
 												<td width="30%" style="font-size: 12px; color: #726285; font-family: monospace; vertical-align: top;">
 													[STATUS]</td>
-												<td width="70%" style="font-size: 14px; color: #ffcc00; font-weight: bold; vertical-align: top;">
-													{{ $status }}</td>
+												<td width="70%"
+													style="font-size: 14px; color: {{ $rawStatus === 'verified' ? '#00e676' : ($rawStatus === 'rejected' ? '#ff5252' : '#ffcc00') }}; font-weight: bold; vertical-align: top;">
+													{{ $status_label ?? $transaction_status }}
+												</td>
 											</tr>
 										</table>
 									</td>
 								</tr>
 							</table>
 
-							<!-- Button with VML fallback for Outlook Windows (rounded corners) -->
+							<!-- Action Button -->
 							<!--[if mso]>
-							<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ $dashboardUrl }}" style="height:46px;v-text-anchor:middle;width:230px;" arcsize="17%" strokecolor="#b13bff" fillcolor="#b13bff">
-								<w:anchorlock/>
-								<center style="color:#ffffff;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1px;">MASUK KE DASHBOARD</center>
-							</v:roundrect>
-							<![endif]-->
+														<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ $url }}" style="height:46px;v-text-anchor:middle;width:230px;" arcsize="17%" strokecolor="#b13bff" fillcolor="#b13bff">
+																		<w:anchorlock/>
+																		<center style="color:#ffffff;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1px;">MASUK KE DASHBOARD</center>
+														</v:roundrect>
+														<![endif]-->
 							<!--[if !mso]><!-->
 							<table role="presentation" border="0" cellpadding="0" cellspacing="0"
 								style="margin: 0 auto; border-collapse: collapse;">
 								<tr>
 									<td align="center"
 										style="border-radius: 8px; background-color: #b13bff; box-shadow: 0 4px 15px rgba(177, 59, 255, 0.4);">
-										<a href="{{ $dashboard_url }}" class="btn-link"
+										<a href="{{ $url }}" class="btn-link"
 											style="padding: 14px 28px; display: inline-block; font-size: 13px; font-weight: bold; color: #ffffff; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; font-family: Arial, sans-serif;">
-											Masuk Ke Dashboard
+											@if ($rawStatus === 'rejected')
+												Daftar Ulang
+											@else
+												Masuk Ke Dashboard
+											@endif
 										</a>
 									</td>
 								</tr>
@@ -171,9 +241,16 @@
 					<tr>
 						<td style="padding: 0 30px 40px 30px; text-align: center;">
 							<p style="margin: 0; font-size: 13px; color: #726285; line-height: 1.5; mso-line-height-rule: exactly;">
-								Jika Anda memiliki pertanyaan atau membutuhkan bantuan lebih lanjut, jangan ragu untuk menghubungi tim dukungan
-								kami melalui instagram <a href="https://instagram.com/inception"
-									style="color: #b13bff; text-decoration: none; font-weight: bold;">@inception</a>
+								@if ($rawStatus === 'rejected')
+									Silakan lakukan pendaftaran ulang untuk kompetisi yang ingin anda ikuti. Jika Anda memiliki pertanyaan atau
+									membutuhkan bantuan lebih lanjut, jangan ragu untuk menghubungi tim dukungan
+									Instagram <a href="https://instagram.com/inception"
+										style="color: #b13bff; text-decoration: none; font-weight: bold;">@inception</a>.
+								@else
+									Jika Anda memiliki pertanyaan atau membutuhkan bantuan lebih lanjut, jangan ragu untuk menghubungi tim dukungan
+									kami melalui Instagram <a href="https://instagram.com/inception"
+										style="color: #b13bff; text-decoration: none; font-weight: bold;">@inception</a>.
+								@endif
 							</p>
 						</td>
 					</tr>
@@ -189,8 +266,8 @@
 
 				</table>
 				<!--[if mso]>
-				</td></tr></table>
-				<![endif]-->
+								</td></tr></table>
+								<![endif]-->
 
 			</td>
 		</tr>

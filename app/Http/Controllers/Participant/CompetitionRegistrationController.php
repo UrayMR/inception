@@ -67,11 +67,7 @@ class CompetitionRegistrationController extends Controller
         $this->registerCompetitionService->register($dto, $competition);
 
         $this->flash('success', 'Competition registration submitted successfully.');
-        $this->flash('success', 'Please kindly wait for the verification of your transaction. Thank you!');
-
-        defer(function () use ($dto, $competition) {
-            Mail::to($dto->leader_email)->send(new CompetitionRegisteredMail($dto->team_name, $competition->name, $dto->leader_name, "pending"));
-        });
+        $this->flash('success', 'Please kindly wait for the verification of your transaction on your email inbox or dashboard page. Thank you!');
 
         return redirect()->route('settings.index');
     }

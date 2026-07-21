@@ -16,28 +16,43 @@ export default function Main() {
         };
     }>().props;
 
-    const schemaData = {
-        "@context": 'https://schema.org',
-        "@type": 'WebSite',
-        "name": 'INCEPTION',
-        "description":
-            "Join the ultimate competition and showcase your skills! Participate in exciting challenges, win amazing prizes, and connect with a community of passionate individuals. Don't miss out on this opportunity to shine!",
-        "url": 'https://inception.himatifaupnvjt.org',
-        "logo": 'https://inception.himatifaupnvjt.org/assets/png/og-image.png',
-        "sameAs": ['https://instagram.com/inception'],
-        "event": {
-            "@type": 'Event',
-            "name": 'INCEPTION',
-            "startDate": '2026-08-10T00:00:00+07:00',
-            "endDate": '2026-08-28T23:59:59+07:00',
-            "eventStatus": 'https://schema.org/EventScheduled',
-            "location": 'https://inception.himatifaupnvjt.org',
+    const schemaData = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'INCEPTION',
+            url: 'https://inception.himatifaupnvjt.org',
+            description:
+                'Join the ultimate competition and showcase your skills! Participate in exciting challenges and win amazing prizes.',
+            publisher: {
+                '@type': 'Organization',
+                name: 'Inception',
+                logo: 'https://inception.himatifaupnvjt.org/assets/png/og-image.png',
+                sameAs: ['https://instagram.com/inception'],
+            },
         },
-        "publisher": {
-            "@type": 'Organization',
-            "name": 'Inception',
+        {
+            '@context': 'https://schema.org',
+            '@type': 'Event',
+            name: 'INCEPTION 2026',
+            description:
+                'Join the ultimate competition and showcase your skills! Participate in exciting challenges and win amazing prizes.',
+            startDate: '2026-08-10T00:00:00+07:00',
+            endDate: '2026-08-28T23:59:59+07:00',
+            eventStatus: 'https://schema.org/EventScheduled',
+            eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+            location: {
+                '@type': 'VirtualLocation',
+                url: 'https://inception.himatifaupnvjt.org',
+            },
+            organizer: {
+                '@type': 'Organization',
+                name: 'HIMATIFA UPNVJT',
+                url: 'https://inception.himatifaupnvjt.org',
+            },
+            image: 'https://inception.himatifaupnvjt.org/assets/png/og-image.png',
         },
-    };
+    ];
 
     return (
         <AppLayout>

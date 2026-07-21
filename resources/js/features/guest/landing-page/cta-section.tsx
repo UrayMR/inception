@@ -17,7 +17,7 @@ export function CtaSection({ id }: { id: string }) {
                         // INITIALIZE_JOIN
                     </span>
 
-                    <h2 className="mx-auto max-w-3xl text-4xl leading-tight font-black tracking-widest text-white uppercase md:text-6xl">
+                    <h2 className="mx-auto max-w-3xl text-4xl leading-tight font-avalors font-black tracking-widest text-white uppercase md:text-6xl">
                         SECURE YOUR{' '}
                         <span className="block bg-linear-to-r from-amber-400 via-orange-300 to-amber-400 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(251,191,36,0.3)] sm:inline">
                             OPPORTUNITY

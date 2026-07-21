@@ -16,9 +16,91 @@ export default function Main() {
         };
     }>().props;
 
+    const schemaData = {
+        "@context": 'https://schema.org',
+        "@type": 'WebSite',
+        "name": 'INCEPTION',
+        "description":
+            "Join the ultimate competition and showcase your skills! Participate in exciting challenges, win amazing prizes, and connect with a community of passionate individuals. Don't miss out on this opportunity to shine!",
+        "url": 'https://inception.himatifaupnvjt.org',
+        "logo": 'https://inception.himatifaupnvjt.org/assets/png/og-image.png',
+        "sameAs": ['https://instagram.com/inception'],
+        "event": {
+            "@type": 'Event',
+            "name": 'INCEPTION',
+            "startDate": '2026-08-10T00:00:00+07:00',
+            "endDate": '2026-08-28T23:59:59+07:00',
+            "eventStatus": 'https://schema.org/EventScheduled',
+            "location": 'https://inception.himatifaupnvjt.org',
+        },
+        "publisher": {
+            "@type": 'Organization',
+            "name": 'Inception',
+        },
+    };
+
     return (
         <AppLayout>
-            <Head title="Welcome" />
+            <Head>
+                <meta name="robots" content="index, follow" />
+
+                <link
+                    rel="canonical"
+                    href="https://inception.himatifaupnvjt.org"
+                />
+
+                <meta
+                    name="description"
+                    content="Join the ultimate competition and showcase your skills! Participate in exciting challenges, win amazing prizes, and connect with a community of passionate individuals. Don't miss out on this opportunity to shine!"
+                />
+                <meta
+                    name="keywords"
+                    content="competition, challenges, prizes, skills, community, showcase, participate, win, events, contests"
+                />
+                <meta name="author" content="Inception" />
+                <meta
+                    property="og:title"
+                    content="INCEPTION - Power Your Innovation With Inception"
+                />
+                <meta
+                    property="og:description"
+                    content="Join the ultimate competition and showcase your skills! Participate in exciting challenges, win amazing prizes, and connect with a community of passionate individuals. Don't miss out on this opportunity to shine!"
+                />
+                <meta property="og:image" content="/assets/png/og-image.png" />
+                <meta
+                    property="og:image:alt"
+                    content="INCEPTION - Power Your Innovation With Inception"
+                />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+                <meta
+                    property="og:url"
+                    content="https://inception.himatifaupnvjt.org"
+                />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="INCEPTION" />
+
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta
+                    name="twitter:title"
+                    content="INCEPTION - Power Your Innovation With Inception"
+                />
+                <meta
+                    name="twitter:description"
+                    content="Join the ultimate competition and showcase your skills! Participate in exciting challenges, win amazing prizes, and connect with a community of passionate individuals. Don't miss out on this opportunity to shine!"
+                />
+                <meta name="twitter:image" content="/assets/png/og-image.png" />
+                <meta
+                    name="twitter:image:alt"
+                    content="INCEPTION - Power Your Innovation With Inception"
+                />
+                <meta name="twitter:site" content="@inception" />
+                <meta name="twitter:creator" content="@inception" />
+
+                <script type="application/ld+json">
+                    {JSON.stringify(schemaData)}
+                </script>
+            </Head>
 
             <HeroSection id="home" />
 

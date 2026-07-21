@@ -8,11 +8,14 @@ use App\DTOs\Competitions\Registrations\RegisterCompetitionDTO;
 use App\Enums\CompetitionStatus;
 use App\Enums\CompetitionType;
 use App\Enums\TeamStatus;
+use App\Enums\TransactionStatus;
 use App\Exceptions\BusinessException;
 use App\Helpers\ThrowException;
+use App\Mail\CompetitionRegisteredMail;
 use App\Models\Competition;
 use App\Models\Team;
 use App\Models\User;
+use App\Services\MailService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -21,6 +24,7 @@ class RegisterCompetitionService
   public function __construct(
     protected StoreCompetitionRegistration $storeCompetitionRegistration,
     protected UpdateCompetitionRegistration $updateCompetitionRegistration,
+    protected MailService $mailService,
   ) {}
 
   public function isCanRegister(): bool
@@ -63,6 +67,17 @@ class RegisterCompetitionService
 
       $this->storeCompetitionRegistration->handle($dto, $competition);
     });
+
+    $this->mailService->send(
+      new CompetitionRegisteredMail(
+        team_name: $dto->teamNameFor($competition),
+        competition_type: $competition->type,
+        competition_name: $competition->name,
+        leader_name: $dto->leader_name,
+        transaction_status: TransactionStatus::pending->value,
+      ),
+      $dto->leader_email
+    );
   }
 
   protected function ensureCompetitionIsOpen(Competition $competition): void

@@ -63,8 +63,8 @@ export default function ShowTransactionPage({
         },
     ];
 
-    const verifyForm = useForm({ notify_whatsapp: false });
-    const rejectForm = useForm({ notify_whatsapp: false });
+    const verifyForm = useForm({ notify_whatsapp: false, notify_email: true });
+    const rejectForm = useForm({ notify_whatsapp: false, notify_email: true });
     const [verifyMessage, setVerifyMessage] = useState(
         MessageTemplate.verified.defaultMessage(transaction),
     );
@@ -84,23 +84,33 @@ export default function ShowTransactionPage({
     };
 
     const handleVerify = () => {
-        verifyForm.patch(transactions.verify.url(transaction.id), {
-            onSuccess: () => {
-                if (verifyForm.data.notify_whatsapp) {
-                    openWhatsapp(verifyMessage);
-                }
+        verifyForm.patch(
+            transactions.verify.url(transaction.id, {
+                query: { notify_email: verifyForm.data.notify_email },
+            }),
+            {
+                onSuccess: () => {
+                    if (verifyForm.data.notify_whatsapp) {
+                        openWhatsapp(verifyMessage);
+                    }
+                },
             },
-        });
+        );
     };
 
     const handleReject = () => {
-        rejectForm.patch(transactions.reject.url(transaction.id), {
-            onSuccess: () => {
-                if (rejectForm.data.notify_whatsapp) {
-                    openWhatsapp(rejectMessage);
-                }
+        rejectForm.patch(
+            transactions.reject.url(transaction.id, {
+                query: { notify_email: rejectForm.data.notify_email },
+            }),
+            {
+                onSuccess: () => {
+                    if (rejectForm.data.notify_whatsapp) {
+                        openWhatsapp(rejectMessage);
+                    }
+                },
             },
-        });
+        );
     };
 
     const actionsDisabled = isFinalized(transaction.status);
@@ -145,6 +155,33 @@ export default function ShowTransactionPage({
                                         dibatalkan.
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
+
+                                <FieldLabel htmlFor="verify-notify-email">
+                                    <Field orientation="horizontal">
+                                        <Checkbox
+                                            id="verify-notify-email"
+                                            checked={
+                                                verifyForm.data.notify_email
+                                            }
+                                            onCheckedChange={(checked) =>
+                                                verifyForm.setData(
+                                                    'notify_email',
+                                                    checked === true,
+                                                )
+                                            }
+                                        />
+                                        <FieldContent>
+                                            <FieldTitle>
+                                                Informasikan peserta lewat email
+                                            </FieldTitle>
+                                            <FieldDescription>
+                                                Pastikan email ketua tim peserta
+                                                valid, atau notifikasi tidak
+                                                akan terkirim.
+                                            </FieldDescription>
+                                        </FieldContent>
+                                    </Field>
+                                </FieldLabel>
 
                                 <FieldLabel htmlFor="verify-notify-whatsapp">
                                     <Field orientation="horizontal">
@@ -234,6 +271,33 @@ export default function ShowTransactionPage({
                                         dibatalkan.
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
+
+                                <FieldLabel htmlFor="reject-notify-email">
+                                    <Field orientation="horizontal">
+                                        <Checkbox
+                                            id="reject-notify-email"
+                                            checked={
+                                                rejectForm.data.notify_email
+                                            }
+                                            onCheckedChange={(checked) =>
+                                                rejectForm.setData(
+                                                    'notify_email',
+                                                    checked === true,
+                                                )
+                                            }
+                                        />
+                                        <FieldContent>
+                                            <FieldTitle>
+                                                Informasikan peserta lewat email
+                                            </FieldTitle>
+                                            <FieldDescription>
+                                                Pastikan email ketua tim peserta
+                                                valid, atau notifikasi tidak
+                                                akan terkirim.
+                                            </FieldDescription>
+                                        </FieldContent>
+                                    </Field>
+                                </FieldLabel>
 
                                 <FieldLabel htmlFor="reject-notify-whatsapp">
                                     <Field orientation="horizontal">

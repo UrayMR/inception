@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Settings\DashboardController;
 use App\Http\Controllers\Settings\SettingController;
-use App\Http\Controllers\Settings\TransactionHistoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->as('settings.')->group(function () {

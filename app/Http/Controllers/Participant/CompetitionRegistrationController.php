@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Participant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Participant\Competitions\RegisterCompetitionRequest;
 use App\Enums\CompetitionStatus;
+use App\Mail\CompetitionRegisteredMail;
 use App\Models\Competition;
 use App\Resources\Participant\Competitions\CompetitionListResource;
 use App\Resources\Participant\Competitions\CompetitionDetailResource;
@@ -13,6 +14,7 @@ use App\Services\Competitions\GuestCompetitionService;
 use App\Services\Competitions\Registrations\RegisterCompetitionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CompetitionRegistrationController extends Controller
 {
@@ -65,7 +67,7 @@ class CompetitionRegistrationController extends Controller
         $this->registerCompetitionService->register($dto, $competition);
 
         $this->flash('success', 'Competition registration submitted successfully.');
-        $this->flash('success', 'Please kindly wait for the verification of your transaction. Thank you!');
+        $this->flash('success', 'Please kindly wait for the verification of your transaction on your email inbox or dashboard page. Thank you!');
 
         return redirect()->route('settings.index');
     }

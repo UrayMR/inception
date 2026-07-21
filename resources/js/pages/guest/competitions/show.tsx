@@ -27,9 +27,95 @@ export default function CompetitionShowPage({
     const isGuideBook =
         competition.guidebook_link && competition.guidebook_link.trim() !== '';
 
+    const schemaData = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": `${competition.name} - INCEPTION`,
+        "description": 
+            `Join ${competition.name} and showcase your skills! ${competition.description}`,
+        "url": `https://inception.himatifaupnvjt.org/competitions/${competition.slug}`,
+        "logo": 'https://inception.himatifaupnvjt.org/assets/png/og-image.png',
+        "sameAs": ['https://instagram.com/inception'],
+        "event": {
+            '@type': 'Event',
+            "name": `${competition.name} - INCEPTION`,
+            "startDate": `${competition.timelines[0].start_at}`,
+            "endDate": `${competition.timelines[0].end_at}`,
+            "eventStatus": 'https://schema.org/EventScheduled',
+            "location":
+                `https://inception.himatifaupnvjt.org/competitions/${competition.slug}`,
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": 'Inception',
+        },
+    };
+
     return (
         <AppLayout>
-            <Head title={competition.name} />
+            <Head title={competition.name}>
+                <meta name="robots" content="index, follow" />
+
+                <link
+                    rel="canonical"
+                    href={`https://inception.himatifaupnvjt.org/competitions/${competition.slug}`}
+                />
+
+                <meta
+                    name="description"
+                    content={`Join ${competition.name} and showcase your skills! ${competition.description}`}
+                />
+                <meta
+                    name="keywords"
+                    content={`${competition.name}, competition, challenges, prizes, skills, community, showcase, participate, win, events, contests`}
+                />
+                <meta name="author" content="Inception" />
+                <meta
+                    property="og:title"
+                    content={`${competition.name} - INCEPTION`}
+                />
+                <meta
+                    property="og:description"
+                    content={`Join ${competition.name} and showcase your skills! ${competition.description}`}
+                />
+                <meta property="og:image" content="/assets/png/og-image.png" />
+                <meta
+                    property="og:image:alt"
+                    content="INCEPTION - Power Your Innovation With Inception"
+                />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+                <meta
+                    property="og:url"
+                    content={`https://inception.himatifaupnvjt.org/competitions/${competition.slug}`}
+                />
+                <meta property="og:type" content="website" />
+                <meta
+                    property="og:site_name"
+                    content={`${competition.name} - INCEPTION`}
+                />
+
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta
+                    name="twitter:title"
+                    content={`${competition.name} - INCEPTION`}
+                />
+                <meta
+                    name="twitter:description"
+                    content={`Join ${competition.name} and showcase your skills! ${competition.description}`}
+                />
+                <meta name="twitter:image" content="/assets/png/og-image.png" />
+                <meta
+                    name="twitter:image:alt"
+                    content="INCEPTION - Power Your Innovation With Inception"
+                />
+                <meta name="twitter:site" content="@inception" />
+                <meta name="twitter:creator" content="@inception" />
+
+                <script type="application/ld+json">
+                    {JSON.stringify(schemaData)}
+                </script>
+            </Head>
 
             <div className="relative w-full bg-transparent py-6 text-zinc-100 selection:bg-purple-500/30 md:py-10">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6">

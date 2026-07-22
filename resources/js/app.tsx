@@ -9,7 +9,7 @@ createInertiaApp({
     title: (title) =>
         title
             ? `${title} - ${appName}`
-            : `${appName} - Power Your Innovation With Inception`,
+            : `${appName} - Code The Future Create The Impact`,
 
     // Layout is now determined by the page component itself, so we can remove the layout function from here.
     // layout: (name) => {

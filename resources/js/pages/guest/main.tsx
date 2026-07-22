@@ -75,7 +75,7 @@ export default function Main() {
                 <meta name="author" content="Inception" />
                 <meta
                     property="og:title"
-                    content="INCEPTION - Power Your Innovation With Inception"
+                    content="INCEPTION - Code The Future Create The Impact"
                 />
                 <meta
                     property="og:description"
@@ -84,7 +84,7 @@ export default function Main() {
                 <meta property="og:image" content="/assets/png/og-image.png" />
                 <meta
                     property="og:image:alt"
-                    content="INCEPTION - Power Your Innovation With Inception"
+                    content="INCEPTION - Code The Future Create The Impact"
                 />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
@@ -98,7 +98,7 @@ export default function Main() {
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta
                     name="twitter:title"
-                    content="INCEPTION - Power Your Innovation With Inception"
+                    content="INCEPTION - Code The Future Create The Impact"
                 />
                 <meta
                     name="twitter:description"
@@ -107,7 +107,7 @@ export default function Main() {
                 <meta name="twitter:image" content="/assets/png/og-image.png" />
                 <meta
                     name="twitter:image:alt"
-                    content="INCEPTION - Power Your Innovation With Inception"
+                    content="INCEPTION - Code The Future Create The Impact"
                 />
                 <meta name="twitter:site" content="@inception" />
                 <meta name="twitter:creator" content="@inception" />

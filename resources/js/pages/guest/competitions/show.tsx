@@ -28,26 +28,24 @@ export default function CompetitionShowPage({
         competition.guidebook_link && competition.guidebook_link.trim() !== '';
 
     const schemaData = {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": `${competition.name} - INCEPTION`,
-        "description": 
-            `Join ${competition.name} and showcase your skills! ${competition.description}`,
-        "url": `https://inception.himatifaupnvjt.org/competitions/${competition.slug}`,
-        "logo": 'https://inception.himatifaupnvjt.org/assets/png/og-image.png',
-        "sameAs": ['https://instagram.com/inception'],
-        "event": {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: `${competition.name} - INCEPTION`,
+        description: `Join ${competition.name} and showcase your skills! ${competition.description}`,
+        url: `https://inception.himatifaupnvjt.org/competitions/${competition.slug}`,
+        logo: 'https://inception.himatifaupnvjt.org/assets/png/og-image.png',
+        sameAs: ['https://instagram.com/inception'],
+        event: {
             '@type': 'Event',
-            "name": `${competition.name} - INCEPTION`,
-            "startDate": `${competition.timelines[0].start_at}`,
-            "endDate": `${competition.timelines[0].end_at}`,
-            "eventStatus": 'https://schema.org/EventScheduled',
-            "location":
-                `https://inception.himatifaupnvjt.org/competitions/${competition.slug}`,
+            name: `${competition.name} - INCEPTION`,
+            startDate: `${competition.timelines[0].start_at}`,
+            endDate: `${competition.timelines[0].end_at}`,
+            eventStatus: 'https://schema.org/EventScheduled',
+            location: `https://inception.himatifaupnvjt.org/competitions/${competition.slug}`,
         },
-        "publisher": {
-            "@type": "Organization",
-            "name": 'Inception',
+        publisher: {
+            '@type': 'Organization',
+            name: 'Inception',
         },
     };
 
@@ -81,7 +79,7 @@ export default function CompetitionShowPage({
                 <meta property="og:image" content="/assets/png/og-image.png" />
                 <meta
                     property="og:image:alt"
-                    content="INCEPTION - Power Your Innovation With Inception"
+                    content="INCEPTION - Code The Future Create The Impact"
                 />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
@@ -107,7 +105,7 @@ export default function CompetitionShowPage({
                 <meta name="twitter:image" content="/assets/png/og-image.png" />
                 <meta
                     name="twitter:image:alt"
-                    content="INCEPTION - Power Your Innovation With Inception"
+                    content="INCEPTION - Code The Future Create The Impact"
                 />
                 <meta name="twitter:site" content="@inception" />
                 <meta name="twitter:creator" content="@inception" />

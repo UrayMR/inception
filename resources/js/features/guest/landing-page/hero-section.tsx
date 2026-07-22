@@ -11,10 +11,13 @@ export default function HeroSection({ id }: { id: string }) {
         >
             <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center space-y-8">
                 <h1 className="text-3xl leading-tight font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
-                    POWER YOUR INNOVATION <br className="hidden sm:inline" />
-                    WITH{' '}
-                    <span className="bg-linear-to-r from-purple-300 via-indigo-200 to-purple-400 bg-clip-text text-transparent">
-                        INCEPTION
+                    <span className="bg-linear-to-r from-purple-300 to-indigo-200 bg-clip-text text-transparent">
+                        CODE
+                    </span>{' '}
+                    THE FUTURE <br className="hidden sm:inline" />
+                    CREATE THE{' '}
+                    <span className="bg-linear-to-r from-indigo-200 to-purple-400 bg-clip-text text-transparent">
+                        IMPACT
                     </span>
                 </h1>
 

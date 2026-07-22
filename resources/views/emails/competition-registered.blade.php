@@ -100,7 +100,7 @@
 						<td align="center" style="padding: 0 25px 25px 25px;">
 							<h1 class="hero-title"
 								style="margin: 0 0 12px 0; font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: 1px; text-transform: uppercase; font-family: Arial, sans-serif; text-align: center; line-height: 1.3; mso-line-height-rule: exactly;">
-								POWER YOUR INNOVATION<br>WITH <span style="color: #b13bff;">INCEPTION</span>
+								CODE THE FUTURE<br>CREATE THE <span style="color: #b13bff;">IMPACT</span>
 							</h1>
 							<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="50"
 								style="margin: 0 auto; border-collapse: collapse;">

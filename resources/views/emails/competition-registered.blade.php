@@ -58,11 +58,11 @@
 	<!-- Preheader text -->
 	<div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#0c0214;">
 		@if ($rawStatus === 'verified')
-			Selamat! Pendaftaran Anda untuk {{ $competition_name }} telah terverifikasi.
+			Selamat! Pendaftaran Anda untuk {{ $competition_name }} telah terverifikasi. Silahkan cek dashboard untuk melihat detail pendaftaran &amp; tugas Anda selanjutnya.
 		@elseif ($rawStatus === 'rejected')
-			Pemberitahuan terkait status pendaftaran {{ $competition_name }}.
+			Mohon maaf, pendaftaran Anda untuk {{ $competition_name }} ditolak karena terdapat ketidaksesuaian data atau dokumen. Silahkan lakukan pendaftaran ulang untuk kompetisi yang ingin anda ikuti. 
 		@else
-			Pendaftaran Anda untuk {{ $competition_name }} berhasil &amp; sedang diverifikasi.
+			Pendaftaran Anda untuk {{ $competition_name }} berhasil &amp; sedang diverifikasi. Silahkan cek email secara berkala untuk update status pendaftaran.
 		@endif
 	</div>
 	<div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">

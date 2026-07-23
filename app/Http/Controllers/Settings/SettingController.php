@@ -77,7 +77,7 @@ class SettingController extends Controller
     $competition = $team?->competition;
 
     if (!$competition) {
-      $this->flash('error', 'You are not part of any competition.');
+      $this->flash('error', 'Anda tidak partisipasi dalam kompetisi apa pun.');
       return redirect()->back();
     }
 
@@ -89,7 +89,7 @@ class SettingController extends Controller
     $assignment = Assignment::findOrFail($validatedData['assignment_id']);
 
     if ($assignment->competition_id !== $competition->id) {
-      $this->flash('error', 'This assignment does not belong to your competition.');
+      $this->flash('error', 'Tugas yang Anda coba kirimkan tidak terkait dengan kompetisi tim Anda.');
       return redirect()->back();
     }
 
@@ -100,13 +100,13 @@ class SettingController extends Controller
       ->exists();
 
     if (!$isTransactionVerified) {
-      $this->flash('error', 'Your team payment transaction has not been verified yet.');
+      $this->flash('error', 'Anda belum diverifikasi. Mohon tunggu konfirmasi dari panitia sebelum mengirim tugas apa pun.');
       return redirect()->back();
     }
 
     // Check if the assignment is still on due
     if ($assignment->due_at && now()->greaterThan($assignment->due_at)) {
-      $this->flash('error', 'The submission deadline for this assignment has passed.');
+      $this->flash('error', 'Waktu pengiriman tugas ini telah berakhir.');
       return redirect()->back();
     }
 
@@ -116,7 +116,7 @@ class SettingController extends Controller
       ['submission_link' => $validatedData['submission_link']]
     );
 
-    $this->flash('success', 'Submission saved successfully.');
+    $this->flash('success', 'Pengiriman tugas berhasil.');
     return redirect()->back();
   }
 

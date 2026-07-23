@@ -44,7 +44,7 @@ class CompetitionRegistrationController extends Controller
     {
         // TODO: is this really necessary? how about policy? or middleware?
         if (Auth::check() && ! $this->registerCompetitionService->isCanRegister()) {
-            $this->flash('error', 'You already have a pending or verified registration.');
+            $this->flash('error', 'Anda sudah memiliki pendaftaran kompetisi yang sedang diproses atau sudah diverifikasi. Silakan cek dashboard Anda untuk informasi lebih lanjut.');
 
             return back();
         }
@@ -66,8 +66,8 @@ class CompetitionRegistrationController extends Controller
 
         $this->registerCompetitionService->register($dto, $competition);
 
-        $this->flash('success', 'Competition registration submitted successfully.');
-        $this->flash('success', 'Please kindly wait for the verification of your transaction on your email inbox or dashboard page. Thank you!');
+        $this->flash('success', 'Pendaftaran kompetisi berhasil.');
+        $this->flash('success', 'Mohon menunggu konfirmasi berkas pendaftaran kompetisi dari panitia. Silakan cek (spam) email Anda atau dashboard untuk informasi lebih lanjut.');
 
         return redirect()->route('settings.index');
     }

@@ -34,6 +34,11 @@ class CompetitionRegistrationController extends Controller
 
         return $this->render('guest/competitions/index', [
             'competitions' => CompetitionListResource::collection($competitions),
+            'seo' => [
+                'title' => 'Choose Your Mission - INCEPTION 2026',
+                'description' => 'Temukan kompetisi yang sesuai dengan minat dan bakatmu. Daftar sekarang dan tunjukkan kemampuanmu!',
+                'index' => true,
+            ],
         ]);
     }
 
@@ -53,6 +58,10 @@ class CompetitionRegistrationController extends Controller
             'competitionMap' => $this->competitionService->getCompetitionMap([
                 'status' => CompetitionStatus::open->value,
             ]),
+            'seo' => [
+                'title' => 'Pendaftaran Kompetisi - INCEPTION 2026',
+                'description' => 'Daftar kompetisi yang sesuai dengan minat dan bakatmu. Tunjukkan kemampuanmu dan raih prestasi!',
+            ],
         ]);
     }
 
@@ -71,7 +80,7 @@ class CompetitionRegistrationController extends Controller
 
         return redirect()->route('settings.index');
     }
-    
+
     /**
      * Display the specified resource.
      */
@@ -79,9 +88,41 @@ class CompetitionRegistrationController extends Controller
     {
         $competition->load('timelines');
 
+        // Mengambil timeline pertama secara aman (jika ada)
+        $firstTimeline = $competition->timelines->first();
+
         return $this->render('guest/competitions/show', [
             'competition' => CompetitionDetailResource::make($competition)->resolve(),
             'allCompetitions' => Competition::query()->get(),
+            'seo' => [
+                'title' => $competition->name . ' - INCEPTION 2026',
+                'description' => $competition->description,
+                'index' => true,
+                'keywords' => $competition->keywords,
+                'json-ld' => [
+                    [
+                        '@context' => 'https://schema.org',
+                        '@type' => 'WebSite',
+                        'name' => $competition->name . ' - INCEPTION 2026',
+                        'description' => $competition->description,
+                        'url' => "https://inception.himatifaupnvjt.org/competitions/{$competition->slug}",
+                        'logo' => 'https://inception.himatifaupnvjt.org/assets/png/og-image.png',
+                        'sameAs' => ['https://instagram.com/inception'],
+                        'event' => [
+                            '@type' => 'Event',
+                            'name' => $competition->name . ' - INCEPTION 2026',
+                            'startDate' => $firstTimeline?->start_at,
+                            'endDate' => $firstTimeline?->end_at,
+                            'eventStatus' => 'https://schema.org/EventScheduled',
+                            'location' => "https://inception.himatifaupnvjt.org/competitions/{$competition->slug}",
+                        ],
+                        'publisher' => [
+                            '@type' => 'Organization',
+                            'name' => 'Inception',
+                        ],
+                    ],
+                ],
+            ],
         ]);
     }
 }

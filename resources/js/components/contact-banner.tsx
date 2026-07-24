@@ -37,11 +37,9 @@ export default function ContactBanner({
 
     return (
         <div className="relative overflow-hidden rounded-2xl border border-zinc-800/40 bg-zinc-950/40 p-8 backdrop-blur-md md:p-12">
-            {/* decorative blobs */}
             <div className="pointer-events-none absolute -top-16 -left-16 h-56 w-56 rounded-full bg-purple-600/20 blur-3xl" />
             <div className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-amber-500/10 blur-3xl" />
 
-            {/* corner brackets, konsisten dengan aksen di komponen lain */}
             <div className="pointer-events-none absolute top-0 left-0 h-10 w-10 rounded-tl-2xl border-t-2 border-l-2 border-purple-500/30" />
             <div className="pointer-events-none absolute right-0 bottom-0 h-10 w-10 rounded-br-2xl border-r-2 border-b-2 border-purple-500/30" />
 
@@ -50,7 +48,7 @@ export default function ContactBanner({
                     // OPEN_CHANNEL
                 </span>
 
-                <h2 className="font-sans text-3xl leading-tight font-black tracking-tight text-white uppercase md:text-4xl">
+                <h2 className="font-avalors text-3xl leading-tight font-black tracking-widest text-white uppercase md:text-4xl">
                     How Can We Help You?
                 </h2>
 

@@ -263,8 +263,8 @@ export default function RegisterCompetitionPage({
                         </div>
                     </div>
 
-                    <div className="pb-4">
-                        <h1 className="flex items-center gap-2 font-sans text-2xl font-black tracking-wider text-white uppercase">
+                    <div className="pb-4 text-center flex justify-center items-center">
+                        <h1 className="flex items-center gap-2 font-avalors text-3xl font-black tracking-wider text-white uppercase">
                             PARTICIPANT REGISTRATION
                         </h1>
                     </div>

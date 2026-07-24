@@ -80,7 +80,7 @@ export default function CompetitionsIndex({
                         // MISSION_HUB_v1.0
                     </span>
 
-                    <h1 className="mx-auto text-3xl leading-tight font-black tracking-widest text-white uppercase md:text-6xl">
+                    <h1 className="mx-auto text-3xl leading-tight font-avalors font-black tracking-widest text-white uppercase md:text-6xl">
                         Choose Your Mission
                     </h1>
 

@@ -73,7 +73,7 @@ export default function Contact() {
                         <span className="mb-4 block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
                             // OPEN_CHANNEL
                         </span>
-                        <h1 className="mx-auto max-w-3xl text-4xl leading-tight font-black tracking-widest text-white uppercase md:text-6xl">
+                        <h1 className="mx-auto max-w-3xl text-4xl leading-widest font-avalors font-black tracking-widest text-white uppercase md:text-6xl">
                             GET IN TOUCH
                         </h1>
                         <div className="mx-auto mt-6 h-1 w-24 rounded-full bg-amber-400" />
@@ -104,7 +104,7 @@ export default function Contact() {
                                     {c.icon}
                                 </div>
 
-                                <h3 className="mt-6 text-lg font-bold tracking-wide text-white uppercase">
+                                <h3 className="mt-6 text-lg font-avalors font-bold tracking-widest text-white uppercase">
                                     {c.label}
                                 </h3>
                                 <p className="mt-2 text-sm text-purple-200/70">

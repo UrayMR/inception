@@ -2,12 +2,11 @@ import { Link } from '@inertiajs/react';
 import { Mail, Phone } from 'lucide-react';
 import capitalize from '@/helpers/capitalize';
 import { index as competitionIndex } from '@/routes/guest/competitions';
-import AppLogo from './app-logo';
 import InstagramIcon from './svg/instagram-icon';
 
 const footerCompetitions = [
     {
-        label: 'Essay',
+        label: 'Hackathon',
     },
     {
         label: 'Business Plan',
@@ -19,7 +18,7 @@ const footerCompetitions = [
         label: 'Data Science',
     },
     {
-        label: 'Hackathon',
+        label: 'Essay',
     },
 ];
 
@@ -56,7 +55,11 @@ export function AppFooter() {
                     {/* Left Column */}
                     <div className="flex flex-col gap-6 sm:col-span-2 md:col-span-1 lg:col-span-6">
                         <div>
-                            <AppLogo />
+                            <img
+                                src="/assets/png/logo-footer.png"
+                                alt="Inception Logo"
+                                className="h-10"
+                            />
                             <p className="mt-4 max-w-md text-sm leading-relaxed text-slate-400">
                                 Platform kompetisi digital untuk eksplorasi
                                 event, komunitas, dan pengalaman baru yang

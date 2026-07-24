@@ -64,7 +64,7 @@ export function CompetitionCard({
             </h3>
 
             <p
-                className={`mt-1.5 line-clamp-3 min-h-12 px-1 text-[11px] leading-normal transition-all duration-500 sm:min-h-16 sm:text-xs sm:leading-relaxed ${
+                className={`mt-1.5 line-clamp-2 min-h-12 px-1 text-[11px] leading-normal transition-all duration-500 sm:min-h-14 sm:text-xs sm:leading-relaxed ${
                     isActive ? 'text-zinc-400' : 'text-zinc-600'
                 }`}
             >

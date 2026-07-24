@@ -6,7 +6,10 @@ import { initializeTheme } from '@/hooks/use-appearance';
 const appName = import.meta.env.VITE_APP_NAME || 'INCEPTION';
 
 createInertiaApp({
-    title: (title) => (title ? `${title} - ${appName}` : appName),
+    title: (title) =>
+        title
+            ? `${title} - ${appName}`
+            : `${appName} - Code The Future Create The Impact`,
 
     // Layout is now determined by the page component itself, so we can remove the layout function from here.
     // layout: (name) => {

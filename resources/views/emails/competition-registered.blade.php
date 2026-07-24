@@ -58,11 +58,11 @@
 	<!-- Preheader text -->
 	<div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#0c0214;">
 		@if ($rawStatus === 'verified')
-			Selamat! Pendaftaran Anda untuk {{ $competition_name }} telah terverifikasi.
+			Selamat! Pendaftaran Anda untuk {{ $competition_name }} telah terverifikasi. Silahkan cek dashboard untuk melihat detail pendaftaran &amp; tugas Anda selanjutnya.
 		@elseif ($rawStatus === 'rejected')
-			Pemberitahuan terkait status pendaftaran {{ $competition_name }}.
+			Mohon maaf, pendaftaran Anda untuk {{ $competition_name }} ditolak karena terdapat ketidaksesuaian data atau dokumen. Silahkan lakukan pendaftaran ulang untuk kompetisi yang ingin anda ikuti. 
 		@else
-			Pendaftaran Anda untuk {{ $competition_name }} berhasil &amp; sedang diverifikasi.
+			Pendaftaran Anda untuk {{ $competition_name }} berhasil &amp; sedang diverifikasi. Silahkan cek email secara berkala untuk update status pendaftaran.
 		@endif
 	</div>
 	<div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
@@ -100,7 +100,7 @@
 						<td align="center" style="padding: 0 25px 25px 25px;">
 							<h1 class="hero-title"
 								style="margin: 0 0 12px 0; font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: 1px; text-transform: uppercase; font-family: Arial, sans-serif; text-align: center; line-height: 1.3; mso-line-height-rule: exactly;">
-								POWER YOUR INNOVATION<br>WITH <span style="color: #b13bff;">INCEPTION</span>
+								CODE THE FUTURE<br>CREATE THE <span style="color: #b13bff;">IMPACT</span>
 							</h1>
 							<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="50"
 								style="margin: 0 auto; border-collapse: collapse;">

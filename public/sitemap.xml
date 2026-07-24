@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0/9">
+
+    <!-- Main / Landing Page -->
+    <url>
+        <loc>https://inception.himatifaupnvjt.org/</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Competition Listing Page -->
+    <url>
+        <loc>https://inception.himatifaupnvjt.org/competitions</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Competition Detail Pages -->
+    <url>
+        <loc>https://inception.himatifaupnvjt.org/competitions/essay</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://inception.himatifaupnvjt.org/competitions/business-plan</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://inception.himatifaupnvjt.org/competitions/ui-ux</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://inception.himatifaupnvjt.org/competitions/data-science</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+      <url>
+        <loc>https://inception.himatifaupnvjt.org/competitions/hackathon</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+</urlset>

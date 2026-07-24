@@ -141,7 +141,7 @@ export default function CompetitionSection({
                             <h3 className="font-mono text-2xl tracking-widest text-white uppercase sm:text-4xl">
                                 {activeMission.name}
                             </h3>
-                            <p className="max-w-xl font-mono text-xs leading-relaxed tracking-wide text-purple-100/70 sm:text-sm">
+                            <p className="line-clamp-4 max-w-xl font-mono text-xs leading-relaxed tracking-wide text-purple-100/70 sm:text-sm">
                                 {activeMission.description ||
                                     'No mission specification loaded.'}
                             </p>

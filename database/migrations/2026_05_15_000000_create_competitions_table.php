@@ -22,6 +22,7 @@ return new class extends Migration
             $table->float('price')->default(0);
             $table->string('guidebook_link')->nullable();
             $table->string('status')->default('closed'); // closed, open, ongoing, completed
+            $table->text('keywords')->nullable();
             $table->timestamps();
         });
     }

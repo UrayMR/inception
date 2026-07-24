@@ -71,7 +71,7 @@ class CompetitionRegistrationController extends Controller
 
         return redirect()->route('settings.index');
     }
-
+    
     /**
      * Display the specified resource.
      */

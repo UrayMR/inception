@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { ChevronLeft } from 'lucide-react';
 import {
     ScheduleTimeline,
@@ -21,6 +21,9 @@ export default function SettingLayout({
 
     return (
         <AppLayoutTemplate breadcrumbs={breadcrumbs}>
+            <Head>
+                <meta name="robots" content="noindex, nofollow" />
+            </Head>
             <div className="relative w-full bg-transparent py-6 text-zinc-100 md:py-10">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6">
                     <div className="flex items-center justify-between border-b border-purple-950/60 pb-4">

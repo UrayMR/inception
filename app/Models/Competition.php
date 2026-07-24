@@ -32,6 +32,7 @@ class Competition extends Model
         'price',
         'guidebook_link',
         'status',
+        'keywords',
     ];
 
     /**

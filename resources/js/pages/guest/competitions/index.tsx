@@ -9,9 +9,9 @@ export default function CompetitionsIndex({
     competitions: { data: ICompetitionCard[] };
 }) {
     const pageUrl = 'https://inception.himatifaupnvjt.org/competitions';
-    const pageTitle = 'Choose Your Mission - INCEPTION';
+    const pageTitle = 'Choose Your Mission - INCEPTION 2026';
     const pageDescription =
-        'Explore our national tech competitions and find the perfect challenge for you! Choose your mission and compete in Web Development, UI/UX, Competitive Programming, and more.';
+        'Eksplor kompetisi kami dan temukan tantangan yang sempurna untuk Anda! Temukan kompetisi yang sesuai dengan minat dan keahlian Anda di INCEPTION 2026.';
 
     const schemaData = {
         '@context': 'https://schema.org',
@@ -38,16 +38,19 @@ export default function CompetitionsIndex({
                 <meta name="description" content={pageDescription} />
                 <meta
                     name="keywords"
-                    content="competition list, tech competition, mission hub, web development, ui ux, competitive programming, ctf, inception"
+                    content="kompetisi, lomba, tantangan, misi, INCEPTION 2026, kompetisi informatika, lomba informatika, kompetisi nasional, lomba nasional, UI/UX Competition, Data Science Competition, Online Hackathon, Business Plan Competition, mahasiswa, teknologi, kreativitas, inovasi, website lomba, kompetisi teknologi"
                 />
-                <meta name="author" content="Inception" />
+                <meta name="author" content="Inception 2026" />
 
                 <meta property="og:title" content={pageTitle} />
                 <meta property="og:description" content={pageDescription} />
-                <meta property="og:image" content="/assets/png/og-image.png" />
+                <meta
+                    property="og:image"
+                    content="/assets/png/seo/seo-thumbnail.png"
+                />
                 <meta
                     property="og:image:alt"
-                    content="INCEPTION - Choose Your Mission"
+                    content="INCEPTION 2026 - Choose Your Mission"
                 />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
@@ -61,10 +64,10 @@ export default function CompetitionsIndex({
                 <meta name="twitter:image" content="/assets/png/og-image.png" />
                 <meta
                     name="twitter:image:alt"
-                    content="INCEPTION - Choose Your Mission"
+                    content="INCEPTION 2026 - Choose Your Mission"
                 />
-                <meta name="twitter:site" content="@inception" />
-                <meta name="twitter:creator" content="@inception" />
+                <meta name="twitter:site" content="@inception2026" />
+                <meta name="twitter:creator" content="@inception2026" />
 
                 <script type="application/ld+json">
                     {JSON.stringify(schemaData)}

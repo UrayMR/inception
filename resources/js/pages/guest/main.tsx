@@ -20,14 +20,14 @@ export default function Main() {
         {
             '@context': 'https://schema.org',
             '@type': 'WebSite',
-            name: 'INCEPTION',
+            name: 'INCEPTION 2026',
             url: 'https://inception.himatifaupnvjt.org',
             description:
-                'Join the ultimate competition and showcase your skills! Participate in exciting challenges and win amazing prizes.',
+                'Kompetisi informatika tingkat nasional yang menjadi wadah bagi mahasiswa untuk berinovasi, mengembangkan solusi kreatif, dan menunjukkan kemampuan terbaik melalui UI/UX, Data Science, Online Hackathon, dan Business Plan Competition. Wujudkan ide menjadi karya yang berdampak!',
             publisher: {
                 '@type': 'Organization',
                 name: 'Inception',
-                logo: 'https://inception.himatifaupnvjt.org/assets/png/og-image.png',
+                logo: 'https://inception.himatifaupnvjt.org/assets/svg/logo.svg',
                 sameAs: ['https://instagram.com/inception'],
             },
         },
@@ -36,7 +36,7 @@ export default function Main() {
             '@type': 'Event',
             name: 'INCEPTION 2026',
             description:
-                'Join the ultimate competition and showcase your skills! Participate in exciting challenges and win amazing prizes.',
+                'Kompetisi informatika tingkat nasional yang menjadi wadah bagi mahasiswa untuk berinovasi, mengembangkan solusi kreatif, dan menunjukkan kemampuan terbaik melalui UI/UX, Data Science, Online Hackathon, dan Business Plan Competition. Wujudkan ide menjadi karya yang berdampak!',
             startDate: '2026-08-10T00:00:00+07:00',
             endDate: '2026-08-28T23:59:59+07:00',
             eventStatus: 'https://schema.org/EventScheduled',
@@ -50,7 +50,7 @@ export default function Main() {
                 name: 'HIMATIFA UPNVJT',
                 url: 'https://inception.himatifaupnvjt.org',
             },
-            image: 'https://inception.himatifaupnvjt.org/assets/png/og-image.png',
+            image: 'https://inception.himatifaupnvjt.org/assets/png/seo/seo-thumbnail.png',
         },
     ];
 
@@ -66,25 +66,28 @@ export default function Main() {
 
                 <meta
                     name="description"
-                    content="Join the ultimate competition and showcase your skills! Participate in exciting challenges, win amazing prizes, and connect with a community of passionate individuals. Don't miss out on this opportunity to shine!"
+                    content="Kompetisi informatika tingkat nasional yang menjadi wadah bagi mahasiswa untuk berinovasi, mengembangkan solusi kreatif, dan menunjukkan kemampuan terbaik melalui UI/UX, Data Science, Online Hackathon, dan Business Plan Competition. Wujudkan ide menjadi karya yang berdampak!"
                 />
                 <meta
                     name="keywords"
-                    content="competition, challenges, prizes, skills, community, showcase, participate, win, events, contests"
+                    content="INCEPTION 2026, kompetisi informatika, lomba informatika, kompetisi nasional, lomba nasional, UI/UX Competition, Data Science Competition, Online Hackathon, Business Plan Competition, mahasiswa, teknologi, kreativitas, inovasi, website lomba, kompetisi teknologi, kompetisi mahasiswa, lomba mahasiswa, kompetisi coding, lomba coding, kompetisi desain, lomba desain, kompetisi bisnis, lomba bisnis, kompetisi teknologi informasi, lomba teknologi informasi"
                 />
-                <meta name="author" content="Inception" />
+                <meta name="author" content="Inception 2026" />
                 <meta
                     property="og:title"
-                    content="INCEPTION - Code The Future Create The Impact"
+                    content="INCEPTION 2026 - Code The Future Create The Impact"
                 />
                 <meta
                     property="og:description"
-                    content="Join the ultimate competition and showcase your skills! Participate in exciting challenges, win amazing prizes, and connect with a community of passionate individuals. Don't miss out on this opportunity to shine!"
+                    content="Kompetisi informatika tingkat nasional yang menjadi wadah bagi mahasiswa untuk berinovasi, mengembangkan solusi kreatif, dan menunjukkan kemampuan terbaik melalui UI/UX, Data Science, Online Hackathon, dan Business Plan Competition. Wujudkan ide menjadi karya yang berdampak!"
                 />
-                <meta property="og:image" content="/assets/png/og-image.png" />
+                <meta
+                    property="og:image"
+                    content="/assets/png/seo/seo-thumbnail.png"
+                />
                 <meta
                     property="og:image:alt"
-                    content="INCEPTION - Code The Future Create The Impact"
+                    content="INCEPTION 2026 - Code The Future Create The Impact"
                 />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
@@ -93,21 +96,24 @@ export default function Main() {
                     content="https://inception.himatifaupnvjt.org"
                 />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="INCEPTION" />
+                <meta property="og:site_name" content="INCEPTION 2026" />
 
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta
                     name="twitter:title"
-                    content="INCEPTION - Code The Future Create The Impact"
+                    content="INCEPTION 2026 - Code The Future Create The Impact"
                 />
                 <meta
                     name="twitter:description"
-                    content="Join the ultimate competition and showcase your skills! Participate in exciting challenges, win amazing prizes, and connect with a community of passionate individuals. Don't miss out on this opportunity to shine!"
+                    content="Kompetisi informatika tingkat nasional yang menjadi wadah bagi mahasiswa untuk berinovasi, mengembangkan solusi kreatif, dan menunjukkan kemampuan terbaik melalui UI/UX, Data Science, Online Hackathon, dan Business Plan Competition. Wujudkan ide menjadi karya yang berdampak!"
                 />
-                <meta name="twitter:image" content="/assets/png/og-image.png" />
+                <meta
+                    name="twitter:image"
+                    content="/assets/png/seo/seo-thumbnail.png"
+                />
                 <meta
                     name="twitter:image:alt"
-                    content="INCEPTION - Code The Future Create The Impact"
+                    content="INCEPTION 2026 - Code The Future Create The Impact"
                 />
                 <meta name="twitter:site" content="@inception" />
                 <meta name="twitter:creator" content="@inception" />

@@ -27,6 +27,7 @@ export interface ICompetitionShow extends ICompetitionIndex {
     max_member: number;
     guidebook_link?: string | null;
     timelines: CompetitionTimeline[];
+    keywords?: string | null;
     created_at: string;
     updated_at: string;
 }

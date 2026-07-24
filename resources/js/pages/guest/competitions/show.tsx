@@ -61,25 +61,28 @@ export default function CompetitionShowPage({
 
                 <meta
                     name="description"
-                    content={`Join ${competition.name} and showcase your skills! ${competition.description}`}
+                    content={`${competition.description}`}
                 />
                 <meta
                     name="keywords"
-                    content={`${competition.name}, competition, challenges, prizes, skills, community, showcase, participate, win, events, contests`}
+                    content={`${competition.keywords}, ${competition.name}, Inception 2026, HIMATIFA UPNVJT, Inception, Inception 2026 Competition`}
                 />
-                <meta name="author" content="Inception" />
+                <meta name="author" content="Inception 2026" />
                 <meta
                     property="og:title"
-                    content={`${competition.name} - INCEPTION`}
+                    content={`${competition.name} - INCEPTION 2026`}
                 />
                 <meta
                     property="og:description"
-                    content={`Join ${competition.name} and showcase your skills! ${competition.description}`}
+                    content={`${competition.description}`}
                 />
-                <meta property="og:image" content="/assets/png/og-image.png" />
+                <meta
+                    property="og:image"
+                    content="/assets/png/seo/seo-thumbnail.png"
+                />
                 <meta
                     property="og:image:alt"
-                    content="INCEPTION - Code The Future Create The Impact"
+                    content="INCEPTION 2026 - Code The Future Create The Impact"
                 />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
@@ -90,25 +93,28 @@ export default function CompetitionShowPage({
                 <meta property="og:type" content="website" />
                 <meta
                     property="og:site_name"
-                    content={`${competition.name} - INCEPTION`}
+                    content={`${competition.name} - INCEPTION 2026`}
                 />
 
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta
                     name="twitter:title"
-                    content={`${competition.name} - INCEPTION`}
+                    content={`${competition.name} - INCEPTION 2026`}
                 />
                 <meta
                     name="twitter:description"
-                    content={`Join ${competition.name} and showcase your skills! ${competition.description}`}
+                    content={`${competition.description}`}
                 />
-                <meta name="twitter:image" content="/assets/png/og-image.png" />
+                <meta
+                    name="twitter:image"
+                    content="/assets/png/seo/seo-thumbnail.png"
+                />
                 <meta
                     name="twitter:image:alt"
-                    content="INCEPTION - Code The Future Create The Impact"
+                    content="INCEPTION 2026 - Code The Future Create The Impact"
                 />
-                <meta name="twitter:site" content="@inception" />
-                <meta name="twitter:creator" content="@inception" />
+                <meta name="twitter:site" content="@inception2026" />
+                <meta name="twitter:creator" content="@inception2026" />
 
                 <script type="application/ld+json">
                     {JSON.stringify(schemaData)}

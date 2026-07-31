@@ -493,10 +493,10 @@ export default function PrivacyPolicy() {
                                 <p>
                                     By email:{' '}
                                     <a
-                                        href="mailto:inception@gmail.com"
+                                        href="mailto:inceptions.upnjatim@gmail.com"
                                         className="text-fuchsia-400 transition-colors hover:text-amber-400"
                                     >
-                                        inception@gmail.com
+                                        inceptions.upnjatim@gmail.com
                                     </a>
                                 </p>
                             </Section>

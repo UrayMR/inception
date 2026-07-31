@@ -140,7 +140,7 @@ export function AppFooter() {
                             </h4>
                             <div className="mt-4 flex items-center gap-4 text-slate-400">
                                 <a
-                                    href="https://www.instagram.com/himatifaupnvjatim"
+                                    href="https://www.instagram.com/inception.upnvjt"
                                     target="_blank"
                                     rel="noreferrer"
                                     className="transition hover:text-purple-400"
@@ -165,7 +165,7 @@ export function AppFooter() {
                                         href="mailto:inception@example.com"
                                         className="break-all transition hover:text-purple-400"
                                     >
-                                        inception@gmail.com
+                                        inceptions.upnjatim@gmail.com
                                     </a>
                                 </li>
                                 <li className="flex items-center gap-2">
@@ -179,7 +179,7 @@ export function AppFooter() {
                                         rel="noreferrer"
                                         className="transition hover:text-purple-400"
                                     >
-                                        +62 857-1779-1441
+                                        +62 812-3060-1370
                                     </a>
                                 </li>
                             </ul>

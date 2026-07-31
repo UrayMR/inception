@@ -18,20 +18,20 @@ export default function ContactBanner({
         {
             icon: Mail,
             label: 'Email',
-            value: 'inception@gmail.com',
-            href: 'mailto:inception@gmail.com',
+            value: 'inceptions.upnjatim@gmail.com',
+            href: 'mailto:inceptions.upnjatim@gmail.com',
         },
         {
             icon: WhatsappIcon as unknown as LucideIcon,
             label: 'WhatsApp',
-            value: '+62 811-3491-880',
-            href: 'https://wa.me/628113491880',
+            value: '+62 812-3060-1370',
+            href: 'https://wa.me/6281230601370',
         },
         {
             icon: InstagramIcon as unknown as LucideIcon,
             label: 'Instagram',
-            value: '@inception',
-            href: 'https://instagram.com/inception',
+            value: '@incepion.upnvjt',
+            href: 'https://instagram.com/incepion.upnvjt',
         },
     ];
 

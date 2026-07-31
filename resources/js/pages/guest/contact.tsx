@@ -4,8 +4,8 @@ import AppLayout from '@/layouts/app-layout';
 const CONTACTS = [
     {
         label: 'WhatsApp',
-        value: '+62 811-3491-880',
-        href: 'https://wa.me/628113491880',
+        value: '+62 812-3060-1370',
+        href: 'https://wa.me/6281230601370',
         cta: 'Chat on WhatsApp',
         code: 'CH_01',
         icon: (
@@ -16,8 +16,8 @@ const CONTACTS = [
     },
     {
         label: 'Email',
-        value: 'inception@gmail.com',
-        href: 'mailto:inception@gmail.com',
+        value: 'inceptions.upnjatim@gmail.com',
+        href: 'mailto:inceptions.upnjatim@gmail.com',
         cta: 'Send an Email',
         code: 'CH_02',
         icon: (
@@ -35,8 +35,8 @@ const CONTACTS = [
     },
     {
         label: 'Instagram',
-        value: '@inception',
-        href: 'https://instagram.com/inception',
+        value: '@inception.upnvjt',
+        href: 'https://instagram.com/inception.upnvjt',
         cta: 'Visit Instagram',
         code: 'CH_03',
         icon: (
@@ -67,13 +67,13 @@ export default function Contact() {
             <Head title="Contact" />
 
             <main className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden p-6 text-white md:px-12">
-                <div className="relative z-10 mx-auto max-w-7xl w-full">
+                <div className="relative z-10 mx-auto w-full max-w-7xl">
                     {/* header */}
                     <div className="mb-16 text-center">
                         <span className="mb-4 block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
                             // OPEN_CHANNEL
                         </span>
-                        <h1 className="mx-auto max-w-3xl text-4xl leading-widest font-avalors font-black tracking-widest text-white uppercase md:text-6xl">
+                        <h1 className="leading-widest mx-auto max-w-3xl font-avalors text-4xl font-black tracking-widest text-white uppercase md:text-6xl">
                             GET IN TOUCH
                         </h1>
                         <div className="mx-auto mt-6 h-1 w-24 rounded-full bg-amber-400" />
@@ -104,7 +104,7 @@ export default function Contact() {
                                     {c.icon}
                                 </div>
 
-                                <h3 className="mt-6 text-lg font-avalors font-bold tracking-widest text-white uppercase">
+                                <h3 className="mt-6 font-avalors text-lg font-bold tracking-widest text-white uppercase">
                                     {c.label}
                                 </h3>
                                 <p className="mt-2 text-sm text-purple-200/70">

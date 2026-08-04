@@ -24,8 +24,8 @@ export default function ContactBanner({
         {
             icon: WhatsappIcon as unknown as LucideIcon,
             label: 'WhatsApp',
-            value: '+62 812-3060-1370',
-            href: 'https://wa.me/6281230601370',
+            value: '+62 812-8879-5418',
+            href: 'https://wa.me/6281288795418',
         },
         {
             icon: InstagramIcon as unknown as LucideIcon,

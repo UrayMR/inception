@@ -38,14 +38,27 @@ function calculateTimeLeft() {
 }
 
 export default function AboutSection({ id }: { id: string }) {
-    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft);
+    const [timeLeft, setTimeLeft] = useState({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        status: 'not_started' as RegistrationStatus,
+    });
 
     useEffect(() => {
-        const timer = setInterval(() => {
+        const updateTimeLeft = () => {
             setTimeLeft(calculateTimeLeft());
-        }, 1000);
+        };
 
-        return () => clearInterval(timer);
+        const initialTimer = setTimeout(updateTimeLeft, 0);
+
+        const timer = setInterval(updateTimeLeft, 1000);
+
+        return () => {
+            clearTimeout(initialTimer);
+            clearInterval(timer);
+        };
     }, []);
 
     const pad = (num: number) => String(num).padStart(2, '0');

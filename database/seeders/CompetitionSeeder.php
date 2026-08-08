@@ -16,20 +16,28 @@ class CompetitionSeeder extends Seeder
         $commonTimelines = [
             'Registration' => [
                 'sequence' => 1,
-                'start_at' => Carbon::create(2026, 7, 1, 0, 0, 0),
-                'end_at'   => Carbon::create(2026, 7, 14, 23, 59, 59),
+                'start_at' => Carbon::create(2026, 8, 24, 0, 0, 0),
+                'end_at'   => Carbon::create(2026, 9, 3, 23, 59, 59),
+            ],
+            'Technical Meeting' => [
+                'sequence' => 2,
+                'start_at' => Carbon::create(2026, 9, 4, 9, 0, 0),
+                'end_at'   => Carbon::create(2026, 9, 4, 12, 0, 0),
             ],
             'Final Round' => [
-                'sequence' => 4,
-                'start_at' => Carbon::create(2026, 8, 20, 0, 0, 0),
-                'end_at'   => Carbon::create(2026, 8, 20, 17, 0, 0),
+                'sequence' => 5,
+                'start_at' => Carbon::create(2026, 10, 10, 9, 0, 0),
+                'end_at'   => Carbon::create(2026, 10, 10, 12, 0, 0),
             ],
             'Winner Announcement' => [
-                'sequence' => 5,
-                'start_at' => Carbon::create(2026, 8, 25, 19, 0, 0),
-                'end_at'   => Carbon::create(2026, 8, 25, 21, 0, 0),
+                'sequence' => 6,
+                'start_at' => Carbon::create(2026, 10, 13, 16, 0, 0),
+                'end_at'   => Carbon::create(2026, 10, 13, 17, 0, 0),
             ],
         ];
+
+        // Submission starts right after Technical Meeting ends for every competition.
+        $submissionStart = Carbon::create(2026, 9, 4, 12, 0, 0);
 
         $competitions = [
             'Essay' => [
@@ -38,14 +46,14 @@ class CompetitionSeeder extends Seeder
                 'max_member' => 4,
                 'custom_timelines' => [
                     'Submission' => [
-                        'sequence' => 2,
-                        'start_at' => Carbon::create(2026, 7, 15, 0, 0, 0),
-                        'end_at'   => Carbon::create(2026, 7, 25, 23, 59, 59),
+                        'sequence' => 3,
+                        'start_at' => $submissionStart,
+                        'end_at'   => Carbon::create(2026, 9, 16, 23, 59, 59),
                     ],
                     'Finalist Announcement' => [
-                        'sequence' => 3,
-                        'start_at' => Carbon::create(2026, 8, 1, 10, 0, 0),
-                        'end_at'   => Carbon::create(2026, 8, 1, 23, 59, 59),
+                        'sequence' => 4,
+                        'start_at' => Carbon::create(2026, 9, 21, 16, 0, 0),
+                        'end_at'   => Carbon::create(2026, 9, 21, 17, 0, 0),
                     ],
                 ],
                 'status' => CompetitionStatus::closed->value,
@@ -58,14 +66,14 @@ class CompetitionSeeder extends Seeder
                 'max_member' => 4,
                 'custom_timelines' => [
                     'Submission' => [
-                        'sequence' => 2,
-                        'start_at' => Carbon::create(2026, 7, 15, 0, 0, 0),
-                        'end_at'   => Carbon::create(2026, 7, 30, 23, 59, 59),
+                        'sequence' => 3,
+                        'start_at' => $submissionStart,
+                        'end_at'   => Carbon::create(2026, 9, 18, 23, 59, 59),
                     ],
                     'Finalist Announcement' => [
-                        'sequence' => 3,
-                        'start_at' => Carbon::create(2026, 8, 5, 10, 0, 0),
-                        'end_at'   => Carbon::create(2026, 8, 5, 23, 59, 59),
+                        'sequence' => 4,
+                        'start_at' => Carbon::create(2026, 9, 24, 16, 0, 0),
+                        'end_at'   => Carbon::create(2026, 9, 24, 17, 0, 0),
                     ],
                 ],
                 'image_path' => 'competitions/business_plan.svg',
@@ -78,14 +86,14 @@ class CompetitionSeeder extends Seeder
                 'max_member' => 4,
                 'custom_timelines' => [
                     'Submission' => [
-                        'sequence' => 2,
-                        'start_at' => Carbon::create(2026, 7, 15, 0, 0, 0),
-                        'end_at'   => Carbon::create(2026, 8, 2, 23, 59, 59),
+                        'sequence' => 3,
+                        'start_at' => $submissionStart,
+                        'end_at'   => Carbon::create(2026, 9, 23, 23, 59, 59),
                     ],
                     'Finalist Announcement' => [
-                        'sequence' => 3,
-                        'start_at' => Carbon::create(2026, 8, 10, 10, 0, 0),
-                        'end_at'   => Carbon::create(2026, 8, 10, 23, 59, 59),
+                        'sequence' => 4,
+                        'start_at' => Carbon::create(2026, 9, 29, 16, 0, 0),
+                        'end_at'   => Carbon::create(2026, 9, 29, 17, 0, 0),
                     ],
                 ],
                 'image_path' => 'competitions/ui_ux.svg',
@@ -97,14 +105,14 @@ class CompetitionSeeder extends Seeder
                 'max_member' => 4,
                 'custom_timelines' => [
                     'Submission' => [
-                        'sequence' => 2,
-                        'start_at' => Carbon::create(2026, 7, 15, 0, 0, 0),
-                        'end_at'   => Carbon::create(2026, 8, 5, 23, 59, 59),
+                        'sequence' => 3,
+                        'start_at' => $submissionStart,
+                        'end_at'   => Carbon::create(2026, 9, 24, 23, 59, 59),
                     ],
                     'Finalist Announcement' => [
-                        'sequence' => 3,
-                        'start_at' => Carbon::create(2026, 8, 12, 10, 0, 0),
-                        'end_at'   => Carbon::create(2026, 8, 12, 23, 59, 59),
+                        'sequence' => 4,
+                        'start_at' => Carbon::create(2026, 9, 30, 16, 0, 0),
+                        'end_at'   => Carbon::create(2026, 9, 30, 17, 0, 0),
                     ],
                 ],
                 'image_path' => 'competitions/data_science.svg',
@@ -116,14 +124,14 @@ class CompetitionSeeder extends Seeder
                 'max_member' => 4,
                 'custom_timelines' => [
                     'Submission' => [
-                        'sequence' => 2,
-                        'start_at' => Carbon::create(2026, 7, 15, 0, 0, 0),
-                        'end_at'   => Carbon::create(2026, 8, 10, 23, 59, 59),
+                        'sequence' => 3,
+                        'start_at' => $submissionStart,
+                        'end_at'   => Carbon::create(2026, 9, 25, 23, 59, 59),
                     ],
                     'Finalist Announcement' => [
-                        'sequence' => 3,
-                        'start_at' => Carbon::create(2026, 8, 15, 10, 0, 0),
-                        'end_at'   => Carbon::create(2026, 8, 15, 23, 59, 59),
+                        'sequence' => 4,
+                        'start_at' => Carbon::create(2026, 10, 1, 16, 0, 0),
+                        'end_at'   => Carbon::create(2026, 10, 1, 17, 0, 0),
                     ],
                 ],
                 'image_path' => 'competitions/hackathon.svg',
@@ -146,6 +154,7 @@ class CompetitionSeeder extends Seeder
 
             $allTimelines = [
                 'Registration'          => $commonTimelines['Registration'],
+                'Technical Meeting'     => $commonTimelines['Technical Meeting'],
                 'Submission'            => $details['custom_timelines']['Submission'],
                 'Finalist Announcement' => $details['custom_timelines']['Finalist Announcement'],
                 'Final Round'           => $commonTimelines['Final Round'],

@@ -10,7 +10,7 @@ export default function HeroSection({ id }: { id: string }) {
             className="relative flex min-h-screen flex-col items-center justify-center bg-transparent px-6 py-12 text-center lg:px-8"
         >
             <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center space-y-8">
-                <h1 className="text-3xl leading-tight font-bold tracking-widest text-white sm:text-6xl lg:text-7xl font-avalors">
+                <h1 className="font-avalors text-3xl leading-tight font-bold tracking-widest text-white sm:text-6xl lg:text-7xl">
                     <span className="bg-linear-to-r from-purple-300 to-indigo-200 bg-clip-text text-transparent">
                         CODE
                     </span>{' '}
@@ -24,9 +24,9 @@ export default function HeroSection({ id }: { id: string }) {
                 <div className="mx-auto h-1 w-16 rounded-full bg-amber-400" />
 
                 <p className="mx-auto max-w-xl text-xs leading-relaxed tracking-wide text-purple-100/70 sm:text-sm">
-                    Kompetisi teknologi untuk menguji kapabilitas, kreativitas,
-                    dan solusi digital mutakhir. Validasi kemampuan terbaik
-                    timmu dan klaim total hadiah puluhan juta rupiah.
+                    Siap menciptakan gebrakan digital? Tunjukkan kreativitas
+                    terbaik timmu, taklukkan tantangannya, dan rebut total
+                    hadiah jutaan rupiah!
                 </p>
 
                 <div className="mt-10 flex w-full max-w-sm flex-col items-center justify-center gap-4 font-sans text-xs font-semibold tracking-wider uppercase sm:max-w-none sm:flex-row">

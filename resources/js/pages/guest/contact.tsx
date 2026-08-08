@@ -4,8 +4,8 @@ import AppLayout from '@/layouts/app-layout';
 const CONTACTS = [
     {
         label: 'WhatsApp',
-        value: '+62 812-3060-1370',
-        href: 'https://wa.me/6281230601370',
+        value: '+62 812-8879-5418',
+        href: 'https://wa.me/6281288795418',
         cta: 'Chat on WhatsApp',
         code: 'CH_01',
         icon: (

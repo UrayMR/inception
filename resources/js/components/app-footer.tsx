@@ -174,12 +174,12 @@ export function AppFooter() {
                                         className="text-slate-500"
                                     />
                                     <a
-                                        href="https://wa.me/6285717791441"
+                                        href="https://wa.me/6281288795418"
                                         target="_blank"
                                         rel="noreferrer"
                                         className="transition hover:text-purple-400"
                                     >
-                                        +62 812-3060-1370
+                                        +62 812-8879-5418
                                     </a>
                                 </li>
                             </ul>

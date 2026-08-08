@@ -244,12 +244,12 @@
 								@if ($rawStatus === 'rejected')
 									Silakan lakukan pendaftaran ulang untuk kompetisi yang ingin anda ikuti. Jika Anda memiliki pertanyaan atau
 									membutuhkan bantuan lebih lanjut, jangan ragu untuk menghubungi tim dukungan
-									Instagram <a href="https://instagram.com/inception"
-										style="color: #b13bff; text-decoration: none; font-weight: bold;">@inception</a>.
+									Instagram <a href="https://instagram.com/inception.upnvjt"
+										style="color: #b13bff; text-decoration: none; font-weight: bold;">@inception.upnvjt</a>.
 								@else
 									Jika Anda memiliki pertanyaan atau membutuhkan bantuan lebih lanjut, jangan ragu untuk menghubungi tim dukungan
-									kami melalui Instagram <a href="https://instagram.com/inception"
-										style="color: #b13bff; text-decoration: none; font-weight: bold;">@inception</a>.
+									kami melalui Instagram <a href="https://instagram.com/inception.upnvjt"
+										style="color: #b13bff; text-decoration: none; font-weight: bold;">@inception.upnvjt</a>.
 								@endif
 							</p>
 						</td>

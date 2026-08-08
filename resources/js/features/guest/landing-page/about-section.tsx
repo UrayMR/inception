@@ -1,26 +1,44 @@
 import { useEffect, useState } from 'react';
 
-export default function AboutSection({ id }: { id: string }) {
-    const REGISTRATION_DEADLINE = new Date('2026-08-24T23:59:59');
+const REGISTRATION_START = new Date('2026-08-24T00:00:00');
+const REGISTRATION_END = new Date('2026-09-03T23:59:59');
 
-    const calculateTimeLeft = () => {
-        const difference =
-            REGISTRATION_DEADLINE.getTime() - new Date().getTime();
+type RegistrationStatus = 'not_started' | 'open' | 'ended';
 
-        if (difference <= 0) {
-            return { days: 0, hours: 0, minutes: 0, seconds: 0, ended: true };
-        }
+function calculateTimeLeft() {
+    const now = new Date().getTime();
+    const startDiff = REGISTRATION_START.getTime() - now;
+    const endDiff = REGISTRATION_END.getTime() - now;
 
-        return {
-            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((difference / (1000 * 60)) % 60),
-            seconds: Math.floor((difference / 1000) % 60),
-            ended: false,
-        };
+    let status: RegistrationStatus = 'open';
+    let targetDiff = 0;
+
+    if (startDiff > 0) {
+        status = 'not_started';
+        targetDiff = startDiff;
+    } else if (endDiff > 0) {
+        status = 'open';
+        targetDiff = endDiff;
+    } else {
+        status = 'ended';
+        targetDiff = 0;
+    }
+
+    if (targetDiff <= 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0, status };
+    }
+
+    return {
+        days: Math.floor(targetDiff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((targetDiff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((targetDiff / (1000 * 60)) % 60),
+        seconds: Math.floor((targetDiff / 1000) % 60),
+        status,
     };
+}
 
-    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+export default function AboutSection({ id }: { id: string }) {
+    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -38,6 +56,17 @@ export default function AboutSection({ id }: { id: string }) {
         { label: 'Menit', value: timeLeft.minutes },
         { label: 'Detik', value: timeLeft.seconds },
     ];
+
+    const getStatusLabel = (status: RegistrationStatus) => {
+        switch (status) {
+            case 'not_started':
+                return 'Pendaftaran Dibuka Dalam';
+            case 'open':
+                return 'Pendaftaran Ditutup Dalam';
+            case 'ended':
+                return 'Pendaftaran Telah Ditutup';
+        }
+    };
 
     return (
         <section
@@ -89,9 +118,7 @@ export default function AboutSection({ id }: { id: string }) {
                 <div className="relative overflow-hidden rounded-3xl border border-purple-950/40 bg-[#07041a]/60 p-6 shadow-xl backdrop-blur-md sm:p-8">
                     <div className="mb-5 text-center">
                         <span className="font-mono text-[11px] font-bold tracking-[0.3em] text-purple-300/60 uppercase">
-                            {timeLeft.ended
-                                ? 'Pendaftaran Telah Ditutup'
-                                : 'Pendaftaran Ditutup Dalam'}
+                            {getStatusLabel(timeLeft.status)}
                         </span>
                     </div>
 

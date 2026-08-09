@@ -166,6 +166,7 @@ class CompetitionSeeder extends Seeder
                     ->for($competition)
                     ->create([
                         'timeline_name'     => $timelineName,
+                        'description' => null,
                         'sequence' => $timeData['sequence'],
                         'start_at' => $timeData['start_at'],
                         'end_at'   => $timeData['end_at'],

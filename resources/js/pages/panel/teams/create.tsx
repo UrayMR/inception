@@ -26,6 +26,7 @@ export default function CreateTeamPage({
     const form = useForm<CreateTeamSchemaType>({
         competition_id: '',
         team_name: '',
+        leader_name: '',
         institution: '',
         phone_number: '',
         requirement_link: '',

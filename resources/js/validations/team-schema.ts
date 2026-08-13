@@ -12,6 +12,7 @@ export const TeamMemberSchema = z.object({
 export const TeamBaseSchema = z.object({
     competition_id: z.uuid(),
     team_name: z.string().min(1).max(255),
+    leader_name: z.string().min(1).max(255),
     institution: z.string().max(255).optional(),
     phone_number: z.string().min(1).max(20),
     requirement_link: z.url(),

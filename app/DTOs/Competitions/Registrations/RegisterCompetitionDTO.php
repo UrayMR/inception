@@ -40,6 +40,7 @@ class RegisterCompetitionDTO
       competition_id: $competition->id,
       team_name: $this->teamNameFor($competition),
       leader_id: $this->leader_id,
+      leader_name: $this->leader_name,
       requirement_link: $this->requirement_link,
       phone_number: $this->phone_number,
       institution: $this->institution,
@@ -52,6 +53,7 @@ class RegisterCompetitionDTO
     return new UpdateTeamDTO(
       competition_id: $competition->id,
       team_name: $this->teamNameFor($competition),
+      leader_name: $this->leader_name,
       requirement_link: $this->requirement_link,
       phone_number: $this->phone_number,
       institution: $this->institution,

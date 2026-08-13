@@ -49,6 +49,10 @@ export const RegisterCompetitionBaseSchema = z.object({
         .string()
         .max(255, { message: 'Nama tim maksimal 255 karakter.' })
         .optional(),
+    leader_name: z
+        .string()
+        .min(1, { message: 'Nama ketua tim wajib diisi.' })
+        .max(255, { message: 'Nama ketua tim maksimal 255 karakter.' }),
     institution: z
         .string()
         .max(255, { message: 'Nama instansi maksimal 255 karakter.' })
@@ -90,6 +94,7 @@ export type RegisterCompetitionSchemaType = z.infer<
 export type RegisterCompetitionFormDataType = {
     competition_id: string;
     team_name?: string;
+    leader_name: string;
     institution?: string;
     phone_number: string;
     payment_method: (typeof TransactionPaymentMethodValue)[number];
@@ -105,6 +110,7 @@ export const RegisterCompetitionInfoStepSchema = (
     RegisterCompetitionBaseSchema.pick({
         competition_id: true,
         team_name: true,
+        leader_name: true,
         institution: true,
         phone_number: true,
     })

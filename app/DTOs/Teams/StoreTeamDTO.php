@@ -8,9 +8,10 @@ class StoreTeamDTO
         public string $competition_id,
         public string $team_name,
         public string $leader_id,
+        public ?string $leader_name,
+        public string $requirement_link,
         public string $phone_number,
         public ?string $institution,
-        public string $requirement_link,
-        public string $status
+        public string $status,
     ) {}
 }

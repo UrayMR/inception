@@ -21,6 +21,7 @@ class StoreTeamRequest extends FormRequest
         $teamRules = [
             'competition_id' => ['required', 'string', Rule::exists('competitions', 'id')],
             'team_name' => ['required', 'string', 'max:255'],
+            'leader_name' => ['nullable', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:20'],
             'institution' => ['nullable', 'string', 'max:255'],
             'requirement_link' => ['required', 'url'],
@@ -44,6 +45,7 @@ class StoreTeamRequest extends FormRequest
             competition_id: $this->input('competition_id'),
             team_name: $this->input('team_name'),
             leader_id: $this->user()->id,
+            leader_name: $this->input('leader_name', $this->user()->name),
             phone_number: $this->input('phone_number'),
             institution: $this->input('institution'),
             requirement_link: $this->input('requirement_link'),

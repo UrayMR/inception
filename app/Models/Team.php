@@ -16,6 +16,7 @@ class Team extends Model
         'competition_id',
         'team_name',
         'leader_id',
+        'leader_name',
         'phone_number',
         'institution',
         'requirement_link',

@@ -20,6 +20,7 @@ class StoreTeam
       'competition_id' => $dto->competition_id,
       'team_name' => $dto->team_name,
       'leader_id' => $dto->leader_id,
+      'leader_name' => $dto->leader_name,
       'phone_number' => $dto->phone_number,
       'institution' => $dto->institution,
       'requirement_link' => $dto->requirement_link,

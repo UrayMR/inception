@@ -17,9 +17,9 @@ const footerCompetitions = [
     {
         label: 'Data Science',
     },
-    {
-        label: 'Essay',
-    },
+    // {
+    //     label: 'Essay',
+    // },
 ];
 
 const footerExplore = [

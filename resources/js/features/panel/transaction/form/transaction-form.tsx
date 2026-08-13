@@ -28,10 +28,11 @@ type TransactionFormData = {
     competition_name: string;
 
     team_name: string;
+    leader_name: string;
+    leader_email: string;
+    phone_number: string;
+    
     institution?: string;
-    phone_number?: string;
-    leader_name?: string;
-    leader_email?: string;
     members?: TeamMember[];
 };
 

@@ -16,14 +16,17 @@ class UpdateTeam
 
   public function handle(UpdateTeamDTO $dto, Team $team, array $members = []): Team
   {
-    $updatedTeam = $this->teamRepository->update([
+    $attributes = [
       'competition_id' => $dto->competition_id,
       'team_name' => $dto->team_name,
+      'leader_name' => $dto->leader_name,
       'phone_number' => $dto->phone_number,
       'institution' => $dto->institution,
       'requirement_link' => $dto->requirement_link,
       'status' => $dto->status,
-    ], $team);
+    ];
+
+    $updatedTeam = $this->teamRepository->update($attributes, $team);
 
     if (! empty($members)) {
       $this->memberService->updateMany($updatedTeam, $this->formatMembers($members));

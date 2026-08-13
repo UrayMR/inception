@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid('competition_id')->constrained('competitions', 'id')->onDelete('cascade');
             $table->string('team_name');
             $table->foreignUuid('leader_id')->constrained('users', 'id')->onDelete('cascade');
+            $table->string('leader_name');
             $table->string('phone_number');
             $table->string('institution')->nullable();
             $table->string('requirement_link');

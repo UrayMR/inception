@@ -31,7 +31,7 @@ class ShowTransactionResource extends JsonResource
       'team_name' => $this->team?->team_name,
       'institution' => $this->team?->institution,
       'phone_number' => $this->team?->phone_number,
-      'leader_name' => $this->team?->leader?->name,
+      'leader_name' => $this->team?->leader_name ?? $this->team?->leader?->name,
       'leader_email' => $this->team?->leader?->email,
       'members' => $this->team?->members?->map(fn($member) => [
         'member_name' => $member->member_name,

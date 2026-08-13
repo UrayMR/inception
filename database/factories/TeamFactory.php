@@ -24,6 +24,7 @@ class TeamFactory extends Factory
             'competition_id' => Competition::factory(),
             'team_name' => $this->faker->company(),
             'leader_id' => User::factory(),
+            'leader_name' => $this->faker->name(),
             'phone_number' => $this->faker->phoneNumber(),
             'institution' => $this->faker->optional()->company(),
             'requirement_link' => $this->faker->url(),

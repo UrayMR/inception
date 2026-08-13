@@ -84,7 +84,7 @@ export default function AboutSection({ id }: { id: string }) {
     return (
         <section
             id={id}
-            className="relative z-10 mx-auto max-w-7xl px-6 py-24 lg:px-8"
+            className="relative z-10 mx-auto w-full max-w-7xl overflow-hidden px-6 py-16 sm:py-24 lg:px-8"
         >
             <div className="mb-12 space-y-3 text-center md:text-left">
                 <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
@@ -135,27 +135,22 @@ export default function AboutSection({ id }: { id: string }) {
                         </span>
                     </div>
 
-                    <div className="flex items-center justify-center gap-2 sm:gap-4">
-                        {units.map((unit, i) => (
-                            <div
-                                key={unit.label}
-                                className="flex items-center gap-2 sm:gap-4"
-                            >
-                                <div className="flex w-16 flex-col items-center gap-2 rounded-2xl border border-purple-500/20 bg-purple-950/30 py-4 sm:w-24 sm:py-5">
+                    <div className="mx-auto w-full max-w-3xl">
+                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+                            {units.map((unit) => (
+                                <div
+                                    key={unit.label}
+                                    className="flex min-w-0 flex-col items-center justify-center rounded-2xl border border-purple-500/20 bg-purple-950/30 px-2 py-4 text-center sm:px-4 sm:py-5"
+                                >
                                     <span className="font-mono text-2xl font-black text-white tabular-nums sm:text-4xl">
                                         {pad(unit.value)}
                                     </span>
-                                    <span className="font-mono text-[9px] tracking-widest text-purple-300/50 uppercase sm:text-[10px]">
+                                    <span className="mt-2 font-mono text-[9px] tracking-widest text-purple-300/50 uppercase sm:text-[10px]">
                                         {unit.label}
                                     </span>
                                 </div>
-                                {i < units.length - 1 && (
-                                    <span className="pb-4 font-mono text-xl font-black text-amber-400/60 sm:pb-5 sm:text-3xl">
-                                        :
-                                    </span>
-                                )}
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

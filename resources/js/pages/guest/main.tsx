@@ -18,7 +18,7 @@ export default function Main() {
 
     return (
         <AppLayout>
-            <Head/>
+            <Head />
 
             <HeroSection id="home" />
 

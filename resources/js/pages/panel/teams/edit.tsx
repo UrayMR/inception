@@ -35,6 +35,7 @@ export default function EditTeamPage({
 
     const form = useForm<UpdateTeamSchemaType>({
         team_name: team.team_name,
+        leader_name: team.leader_name,
         competition_id: team.competition_id,
         institution: team.institution || '',
         phone_number: team.phone_number,
@@ -85,7 +86,6 @@ export default function EditTeamPage({
                                 errors={form.errors}
                                 onChange={form.setData}
                                 competitions={competitionMap}
-                                leaderName={team.leader_name}
                             />
 
                             <div className="mt-4 flex justify-end">

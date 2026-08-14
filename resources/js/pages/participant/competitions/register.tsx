@@ -48,6 +48,7 @@ type RegisterCompetitionFormDataType = {
     competition_id: string;
     team_name?: string;
     institution?: string;
+    leader_name: string;
     phone_number: string;
     payment_method: TransactionPaymentMethodType;
     payment_proof_file?: File;
@@ -57,6 +58,7 @@ type RegisterCompetitionFormDataType = {
 
 export default function RegisterCompetitionPage({
     competitionMap,
+    auth,
 }: RegisterCompetitionPageProps) {
     const preselectedCompetitionSlug = getQueryParam('competition');
 
@@ -75,6 +77,7 @@ export default function RegisterCompetitionPage({
     const form = useForm<RegisterCompetitionFormDataType>({
         competition_id: preselectedCompetition?.value || '',
         team_name: '',
+        leader_name: auth.user.name,
         institution: '',
         phone_number: '',
         payment_method: TransactionPaymentMethodMap.qris.value,
@@ -231,6 +234,7 @@ export default function RegisterCompetitionPage({
     const handleReset = () => {
         form.resetAndClearErrors(
             'team_name',
+            'leader_name',
             'institution',
             'phone_number',
             'payment_method',
@@ -238,6 +242,7 @@ export default function RegisterCompetitionPage({
             'payment_proof_file',
             'members',
         );
+        form.setData('leader_name', auth.user.name);
         form.setData('members', isTeamCompetition ? [{ member_name: '' }] : []);
         setCurrentStep(STEP_ORDER[0]);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -263,7 +268,7 @@ export default function RegisterCompetitionPage({
                         </div>
                     </div>
 
-                    <div className="pb-4 text-center flex justify-center items-center">
+                    <div className="flex items-center justify-center pb-4 text-center">
                         <h1 className="flex items-center gap-2 font-avalors text-3xl font-black tracking-wider text-white uppercase">
                             PARTICIPANT REGISTRATION
                         </h1>

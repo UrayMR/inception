@@ -120,13 +120,20 @@ export default function RegisterCompetitionInfoStep({
                     </div>
                 )}
 
-                <FormField name="leader_name" label={leaderNameLabel} required>
+                <FormField
+                    name="leader_name"
+                    label={leaderNameLabel}
+                    error={errors.leader_name}
+                    required
+                >
                     <Input
                         id="leader_name"
-                        value={auth.user.name}
-                        placeholder="Your name"
+                        value={data.leader_name}
+                        onChange={(event) =>
+                            onChange('leader_name', event.target.value)
+                        }
+                        placeholder="Your Name"
                         className="border-purple-500/20 focus-visible:border-0 focus-visible:ring-purple-500/20"
-                        readOnly
                         disabled={!canFillTeamDetails}
                     />
                 </FormField>

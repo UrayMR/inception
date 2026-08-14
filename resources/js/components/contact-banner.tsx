@@ -30,8 +30,8 @@ export default function ContactBanner({
         {
             icon: InstagramIcon as unknown as LucideIcon,
             label: 'Instagram',
-            value: '@incepion.upnvjt',
-            href: 'https://instagram.com/incepion.upnvjt',
+            value: '@inception.upnvjt',
+            href: 'https://instagram.com/inception.upnvjt',
         },
     ];
 

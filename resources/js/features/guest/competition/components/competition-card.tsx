@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react'; // sesuaikan dengan router yang dipakai (Inertia/React Router/dll)
 import type { LucideIcon } from 'lucide-react';
 import CompetitionStatusBadge from '@/features/participant/competitions/components/competition-status-badge';
 import { getFileUrl } from '@/helpers/file-url';
@@ -7,6 +8,7 @@ import type { ICompetitionCard } from '@/types';
 type CompetitionCardProps = ICompetitionCard & {
     icon?: LucideIcon;
     isActive: boolean;
+    href: string;
 };
 
 export function CompetitionCard({
@@ -15,6 +17,7 @@ export function CompetitionCard({
     status,
     image_path,
     isActive,
+    href,
 }: CompetitionCardProps) {
     const isOpen = status === CompetitionStatusMap.Open.value;
 
@@ -41,6 +44,12 @@ export function CompetitionCard({
                 />
             )}
 
+            <div className="flex w-full items-center justify-between border-b border-zinc-900/80 pb-3.5 font-mono text-[8px] font-bold tracking-[0.15em] text-zinc-500 uppercase sm:text-[9px] sm:tracking-[0.2em]">
+                <span className="text-zinc-600">STATUS //</span>
+
+                <CompetitionStatusBadge status={status} />
+            </div>
+
             <div className="relative mt-1 mb-4 flex h-32 w-full items-center justify-center overflow-hidden rounded-xl p-2 transition-all duration-500 transform-3d sm:mt-2 sm:mb-6 sm:h-50">
                 <img
                     src={
@@ -59,7 +68,7 @@ export function CompetitionCard({
                 />
             </div>
 
-            <h3 className="line-clamp-2 flex min-h-12 font-avalors items-center justify-center px-1 text-base font-black tracking-widest text-white uppercase transition-colors duration-300 sm:min-h-14 sm:text-lg">
+            <h3 className="line-clamp-2 flex min-h-12 items-center justify-center px-1 font-avalors text-base font-black tracking-widest text-white uppercase transition-colors duration-300 sm:min-h-14 sm:text-lg">
                 {name}
             </h3>
 
@@ -71,10 +80,35 @@ export function CompetitionCard({
                 {description}
             </p>
 
-            <div className="mt-5 flex w-full items-center justify-between border-t border-zinc-900/80 pt-3.5 font-mono text-[8px] font-bold tracking-[0.15em] text-zinc-500 uppercase sm:text-[9px] sm:tracking-[0.2em]">
-                <span className="text-zinc-600">STATUS //</span>
+            <div className="mt-10 h-10.5 w-full">
+                <Link
+                    href={href}
+                    onClick={(e) => {
+                        if (!isActive || !isOpen) {
+                            e.preventDefault();
 
-                <CompetitionStatusBadge status={status} />
+                            return;
+                        }
+
+                        e.stopPropagation();
+                    }}
+                    className={`group flex w-full items-center justify-center gap-2 rounded-lg border py-2.5 font-mono text-[10px] font-bold tracking-[0.25em] uppercase transition-all duration-500 sm:text-[11px] ${
+                        isActive
+                            ? 'opacity-100'
+                            : 'pointer-events-none opacity-0'
+                    } ${
+                        isOpen
+                            ? 'border-purple-500/40 bg-purple-500/10 text-purple-300 hover:border-purple-400/70 hover:bg-purple-500/20 hover:text-purple-200 active:scale-95'
+                            : 'cursor-not-allowed border-zinc-800 bg-zinc-900/40 text-zinc-600'
+                    }`}
+                >
+                    <span>{isOpen ? 'Launch Mission' : 'Closed'}</span>
+                    {isOpen && (
+                        <span className="transition-transform duration-300 group-hover:translate-x-1">
+                            &gt;
+                        </span>
+                    )}
+                </Link>
             </div>
         </div>
     );

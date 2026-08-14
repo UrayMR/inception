@@ -14,6 +14,7 @@ import { CompetitionTypeMap, TeamStatusMap } from '@/types';
 type TeamFormData = {
     competition_id: string;
     team_name: string;
+    leader_name: string;
     institution?: string;
     phone_number: string;
     status: TeamStatusType;
@@ -24,7 +25,6 @@ type TeamFormData = {
 
 type TeamFormProps = FormProps<TeamFormData> & {
     competitions?: Option[];
-    leaderName?: string;
 };
 
 export function TeamForm({
@@ -33,9 +33,7 @@ export function TeamForm({
     errors,
     onChange,
     competitions,
-    leaderName,
 }: TeamFormProps) {
-    const createMode = mode === 'create';
     const showMode = mode === 'show';
     const isReadOnly = showMode;
 
@@ -220,18 +218,22 @@ export function TeamForm({
                 </Select>
             </FormField>
 
-            {!createMode && (
-                <FormField name="leader_name" label="Leader Name" required>
-                    <Input
-                        id="leader_name"
-                        type="text"
-                        value={leaderName || 'empty'}
-                        placeholder="Enter Leader Name"
-                        readOnly
-                        required
-                    />
-                </FormField>
-            )}
+            <FormField
+                name="leader_name"
+                label="Leader Name"
+                error={errors.leader_name}
+                required
+            >
+                <Input
+                    id="leader_name"
+                    type="text"
+                    value={data.leader_name}
+                    onChange={(e) => onChange('leader_name', e.target.value)}
+                    readOnly={isReadOnly}
+                    placeholder="Enter Leader Name"
+                    required
+                />
+            </FormField>
 
             <FormField
                 name="phone_number"

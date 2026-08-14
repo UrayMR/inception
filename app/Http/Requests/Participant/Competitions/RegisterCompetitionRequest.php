@@ -19,6 +19,7 @@ class RegisterCompetitionRequest extends FormRequest
     return [
       'competition_id' => ['required', 'uuid', Rule::exists('competitions', 'id')],
       'team_name' => ['nullable', 'string', 'max:255'],
+      'leader_name' => ['required', 'string', 'max:255'],
       'phone_number' => ['required', 'string', 'max:20'],
       'institution' => ['nullable', 'string', 'max:255'],
       'requirement_link' => ['required', 'url'],
@@ -39,7 +40,7 @@ class RegisterCompetitionRequest extends FormRequest
       competition_id: $this->input('competition_id'),
       team_name: $this->input('team_name'),
       leader_id: $this->user()->id,
-      leader_name: $this->user()->name,
+      leader_name: $this->input('leader_name', $this->user()->name),
       leader_email: $this->user()->email,
       phone_number: $this->input('phone_number'),
       requirement_link: $this->input('requirement_link'),

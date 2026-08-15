@@ -8,7 +8,6 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 
@@ -19,10 +18,7 @@ class GoogleController extends Controller
    */
   public function redirect(): SymfonyRedirectResponse
   {
-    Inertia::flash('toast', [
-      'type' => 'info',
-      'message' => 'Redirecting to Google...',
-    ]);
+    $this->flash('info', 'Redirecting to Google...');
 
     return Socialite::driver('google')->redirect();
   }
@@ -43,6 +39,7 @@ class GoogleController extends Controller
         $user->update([
           'google_id' => $googleUser->getId(),
           'name' => $googleUser->getName(),
+          'email_verified_at' => $user->email_verified_at ?? now(),
         ]);
       } else {
         $user = User::create([
@@ -50,20 +47,20 @@ class GoogleController extends Controller
           'name' => $googleUser->getName(),
           'email' => $googleUser->getEmail(),
           'role' => UserRole::participant->value,
-          'email_verified_at' => now(), // Automatically verify email because using Google
+          'email_verified_at' => now(),
         ]);
       }
 
       Auth::login($user);
 
-      $this->flash('success', 'Selamat datang, ' . $user->name . ' !');
+      $this->flash('success', "Selamat datang, {$user->name}!");
 
       return redirect()->intended('/');
     } catch (Exception $e) {
       report($e);
 
-
       $this->flash('error', 'Ada masalah saat login. Silakan coba lagi.');
+
       return redirect()->route('login');
     }
   }

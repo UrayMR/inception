@@ -9,7 +9,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 use Inertia\Response;
 
 class ProfileController extends Controller
@@ -19,9 +18,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        return Inertia::render('settings/profile', [
+        $schedule = $request->user()?->team?->competition?->timelines ?? [];
+
+        return $this->render('settings/profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
+            'schedule' => $schedule,
         ]);
     }
 
@@ -30,17 +32,26 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $isEmailChanged = $user->isDirty('email');
+
+        if ($isEmailChanged) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Profile updated.')]);
+        if ($isEmailChanged) {
+            $user->sendEmailVerificationNotification();
 
-        return to_route('profile.edit');
+            $this->flash('success', 'Profil diperbarui. Silakan verifikasi email baru Anda!');
+        } else {
+            $this->flash('success', 'Profil berhasil diperbarui!');
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -50,12 +61,16 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
+        $name = $user->name;
+
         Auth::logout();
 
         $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        $this->flash('success', "Akun {$name} telah berhasil dihapus!");
 
         return redirect('/');
     }

@@ -3,21 +3,21 @@ import { useMemo } from 'react';
 import formatDate from '@/helpers/format-date';
 import type { CompetitionTimeline } from '@/types';
 
-type EntryStatus = 'pending' | 'ongoing' | 'ended';
+type Phase = 'logged' | 'live' | 'standby';
 
-function getStatus(entry: CompetitionTimeline, now: Date): EntryStatus {
+function getPhase(entry: CompetitionTimeline, now: Date): Phase {
     const start = new Date(entry.start_at);
     const end = new Date(entry.end_at);
 
-    if (now < start) {
-        return 'pending';
-    }
-
     if (now > end) {
-        return 'ended';
+        return 'logged';
     }
 
-    return 'ongoing';
+    if (now >= start) {
+        return 'live';
+    }
+
+    return 'standby';
 }
 
 function getProgress(entry: CompetitionTimeline, now: Date): number {
@@ -33,24 +33,21 @@ function getProgress(entry: CompetitionTimeline, now: Date): number {
     return Math.min(100, Math.max(0, pct));
 }
 
-const STATUS_LABEL: Record<EntryStatus, string> = {
-    pending: 'Pending',
-    ongoing: 'Berlangsung',
-    ended: 'Selesai',
-};
-
-const STATUS_BADGE_CLASS: Record<EntryStatus, string> = {
-    pending: 'border-purple-800/50 text-purple-400/70 bg-transparent',
-    ongoing:
-        'border-purple-400/60 text-purple-200 bg-purple-500/10 shadow-[0_0_10px_rgba(168,85,247,0.25)]',
-    ended: 'border-zinc-800 text-zinc-600 bg-transparent opacity-70',
-};
-
-const STATUS_DOT_CLASS: Record<EntryStatus, string> = {
-    pending: 'bg-purple-700 ring-4 ring-purple-950/60',
-    ongoing:
-        'bg-purple-400 ring-4 ring-purple-500/20 shadow-[0_0_8px_rgba(168,85,247,1)]',
-    ended: 'bg-zinc-700 ring-4 ring-zinc-900/60',
+const PHASE_META: Record<
+    Phase,
+    { label: string; color: string; glow: string }
+> = {
+    logged: {
+        label: 'LOGGED',
+        color: '#a78bfa',
+        glow: 'rgba(167,139,250,0.35)',
+    },
+    live: { label: 'LIVE', color: '#fbbf24', glow: 'rgba(251,191,36,0.55)' },
+    standby: {
+        label: 'STANDBY',
+        color: '#52525b',
+        glow: 'rgba(82,82,91,0.2)',
+    },
 };
 
 export default function ScheduleTimeline({
@@ -82,10 +79,11 @@ export default function ScheduleTimeline({
                 {sortedEntries.length > 0 ? (
                     <div className="flex flex-col">
                         {sortedEntries.map((entry, idx) => {
-                            const status = getStatus(entry, now);
+                            const phase = getPhase(entry, now);
+                            const meta = PHASE_META[phase];
                             const isLast = idx === sortedEntries.length - 1;
                             const progress =
-                                status === 'ongoing'
+                                phase === 'live'
                                     ? getProgress(entry, now)
                                     : null;
 
@@ -96,21 +94,67 @@ export default function ScheduleTimeline({
                                         <div className="absolute top-3 bottom-0 left-1.25 w-px bg-purple-900/40" />
                                     )}
 
-                                    {/* Dot */}
-                                    <span
-                                        className={`absolute top-1.5 left-0 h-2.25 w-2.25 rounded-full ${STATUS_DOT_CLASS[status]}`}
-                                    />
+                                    {/* Dot, gaya sama seperti node di TimelineSection */}
+                                    <span className="absolute top-1.5 left-0 flex h-2.25 w-2.25 items-center justify-center">
+                                        {phase === 'live' && (
+                                            <span
+                                                className="absolute h-3.5 w-3.5 rounded-full opacity-60 motion-safe:animate-ping"
+                                                style={{
+                                                    backgroundColor: meta.color,
+                                                }}
+                                            />
+                                        )}
+                                        <span
+                                            className={`relative h-2.25 w-2.25 rounded-full ${
+                                                phase === 'live'
+                                                    ? 'motion-safe:animate-pulse'
+                                                    : ''
+                                            }`}
+                                            style={{
+                                                backgroundColor:
+                                                    phase === 'standby'
+                                                        ? 'transparent'
+                                                        : meta.color,
+                                                border:
+                                                    phase === 'standby'
+                                                        ? `1.5px solid ${meta.color}`
+                                                        : 'none',
+                                                boxShadow:
+                                                    phase !== 'standby'
+                                                        ? `0 0 8px ${meta.glow}`
+                                                        : 'none',
+                                            }}
+                                        />
+                                    </span>
 
                                     {/* Card */}
-                                    <div className="mb-4 rounded-lg border border-purple-900/30 bg-purple-950/10 p-3 transition-colors hover:border-purple-700/40">
+                                    <div
+                                        className={`mb-4 rounded-lg border p-3 transition-colors ${
+                                            phase === 'standby'
+                                                ? 'border-purple-900/25 bg-purple-950/5 opacity-70 hover:opacity-90'
+                                                : 'border-purple-900/30 bg-purple-950/10 hover:border-purple-700/40'
+                                        }`}
+                                    >
                                         <div className="mb-1.5 flex items-start justify-between gap-2">
                                             <span className="truncate font-sans text-xs font-medium tracking-wide text-zinc-200">
                                                 {entry.timeline_name}
                                             </span>
                                             <span
-                                                className={`shrink-0 rounded border px-1.5 py-0.5 font-mono text-[9px] font-semibold tracking-widest uppercase ${STATUS_BADGE_CLASS[status]}`}
+                                                className="shrink-0 rounded border px-1.5 py-0.5 font-mono text-[9px] font-semibold tracking-widest uppercase"
+                                                style={{
+                                                    borderColor: `${meta.color}80`,
+                                                    color: meta.color,
+                                                    backgroundColor:
+                                                        phase === 'live'
+                                                            ? `${meta.color}1a`
+                                                            : 'transparent',
+                                                    boxShadow:
+                                                        phase === 'live'
+                                                            ? `0 0 10px ${meta.glow}`
+                                                            : 'none',
+                                                }}
                                             >
-                                                {STATUS_LABEL[status]}
+                                                {meta.label}
                                             </span>
                                         </div>
 
@@ -124,13 +168,15 @@ export default function ScheduleTimeline({
                                             })}
                                         </div>
 
-                                        {/* Progress bar, hanya untuk yang sedang berlangsung */}
                                         {progress !== null && (
                                             <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-purple-950/50">
                                                 <div
-                                                    className="h-full rounded-full bg-purple-500 shadow-[0_0_6px_rgba(168,85,247,0.6)] transition-all"
+                                                    className="h-full rounded-full transition-all"
                                                     style={{
                                                         width: `${progress}%`,
+                                                        backgroundColor:
+                                                            meta.color,
+                                                        boxShadow: `0 0 6px ${meta.glow}`,
                                                     }}
                                                 />
                                             </div>

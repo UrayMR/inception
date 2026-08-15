@@ -23,7 +23,7 @@ class IndexSubmissionResource extends JsonResource
       ],
       'team' => [
         'value' => $this->team?->id,
-        'label' => $this->team?->name,
+        'label' => $this->team?->team_name,
       ],
       'submission_link' => $this->submission_link,
     ];

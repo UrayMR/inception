@@ -1,4 +1,5 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import { AlertTriangle } from 'lucide-react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import GoogleIcon from '@/components/svg/google-icon';
@@ -30,6 +31,15 @@ export default function Login({
             description="Enter your email and password below to sign in"
         >
             <Head title="Sign in" />
+
+            {status && (
+                <div className="mx-auto flex w-full max-w-md items-start gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 backdrop-blur-xs">
+                    <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+                    <p className="text-xs leading-relaxed font-medium text-amber-300">
+                        {status}
+                    </p>
+                </div>
+            )}
 
             <Form
                 {...store()}
@@ -163,12 +173,6 @@ export default function Login({
                     </>
                 )}
             </Form>
-
-            {status && (
-                <div className="mx-auto mt-6 max-w-md rounded-lg border border-emerald-500/10 bg-emerald-950/20 px-4 py-2 text-center text-sm font-medium text-emerald-400/90">
-                    {status}
-                </div>
-            )}
         </AuthLayout>
     );
 }

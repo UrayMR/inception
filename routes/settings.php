@@ -1,24 +1,32 @@
 <?php
 
-use App\Http\Controllers\Settings\SettingController;
+use App\Http\Controllers\Settings\SubmissionController;
+use App\Http\Controllers\Settings\DashboardController;
+use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\SecurityController;
+use App\Http\Controllers\Settings\TransactionController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])->as('settings.')->group(function () {
-    Route::get('settings', [SettingController::class, 'index'])->name('index');
-    Route::post('assignments/{assignment}/submit', [SettingController::class, 'submission'])->name('assignments.submission');
+Route::middleware(['auth'])->as('settings.')->prefix('settings')->group(function () {
+    Route::redirect('/', 'settings/dashboard')->name('index');
 
-    // Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
-});
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    // Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/assignments/{assignment}/submissions', [SubmissionController::class, 'store'])
+        ->name('assignments.submissions.store');
 
-    // Route::get('settings/security', [SecurityController::class, 'edit'])->name('security.edit');
+    Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])
+        ->name('transactions.show');
 
-    // Route::put('settings/password', [SecurityController::class, 'update'])
-    // ->middleware('throttle:6,1')
-    // ->name('user-password.update');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    // Route::inertia('settings/appearance', 'settings/appearance')->name('appearance.edit');
+    Route::middleware(['verified'])->group(function () {
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('/security', [SecurityController::class, 'edit'])->name('security.edit');
+
+        Route::put('/password', [SecurityController::class, 'update'])
+            ->middleware('throttle:6,1')
+            ->name('user-password.update');
+    });
 });

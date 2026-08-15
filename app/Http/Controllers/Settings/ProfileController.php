@@ -29,15 +29,24 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $isEmailChanged = $user->isDirty('email');
+
+        if ($isEmailChanged) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
 
-        $this->flash('success', 'Profil berhasil diperbarui!');
+        if ($isEmailChanged) {
+            $user->sendEmailVerificationNotification();
+
+            $this->flash('info', 'Profil diperbarui. Silakan verifikasi email baru Anda!');
+        } else {
+            $this->flash('success', 'Profil berhasil diperbarui!');
+        }
 
         return redirect()->back();
     }
@@ -49,12 +58,16 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
+        $name = $user->name;
+
         Auth::logout();
 
         $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        $this->flash('success', "Akun {$name} telah berhasil dihapus!");
 
         return redirect('/');
     }

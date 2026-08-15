@@ -44,7 +44,7 @@ export default function TransactionDetailTab({
     return (
         <div className="space-y-6">
             <Link
-                href={settings.main()}
+                href={settings.index()}
                 only={['tab', 'competition', 'transaction']}
                 preserveState
                 viewTransition

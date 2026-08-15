@@ -195,10 +195,10 @@ export default function Security({
                         {twoFactorEnabled ? (
                             <div className="flex flex-col items-start justify-start space-y-4">
                                 <p className="text-sm text-zinc-400">
-                                    You will be prompted for a secure, random
-                                    pin during login, which you can retrieve
-                                    from the TOTP-supported application on your
-                                    phone.
+                                    Anda akan diminta untuk memasukkan pin yang
+                                    aman dan acak saat login, yang dapat Anda
+                                    ambil dari aplikasi yang mendukung TOTP di
+                                    ponsel Anda.
                                 </p>
 
                                 <div className="relative inline">

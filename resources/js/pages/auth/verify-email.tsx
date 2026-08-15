@@ -48,9 +48,8 @@ export default function VerifyEmail({ status }: { status?: string }) {
                     <div className="mb-6 flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-950/30 p-4 text-xs font-medium text-emerald-400 backdrop-blur-xs">
                         <MailCheck className="h-4 w-4 shrink-0" />
                         <span>
-                            Tautan verifikasi baru telah berhasil dikirimkan ke
-                            email Anda. Silakan periksa inbox atau spam folder
-                            Anda untuk menemukan email verifikasi anda.
+                            Tautan verifikasi email telah dikirim. Silakan
+                            periksa inbox atau spam email Anda.
                         </span>
                     </div>
                 )}

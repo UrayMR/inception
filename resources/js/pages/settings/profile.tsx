@@ -178,11 +178,9 @@ export default function Profile({
                                     <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-xs font-medium text-emerald-400 backdrop-blur-xs">
                                         <MailCheck className="h-5 w-5 shrink-0 text-emerald-400" />
                                         <span>
-                                            Tautan verifikasi baru telah
-                                            berhasil dikirimkan ke email Anda.
-                                            Silakan periksa inbox atau spam
-                                            folder Anda untuk menemukan email
-                                            verifikasi anda.
+                                            Tautan verifikasi email telah
+                                            dikirim. Silakan periksa inbox atau
+                                            spam email Anda.
                                         </span>
                                     </div>
                                 )}

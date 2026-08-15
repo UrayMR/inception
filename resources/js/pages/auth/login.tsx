@@ -41,6 +41,22 @@ export default function Login({
                 </div>
             )}
 
+            <a
+                href={redirect.url()}
+                className="flex h-11 w-full items-center justify-center gap-2 rounded-md border border-gray-800 bg-slate-950/20 text-sm font-medium text-gray-400 transition-all duration-200 hover:border-gray-700 hover:bg-slate-900/40 hover:text-white"
+            >
+                <GoogleIcon />
+                Masuk dengan Google
+            </a>
+
+            <div className="relative flex items-center py-1 text-xs uppercase">
+                <div className="grow border-t border-zinc-800"></div>
+                <span className="mx-4 shrink font-mono text-[11px] tracking-wider text-zinc-400">
+                    atau dengan email
+                </span>
+                <div className="grow border-t border-zinc-800"></div>
+            </div>
+
             <Form
                 {...store()}
                 resetOnSuccess={['password']}
@@ -140,22 +156,6 @@ export default function Login({
                                 Sign In
                                 <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                             </Button>
-
-                            <div className="relative flex items-center py-1 text-xs text-gray-600 uppercase">
-                                <div className="grow border-t border-gray-900"></div>
-                                <span className="mx-4 shrink text-gray-500">
-                                    or connect with
-                                </span>
-                                <div className="grow border-t border-gray-900"></div>
-                            </div>
-
-                            <a
-                                href={redirect.url()}
-                                className="flex h-11 w-full items-center justify-center gap-2 rounded-md border border-gray-800 bg-slate-950/20 text-sm font-medium text-gray-400 transition-all duration-200 hover:border-gray-700 hover:bg-slate-900/40 hover:text-white"
-                            >
-                                <GoogleIcon />
-                                Masuk dengan Google
-                            </a>
                         </div>
 
                         {canRegister && (

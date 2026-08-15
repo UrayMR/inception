@@ -1,7 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
 import { ShieldCheck, KeyRound, Smartphone } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-// import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
@@ -11,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import SettingLayout from '@/layouts/setting-layout';
 import { disable, enable } from '@/routes/two-factor';
+import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 
 type Props = {
     canManageTwoFactor?: boolean;
@@ -49,7 +49,7 @@ export default function Security({
     }, [twoFactorEnabled, clearTwoFactorAuthData]);
 
     return (
-        <SettingLayout>
+        <>
             <Head title="Security settings" />
 
             <h1 className="sr-only">Security settings</h1>
@@ -71,7 +71,7 @@ export default function Security({
                     </div>
 
                     <Form
-                        // {...SecurityController.update.form()}
+                        {...SecurityController.update.form()}
                         options={{
                             preserveScroll: true,
                         }}
@@ -166,9 +166,9 @@ export default function Security({
                                     <Button
                                         disabled={processing}
                                         data-test="update-password-button"
-                                        className="relative z-10 overflow-hidden rounded-lg border border-purple-500 bg-transparent px-6 py-2 text-sm font-medium text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all duration-300 before:absolute before:inset-0 before:-z-10 before:bg-linear-to-r before:from-purple-600 before:to-indigo-600 before:opacity-0 before:transition-opacity hover:text-white hover:before:opacity-100 active:scale-[0.98]"
+                                        className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-purple-500/30 bg-purple-950/10 px-7 text-purple-300 backdrop-blur-xs transition-all duration-300 hover:border-purple-500/50 hover:bg-purple-900/20 hover:text-white sm:w-auto"
                                     >
-                                        Save password
+                                        Simpan perubahan
                                     </Button>
                                 </div>
                             </>
@@ -225,10 +225,11 @@ export default function Security({
                         ) : (
                             <div className="flex flex-col items-start justify-start space-y-4">
                                 <p className="text-sm text-zinc-400">
-                                    When you enable two-factor authentication,
-                                    you will be prompted for a secure pin during
-                                    login. This pin can be retrieved from a
-                                    TOTP-supported application on your phone.
+                                    Ketika Anda mengaktifkan autentikasi dua
+                                    faktor, Anda akan diminta untuk memasukkan
+                                    pin yang aman saat login. Pin ini dapat
+                                    diambil dari aplikasi yang mendukung TOTP di
+                                    ponsel Anda.
                                 </p>
 
                                 <div>
@@ -237,7 +238,7 @@ export default function Security({
                                             onClick={() =>
                                                 setShowSetupModal(true)
                                             }
-                                            className="relative z-10 overflow-hidden rounded-lg border border-purple-500 bg-transparent px-6 py-2 text-sm font-medium text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all duration-300 before:absolute before:inset-0 before:-z-10 before:bg-linear-to-r before:from-purple-600 before:to-indigo-600 before:opacity-0 before:transition-opacity hover:text-white hover:before:opacity-100 active:scale-[0.98]"
+                                            className="relative z-10 overflow-hidden rounded-lg border border-amber-500/50 bg-amber-950/20 px-6 py-2 text-sm font-medium text-amber-300 transition-all duration-300 hover:border-amber-400 hover:bg-amber-900/30 hover:text-amber-200 active:scale-[0.98]"
                                         >
                                             <ShieldCheck className="h-4 w-4" />
                                             Continue setup
@@ -253,7 +254,7 @@ export default function Security({
                                                 <Button
                                                     type="submit"
                                                     disabled={processing}
-                                                    className="relative z-10 overflow-hidden rounded-lg border border-purple-500 bg-transparent px-6 py-2 text-sm font-medium text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all duration-300 before:absolute before:inset-0 before:-z-10 before:bg-linear-to-r before:from-purple-600 before:to-indigo-600 before:opacity-0 before:transition-opacity hover:text-white hover:before:opacity-100 active:scale-[0.98]"
+                                                    className="relative z-10 overflow-hidden rounded-lg border border-amber-500/50 bg-amber-950/20 px-6 py-2 text-sm font-medium text-amber-300 transition-all duration-300 hover:border-amber-400 hover:bg-amber-900/30 hover:text-amber-200 active:scale-[0.98]"
                                                 >
                                                     Enable 2FA
                                                 </Button>
@@ -278,6 +279,10 @@ export default function Security({
                     </div>
                 )}
             </div>
-        </SettingLayout>
+        </>
     );
 }
+
+Security.layout = (page: React.ReactNode) => (
+    <SettingLayout>{page}</SettingLayout>
+);

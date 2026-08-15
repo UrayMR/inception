@@ -17,7 +17,7 @@ const NAV_ITEMS: NavItem[] = [
         icon: LayoutDashboard,
     },
     { label: 'Profile', href: settings.profile.edit.url(), icon: User },
-    { label: 'Security', href: '#', icon: Lock, disabled: true },
+    { label: 'Security', href: settings.security.edit.url(), icon: Lock },
 ];
 
 export default function SettingSidebar({

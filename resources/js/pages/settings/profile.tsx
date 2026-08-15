@@ -68,6 +68,7 @@ export default function Profile({
             pendingSubmitFn();
         }
 
+        setPendingSubmitFn(null);
         setIsConfirmOpen(false);
     };
 
@@ -215,7 +216,7 @@ export default function Profile({
                 open={isConfirmOpen}
                 onOpenChange={(open) => {
                     if (!open) {
-                        handleCancelSubmit();
+                        setIsConfirmOpen(false);
                     } else {
                         setIsConfirmOpen(open);
                     }

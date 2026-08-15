@@ -1,5 +1,5 @@
 import { Form, Head, usePage } from '@inertiajs/react';
-import { MailCheck, RefreshCw, LogOut } from 'lucide-react';
+import { MailCheck, LogOut } from 'lucide-react';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -70,11 +70,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                                 }}
                             >
                                 <span className="relative z-10 flex items-center gap-2">
-                                    {processing ? (
-                                        <Spinner />
-                                    ) : (
-                                        <RefreshCw className="h-4 w-4 transition-transform duration-500 group-hover:rotate-180" />
-                                    )}
+                                    {processing ? <Spinner /> : <></>}
                                     Kirim Ulang Email Verifikasi
                                 </span>
                                 <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />

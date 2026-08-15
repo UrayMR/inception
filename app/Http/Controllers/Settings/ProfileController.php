@@ -43,7 +43,7 @@ class ProfileController extends Controller
         if ($isEmailChanged) {
             $user->sendEmailVerificationNotification();
 
-            $this->flash('info', 'Profil diperbarui. Silakan verifikasi email baru Anda!');
+            $this->flash('success', 'Profil diperbarui. Silakan verifikasi email baru Anda!');
         } else {
             $this->flash('success', 'Profil berhasil diperbarui!');
         }

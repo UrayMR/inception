@@ -22,8 +22,12 @@ trait PasswordValidationRules
      *
      * @return array<int, ValidationRule|array<mixed>|string>
      */
-    protected function currentPasswordRules(): array
+    protected function currentPasswordRules(bool $hasPassword = false): array
     {
-        return ['required', 'string', 'current_password'];
+        if ($hasPassword) {
+            return ['required', 'string', 'current_password'];
+        }
+
+        return ['nullable', 'string'];
     }
 }

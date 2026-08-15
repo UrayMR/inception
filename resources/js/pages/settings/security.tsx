@@ -1,6 +1,7 @@
 import { Form, Head } from '@inertiajs/react';
 import { ShieldCheck, KeyRound, Smartphone } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
@@ -10,18 +11,19 @@ import { Label } from '@/components/ui/label';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import SettingLayout from '@/layouts/setting-layout';
 import { disable, enable } from '@/routes/two-factor';
-import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 
 type Props = {
     canManageTwoFactor?: boolean;
     requiresConfirmation?: boolean;
     twoFactorEnabled?: boolean;
+    hasPassword?: boolean;
 };
 
 export default function Security({
     canManageTwoFactor = false,
     requiresConfirmation = false,
     twoFactorEnabled = false,
+    hasPassword = false,
 }: Props) {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
@@ -61,11 +63,14 @@ export default function Security({
                         <KeyRound className="h-4 w-4 text-purple-400" />
                         <div>
                             <h2 className="text-sm font-semibold tracking-wide text-zinc-200">
-                                Update password
+                                {hasPassword
+                                    ? 'Update password'
+                                    : 'Set password'}
                             </h2>
                             <p className="mt-0.5 text-xs text-zinc-400">
-                                Ensure your account is using a long, random
-                                password to stay secure.
+                                {hasPassword
+                                    ? 'Ensure your account is using a long, random password to stay secure.'
+                                    : 'Set a password for your account so you can log in using email and password.'}
                             </p>
                         </div>
                     </div>
@@ -94,28 +99,30 @@ export default function Security({
                     >
                         {({ errors, processing }) => (
                             <>
-                                <div className="grid gap-2">
-                                    <Label
-                                        htmlFor="current_password"
-                                        className="text-xs font-medium tracking-wide text-purple-300/80"
-                                    >
-                                        Current password
-                                    </Label>
+                                {hasPassword && (
+                                    <div className="grid gap-2">
+                                        <Label
+                                            htmlFor="current_password"
+                                            className="text-xs font-medium tracking-wide text-purple-300/80"
+                                        >
+                                            Current password
+                                        </Label>
 
-                                    <PasswordInput
-                                        id="current_password"
-                                        ref={currentPasswordInput}
-                                        name="current_password"
-                                        className="mt-1 block w-full rounded-lg border-purple-900/50 bg-[#0d071a]/80 text-sm text-zinc-200 shadow-inner focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
-                                        autoComplete="current-password"
-                                        placeholder="Current password"
-                                    />
+                                        <PasswordInput
+                                            id="current_password"
+                                            ref={currentPasswordInput}
+                                            name="current_password"
+                                            className="mt-1 block w-full rounded-lg border-purple-900/50 bg-[#0d071a]/80 text-sm text-zinc-200 shadow-inner focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
+                                            autoComplete="current-password"
+                                            placeholder="Current password"
+                                        />
 
-                                    <InputError
-                                        className="text-xs text-rose-500"
-                                        message={errors.current_password}
-                                    />
-                                </div>
+                                        <InputError
+                                            className="text-xs text-rose-500"
+                                            message={errors.current_password}
+                                        />
+                                    </div>
+                                )}
 
                                 <div className="grid gap-2">
                                     <Label

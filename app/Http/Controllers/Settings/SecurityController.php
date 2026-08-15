@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\EnsurePasswordIsConfirmed;
 use App\Http\Requests\Settings\PasswordUpdateRequest;
 use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
+use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Fortify\Features;
@@ -19,10 +23,9 @@ class SecurityController extends Controller implements HasMiddleware
      */
     public static function middleware(): array
     {
-        return Features::canManageTwoFactorAuthentication()
-            && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')
-            ? [new Middleware('password.confirm', only: ['edit'])]
-            : [];
+        return [
+            new Middleware(EnsurePasswordIsConfirmed::class, only: ['edit']),
+        ];
     }
 
     /**
@@ -33,6 +36,7 @@ class SecurityController extends Controller implements HasMiddleware
         $props = [
             'canManageTwoFactor' => Features::canManageTwoFactorAuthentication(),
             'schedule' => $request->user()?->team?->competition?->timelines ?? [],
+            'hasPassword' => ! empty($request->user()?->password),
         ];
 
         if (Features::canManageTwoFactorAuthentication()) {

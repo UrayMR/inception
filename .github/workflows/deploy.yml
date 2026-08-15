@@ -43,7 +43,7 @@ jobs:
       - name: Build Vite
         run: npm run build
 
-      - name: Deploy Laravel
+      - name: Deploy Laravel & Build Assets
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -64,8 +64,6 @@ jobs:
             storage/framework/cache/**
             storage/framework/sessions/**
             storage/framework/views/**
-            vendor/**
-            public/build/**
             .editorconfig
             .gitattributes
             .gitignore
@@ -73,17 +71,3 @@ jobs:
             .prettierrc
             README.md
             LICENSE
-
-      - name: Upload Vite Build
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-
-          protocol: ftps
-
-          server-dir: /public/build/
-          local-dir: ./public/build/
-
-          dangerous-clean-slate: true

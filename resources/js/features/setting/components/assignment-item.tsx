@@ -14,7 +14,7 @@ import {
     AccordionTrigger,
 } from '@/components/ui/accordion';
 import formatDate from '@/helpers/format-date';
-import { submission } from '@/routes/settings/assignments';
+import settings from '@/routes/settings';
 import type { AssignmentProps } from '../dashboard-tab';
 
 interface AssignmentItemProps {
@@ -77,7 +77,7 @@ export default function AssignmentItem({
             return;
         }
 
-        post(submission.url(assignment.id), {
+        post(settings.assignments.submissions.store.url(assignment.id), {
             preserveScroll: true,
             onSuccess: () => setIsEditing(false),
         });

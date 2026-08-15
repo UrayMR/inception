@@ -1,18 +1,23 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import type { LucideIcon } from 'lucide-react';
 import { User, LayoutDashboard, Lock } from 'lucide-react';
+import settings from '@/routes/settings';
 
 type NavItem = {
     label: string;
-    tab: string;
+    href: string;
     icon: LucideIcon;
     disabled?: boolean;
 };
 
 const NAV_ITEMS: NavItem[] = [
-    { label: 'Dashboard', tab: 'dashboard', icon: LayoutDashboard },
-    { label: 'Profile', tab: 'profile', icon: User, disabled: true },
-    { label: 'Security', tab: 'security', icon: Lock, disabled: true },
+    {
+        label: 'Dashboard',
+        href: settings.dashboard.url(),
+        icon: LayoutDashboard,
+    },
+    { label: 'Profile', href: '', icon: User, disabled: true },
+    { label: 'Security', href: '', icon: Lock, disabled: true },
 ];
 
 export default function SettingSidebar({
@@ -22,8 +27,6 @@ export default function SettingSidebar({
     name: string;
     email: string;
 }) {
-    const { tab } = usePage<{ tab: string }>().props;
-
     const getInitial = (value: string) =>
         value ? value.substring(0, 2).toUpperCase() : 'U';
 
@@ -48,24 +51,14 @@ export default function SettingSidebar({
 
                 <nav className="mt-6 w-full space-y-1.5">
                     {NAV_ITEMS.map((item) => {
-                        const isActive = tab === item.tab;
+                        const isActive = window.location.pathname === item.href;
                         const Icon = item.icon;
                         const isDisabled = item.disabled;
 
                         return (
                             <Link
-                                key={item.tab}
-                                href={
-                                    isDisabled
-                                        ? '#'
-                                        : `/settings?tab=${item.tab}`
-                                }
-                                only={[
-                                    'tab',
-                                    'competition',
-                                    'schedule',
-                                    'transaction',
-                                ]}
+                                key={item.href}
+                                href={isDisabled ? '#' : item.href}
                                 preserveState
                                 preserveScroll
                                 replace

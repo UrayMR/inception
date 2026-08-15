@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { ArrowLeft, HistoryIcon } from 'lucide-react';
 import formatCurrency from '@/helpers/format-currency';
 import formatDate from '@/helpers/format-date';
+import settings from '@/routes/settings';
 import utils from '@/routes/utils';
 import type { ITransactionShow, TransactionPaymentMethodType } from '@/types';
 import { TransactionPaymentMethodMap, TransactionStatusMap } from '@/types';
@@ -43,7 +44,7 @@ export default function TransactionDetailTab({
     return (
         <div className="space-y-6">
             <Link
-                href="/settings?tab=dashboard"
+                href={settings.main()}
                 only={['tab', 'competition', 'transaction']}
                 preserveState
                 viewTransition

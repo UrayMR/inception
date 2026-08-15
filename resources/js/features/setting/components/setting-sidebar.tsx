@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import type { LucideIcon } from 'lucide-react';
 import { User, LayoutDashboard, Lock } from 'lucide-react';
 import settings from '@/routes/settings';
@@ -16,8 +16,8 @@ const NAV_ITEMS: NavItem[] = [
         href: settings.dashboard.url(),
         icon: LayoutDashboard,
     },
-    { label: 'Profile', href: '', icon: User, disabled: true },
-    { label: 'Security', href: '', icon: Lock, disabled: true },
+    { label: 'Profile', href: settings.profile.edit.url(), icon: User },
+    { label: 'Security', href: '#', icon: Lock, disabled: true },
 ];
 
 export default function SettingSidebar({
@@ -27,6 +27,8 @@ export default function SettingSidebar({
     name: string;
     email: string;
 }) {
+    const { url } = usePage();
+
     const getInitial = (value: string) =>
         value ? value.substring(0, 2).toUpperCase() : 'U';
 
@@ -51,13 +53,17 @@ export default function SettingSidebar({
 
                 <nav className="mt-6 w-full space-y-1.5">
                     {NAV_ITEMS.map((item) => {
-                        const isActive = window.location.pathname === item.href;
                         const Icon = item.icon;
                         const isDisabled = item.disabled;
 
+                        // 2. Tentukan status active berdasarkan kecocokan URL
+                        //startsWith membuat sub-route (misal: /settings/profile/avatar) tetap mengaktifkan menu Profile
+                        const isActive =
+                            !isDisabled && url.startsWith(item.href);
+
                         return (
                             <Link
-                                key={item.href}
+                                key={item.label}
                                 href={isDisabled ? '#' : item.href}
                                 preserveState
                                 preserveScroll
@@ -69,6 +75,11 @@ export default function SettingSidebar({
                                           ? 'flex items-center gap-3 rounded-lg border border-purple-500/30 bg-linear-to-r from-purple-950/40 to-transparent px-3 py-2 text-sm text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.15)]'
                                           : 'flex items-center gap-3 rounded-lg border border-transparent px-3 py-2 text-sm text-zinc-400 transition-all duration-200 hover:border-purple-900/30 hover:bg-purple-950/20 hover:text-purple-300'
                                 }
+                                onClick={(e) => {
+                                    if (isDisabled) {
+                                        e.preventDefault();
+                                    }
+                                }}
                             >
                                 <Icon className="h-4 w-4" />
                                 <span>{item.label}</span>

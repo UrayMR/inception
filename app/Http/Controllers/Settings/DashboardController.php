@@ -20,7 +20,7 @@ class DashboardController extends Controller
         'competition' => null,
         'schedule' => [],
         'transaction' => null,
-        'assignments' => null,
+        'assignments' => collect(),
       ];
     }
 

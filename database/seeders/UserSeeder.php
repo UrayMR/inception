@@ -20,6 +20,16 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'role' => UserRole::admin->value,
             'password' => bcrypt('password'),
+            'email_verified_at' => now(),
+        ]);
+
+        User::updateOrCreate([
+            'email' => 'user@gmail.com',
+        ], [
+            'name' => 'User',
+            'email' => 'user@gmail.com',
+            'role' => UserRole::participant->value,
+            'password' => bcrypt('password'),
         ]);
 
         User::factory(5)->withGoogle()->create();

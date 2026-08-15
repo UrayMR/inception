@@ -1,13 +1,12 @@
 import { Form, Head, Link, usePage } from '@inertiajs/react';
 import { User, Mail, ShieldAlert } from 'lucide-react';
-// import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/delete-user';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import SettingLayout from '@/layouts/setting-layout';
-// import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
 
 export default function Profile({
@@ -20,8 +19,8 @@ export default function Profile({
     const { auth } = usePage().props;
 
     return (
-        <SettingLayout>
-            <Head title="Profile Settings" />
+        <>
+            <Head title="Pengaturan Profil" />
 
             <div className="space-y-6 lg:col-span-6">
                 <div className="rounded-xl border border-purple-500/20 bg-black/30 p-6 backdrop-blur-md">
@@ -35,7 +34,7 @@ export default function Profile({
                     </div>
 
                     <Form
-                        // {...ProfileController.update.form()}
+                        {...ProfileController.update.form()}
                         options={{ preserveScroll: true }}
                         className="space-y-6"
                     >
@@ -101,22 +100,23 @@ export default function Profile({
                                             <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-amber-500" />
                                             <div className="space-y-1">
                                                 <p className="text-xs text-amber-400/90">
-                                                    Your email address is
-                                                    unverified.
+                                                    Alamat email Anda belum
+                                                    diverifikasi.
                                                 </p>
                                                 <Link
                                                     href={send()}
                                                     as="button"
                                                     className="mt-1 block text-xs text-zinc-300 underline decoration-amber-500/50 underline-offset-4 transition-colors hover:text-white"
                                                 >
-                                                    Resend verification email
+                                                    Kirim email verifikasi ulang
                                                 </Link>
                                                 {status ===
                                                     'verification-link-sent' && (
                                                     <div className="mt-2 text-xs text-emerald-400">
-                                                        A new verification link
-                                                        was sent to your email
-                                                        address.
+                                                        Email verifikasi baru
+                                                        telah dikirim email
+                                                        verifikasi ke alamat
+                                                        email Anda.
                                                     </div>
                                                 )}
                                             </div>
@@ -130,7 +130,7 @@ export default function Profile({
                                         data-test="update-profile-button"
                                         className="relative z-10 overflow-hidden rounded-lg border border-purple-500 bg-transparent px-6 py-2 text-sm font-medium text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all duration-300 before:absolute before:inset-0 before:-z-10 before:bg-linear-to-r before:from-purple-600 before:to-indigo-600 before:opacity-0 before:transition-opacity hover:text-white hover:before:opacity-100 active:scale-[0.98]"
                                     >
-                                        Save changes
+                                        Simpan perubahan
                                     </Button>
                                 </div>
                             </>
@@ -143,6 +143,10 @@ export default function Profile({
                     <DeleteUser />
                 </div>
             </div>
-        </SettingLayout>
+        </>
     );
 }
+
+Profile.layout = (page: React.ReactNode) => (
+    <SettingLayout>{page}</SettingLayout>
+);

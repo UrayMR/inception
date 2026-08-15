@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Settings\SubmissionController;
 use App\Http\Controllers\Settings\DashboardController;
+use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,12 +17,12 @@ Route::middleware(['auth'])->as('settings.')->prefix('settings')->group(function
     Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])
         ->name('transactions.show');
 
-    // Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Route::get('settings/security', [SecurityController::class, 'edit'])->name('security.edit');
 

@@ -7,6 +7,7 @@ use App\Models\Assignment;
 use App\Resources\Assignments\Submissions\IndexSubmissionResource;
 use App\Services\Assignments\SubmissionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SubmissionController extends Controller
 {
@@ -23,9 +24,11 @@ class SubmissionController extends Controller
 
     $queryParams = $request->all();
     $submissions = $this->submissionService->index($queryParams);
+    $schedule = Auth::user()?->team?->competition?->timelines ?? [];
 
     return $this->render('panel/submissions/index', [
       'submissions' => IndexSubmissionResource::collection($submissions),
+      'schedule' => $schedule,
     ]);
   }
 }

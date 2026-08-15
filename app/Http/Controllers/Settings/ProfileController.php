@@ -18,9 +18,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $schedule = $request->user()?->team?->competition?->timelines ?? [];
+
         return $this->render('settings/profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
+            'schedule' => $schedule,
         ]);
     }
 

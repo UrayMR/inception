@@ -32,6 +32,7 @@ class SecurityController extends Controller implements HasMiddleware
     {
         $props = [
             'canManageTwoFactor' => Features::canManageTwoFactorAuthentication(),
+            'schedule' => $request->user()?->team?->competition?->timelines ?? [],
         ];
 
         if (Features::canManageTwoFactorAuthentication()) {

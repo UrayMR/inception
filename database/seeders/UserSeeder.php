@@ -24,6 +24,16 @@ class UserSeeder extends Seeder
         ]);
 
         User::updateOrCreate([
+            'email' => 'accountant@gmail.com',
+        ], [
+            'name' => 'Accountant',
+            'email' => 'accountant@gmail.com',
+            'role' => UserRole::accountant->value,
+            'password' => bcrypt('password'),
+            'email_verified_at' => now(),
+        ]);
+
+        User::updateOrCreate([
             'email' => 'user@gmail.com',
         ], [
             'name' => 'User',

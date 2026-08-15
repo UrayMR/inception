@@ -25,7 +25,6 @@ Route::as('guest.')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('panel')->as('panel.')->group(function () {
         Route::middleware('role:admin')->group(function () {
-            Route::inertia('dashboard', 'panel/dashboard')->name('dashboard');
             Route::resource('users', UserController::class)->names('users');
             Route::resource('competitions', CompetitionController::class)->names('competitions');
             Route::resource('teams', TeamController::class)->names('teams');
@@ -34,6 +33,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         Route::middleware('role:admin,accountant')->group(function () {
+            Route::inertia('dashboard', 'panel/dashboard')->name('dashboard');
+
             Route::controller(TransactionController::class)->group(function () {
                 Route::patch('transactions/verify/{transaction}', 'verify')->name('transactions.verify');
                 Route::patch('transactions/reject/{transaction}', 'reject')->name('transactions.reject');

@@ -9,6 +9,7 @@ use App\Services\Transactions\TransactionService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\MailService;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -22,9 +23,11 @@ class TransactionController extends Controller
 
     $queryParams = $request->all();
     $transactions = $this->transactionService->index($queryParams);
+    $schedule = Auth::user()?->team?->competition?->timelines ?? [];
 
     return $this->render('panel/transactions/index', [
       'transactions' => IndexTransactionResource::collection($transactions),
+      'schedule' => $schedule,
     ]);
   }
 
@@ -38,8 +41,11 @@ class TransactionController extends Controller
       'team.members',
     ]);
 
+    $schedule = Auth::user()?->team?->competition?->timelines ?? [];
+
     return $this->render('panel/transactions/show', [
       'transaction' => ShowTransactionResource::make($transaction)->resolve(),
+      'schedule' => $schedule,
     ]);
   }
 

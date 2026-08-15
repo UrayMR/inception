@@ -7,8 +7,8 @@ const events: TimelineEvent[] = [
         id: 1,
         title: 'Open Registration',
         displayDate: '24 Agustus - 3 September',
-        startDate: '2026-08-14T00:00:00',
-        endDate: '2026-08-13T23:59:59',
+        startDate: '2026-08-24T00:00:00',
+        endDate: '2026-09-03T23:59:59',
     },
     {
         id: 2,

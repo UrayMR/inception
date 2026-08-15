@@ -1,4 +1,5 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import { AlertTriangle } from 'lucide-react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import GoogleIcon from '@/components/svg/google-icon';
@@ -29,7 +30,32 @@ export default function Login({
             title="Sign in to your account"
             description="Enter your email and password below to sign in"
         >
-            <Head title="Sign in" />
+            <Head title="Sign In" />
+
+            {status && (
+                <div className="mx-auto flex w-full max-w-md items-center gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 backdrop-blur-xs">
+                    <AlertTriangle className="h-5 w-5 shrink-0 text-amber-400" />
+                    <p className="min-w-0 flex-1 text-xs leading-relaxed font-medium wrap-break-word text-amber-300">
+                        {status}
+                    </p>
+                </div>
+            )}
+
+            <a
+                href={redirect.url()}
+                className="flex h-11 w-full items-center justify-center gap-2 rounded-md border border-gray-800 bg-slate-950/20 text-sm font-medium text-gray-400 transition-all duration-200 hover:border-gray-700 hover:bg-slate-900/40 hover:text-white"
+            >
+                <GoogleIcon />
+                Masuk dengan Google
+            </a>
+
+            <div className="relative flex items-center py-1 text-xs uppercase">
+                <div className="grow border-t border-zinc-800"></div>
+                <span className="mx-4 shrink font-mono text-[11px] tracking-wider text-zinc-400">
+                    atau dengan email
+                </span>
+                <div className="grow border-t border-zinc-800"></div>
+            </div>
 
             <Form
                 {...store()}
@@ -130,22 +156,6 @@ export default function Login({
                                 Sign In
                                 <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                             </Button>
-
-                            <div className="relative flex items-center py-1 text-xs text-gray-600 uppercase">
-                                <div className="grow border-t border-gray-900"></div>
-                                <span className="mx-4 shrink text-gray-500">
-                                    or connect with
-                                </span>
-                                <div className="grow border-t border-gray-900"></div>
-                            </div>
-
-                            <a
-                                href={redirect.url()}
-                                className="flex h-11 w-full items-center justify-center gap-2 rounded-md border border-gray-800 bg-slate-950/20 text-sm font-medium text-gray-400 transition-all duration-200 hover:border-gray-700 hover:bg-slate-900/40 hover:text-white"
-                            >
-                                <GoogleIcon />
-                                Masuk dengan Google
-                            </a>
                         </div>
 
                         {canRegister && (
@@ -163,12 +173,6 @@ export default function Login({
                     </>
                 )}
             </Form>
-
-            {status && (
-                <div className="mx-auto mt-6 max-w-md rounded-lg border border-emerald-500/10 bg-emerald-950/20 px-4 py-2 text-center text-sm font-medium text-emerald-400/90">
-                    {status}
-                </div>
-            )}
         </AuthLayout>
     );
 }

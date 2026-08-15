@@ -63,6 +63,7 @@ class CompetitionSeeder extends Seeder
             'Business Plan' => [
                 'description' => 'Ide yang hebat tidak akan berarti tanpa eksekusi dan strategi yang matang. Business Plan Competition menantang kamu untuk merangkai ide tersebut menjadi model bisnis yang inovatif, realistis, dan menjawab kebutuhan pasar. Dari melihat peluang hingga menyusun strategi keuangan, buktikan bahwa rancangan bisnismu bukan sekadar konsep, melainkan solusi nyata yang siap bersaing dan memberikan dampak.',
                 'type' => CompetitionType::team->value,
+                'price' => '30000',
                 'max_member' => 4,
                 'custom_timelines' => [
                     'Submission' => [
@@ -145,6 +146,7 @@ class CompetitionSeeder extends Seeder
                 'slug' => $details['slug'] ?? strtolower(str_replace(' ', '-', $name)),
                 'description' => $details['description'],
                 'type' => $details['type'],
+                'price' => $details['price'] ?? '50000',
                 'max_member' => $details['max_member'],
                 'status' => $details['status'] ?? CompetitionStatus::open->value,
                 'image_path' => $details['image_path'],

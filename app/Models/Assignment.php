@@ -36,4 +36,9 @@ class Assignment extends Model
     {
         return $this->belongsTo(Competition::class);
     }
+
+    public function submission()
+    {
+        return $this->hasOne(AssignmentSubmission::class);
+    }
 }

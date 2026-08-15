@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { Trophy, ChevronRight, ClipboardList } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Accordion } from '@/components/ui/accordion';
+import settings from '@/routes/settings';
 import { AssignmentStatusMap, TransactionStatusMap } from '@/types';
 import type {
     ICompetitionIndex,
@@ -73,7 +74,7 @@ export default function DashboardTab({
                 <div className="space-y-3">
                     {hasCompetition && competition && transaction ? (
                         <Link
-                            href={`/settings?tab=transaction-detail&id=${transaction.id}`}
+                            href={settings.transactions.show(transaction.id)}
                             only={['tab', 'transactionDetail']}
                             preserveState
                             preserveScroll

@@ -17,13 +17,29 @@ export default function Register() {
             title="Create an account"
             description="Enter your details below to create your account"
         >
-            <Head title="Register" />
+            <Head title="Sign Up" />
+
+            <a
+                href={redirect.url()}
+                className="flex h-11 w-full items-center justify-center gap-2 rounded-md border border-gray-800 bg-slate-950/20 text-sm font-medium text-gray-400 transition-all duration-200 hover:border-gray-700 hover:bg-slate-900/40 hover:text-white"
+            >
+                <GoogleIcon />
+                Daftar dengan Google
+            </a>
+
+            <div className="relative flex items-center py-1 text-xs uppercase">
+                <div className="grow border-t border-zinc-800"></div>
+                <span className="mx-4 shrink font-mono text-[11px] tracking-wider text-zinc-400">
+                    atau dengan email
+                </span>
+                <div className="grow border-t border-zinc-800"></div>
+            </div>
 
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
                 disableWhileProcessing
-                className="relative z-10 mx-auto flex w-full max-w-md flex-col gap-6"
+                className="relative z-10 mx-auto flex w-full max-w-md flex-col gap-6 mb-5"
             >
                 {({ processing, errors }) => (
                     <>
@@ -138,22 +154,6 @@ export default function Register() {
                                 Sign Up
                                 <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                             </Button>
-
-                            <div className="relative flex items-center py-1 text-xs text-gray-600 uppercase">
-                                <div className="grow border-t border-gray-900"></div>
-                                <span className="mx-4 shrink text-gray-500">
-                                    or connect with
-                                </span>
-                                <div className="grow border-t border-gray-900"></div>
-                            </div>
-
-                            <a
-                                href={redirect.url()}
-                                className="flex h-11 w-full items-center justify-center gap-2 rounded-md border border-gray-800 bg-slate-950/20 text-sm font-medium text-gray-400 transition-all duration-200 hover:border-gray-700 hover:bg-slate-900/40 hover:text-white"
-                            >
-                                <GoogleIcon />
-                                Daftar dengan Google
-                            </a>
                         </div>
 
                         <div className="mt-1 text-center text-sm text-gray-500">

@@ -1,9 +1,6 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { ChevronLeft } from 'lucide-react';
-import {
-    ScheduleTimeline,
-    SettingSidebar,
-} from '@/features/setting';
+import { ScheduleTimeline, SettingSidebar } from '@/features/setting';
 import AppLayoutTemplate from '@/layouts/app/app-header-layout';
 import type { Auth, BreadcrumbItem, CompetitionTimeline } from '@/types';
 

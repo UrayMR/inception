@@ -7,6 +7,7 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Http\Responses\LoginResponse as CustomLoginResponse;
 use App\Http\Responses\LogoutResponse as CustomLogoutResponse;
 use App\Http\Responses\VerifyEmailResponse as CustomVerifyEmailResponse;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -48,6 +49,20 @@ class FortifyServiceProvider extends ServiceProvider
                 ->view('emails.verify-email', [
                     'url' => $url,
                     'user' => $notifiable,
+                ]);
+        });
+
+        ResetPassword::toMailUsing(function (object $notifiable, string $token) {
+            $url = url(route('password.reset', [
+                'token' => $token,
+                'email' => $notifiable->getEmailForPasswordReset(),
+            ], false));
+
+            return (new MailMessage)
+                ->subject('INCEPTION 2026 - Reset Kata Sandi Akun Anda')
+                ->view('emails.reset-password', [
+                    'user' => $notifiable,
+                    'url'  => $url,
                 ]);
         });
     }

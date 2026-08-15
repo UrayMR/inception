@@ -17,7 +17,7 @@ export default function Register() {
             title="Create an account"
             description="Enter your details below to create your account"
         >
-            <Head title="Register" />
+            <Head title="Sign Up" />
 
             <a
                 href={redirect.url()}

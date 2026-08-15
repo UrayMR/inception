@@ -1,5 +1,11 @@
 import { Form, Head, Link, usePage } from '@inertiajs/react';
-import { User, Mail, ShieldAlert, AlertTriangle } from 'lucide-react';
+import {
+    User,
+    Mail,
+    ShieldAlert,
+    AlertTriangle,
+    MailCheck,
+} from 'lucide-react';
 import { useState } from 'react';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/delete-user';
@@ -47,7 +53,9 @@ export default function Profile({
         const isEmailChanged =
             emailInput.trim().toLowerCase() !== auth.user.email.toLowerCase();
 
-        if (isEmailChanged) {
+        const isEmailVerified = auth.user.email_verified_at !== null;
+
+        if (isEmailChanged && isEmailVerified) {
             setPendingSubmitFn(() => submitFn);
             setIsConfirmOpen(true);
         } else {
@@ -128,7 +136,6 @@ export default function Profile({
                                             id="email"
                                             type="email"
                                             className="h-11 rounded-lg border-purple-900/50 bg-[#0d071a]/80 pl-10 text-sm text-zinc-200 shadow-inner focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
-                                            /* 🟢 Gunakan value, bukan defaultValue agar terkontrol penuh oleh State */
                                             value={emailInput}
                                             onChange={(e) =>
                                                 setEmailInput(e.target.value)
@@ -136,7 +143,7 @@ export default function Profile({
                                             name="email"
                                             required
                                             autoComplete="username"
-                                            placeholder="you@example.com"
+                                            placeholder="Your email"
                                         />
                                     </div>
                                     <InputError
@@ -145,34 +152,39 @@ export default function Profile({
                                     />
                                 </div>
 
-                                {/* Email verification notice */}
+                                {/* Email verification warning notice */}
                                 {mustVerifyEmail &&
                                     auth.user.email_verified_at === null && (
-                                        <div className="flex items-start gap-3 rounded-lg border border-amber-500/20 bg-amber-950/10 p-4">
-                                            <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-amber-500" />
-                                            <div className="space-y-1">
-                                                <p className="text-xs text-amber-400/90">
+                                        <div className="flex items-start gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 backdrop-blur-xs">
+                                            <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+                                            <div className="space-y-1.5">
+                                                <p className="text-xs font-medium text-amber-300">
                                                     Alamat email Anda belum
                                                     diverifikasi.
                                                 </p>
                                                 <Link
                                                     href={send()}
                                                     as="button"
-                                                    className="mt-1 block text-xs text-zinc-300 underline decoration-amber-500/50 underline-offset-4 transition-colors hover:text-white"
+                                                    className="inline-block text-xs font-medium text-zinc-300 underline decoration-amber-500/50 underline-offset-4 transition-colors hover:text-white"
                                                 >
                                                     Kirim email verifikasi ulang
                                                 </Link>
-                                                {status ===
-                                                    'verification-link-sent' && (
-                                                    <div className="mt-2 text-xs text-emerald-400">
-                                                        Email verifikasi baru
-                                                        telah dikirimkan ke
-                                                        alamat email Anda.
-                                                    </div>
-                                                )}
                                             </div>
                                         </div>
                                     )}
+
+                                {status === 'verification-link-sent' && (
+                                    <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-xs font-medium text-emerald-400 backdrop-blur-xs">
+                                        <MailCheck className="h-5 w-5 shrink-0 text-emerald-400" />
+                                        <span>
+                                            Tautan verifikasi baru telah
+                                            berhasil dikirimkan ke email Anda.
+                                            Silakan periksa inbox atau spam
+                                            folder Anda untuk menemukan email
+                                            verifikasi anda.
+                                        </span>
+                                    </div>
+                                )}
 
                                 {/* Submit Button */}
                                 <div className="flex items-center justify-end border-t border-purple-950/60 pt-4">

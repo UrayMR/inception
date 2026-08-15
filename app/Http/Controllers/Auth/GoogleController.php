@@ -53,7 +53,7 @@ class GoogleController extends Controller
 
       Auth::login($user);
 
-      $this->flash('success', 'Selamat datang, ' . $user->name . '!');
+      $this->flash('success', "Selamat datang, {$user->name}!");
 
       return redirect()->intended('/');
     } catch (Exception $e) {

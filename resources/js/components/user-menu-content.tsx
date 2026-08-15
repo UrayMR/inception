@@ -10,6 +10,7 @@ import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { logout } from '@/routes';
 import { dashboard } from '@/routes/panel';
+import settings from '@/routes/settings';
 import { UserRoleMap } from '@/types';
 import type { User } from '@/types';
 
@@ -44,7 +45,7 @@ export function UserMenuContent({ user }: Props) {
                 >
                     <Link
                         className="flex w-full cursor-pointer items-center px-2 py-2 font-sans text-xs font-medium tracking-wide text-zinc-300"
-                        href={isAdmin ? dashboard() : '/settings?tab=dashboard'}
+                        href={isAdmin ? dashboard() : settings.dashboard()}
                         prefetch
                         onClick={cleanup}
                     >
@@ -59,7 +60,7 @@ export function UserMenuContent({ user }: Props) {
                 >
                     <Link
                         className="flex w-full cursor-pointer items-center px-2 py-2 font-sans text-xs font-medium tracking-wide text-zinc-300"
-                        href="/settings"
+                        href={settings.index()}
                         prefetch
                         onClick={cleanup}
                     >

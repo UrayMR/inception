@@ -43,7 +43,7 @@ jobs:
       - name: Build Vite
         run: npm run build
 
-      - name: Deploy Laravel & Build Assets
+      - name: Deploy Laravel & Vite Build to FTP Server
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -64,6 +64,7 @@ jobs:
             storage/framework/cache/**
             storage/framework/sessions/**
             storage/framework/views/**
+            vendor/**
             .editorconfig
             .gitattributes
             .gitignore

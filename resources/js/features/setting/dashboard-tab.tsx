@@ -3,7 +3,11 @@ import { Trophy, ChevronRight, ClipboardList } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Accordion } from '@/components/ui/accordion';
 import settings from '@/routes/settings';
-import { AssignmentStatusMap, TransactionStatusMap } from '@/types';
+import {
+    AssignmentStatusMap,
+    CompetitionStatusMap,
+    TransactionStatusMap,
+} from '@/types';
 import type {
     ICompetitionIndex,
     ITransactionIndex,
@@ -43,6 +47,8 @@ export default function DashboardTab({
     const isAssignmentActive = assignments?.some(
         (assignment) => assignment.status === AssignmentStatusMap.Active.value,
     );
+    const isCompetitionOngoing =
+        competition?.status === CompetitionStatusMap.Ongoing.value;
 
     const isVerifyTransaction =
         transaction?.status === TransactionStatusMap.verified.value;
@@ -75,7 +81,6 @@ export default function DashboardTab({
                     {hasCompetition && competition && transaction ? (
                         <Link
                             href={settings.transactions.show(transaction.id)}
-                            only={['tab', 'transactionDetail']}
                             preserveState
                             preserveScroll
                             replace
@@ -144,7 +149,8 @@ export default function DashboardTab({
                                     now={now}
                                     disabled={
                                         !isVerifyTransaction ||
-                                        !isAssignmentActive
+                                        !isAssignmentActive ||
+                                        !isCompetitionOngoing
                                     }
                                 />
                             ))}

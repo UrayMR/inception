@@ -4,6 +4,8 @@ namespace App\Services\Assignments;
 
 use App\Actions\Assignments\Submissions\StoreSubmission;
 use App\DTOs\Assignments\StoreSubmissionDTO;
+use App\Enums\AssignmentStatus;
+use App\Enums\CompetitionStatus;
 use App\Helpers\ThrowException;
 use App\Models\Team;
 use App\Repositories\Assignments\AssignmentRepository;
@@ -46,6 +48,10 @@ class SubmissionService
 
     if ($assignment->competition_id !== $competition->id) {
       ThrowException::business('Tugas yang Anda coba kirimkan tidak terkait dengan kompetisi tim Anda.');
+    }
+
+    if ($assignment->status !== AssignmentStatus::active->value || $competition->status !== CompetitionStatus::ongoing->value) {
+      ThrowException::business('Tugas ini belum dibuka untuk pengiriman. Mohon coba lagi nanti.');
     }
 
     if (! $this->transactionRepository->hasVerifiedTransaction($team)) {

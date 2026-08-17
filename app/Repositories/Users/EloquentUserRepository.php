@@ -55,7 +55,6 @@ class EloquentUserRepository implements UserRepository
             'name' => $attributes['name'],
             'email' => $attributes['email'],
             'role' => $attributes['role'],
-            // 'status' => $attributes['status'],
         ];
 
         if (! empty($attributes['password'])) {
@@ -77,5 +76,17 @@ class EloquentUserRepository implements UserRepository
     public function destroy(User $user): bool
     {
         return $user->delete();
+    }
+
+    /**
+     * @param  string  $googleId
+     * @param  string  $email
+     */
+    public function findByGoogleIdOrEmail(string $googleId, string $email): ?User
+    {
+        return User::query()
+            ->where('google_id', $googleId)
+            ->orWhere('email', $email)
+            ->first();
     }
 }

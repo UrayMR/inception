@@ -8,7 +8,7 @@ use App\Http\Controllers\Settings\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->as('settings.')->prefix('settings')->group(function () {
-    Route::redirect('/', 'settings/dashboard')->name('index');
+    Route::redirect('/', 'settings/profile')->name('index');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

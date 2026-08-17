@@ -3,6 +3,8 @@
 namespace App\Repositories\Assignments\Submissions;
 
 use App\Models\AssignmentSubmission;
+use App\Models\Assignment;
+use App\Models\Team;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class EloquentSubmissionRepository implements SubmissionRepository
@@ -34,5 +36,23 @@ class EloquentSubmissionRepository implements SubmissionRepository
     }
 
     return $query->orderByDesc('updated_at')->paginate($perPage);
+  }
+
+  /**
+   * @param  Team  $team  (to be updated)
+   * @param  Assignment  $assignment  (to be updated)
+   * @param  string  $submissionLink  (to be updated)
+   */
+  public function upsertForTeamAssignment(Team $team, Assignment $assignment, string $submissionLink): void
+  {
+    AssignmentSubmission::query()->updateOrCreate(
+      [
+        'assignment_id' => $assignment->id,
+        'team_id' => $team->id,
+      ],
+      [
+        'submission_link' => $submissionLink,
+      ]
+    );
   }
 }

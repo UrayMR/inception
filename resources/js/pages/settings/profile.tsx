@@ -196,7 +196,7 @@ export default function Profile({
                                         data-test="update-profile-button"
                                         className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-purple-500/30 bg-purple-950/10 px-7 text-purple-300 backdrop-blur-xs transition-all duration-300 hover:border-purple-500/50 hover:bg-purple-900/20 hover:text-white sm:w-auto"
                                     >
-                                        Simpan perubahan
+                                        {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                                     </Button>
                                 </div>
                             </div>

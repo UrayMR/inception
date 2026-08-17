@@ -95,7 +95,7 @@ class RegisterCompetitionService
   protected function ensureLeaderCanRegister(string $leaderId): void
   {
     if ($this->hasBlockingRegistration($leaderId)) {
-      throw new BusinessException(
+      ThrowException::business(
         'You already have a pending or verified registration.',
       );
     }

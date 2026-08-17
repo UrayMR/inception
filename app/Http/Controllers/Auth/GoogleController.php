@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
+use App\Services\Auth\GoogleAuthService;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 
 class GoogleController extends Controller
 {
+  public function __construct(
+    protected GoogleAuthService $googleAuthService,
+  ) {}
+
   /**
    * Redirect the user to the Google OAuth page.
    */
@@ -20,7 +21,7 @@ class GoogleController extends Controller
   {
     $this->flash('info', 'Redirecting to Google...');
 
-    return Socialite::driver('google')->redirect();
+    return $this->googleAuthService->redirect();
   }
 
   /**
@@ -29,29 +30,7 @@ class GoogleController extends Controller
   public function callback(): RedirectResponse
   {
     try {
-      $googleUser = Socialite::driver('google')->user();
-
-      $user = User::where('google_id', $googleUser->getId())
-        ->orWhere('email', $googleUser->getEmail())
-        ->first();
-
-      if ($user) {
-        $user->update([
-          'google_id' => $googleUser->getId(),
-          'name' => $googleUser->getName(),
-          'email_verified_at' => $user->email_verified_at ?? now(),
-        ]);
-      } else {
-        $user = User::create([
-          'google_id' => $googleUser->getId(),
-          'name' => $googleUser->getName(),
-          'email' => $googleUser->getEmail(),
-          'role' => UserRole::participant->value,
-          'email_verified_at' => now(),
-        ]);
-      }
-
-      Auth::login($user);
+      $user = $this->googleAuthService->authenticate();
 
       $this->flash('success', "Selamat datang, {$user->name}!");
 

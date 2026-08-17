@@ -6,6 +6,7 @@ use App\Repositories\Users\UserRepository;
 use App\Actions\Users\StoreUser;
 use App\Actions\Users\UpdateUser;
 use App\Actions\Users\DeleteUser;
+use App\Actions\Users\UpdatePassword;
 use App\DTOs\Users\StoreUserDTO;
 use App\DTOs\Users\UpdateUserDTO;
 use App\Models\User;
@@ -19,6 +20,7 @@ class UserService
         protected StoreUser $storeUser,
         protected UpdateUser $updateUser,
         protected DeleteUser $deleteUser,
+        protected UpdatePassword $updatePassword,
     ) {}
 
     public function index(array $queryParams)
@@ -53,6 +55,13 @@ class UserService
     {
         return DB::transaction(function () use ($user) {
             return $this->deleteUser->handle($user);
+        });
+    }
+
+    public function updatePassword(User $user, string $password): User
+    {
+        return DB::transaction(function () use ($user, $password) {
+            return $this->updatePassword->handle($user, $password);
         });
     }
 }

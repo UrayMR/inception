@@ -55,8 +55,11 @@ class EloquentUserRepository implements UserRepository
             'name' => $attributes['name'],
             'email' => $attributes['email'],
             'role' => $attributes['role'],
-            // 'status' => $attributes['status'],
         ];
+
+        if (array_key_exists('email_verified_at', $attributes)) {
+            $data['email_verified_at'] = $attributes['email_verified_at'];
+        }
 
         if (! empty($attributes['password'])) {
             $data['password'] = Hash::make($attributes['password']);
@@ -72,10 +75,35 @@ class EloquentUserRepository implements UserRepository
     }
 
     /**
+     * @param  User  $user  (to be updated)
+     * @param  string  $password
+     */
+    public function updatePassword(User $user, string $password): User
+    {
+        $user->update([
+            'password' => Hash::make($password),
+        ]);
+
+        return $user;
+    }
+
+    /**
      * @param  User  $user  (to be deleted)
      */
     public function destroy(User $user): bool
     {
         return $user->delete();
+    }
+
+    /**
+     * @param  string  $googleId
+     * @param  string  $email
+     */
+    public function findByGoogleIdOrEmail(string $googleId, string $email): ?User
+    {
+        return User::query()
+            ->where('google_id', $googleId)
+            ->orWhere('email', $email)
+            ->first();
     }
 }

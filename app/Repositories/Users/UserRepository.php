@@ -13,6 +13,8 @@ interface UserRepository
 
     public function update(array $attributes, User $user): User;
 
+    public function updatePassword(User $user, string $password): User;
+
     public function destroy(User $user): bool;
 
     public function findByGoogleIdOrEmail(string $googleId, string $email): ?User;

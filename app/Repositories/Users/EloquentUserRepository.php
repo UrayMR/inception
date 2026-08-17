@@ -57,6 +57,10 @@ class EloquentUserRepository implements UserRepository
             'role' => $attributes['role'],
         ];
 
+        if (array_key_exists('email_verified_at', $attributes)) {
+            $data['email_verified_at'] = $attributes['email_verified_at'];
+        }
+
         if (! empty($attributes['password'])) {
             $data['password'] = Hash::make($attributes['password']);
         }
@@ -66,6 +70,19 @@ class EloquentUserRepository implements UserRepository
         }
 
         $user->update($data);
+
+        return $user;
+    }
+
+    /**
+     * @param  User  $user  (to be updated)
+     * @param  string  $password
+     */
+    public function updatePassword(User $user, string $password): User
+    {
+        $user->update([
+            'password' => Hash::make($password),
+        ]);
 
         return $user;
     }

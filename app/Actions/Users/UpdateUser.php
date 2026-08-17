@@ -24,6 +24,7 @@ class UpdateUser
 
     if ($emailChanged) {
       $attributes['email_verified_at'] = null;
+      $attributes['google_id'] = null;
     }
 
     if ($dto->password) {

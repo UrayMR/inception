@@ -61,6 +61,10 @@ class EloquentUserRepository implements UserRepository
             $data['email_verified_at'] = $attributes['email_verified_at'];
         }
 
+        if (array_key_exists('google_id', $attributes)) {
+            $data['google_id'] = $attributes['google_id'];
+        }
+
         if (! empty($attributes['password'])) {
             $data['password'] = Hash::make($attributes['password']);
         }

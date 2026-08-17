@@ -5,6 +5,7 @@ namespace App\Repositories\Competitions;
 use App\Enums\CompetitionStatus;
 use App\Models\Competition;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class EloquentGuestCompetitionRepository implements GuestCompetitionRepository
 {
@@ -27,5 +28,13 @@ class EloquentGuestCompetitionRepository implements GuestCompetitionRepository
       ->orderBy('timelines_min_start_at')
       ->orderBy('name')
       ->paginate($perPage);
+  }
+
+  public function getFeaturedForHome(): Collection
+  {
+    return Competition::query()
+      ->orderByRaw("CASE WHEN name = 'Hackathon' THEN 0 ELSE 1 END")
+      ->orderByDesc('status')
+      ->get(['id', 'name', 'slug', 'description', 'status']);
   }
 }

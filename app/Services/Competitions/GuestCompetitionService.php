@@ -2,14 +2,15 @@
 
 namespace App\Services\Competitions;
 
-use App\Repositories\Competitions\GuestCompetitionRepository;
+use App\Repositories\Competitions\EloquentGuestCompetitionRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class GuestCompetitionService
 {
   public function __construct(
-    protected GuestCompetitionRepository $guestCompetitionRepository,
+    protected EloquentGuestCompetitionRepository $guestCompetitionRepository,
   ) {}
 
   public function index(Request $request, int $perPage = 10): LengthAwarePaginator
@@ -19,5 +20,10 @@ class GuestCompetitionService
     ];
 
     return $this->guestCompetitionRepository->index($queryParams, $perPage);
+  }
+
+  public function featuredForHome(): Collection
+  {
+    return $this->guestCompetitionRepository->getFeaturedForHome();
   }
 }

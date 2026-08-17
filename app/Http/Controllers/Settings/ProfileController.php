@@ -40,6 +40,13 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
+
+        $hasPassword = $user->password !== null;
+
+        if (!$hasPassword) {
+            return redirect()->back()->withErrors(['name' => 'Anda harus memiliki kata sandi untuk memperbarui profil.']);
+        }
+
         $oldEmail = $user->email;
         $this->userService->update($request->toDTO(), $user);
 

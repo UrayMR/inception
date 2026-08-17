@@ -24,8 +24,6 @@ class ProfileUpdateRequest extends FormRequest
 
     public function toDTO(): UpdateUserDTO
     {
-        $emailChanged = $this->input('email') !== $this->user()->email;
-
         return new UpdateUserDTO(
             name: $this->input('name'),
             email: $this->input('email'),

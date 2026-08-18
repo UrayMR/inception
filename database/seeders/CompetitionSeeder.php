@@ -43,7 +43,7 @@ class CompetitionSeeder extends Seeder
             // 'Essay' => [
             //     'description' => 'Dalam dunia yang terus berkembang, ide-ide inovatif menjadi kunci untuk menghadapi tantangan global. Essay Competition mengajak kamu untuk mengekspresikan pemikiran kritis dan kreatif melalui tulisan yang mendalam. Tunjukkan kemampuan analisis, argumentasi, dan solusi yang relevan terhadap isu-isu terkini, serta buktikan bahwa kata-kata dapat menginspirasi perubahan.',
             //     'type' => CompetitionType::team->value,
-            //     'max_member' => 4,
+
             //     'custom_timelines' => [
             //         'Submission' => [
             //             'sequence' => 3,
@@ -64,7 +64,6 @@ class CompetitionSeeder extends Seeder
                 'description' => 'Ide yang hebat tidak akan berarti tanpa eksekusi dan strategi yang matang. Business Plan Competition menantang kamu untuk merangkai ide tersebut menjadi model bisnis yang inovatif, realistis, dan menjawab kebutuhan pasar. Dari melihat peluang hingga menyusun strategi keuangan, buktikan bahwa rancangan bisnismu bukan sekadar konsep, melainkan solusi nyata yang siap bersaing dan memberikan dampak.',
                 'type' => CompetitionType::team->value,
                 'price' => '30000',
-                'max_member' => 4,
                 'custom_timelines' => [
                     'Submission' => [
                         'sequence' => 3,
@@ -84,7 +83,6 @@ class CompetitionSeeder extends Seeder
                 'slug' => 'ui-ux',
                 'description' => 'Setiap desain yang hebat berawal dari pemahaman terhadap kebutuhan pengguna. UI/UX Design Competition menantang peserta untuk merancang solusi digital yang inovatif, intuitif, dan berorientasi pada pengalaman pengguna dalam menjawab berbagai permasalahan nyata. Saatnya buktikan kreativitasmu melalui desain yang tidak hanya menarik, tetapi juga memberikan dampak.',
                 'type' => CompetitionType::team->value,
-                'max_member' => 4,
                 'custom_timelines' => [
                     'Submission' => [
                         'sequence' => 3,
@@ -103,7 +101,6 @@ class CompetitionSeeder extends Seeder
             'Data Science' => [
                 'description' => 'Mencari pola dari ribuan data, membuat model prediktif, dan menyiapkan strategi yang tepat. Data Science Competition merupakan bidang kompetisi yang berfokus dalam pengolahan data untuk menghasilkan solusi yang relevan dengan permasalahan. Tunjukkan strategi dan inovasi yang kamu miliki untuk bersaing dalam Data Science Competition.',
                 'type' => CompetitionType::team->value,
-                'max_member' => 4,
                 'custom_timelines' => [
                     'Submission' => [
                         'sequence' => 3,
@@ -122,7 +119,6 @@ class CompetitionSeeder extends Seeder
             'Hackathon' => [
                 'description' => 'Siap membuktikan kemampuanmu? Tantang dirimu dalam Hackathon dan bangun solusi digital inovatif hanya dalam 24 jam secara online. Tuangkan ide terbaikmu, kolaborasikan kreativitas dan teknologi, lalu ciptakan aplikasi web yang mampu memberikan dampak serta menyelesaikan permasalahan nyata di masyarakat.',
                 'type' => CompetitionType::team->value,
-                'max_member' => 4,
                 'custom_timelines' => [
                     'Submission' => [
                         'sequence' => 3,
@@ -147,7 +143,7 @@ class CompetitionSeeder extends Seeder
                 'description' => $details['description'],
                 'type' => $details['type'],
                 'price' => $details['price'] ?? '50000',
-                'max_member' => $details['max_member'],
+                'max_member' => $details['max_member'] ?? 3,
                 'status' => $details['status'] ?? CompetitionStatus::open->value,
                 'image_path' => $details['image_path'],
                 'keywords' => $details['keywords'] ?? null,

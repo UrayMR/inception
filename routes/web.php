@@ -29,6 +29,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('competitions', CompetitionController::class)->names('competitions');
             Route::resource('teams', TeamController::class)->names('teams');
             Route::resource('assignments', AssignmentController::class)->names('assignments');
+
+            Route::get('submissions/export', [SubmissionController::class, 'export'])->name('submissions.export');
             Route::resource('submissions', SubmissionController::class)->names('submissions');
         });
 

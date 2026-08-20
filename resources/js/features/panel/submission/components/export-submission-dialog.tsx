@@ -26,6 +26,7 @@ export function ExportSubmissionDialog({
         [],
     );
     const [isDownloading, setIsDownloading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const availableCompetitions = competitions.filter(
         (c) => c.otherValues?.hasSubmissions,
     );
@@ -48,32 +49,81 @@ export function ExportSubmissionDialog({
         }
     };
 
-    const handleExportSubmit = () => {
-        if (selectedCompetitions.length === 0) {
+    const extractFilename = (
+        contentDisposition: string | null,
+        fallback: string,
+    ) => {
+        if (!contentDisposition) {
+            return fallback;
+        }
+
+        const utf8Match = contentDisposition.match(
+            /filename\*=UTF-8''([^;]+)/i,
+        );
+
+        if (utf8Match?.[1]) {
+            return decodeURIComponent(utf8Match[1]);
+        }
+
+        const plainMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+
+        if (plainMatch?.[1]) {
+            return plainMatch[1];
+        }
+
+        return fallback;
+    };
+
+    const handleExportSubmit = async () => {
+        if (selectedCompetitions.length === 0 || isDownloading) {
             return;
         }
 
+        setError(null);
         setIsDownloading(true);
 
-        const params = new URLSearchParams({
-            competitions: selectedCompetitions.join(','),
-        });
+        try {
+            const params = new URLSearchParams({
+                competitions: selectedCompetitions.join(','),
+            });
+            const url = `${submissions.export.url()}?${params.toString()}`;
 
-        window.location.href = `${submissions.export.url()}?${params.toString()}`;
+            const response = await fetch(url, {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
 
-        const handleFocus = () => {
-            setIsDownloading(false);
+            if (!response.ok) {
+                throw new Error(`Export gagal (status ${response.status})`);
+            }
+
+            const blob = await response.blob();
+
+            const filename = extractFilename(
+                response.headers.get('Content-Disposition'),
+                'submissions-export.xlsx',
+            );
+
+            const objectUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = objectUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(objectUrl);
+
+            setSelectedCompetitions([]);
             setIsOpen(false);
-            window.removeEventListener('focus', handleFocus);
-        };
-
-        window.addEventListener('focus', handleFocus);
-
-        setTimeout(() => {
+        } catch (err) {
+            console.error('Gagal export submission:', err);
+            setError('Gagal mengunduh data export. Silakan coba lagi.');
+        } finally {
             setIsDownloading(false);
-            setIsOpen(false);
-            window.removeEventListener('focus', handleFocus);
-        }, 5000);
+        }
     };
 
     const isAllSelected =
@@ -81,7 +131,20 @@ export function ExportSubmissionDialog({
         selectedCompetitions.length === availableCompetitions.length;
 
     return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog
+            open={isOpen}
+            onOpenChange={(open) => {
+                if (isDownloading) {
+                    return;
+                }
+
+                setIsOpen(open);
+
+                if (!open) {
+                    setError(null);
+                }
+            }}
+        >
             <DialogTrigger asChild>
                 <Button variant="outline">
                     <Download className="mr-2 h-4 w-4" />
@@ -152,6 +215,10 @@ export function ExportSubmissionDialog({
                             </div>
                         ))}
                     </div>
+
+                    {error && (
+                        <p className="text-sm text-destructive">{error}</p>
+                    )}
                 </div>
 
                 <DialogFooter>

@@ -47,6 +47,6 @@ export const getSubmissionColumns = (
     },
     {
         accessorKey: 'submission_link',
-        header: 'Subnission Link',
+        header: 'Submission Link',
     },
 ];

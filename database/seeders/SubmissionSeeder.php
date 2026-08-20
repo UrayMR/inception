@@ -17,7 +17,7 @@ class SubmissionSeeder extends Seeder
 
         foreach ($competitions as $competition) {
             foreach ($competition->assignments as $assignment) {
-                $count = rand(5, 10);
+                $count = rand(20, 35);
 
                 AssignmentSubmission::factory()->count($count)->create([
                     'assignment_id' => $assignment->id,

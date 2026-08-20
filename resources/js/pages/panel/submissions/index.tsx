@@ -2,7 +2,10 @@ import { Head, usePage } from '@inertiajs/react';
 import { CreateButton } from '@/components/buttons/create-button';
 import { DataTable } from '@/components/data-table/data-table';
 import { MainContent } from '@/components/main-content';
-import { getSubmissionColumns } from '@/features/panel/submission';
+import {
+    ExportSubmissionDialog,
+    getSubmissionColumns,
+} from '@/features/panel/submission';
 import PanelLayout from '@/layouts/panel-layout';
 import submissions from '@/routes/panel/submissions';
 import type {
@@ -10,6 +13,7 @@ import type {
     BreadcrumbItem,
     DataTableProps,
     ISubmissionIndex,
+    Option,
     SearchParams,
 } from '@/types';
 
@@ -17,6 +21,7 @@ type SubmissionPageProps = {
     submissions: DataTableProps<ISubmissionIndex>;
     filters: SearchParams;
     auth: Auth;
+    competitions: Option[];
 };
 
 export default function IndexSubmissionsPage() {
@@ -39,7 +44,14 @@ export default function IndexSubmissionsPage() {
                         meta={props.submissions.meta}
                         links={props.submissions.links}
                         extraActions={
-                            <CreateButton href={submissions.create.url()} />
+                            <div className="flex items-center gap-2">
+                                {props.competitions.length > 0 && (
+                                    <ExportSubmissionDialog
+                                        competitions={props.competitions}
+                                    />
+                                )}
+                                <CreateButton href={submissions.create.url()} />
+                            </div>
                         }
                     />
                 </MainContent.Section>

@@ -20,8 +20,8 @@ class AssignmentSubmissionFactory extends Factory
   public function definition(): array
   {
     return [
-      'assignment_id' => Assignment::factory(),
-      'team_id' => Team::factory(),
+      'assignment_id' => Assignment::inRandomOrder()->value('id') ?? Assignment::factory(),
+      'team_id' => Team::inRandomOrder()->value('id') ?? Team::factory(),
       'submission_link' => $this->faker->url(),
     ];
   }

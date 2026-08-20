@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Transactions;
 
+use App\Enums\TransactionStatus;
+use App\Models\Team;
 use App\Models\Transaction;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -29,6 +31,7 @@ class EloquentTransactionRepository implements TransactionRepository
     return $query->orderByDesc('created_at')->paginate($perPage);
   }
 
+
   public function store(array $attributes): Transaction
   {
     return Transaction::create($attributes);
@@ -44,5 +47,12 @@ class EloquentTransactionRepository implements TransactionRepository
   public function destroy(Transaction $transaction): bool
   {
     return $transaction->delete();
+  }
+
+  public function hasVerifiedTransaction(Team $team): bool
+  {
+    return $team->transactions()
+      ->where('status', TransactionStatus::verified->value)
+      ->exists();
   }
 }

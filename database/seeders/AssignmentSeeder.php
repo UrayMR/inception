@@ -19,10 +19,7 @@ class AssignmentSeeder extends Seeder
       Assignment::factory()->create([
         'competition_id' => $competition_id,
         'name' => $assignment_name,
-        'status' => fake()->randomElement([
-          AssignmentStatus::active->value,
-          // AssignmentStatus::inactive->value,
-        ]),
+        'status' => AssignmentStatus::inactive->value,
       ]);
     }
   }

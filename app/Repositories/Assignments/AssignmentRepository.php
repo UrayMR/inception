@@ -14,4 +14,6 @@ interface AssignmentRepository
   public function update(array $attributes, Assignment $assignment): Assignment;
 
   public function destroy(Assignment $assignment): bool;
+
+  public function findByIdOrFail(string $id): Assignment;
 }

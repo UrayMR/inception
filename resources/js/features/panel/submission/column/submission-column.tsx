@@ -28,6 +28,15 @@ export const getSubmissionColumns = (
         },
     },
     {
+        accessorKey: 'assignment',
+        header: 'Assignment',
+        cell: ({ row }) => {
+            const assignment = row.original.assignment;
+
+            return assignment.label;
+        },
+    },
+    {
         accessorKey: 'team',
         header: 'Team/Name',
         cell: ({ row }) => {
@@ -38,6 +47,6 @@ export const getSubmissionColumns = (
     },
     {
         accessorKey: 'submission_link',
-        header: 'Subnission Link',
+        header: 'Submission Link',
     },
 ];

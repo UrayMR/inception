@@ -20,10 +20,23 @@ class UpdateUser
       'role' => $dto->role->value,
     ];
 
+    $emailChanged = $user->email !== $dto->email;
+
+    if ($emailChanged) {
+      $attributes['email_verified_at'] = null;
+      $attributes['google_id'] = null;
+    }
+
     if ($dto->password) {
       $attributes['password'] = $dto->password;
     }
 
-    return $this->userRepository->update($attributes, $user);
+    $updatedUser = $this->userRepository->update($attributes, $user);
+
+    if ($emailChanged) {
+      $updatedUser->sendEmailVerificationNotification();
+    }
+
+    return $updatedUser;
   }
 }

@@ -6,18 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\EnsurePasswordIsConfirmed;
 use App\Http\Requests\Settings\PasswordUpdateRequest;
 use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
-use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Fortify\Features;
+use App\Services\Settings\SecurityService;
+use App\Services\Users\UserService;
 
 class SecurityController extends Controller implements HasMiddleware
 {
+    public function __construct(
+        protected SecurityService $securityService,
+        protected UserService $userService,
+    ) {}
+
     /**
      * Get the middleware that should be assigned to the controller.
      */
@@ -35,7 +39,7 @@ class SecurityController extends Controller implements HasMiddleware
     {
         $props = [
             'canManageTwoFactor' => Features::canManageTwoFactorAuthentication(),
-            'schedule' => $request->user()?->team?->competition?->timelines ?? [],
+            'schedule' => $this->securityService->getSchedule($request->user()),
             'hasPassword' => ! empty($request->user()?->password),
         ];
 
@@ -54,9 +58,7 @@ class SecurityController extends Controller implements HasMiddleware
      */
     public function update(PasswordUpdateRequest $request): RedirectResponse
     {
-        $request->user()->update([
-            'password' => $request->password,
-        ]);
+        $this->userService->updatePassword($request->user(), $request->password);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'Password diperbarui']);
 

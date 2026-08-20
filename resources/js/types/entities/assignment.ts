@@ -21,6 +21,7 @@ export type IAssignmentEdit = IAssignmentShow;
 export interface ISubmissionIndex {
     id: string;
     competition: Option;
+    assignment: Option;
     team: Option;
     submission_link: string;
 }

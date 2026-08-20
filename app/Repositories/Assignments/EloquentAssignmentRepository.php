@@ -34,7 +34,6 @@ class EloquentAssignmentRepository implements AssignmentRepository
 
     return $query->orderByDesc('updated_at')->paginate($perPage);
   }
-
   /**
    * @param  array  $attributes  (data sent from form)
    */
@@ -60,5 +59,10 @@ class EloquentAssignmentRepository implements AssignmentRepository
   public function destroy(Assignment $Assignment): bool
   {
     return $Assignment->delete();
+  }
+
+  public function findByIdOrFail(string $id): Assignment
+  {
+    return Assignment::query()->findOrFail($id);
   }
 }

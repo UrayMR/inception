@@ -10,15 +10,22 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
+use App\Services\Settings\ProfileService;
+use App\Services\Users\UserService;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        protected ProfileService $profileService,
+        protected UserService $userService,
+    ) {}
+
     /**
      * Show the user's profile settings page.
      */
     public function edit(Request $request): Response
     {
-        $schedule = $request->user()?->team?->competition?->timelines ?? [];
+        $schedule = $this->profileService->getSchedule($request->user());
 
         return $this->render('settings/profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
@@ -33,19 +40,19 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-        $user->fill($request->validated());
 
-        $isEmailChanged = $user->isDirty('email');
+        $hasPassword = $user->password !== null;
 
-        if ($isEmailChanged) {
-            $user->email_verified_at = null;
+        if (!$hasPassword) {
+            return redirect()->back()->withErrors(['name' => 'Anda harus memiliki kata sandi untuk memperbarui profil.']);
         }
 
-        $user->save();
+        $oldEmail = $user->email;
+        $this->userService->update($request->toDTO(), $user);
+
+        $isEmailChanged = $oldEmail !== $request->input('email');
 
         if ($isEmailChanged) {
-            $user->sendEmailVerificationNotification();
-
             $this->flash('success', 'Profil diperbarui. Silakan verifikasi email baru Anda!');
         } else {
             $this->flash('success', 'Profil berhasil diperbarui!');
@@ -65,7 +72,7 @@ class ProfileController extends Controller
 
         Auth::logout();
 
-        $user->delete();
+        $this->userService->destroy($user);
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

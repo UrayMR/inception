@@ -133,23 +133,6 @@ export function AppFooter() {
 
                     {/* Right Column */}
                     <div className="flex flex-col gap-8 lg:col-span-2">
-                        {/* Social Media */}
-                        <div>
-                            <h4 className="text-sm font-bold tracking-wider text-white uppercase">
-                                Social Media
-                            </h4>
-                            <div className="mt-4 flex items-center gap-4 text-slate-400">
-                                <a
-                                    href="https://www.instagram.com/inception.upnvjt"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="transition hover:text-purple-400"
-                                >
-                                    <InstagramIcon />
-                                </a>
-                            </div>
-                        </div>
-
                         {/* Contact Us */}
                         <div>
                             <h4 className="text-sm font-bold tracking-wider text-white uppercase">
@@ -162,7 +145,7 @@ export function AppFooter() {
                                         className="text-slate-500"
                                     />
                                     <a
-                                        href="mailto:inception@example.com"
+                                        href="mailto:inceptions.upnjatim@gmail.com"
                                         className="break-all transition hover:text-purple-400"
                                     >
                                         inceptions.upnjatim@gmail.com
@@ -180,6 +163,20 @@ export function AppFooter() {
                                         className="transition hover:text-purple-400"
                                     >
                                         +62 812-8879-5418
+                                    </a>
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <InstagramIcon
+                                        size={14}
+                                        className="text-slate-500"
+                                    />
+                                    <a
+                                        href="https://www.instagram.com/inception.upnvjt"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="transition hover:text-purple-400"
+                                    >
+                                        @inception.upnvjt
                                     </a>
                                 </li>
                             </ul>

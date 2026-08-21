@@ -1,6 +1,6 @@
 import { Head, useForm, Link } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight, Loader2, RefreshCw } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -20,6 +20,7 @@ import {
 import type { RegisterStepId } from '@/features/participant/competitions';
 import getQueryParam from '@/helpers/get-query-param';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { usePersistedRegistration } from '@/hooks/use-persisted-registration';
 import { useZod } from '@/hooks/use-zod';
 import AppLayout from '@/layouts/app-layout';
 import guestCompetitions from '@/routes/guest/competitions';
@@ -68,23 +69,47 @@ export default function RegisterCompetitionPage({
     );
 
     const STEP_ORDER: RegisterStepId[] = ['info', 'requirement', 'payment'];
-    const [currentStep, setCurrentStep] = useState<RegisterStepId>('info');
+
+    const initialFormValues = useMemo<RegisterCompetitionFormDataType>(
+        () => ({
+            competition_id: preselectedCompetition?.value || '',
+            team_name: '',
+            leader_name: auth.user.name,
+            institution: '',
+            phone_number: '',
+            payment_method: TransactionPaymentMethodMap.qris.value,
+            payment_proof_file: undefined,
+            requirement_link: '',
+            members: [],
+        }),
+        [preselectedCompetition, auth.user.name],
+    );
+
+    const { getStoredData, getStoredStep, saveData, saveStep, clearStorage } =
+        usePersistedRegistration<RegisterCompetitionFormDataType>(
+            String(auth.user.id),
+            initialFormValues,
+            'info',
+        );
+
+    const [currentStep, setCurrentStep] = useState<RegisterStepId>(() =>
+        getStoredStep(),
+    );
 
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
     const isMobile = useIsMobile();
 
-    const form = useForm<RegisterCompetitionFormDataType>({
-        competition_id: preselectedCompetition?.value || '',
-        team_name: '',
-        leader_name: auth.user.name,
-        institution: '',
-        phone_number: '',
-        payment_method: TransactionPaymentMethodMap.qris.value,
-        payment_proof_file: undefined,
-        requirement_link: '',
-        members: [],
-    });
+    const [initialFormData] = useState(() => getStoredData());
+    const form = useForm<RegisterCompetitionFormDataType>(initialFormData);
+
+    useEffect(() => {
+        saveData(form.data);
+    }, [form.data, saveData]);
+
+    useEffect(() => {
+        saveStep(currentStep);
+    }, [currentStep, saveStep]);
 
     const selectedCompetition = useMemo(
         () =>
@@ -228,23 +253,22 @@ export default function RegisterCompetitionPage({
             return;
         }
 
-        form.post(competitions.register.store.url());
+        form.post(competitions.register.store.url(), {
+            onSuccess: () => {
+                clearStorage();
+            },
+        });
     };
 
     const handleReset = () => {
-        form.resetAndClearErrors(
-            'team_name',
-            'leader_name',
-            'institution',
-            'phone_number',
-            'payment_method',
-            'requirement_link',
-            'payment_proof_file',
-            'members',
-        );
-        form.setData('leader_name', auth.user.name);
-        form.setData('members', isTeamCompetition ? [{ member_name: '' }] : []);
+        form.setData((previous) => ({
+            ...initialFormValues,
+            competition_id: previous.competition_id,
+            members: isTeamCompetition ? [{ member_name: '' }] : [],
+        }));
+        form.clearErrors();
         setCurrentStep(STEP_ORDER[0]);
+        clearStorage();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 

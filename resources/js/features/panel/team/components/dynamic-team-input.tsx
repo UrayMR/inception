@@ -113,64 +113,69 @@ export function DynamicTeamInput({
                                 )}
                             </div>
 
-                            {/* Input Field Area */}
-                            <div className="flex flex-col space-y-1.5">
-                                <Label
-                                    htmlFor={`${id}-member-name-${index}`}
-                                    className="text-xs font-medium"
-                                >
-                                    Member Name
-                                    <span className="ml-1 text-destructive">
-                                        *
-                                    </span>
-                                </Label>
-                                <Input
-                                    id={`${id}-member-name-${index}`}
-                                    value={item.member_name}
-                                    onChange={(e) =>
-                                        handleFieldChange(
-                                            index,
-                                            'member_name',
-                                            e.target.value,
-                                        )
-                                    }
-                                    className="border-purple-500/20 focus-visible:border-purple-500/40 focus-visible:ring-purple-500/20"
-                                    placeholder="Your member name"
-                                    disabled={isDisabled}
-                                />
-                                {memberNameError && (
-                                    <InputError message={memberNameError} />
-                                )}
-                            </div>
-
-                            {/* Phone Number Field */}
-                            <div className="flex flex-col space-y-1.5">
-                                <Label
-                                    htmlFor={`${id}-member-phone-number-${index}`}
-                                    className="text-xs font-medium"
-                                >
-                                    Phone Number
-                                </Label>
-                                <Input
-                                    id={`${id}-member-phone-number-${index}`}
-                                    type="tel"
-                                    value={item.member_phone_number ?? ''}
-                                    onChange={(e) =>
-                                        handleFieldChange(
-                                            index,
-                                            'member_phone_number',
-                                            e.target.value,
-                                        )
-                                    }
-                                    className="border-purple-500/20 focus-visible:border-purple-500/40 focus-visible:ring-purple-500/20"
-                                    placeholder="e.g. 08123456789"
-                                    disabled={isDisabled}
-                                />
-                                {memberPhoneNumberError && (
-                                    <InputError
-                                        message={memberPhoneNumberError}
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                {/* Member Name */}
+                                <div className="flex flex-col space-y-1.5">
+                                    <Label
+                                        htmlFor={`${id}-member-name-${index}`}
+                                        className="text-xs font-medium"
+                                    >
+                                        Member Name
+                                        <span className="ml-1 text-destructive">
+                                            *
+                                        </span>
+                                    </Label>
+                                    <Input
+                                        id={`${id}-member-name-${index}`}
+                                        value={item.member_name}
+                                        onChange={(e) =>
+                                            handleFieldChange(
+                                                index,
+                                                'member_name',
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="border-purple-500/20 focus-visible:border-purple-500/40 focus-visible:ring-purple-500/20"
+                                        placeholder="Your member name"
+                                        disabled={isDisabled}
                                     />
-                                )}
+                                    {memberNameError && (
+                                        <InputError message={memberNameError} />
+                                    )}
+                                </div>
+
+                                {/* Phone Number */}
+                                <div className="flex flex-col space-y-1.5">
+                                    <Label
+                                        htmlFor={`${id}-member-phone-number-${index}`}
+                                        className="text-xs font-medium"
+                                    >
+                                        Phone Number
+                                        <span className="ml-1 text-destructive">
+                                            *
+                                        </span>
+                                    </Label>
+                                    <Input
+                                        id={`${id}-member-phone-number-${index}`}
+                                        type="tel"
+                                        value={item.member_phone_number ?? ''}
+                                        onChange={(e) =>
+                                            handleFieldChange(
+                                                index,
+                                                'member_phone_number',
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="border-purple-500/20 focus-visible:border-purple-500/40 focus-visible:ring-purple-500/20"
+                                        placeholder="e.g. 08123456789"
+                                        disabled={isDisabled}
+                                    />
+                                    {memberPhoneNumberError && (
+                                        <InputError
+                                            message={memberPhoneNumberError}
+                                        />
+                                    )}
+                                </div>
                             </div>
                         </div>
                     );

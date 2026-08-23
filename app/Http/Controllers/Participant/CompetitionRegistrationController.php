@@ -78,7 +78,7 @@ class CompetitionRegistrationController extends Controller
         $this->flash('success', 'Pendaftaran kompetisi berhasil.');
         $this->flash('success', 'Mohon menunggu konfirmasi berkas pendaftaran kompetisi dari panitia. Silakan cek (spam) email Anda atau dashboard untuk informasi lebih lanjut.');
 
-        return redirect()->route('settings.index');
+        return redirect()->route('settings.dashboard');
     }
 
     /**

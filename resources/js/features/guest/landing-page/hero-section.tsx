@@ -1,13 +1,13 @@
 import { Link } from '@inertiajs/react';
 import { ArrowRightIcon } from 'lucide-react';
-import { login } from '@/routes';
 import guest from '@/routes/guest';
+import { register } from '@/routes/participant/competitions';
 
 export default function HeroSection({ id }: { id: string }) {
     return (
         <section
             id={id}
-            className="relative flex min-h-screen flex-col items-center justify-center bg-transparent px-6 py-12 text-center lg:px-8"
+            className="relative flex min-h-[90vh] flex-col items-center justify-center bg-transparent px-6 py-12 text-center lg:px-8 scroll-mt-24"
         >
             <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center space-y-8">
                 <h1 className="font-avalors text-3xl leading-tight font-bold tracking-widest text-white sm:text-6xl lg:text-7xl">
@@ -26,12 +26,12 @@ export default function HeroSection({ id }: { id: string }) {
                 <p className="mx-auto max-w-xl text-xs leading-relaxed tracking-wide text-purple-100/70 sm:text-sm">
                     Siap menciptakan gebrakan digital? Tunjukkan kreativitas
                     terbaik timmu, taklukkan tantangannya, dan rebut total
-                    hadiah jutaan rupiah!
+                    hadiah belasan juta rupiah!
                 </p>
 
                 <div className="mt-10 flex w-full max-w-sm flex-col items-center justify-center gap-4 font-sans text-xs font-semibold tracking-wider uppercase sm:max-w-none sm:flex-row">
                     <Link
-                        href={login()}
+                        href={register()}
                         className="group relative inline-flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl px-7 transition-all duration-300 active:scale-97 sm:w-auto"
                         style={{
                             background:

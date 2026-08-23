@@ -3,6 +3,7 @@ import type { TeamStatusType } from '../enums/team';
 
 export interface TeamMember {
     member_name: string;
+    member_phone_number: string;
 }
 
 export interface ITeamIndex {

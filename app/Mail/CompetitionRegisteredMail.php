@@ -74,7 +74,7 @@ class CompetitionRegisteredMail extends Mailable implements ShouldQueue
             return route('competitions.register');
         }
 
-        return route('settings.index');
+        return route('settings.dashboard');
     }
 
     /**

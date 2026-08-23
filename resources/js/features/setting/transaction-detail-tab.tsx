@@ -40,11 +40,19 @@ export default function TransactionDetailTab({
     transaction: ITransactionShow;
 }) {
     const isSolo = transaction.competition_type === 'solo';
+    const transactionStatusDisplay =
+        transaction?.status === TransactionStatusMap.verified.value
+            ? 'Verified'
+            : transaction?.status === TransactionStatusMap.pending.value
+              ? 'Pending Verification'
+              : transaction?.status === TransactionStatusMap.rejected.value
+                ? 'Rejected'
+                : '';
 
     return (
         <div className="space-y-6">
             <Link
-                href={settings.index()}
+                href={settings.dashboard()}
                 only={['tab', 'competition', 'transaction']}
                 preserveState
                 viewTransition
@@ -72,8 +80,7 @@ export default function TransactionDetailTab({
                             transaction.status,
                         )}`}
                     >
-                        {TransactionStatusMap[transaction.status]?.label ??
-                            transaction.status}
+                        {transactionStatusDisplay}
                     </span>
                 </div>
 
@@ -152,6 +159,7 @@ export default function TransactionDetailTab({
                                         {index + 1}.
                                     </span>
                                     <span>{member.member_name}</span>
+                                    <span>({member.member_phone_number})</span>
                                 </div>
                             ))}
                         </div>

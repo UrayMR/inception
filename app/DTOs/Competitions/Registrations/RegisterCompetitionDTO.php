@@ -71,13 +71,4 @@ class RegisterCompetitionDTO
       status: TransactionStatus::pending->value,
     );
   }
-
-  public function memberRows(): array
-  {
-    return array_map(function (array $member): array {
-      return [
-        'member_name' => $member['member_name'],
-      ];
-    }, $this->members);
-  }
 }

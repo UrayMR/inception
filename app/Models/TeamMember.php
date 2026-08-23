@@ -15,6 +15,7 @@ class TeamMember extends Model
     protected $fillable = [
         'team_id',
         'member_name',
+        'member_phone_number',
     ];
 
     public function team()

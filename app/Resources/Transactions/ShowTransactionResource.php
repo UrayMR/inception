@@ -35,6 +35,7 @@ class ShowTransactionResource extends JsonResource
       'leader_email' => $this->team?->leader?->email,
       'members' => $this->team?->members?->map(fn($member) => [
         'member_name' => $member->member_name,
+        'member_phone_number' => $member->member_phone_number,
       ])->toArray() ?? [],
     ];
   }

@@ -222,6 +222,22 @@ export default function RegisterCompetitionPage({
         setIsConfirmOpen(true);
     };
 
+    const WHATSAPP_ADMIN_NUMBER = '6281288795418';
+
+    const openWhatsappConfirmation = () => {
+        const teamName = form.data.team_name || form.data.leader_name;
+
+        const message = [
+            `Halo, INCEPTION! Saya baru saja mendaftar di bidang lomba:${selectedCompetition?.label ?? '-'}`,
+            `Atas nama tim:${teamName || '-'}`,
+            `ingin mengkonfirmasi ulang pendaftaran saya dan meminta link grup peserta, terimakasih!`,
+        ].join('\n');
+
+        const whatsappUrl = `https://wa.me/${WHATSAPP_ADMIN_NUMBER}?text=${encodeURIComponent(message)}`;
+
+        window.open(whatsappUrl, '_blank');
+    };
+
     const handleConfirmSubmit = () => {
         setIsConfirmOpen(false);
 
@@ -235,7 +251,11 @@ export default function RegisterCompetitionPage({
             return;
         }
 
-        form.post(competitions.register.store.url());
+        form.post(competitions.register.store.url(), {
+            onSuccess: () => {
+                openWhatsappConfirmation();
+            },
+        });
     };
 
     const handleReset = () => {

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             TransactionSeeder::class,
             AssignmentSeeder::class,
             SubmissionSeeder::class,
+            AnnouncementSeeder::class,
         ]);
     }
 }

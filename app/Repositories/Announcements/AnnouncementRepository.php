@@ -6,7 +6,7 @@ use App\Models\Announcement;
 
 interface AnnouncementRepository
 {
-  public function index(): Announcement;
+  public function index(): array;
 
   public function store(array $attributes): Announcement;
 

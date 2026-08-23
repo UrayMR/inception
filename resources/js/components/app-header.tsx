@@ -76,7 +76,7 @@ export function AppHeader() {
                 {announcement &&
                     announcement.status ===
                         AnnouncementStatusMap.Active.value && (
-                        <AnnouncementBanner message={announcement.message} />
+                        <AnnouncementBanner announcement={announcement} />
                     )}
 
                 <div className="relative mx-auto flex h-16 w-full items-center justify-between px-4 md:max-w-7xl">

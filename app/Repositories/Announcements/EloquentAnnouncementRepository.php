@@ -7,11 +7,11 @@ use App\Repositories\Announcements\AnnouncementRepository;
 
 class EloquentAnnouncementRepository implements AnnouncementRepository
 {
-  public function index(): Announcement
+  public function index(): array
   {
     $query = Announcement::latest()->first();
-
-    return $query;
+    
+    return $query ? $query->toArray() : null;
   }
 
   /**

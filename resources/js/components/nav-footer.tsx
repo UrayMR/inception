@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/sidebar';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { toUrl } from '@/lib/utils';
-import { home } from '@/routes';
 import type { NavItem } from '@/types';
 
 export function NavFooter({
@@ -29,7 +28,7 @@ export function NavFooter({
             <SidebarGroupContent>
                 <SidebarMenu>
                     {items.map((item) => {
-                        if (item.href === home()) {
+                        if (item.title === 'Beranda') {
                             return (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton

@@ -16,8 +16,8 @@ class AnnouncementSeeder extends Seeder
     Announcement::updateOrCreate([
       'id' => 1,
     ], [
-      'message' => ' Pendaftaran INCEPTION 2026 resmi dibuka. Amankan slot timmu sekarang!',
-      'status' => AnnouncementStatus::inactive->value,
+      'message' => '[ Pendaftaran INCEPTION 2026 resmi dibuka. Waktunya buktikan inovasi timmu dan amankan slot sekarang! ]',
+      'status' => AnnouncementStatus::active->value,
     ]);
   }
 }

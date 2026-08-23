@@ -13,9 +13,16 @@ class AssignmentSeeder extends Seeder
   {
     $assignment_name = 'Pengumpulan Final Project';
 
-    $competitions = Competition::get(['id']);
+    // Ambil kompetisi beserta data timeline-nya
+    $competitions = Competition::with('timelines')->get();
 
     foreach ($competitions as $competition) {
+      $submissionTimeline = $competition->timelines
+        ->where('timeline_name', 'Submission')
+        ->first();
+
+      $dueAt = $submissionTimeline ? $submissionTimeline->end_at : null;
+
       Assignment::updateOrCreate(
         [
           'competition_id' => $competition->id,
@@ -23,6 +30,7 @@ class AssignmentSeeder extends Seeder
         ],
         [
           'assignment_guide_link' => 'https://drive.google.com/file/d/1a2b3c4d5e6f7g8h9i0j/view?usp=sharing',
+          'due_at'                => $dueAt,
           'status'                => AssignmentStatus::inactive->value,
         ]
       );

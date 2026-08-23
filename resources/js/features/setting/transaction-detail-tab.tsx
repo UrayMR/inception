@@ -152,6 +152,7 @@ export default function TransactionDetailTab({
                                         {index + 1}.
                                     </span>
                                     <span>{member.member_name}</span>
+                                    <span>{member.member_phone_number}</span>
                                 </div>
                             ))}
                         </div>

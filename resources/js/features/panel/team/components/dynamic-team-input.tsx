@@ -45,6 +45,7 @@ export function DynamicTeamInput({
 
         const newItem: TeamMember = {
             member_name: '',
+            member_phone_number: '',
         };
         onChange?.([...value, newItem]);
     }, [canAddMore, onChange, value]);
@@ -87,6 +88,8 @@ export function DynamicTeamInput({
                 {value.map((item, index) => {
                     const memberNameError =
                         error?.[`members.${index}.member_name`];
+                    const memberPhoneNumberError =
+                        error?.[`members.${index}.member_phone_number`];
 
                     return (
                         <div
@@ -137,6 +140,36 @@ export function DynamicTeamInput({
                                 />
                                 {memberNameError && (
                                     <InputError message={memberNameError} />
+                                )}
+                            </div>
+
+                            {/* Phone Number Field */}
+                            <div className="flex flex-col space-y-1.5">
+                                <Label
+                                    htmlFor={`${id}-member-phone-number-${index}`}
+                                    className="text-xs font-medium"
+                                >
+                                    Phone Number
+                                </Label>
+                                <Input
+                                    id={`${id}-member-phone-number-${index}`}
+                                    type="tel"
+                                    value={item.member_phone_number ?? ''}
+                                    onChange={(e) =>
+                                        handleFieldChange(
+                                            index,
+                                            'member_phone_number',
+                                            e.target.value,
+                                        )
+                                    }
+                                    className="border-purple-500/20 focus-visible:border-purple-500/40 focus-visible:ring-purple-500/20"
+                                    placeholder="e.g. 08123456789"
+                                    disabled={isDisabled}
+                                />
+                                {memberPhoneNumberError && (
+                                    <InputError
+                                        message={memberPhoneNumberError}
+                                    />
                                 )}
                             </div>
                         </div>

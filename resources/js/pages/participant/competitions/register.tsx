@@ -144,7 +144,7 @@ export default function RegisterCompetitionPage({
                 competition?.otherValues?.type === CompetitionTypeMap.Team.value
                     ? previous.members.length > 0
                         ? previous.members.slice(0, maxAdditionalMembers)
-                        : [{ member_name: '' }]
+                        : [{ member_name: '', member_phone_number: '' }]
                     : [],
         }));
     };
@@ -243,7 +243,7 @@ export default function RegisterCompetitionPage({
             'members',
         );
         form.setData('leader_name', auth.user.name);
-        form.setData('members', isTeamCompetition ? [{ member_name: '' }] : []);
+        form.setData('members', isTeamCompetition ? [{ member_name: '', member_phone_number: '' }] : []);
         setCurrentStep(STEP_ORDER[0]);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };

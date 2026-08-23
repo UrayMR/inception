@@ -40,6 +40,7 @@ class UpdateTeam
     return array_map(function (array $member): array {
       return [
         'member_name' => $member['member_name'],
+        'member_phone_number' => $member['member_phone_number'],
       ];
     }, $members);
   }

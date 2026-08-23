@@ -166,7 +166,7 @@ export default function RegisterCompetitionInfoStep({
                             onChange('phone_number', event.target.value)
                         }
                         className="border-purple-500/20 focus-visible:border-0 focus-visible:ring-purple-500/20"
-                        placeholder="08xxxxxxxxxx"
+                        placeholder="eg. 081234567890"
                         disabled={!canFillTeamDetails}
                         required
                     />

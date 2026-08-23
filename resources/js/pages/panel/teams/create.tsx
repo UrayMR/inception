@@ -34,6 +34,7 @@ export default function CreateTeamPage({
         members: [
             {
                 member_name: '',
+                member_phone_number: '',
             },
         ],
     });

@@ -7,6 +7,10 @@ export const TeamMemberSchema = z.object({
         .string()
         .min(1, { message: 'Nama anggota wajib diisi.' })
         .max(255, { message: 'Nama anggota maksimal 255 karakter.' }),
+    member_phone_number: z
+        .string()
+        .min(1, { message: 'Nomor telepon anggota wajib diisi.' })
+        .max(20, { message: 'Nomor telepon anggota maksimal 20 karakter.' }),
 });
 
 export const TeamBaseSchema = z.object({

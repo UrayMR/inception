@@ -26,7 +26,7 @@ class AnnouncementController extends Controller
 
         $this->flash('success', 'Announcement created successfully.');
 
-        return redirect()->route('panel.announcements.index');
+        return redirect()->route('panel.configuration');
     }
 
     /**
@@ -40,6 +40,6 @@ class AnnouncementController extends Controller
 
         $this->flash('success', 'Announcement updated successfully.');
 
-        return redirect()->route('panel.configuration.index');
+        return redirect()->route('panel.configuration');
     }
 }

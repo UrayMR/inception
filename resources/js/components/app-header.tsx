@@ -12,7 +12,8 @@ import { useCurrentUrl } from '@/hooks/use-current-url';
 import { home, login, logout } from '@/routes';
 import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
-import type { NavItem } from '@/types';
+import { AnnouncementStatusMap } from '@/types';
+import type { Announcement, NavItem } from '@/types';
 import AnnouncementBanner from './announcement-banner';
 import { AvatarProfile } from './avatar-profile';
 
@@ -50,8 +51,9 @@ const mobileNonAuthNavItems: NavItem[] = mainNavItems.concat([
 ]);
 
 export function AppHeader() {
-    const page = usePage();
+    const page = usePage<{ announcement: Announcement | null }>();
     const auth = page.props.auth ?? {};
+    const announcement = page.props.announcement ?? null;
     const { isCurrentUrl } = useCurrentUrl();
     const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -71,7 +73,12 @@ export function AppHeader() {
                     borderColor: 'rgba(55,0,92,0.5)',
                 }}
             >
-                <AnnouncementBanner />
+                {announcement &&
+                    announcement.status ===
+                        AnnouncementStatusMap.Active.value && (
+                        <AnnouncementBanner message={announcement.message} />
+                    )}
+
                 <div className="relative mx-auto flex h-16 w-full items-center justify-between px-4 md:max-w-7xl">
                     {/* Logo */}
                     <Link

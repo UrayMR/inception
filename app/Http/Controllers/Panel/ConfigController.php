@@ -18,7 +18,7 @@ class ConfigController extends Controller
 
     $announcement = $this->announcementService->index();
 
-    return $this->render('panel/config/index', [
+    return $this->render('panel/config', [
       'announcement' => $announcement,
     ]);
   }

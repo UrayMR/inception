@@ -36,7 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('submissions', SubmissionController::class)->names('submissions');
 
             Route::put('announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
-            Route::get('configuration', [ConfigController::class, 'index'])->name('configuration.index');
+            Route::get('configuration', [ConfigController::class, 'index'])->name('configuration');
         });
 
         Route::middleware('role:admin,accountant')->group(function () {

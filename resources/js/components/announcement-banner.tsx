@@ -1,7 +1,7 @@
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
-export default function AnnouncementBanner() {
+export default function AnnouncementBanner({ message }: { message: string }) {
     const [isVisible, setIsVisible] = useState(true);
 
     if (!isVisible) {
@@ -11,10 +11,7 @@ export default function AnnouncementBanner() {
     return (
         <div className="relative z-50 w-full border-b border-purple-950/60 bg-zinc-950 px-4 py-2 text-center font-mono text-xs font-bold tracking-widest text-zinc-300 uppercase sm:text-sm">
             <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 sm:gap-4">
-                <p className="truncate normal-case">
-                    Pendaftaran INCEPTION 2026 resmi dibuka. Amankan slot timmu
-                    sekarang.
-                </p>
+                <p className="truncate normal-case">{message}</p>
 
                 <button
                     onClick={() => setIsVisible(false)}

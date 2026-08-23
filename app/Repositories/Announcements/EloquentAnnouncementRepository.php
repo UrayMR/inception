@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Repositories\Teams;
+namespace App\Repositories\Announcements;
 
 use App\Models\Announcement;
 use App\Repositories\Announcements\AnnouncementRepository;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class EloquentAnnouncementRepository implements AnnouncementRepository
 {

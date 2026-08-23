@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Actions\Announcements;
+
+use App\DTOs\Announcements\AnnouncementDTO;
+use App\Models\Announcement;
+use App\Repositories\Announcements\AnnouncementRepository;
+
+class StoreAnnouncement
+{
+  public function __construct(
+    protected AnnouncementRepository $announcementRepository,
+  ) {}
+
+  public function handle(AnnouncementDTO $dto): Announcement
+  {
+    $attributes = [
+      'message' => $dto->message,
+      'status' => $dto->status,
+    ];
+
+    return $this->announcementRepository->store($attributes);
+  }
+}

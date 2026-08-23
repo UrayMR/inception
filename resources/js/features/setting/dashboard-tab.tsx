@@ -61,6 +61,15 @@ export default function DashboardTab({
         return () => window.clearInterval(intervalId);
     }, []);
 
+    const transactionStatusDisplay =
+        transaction?.status === TransactionStatusMap.verified.value
+            ? 'Verified'
+            : transaction?.status === TransactionStatusMap.pending.value
+              ? 'Pending Verification'
+              : transaction?.status === TransactionStatusMap.rejected.value
+                ? 'Rejected'
+                : '';
+
     return (
         <>
             {/* Competitions */}
@@ -93,7 +102,7 @@ export default function DashboardTab({
                                         {competition.name}
                                     </p>
                                     <p className="text-xs text-zinc-500 uppercase">
-                                        {transaction.status}
+                                        {transactionStatusDisplay}
                                     </p>
                                 </div>
                             </div>

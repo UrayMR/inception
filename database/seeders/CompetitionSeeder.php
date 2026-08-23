@@ -40,26 +40,6 @@ class CompetitionSeeder extends Seeder
         $submissionStart = Carbon::create(2026, 9, 4, 12, 0, 0);
 
         $competitions = [
-            // 'Essay' => [
-            //     'description' => 'Dalam dunia yang terus berkembang, ide-ide inovatif menjadi kunci untuk menghadapi tantangan global. Essay Competition mengajak kamu untuk mengekspresikan pemikiran kritis dan kreatif melalui tulisan yang mendalam. Tunjukkan kemampuan analisis, argumentasi, dan solusi yang relevan terhadap isu-isu terkini, serta buktikan bahwa kata-kata dapat menginspirasi perubahan.',
-            //     'type' => CompetitionType::team->value,
-
-            //     'custom_timelines' => [
-            //         'Submission' => [
-            //             'sequence' => 3,
-            //             'start_at' => $submissionStart,
-            //             'end_at'   => Carbon::create(2026, 9, 16, 23, 59, 59),
-            //         ],
-            //         'Finalist Announcement' => [
-            //             'sequence' => 4,
-            //             'start_at' => Carbon::create(2026, 9, 21, 16, 0, 0),
-            //             'end_at'   => Carbon::create(2026, 9, 21, 17, 0, 0),
-            //         ],
-            //     ],
-            //     'status' => CompetitionStatus::closed->value,
-            //     'image_path' => 'competitions/essay.svg',
-            //     'keywords' => "Essay, Writing, Critical Thinking, Creativity, Problem Solving, Research, Analysis, Argumentation, Communication Skills, lomba esai, essay competition, lomba menulis esai, lomba menulis kreatif"
-            // ],
             'Business Plan' => [
                 'description' => 'Ide yang hebat tidak akan berarti tanpa eksekusi dan strategi yang matang. Business Plan Competition menantang kamu untuk merangkai ide tersebut menjadi model bisnis yang inovatif, realistis, dan menjawab kebutuhan pasar. Dari melihat peluang hingga menyusun strategi keuangan, buktikan bahwa rancangan bisnismu bukan sekadar konsep, melainkan solusi nyata yang siap bersaing dan memberikan dampak.',
                 'type' => CompetitionType::team->value,
@@ -137,18 +117,22 @@ class CompetitionSeeder extends Seeder
         ];
 
         foreach ($competitions as $name => $details) {
-            $competition = Competition::factory()->create([
-                'name' => $name,
-                'slug' => $details['slug'] ?? strtolower(str_replace(' ', '-', $name)),
-                'description' => $details['description'],
-                'type' => $details['type'],
-                'price' => $details['price'] ?? '50000',
-                'max_member' => $details['max_member'] ?? 3,
-                'status' => $details['status'] ?? CompetitionStatus::open->value,
-                'image_path' => $details['image_path'],
-                'keywords' => $details['keywords'] ?? null,
-                'guidebook_link' => $details['guidebook_link'] ?? "https://himatifaupnvjt.org/",
-            ]);
+            $slug = $details['slug'] ?? strtolower(str_replace(' ', '-', $name));
+
+            $competition = Competition::updateOrCreate(
+                ['slug' => $slug],
+                [
+                    'name'           => $name,
+                    'description'    => $details['description'],
+                    'type'           => $details['type'],
+                    'price'          => $details['price'] ?? '50000',
+                    'max_member'     => $details['max_member'] ?? 3,
+                    'status'         => $details['status'] ?? CompetitionStatus::closed->value,
+                    'image_path'     => $details['image_path'],
+                    'keywords'       => $details['keywords'] ?? null,
+                    'guidebook_link' => $details['guidebook_link'] ?? "https://himatifaupnvjt.org/",
+                ]
+            );
 
             $allTimelines = [
                 'Registration'          => $commonTimelines['Registration'],
@@ -160,15 +144,18 @@ class CompetitionSeeder extends Seeder
             ];
 
             foreach ($allTimelines as $timelineName => $timeData) {
-                CompetitionTimeline::factory()
-                    ->for($competition)
-                    ->create([
-                        'timeline_name'     => $timelineName,
+                CompetitionTimeline::updateOrCreate(
+                    [
+                        'competition_id' => $competition->id,
+                        'timeline_name'  => $timelineName,
+                    ],
+                    [
                         'description' => null,
-                        'sequence' => $timeData['sequence'],
-                        'start_at' => $timeData['start_at'],
-                        'end_at'   => $timeData['end_at'],
-                    ]);
+                        'sequence'    => $timeData['sequence'],
+                        'start_at'    => $timeData['start_at'],
+                        'end_at'      => $timeData['end_at'],
+                    ]
+                );
             }
         }
     }

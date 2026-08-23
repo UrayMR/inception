@@ -7,6 +7,7 @@ import {
     LayoutGrid,
     PenBox,
     PenToolIcon,
+    Settings2,
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -79,6 +80,12 @@ const mainNavItems: NavItem[] = [
 ];
 
 const footerNavItems: NavItem[] = [
+    {
+        title: 'Konfigurasi',
+        href: panel.configuration(),
+        icon: Settings2,
+        roles: [UserRoleMap.Admin.value],
+    },
     {
         title: 'Beranda',
         href: home(),

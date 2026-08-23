@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Panel\AnnouncementController;
 use App\Http\Controllers\Panel\AssignmentController;
 use App\Http\Controllers\Participant\CompetitionRegistrationController;
 use App\Http\Controllers\Panel\CompetitionController;
+use App\Http\Controllers\Panel\ConfigController;
 use App\Http\Controllers\Panel\SubmissionController;
 use App\Http\Controllers\Panel\TeamController;
 use App\Http\Controllers\Panel\TransactionController;
@@ -32,6 +34,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('submissions/export', [SubmissionController::class, 'export'])->name('submissions.export');
             Route::resource('submissions', SubmissionController::class)->names('submissions');
+
+            Route::put('announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
+            Route::get('configuration', [ConfigController::class, 'index'])->name('configuration');
         });
 
         Route::middleware('role:admin,accountant')->group(function () {

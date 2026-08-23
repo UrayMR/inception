@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AnnouncementStatus;
 use App\Http\Controllers\Controller;
+use App\Models\Announcement;
+use App\Repositories\Announcements\AnnouncementRepository;
 use App\Resources\Participant\Competitions\CompetitionListResource;
 use App\Services\Competitions\GuestCompetitionService;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
@@ -12,14 +16,19 @@ class HomeController extends Controller
 {
   public function __construct(
     protected GuestCompetitionService $guestCompetitionService,
+    protected AnnouncementRepository $announcementRepository,
   ) {}
 
   public function __invoke()
   {
     $competitions = $this->guestCompetitionService->featuredForHome();
+    $announcement = Cache::remember('announcement', 24 * 60 * 60, function () {
+      return $this->announcementRepository->index();
+    });
 
     return Inertia::render('guest/main', [
       'canRegister' => Features::enabled(Features::registration()),
+      'announcement' => $announcement,
       'competitions' => CompetitionListResource::collection(
         $competitions
       ),

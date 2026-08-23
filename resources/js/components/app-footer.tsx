@@ -65,9 +65,10 @@ export function AppFooter() {
                                 className="h-10"
                             />
                             <p className="mt-4 max-w-md text-sm leading-relaxed text-slate-400">
-                                Platform kompetisi digital untuk eksplorasi
-                                event, komunitas, dan pengalaman baru yang
-                                profesional.
+                                Wadah kompetisi teknologi informasi nasional
+                                oleh HIMATIFA UPN "Veteran" Jawa Timur yang
+                                memberdayakan generasi muda untuk berinovasi
+                                melalui kreativitas dan teknologi.
                             </p>
                         </div>
 

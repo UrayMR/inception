@@ -15,12 +15,17 @@ class AssignmentSeeder extends Seeder
 
     $competitions = Competition::get(['id']);
 
-    foreach ($competitions as $competition_id) {
-      Assignment::factory()->create([
-        'competition_id' => $competition_id,
-        'name' => $assignment_name,
-        'status' => AssignmentStatus::inactive->value,
-      ]);
+    foreach ($competitions as $competition) {
+      Assignment::updateOrCreate(
+        [
+          'competition_id' => $competition->id,
+          'name'           => $assignment_name,
+        ],
+        [
+          'assignment_guide_link' => 'https://drive.google.com/file/d/1a2b3c4d5e6f7g8h9i0j/view?usp=sharing',
+          'status'                => AssignmentStatus::inactive->value,
+        ]
+      );
     }
   }
 }

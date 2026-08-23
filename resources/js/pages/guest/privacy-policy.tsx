@@ -19,7 +19,7 @@ export default function PrivacyPolicy() {
                         </h1>
                         <div className="mt-4 h-1 w-24 bg-amber-400" />
                         <p className="mt-4 font-mono text-sm text-slate-400">
-                            LAST_UPDATED // 1 September, 2026
+                            [ LAST_UPDATED // 24 August, 2026]
                         </p>
                     </div>
 

@@ -21,6 +21,7 @@ class TeamMemberFactory extends Factory
         return [
             'team_id' => Team::factory(),
             'member_name' => $this->faker->name(),
+            'member_phone_number' => $this->faker->phoneNumber(),
         ];
     }
 }

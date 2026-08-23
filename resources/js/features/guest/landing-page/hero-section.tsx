@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { ArrowRightIcon } from 'lucide-react';
-import { login } from '@/routes';
 import guest from '@/routes/guest';
+import { register } from '@/routes/participant/competitions';
 
 export default function HeroSection({ id }: { id: string }) {
     return (
@@ -31,7 +31,7 @@ export default function HeroSection({ id }: { id: string }) {
 
                 <div className="mt-10 flex w-full max-w-sm flex-col items-center justify-center gap-4 font-sans text-xs font-semibold tracking-wider uppercase sm:max-w-none sm:flex-row">
                     <Link
-                        href={login()}
+                        href={register()}
                         className="group relative inline-flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl px-7 transition-all duration-300 active:scale-97 sm:w-auto"
                         style={{
                             background:

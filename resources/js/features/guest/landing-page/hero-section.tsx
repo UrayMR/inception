@@ -26,7 +26,7 @@ export default function HeroSection({ id }: { id: string }) {
                 <p className="mx-auto max-w-xl text-xs leading-relaxed tracking-wide text-purple-100/70 sm:text-sm">
                     Siap menciptakan gebrakan digital? Tunjukkan kreativitas
                     terbaik timmu, taklukkan tantangannya, dan rebut total
-                    hadiah jutaan rupiah!
+                    hadiah belasan juta rupiah!
                 </p>
 
                 <div className="mt-10 flex w-full max-w-sm flex-col items-center justify-center gap-4 font-sans text-xs font-semibold tracking-wider uppercase sm:max-w-none sm:flex-row">

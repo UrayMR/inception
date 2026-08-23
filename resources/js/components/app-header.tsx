@@ -13,6 +13,7 @@ import { home, login, logout } from '@/routes';
 import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
 import type { NavItem } from '@/types';
+import AnnouncementBanner from './announcement-banner';
 import { AvatarProfile } from './avatar-profile';
 
 const mainNavItems: NavItem[] = [
@@ -61,7 +62,7 @@ export function AppHeader() {
     return (
         <>
             <div
-                className="sticky top-0 z-50 w-full px-2 pt-2"
+                className="sticky top-0 z-50 w-full px-2"
                 style={{
                     backdropFilter: 'blur(12px)',
                     WebkitBackdropFilter: 'blur(12px)',
@@ -70,6 +71,7 @@ export function AppHeader() {
                     borderColor: 'rgba(55,0,92,0.5)',
                 }}
             >
+                <AnnouncementBanner />
                 <div className="relative mx-auto flex h-16 w-full items-center justify-between px-4 md:max-w-7xl">
                     {/* Logo */}
                     <Link

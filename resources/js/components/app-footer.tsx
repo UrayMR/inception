@@ -37,7 +37,7 @@ const footerExplore = [
     },
     {
         label: 'Timelines',
-        href: '/#timeline',
+        href: '/#timelines',
     },
     {
         label: 'FAQ',

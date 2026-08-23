@@ -7,7 +7,7 @@ export default function HeroSection({ id }: { id: string }) {
     return (
         <section
             id={id}
-            className="relative flex min-h-[90vh] flex-col items-center justify-center bg-transparent px-6 py-12 text-center lg:px-8"
+            className="relative flex min-h-[90vh] flex-col items-center justify-center bg-transparent px-6 py-12 text-center lg:px-8 scroll-mt-24"
         >
             <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center space-y-8">
                 <h1 className="font-avalors text-3xl leading-tight font-bold tracking-widest text-white sm:text-6xl lg:text-7xl">

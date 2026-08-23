@@ -40,10 +40,11 @@ class UserSeeder extends Seeder
             'email' => 'user@gmail.com',
             'role' => UserRole::participant->value,
             'password' => bcrypt('password'),
+            'email_verified_at' => now(),
         ]);
 
-        User::factory(5)->withGoogle()->create();
-        User::factory(5)->unverified()->create();
-        User::factory(5)->withTwoFactor()->create();
+        // User::factory(5)->withGoogle()->create();
+        // User::factory(5)->unverified()->create();
+        // User::factory(5)->withTwoFactor()->create();
     }
 }

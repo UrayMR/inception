@@ -144,7 +144,7 @@ export default function RegisterCompetitionPage({
                 competition?.otherValues?.type === CompetitionTypeMap.Team.value
                     ? previous.members.length > 0
                         ? previous.members.slice(0, maxAdditionalMembers)
-                        : [{ member_name: '' }]
+                        : [{ member_name: '', member_phone_number: '' }]
                     : [],
         }));
     };
@@ -163,6 +163,13 @@ export default function RegisterCompetitionPage({
         payment: guardPaymentStep,
     };
 
+    // Steps that require the user to confirm their data via the AlertDialog
+    // before moving on to the next step.
+    const STEPS_REQUIRING_CONFIRMATION: RegisterStepId[] = [
+        'info',
+        'requirement',
+    ];
+
     const currentStepIndex = STEP_ORDER.indexOf(currentStep);
     const isFirstStep = currentStepIndex === 0;
     const isLastStep = currentStepIndex === STEP_ORDER.length - 1;
@@ -176,7 +183,7 @@ export default function RegisterCompetitionPage({
             return;
         }
 
-        if (currentStep === 'requirement') {
+        if (STEPS_REQUIRING_CONFIRMATION.includes(currentStep)) {
             setIsConfirmOpen(true);
 
             return;
@@ -215,10 +222,26 @@ export default function RegisterCompetitionPage({
         setIsConfirmOpen(true);
     };
 
+    const WHATSAPP_ADMIN_NUMBER = '6281288795418';
+
+    const openWhatsappConfirmation = () => {
+        const teamName = form.data.team_name || form.data.leader_name;
+
+        const message = [
+            `Halo, INCEPTION! Saya baru saja mendaftar di bidang lomba: ${selectedCompetition?.label ?? '-'}`,
+            `Atas nama tim: ${teamName || '-'}`,
+            `ingin mengkonfirmasi ulang pendaftaran saya dan meminta link grup peserta, terimakasih!`,
+        ].join('\n');
+
+        const whatsappUrl = `https://wa.me/${WHATSAPP_ADMIN_NUMBER}?text=${encodeURIComponent(message)}`;
+
+        window.open(whatsappUrl, '_blank');
+    };
+
     const handleConfirmSubmit = () => {
         setIsConfirmOpen(false);
 
-        if (currentStep === 'requirement') {
+        if (STEPS_REQUIRING_CONFIRMATION.includes(currentStep)) {
             const nextStep = STEP_ORDER[currentStepIndex + 1];
 
             if (nextStep) {
@@ -228,7 +251,11 @@ export default function RegisterCompetitionPage({
             return;
         }
 
-        form.post(competitions.register.store.url());
+        form.post(competitions.register.store.url(), {
+            onSuccess: () => {
+                openWhatsappConfirmation();
+            },
+        });
     };
 
     const handleReset = () => {
@@ -243,7 +270,12 @@ export default function RegisterCompetitionPage({
             'members',
         );
         form.setData('leader_name', auth.user.name);
-        form.setData('members', isTeamCompetition ? [{ member_name: '' }] : []);
+        form.setData(
+            'members',
+            isTeamCompetition
+                ? [{ member_name: '', member_phone_number: '' }]
+                : [],
+        );
         setCurrentStep(STEP_ORDER[0]);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -385,12 +417,34 @@ export default function RegisterCompetitionPage({
                 <AlertDialogContent className="border-zinc-800 bg-zinc-950 text-zinc-100">
                     <AlertDialogHeader>
                         <AlertDialogTitle className="font-sans tracking-wide text-white uppercase">
-                            {currentStep === 'requirement'
-                                ? 'VALIDASI TAUTAN BERKAS'
-                                : 'KONFIRMASI REGISTRASI'}
+                            {currentStep === 'info'
+                                ? 'KONFIRMASI DATA PESERTA'
+                                : currentStep === 'requirement'
+                                  ? 'VALIDASI TAUTAN BERKAS'
+                                  : 'KONFIRMASI REGISTRASI'}
                         </AlertDialogTitle>
 
-                        {currentStep === 'requirement' ? (
+                        {currentStep === 'info' ? (
+                            <>
+                                <AlertDialogDescription className="text-zinc-400">
+                                    Pastikan{' '}
+                                    <span className="font-bold text-purple-400">
+                                        nama ketua tim, nama anggota, institusi,
+                                        dan nomor telepon
+                                    </span>{' '}
+                                    yang Anda masukkan sudah benar dan sesuai
+                                    ejaan resmi (KTP/kartu identitas). Data ini
+                                    akan dipakai langsung untuk kelancaran
+                                    proses pendaftaran dan pembuatan sertifikat
+                                    peserta nantinya.
+                                </AlertDialogDescription>
+                                <AlertDialogDescription className="mt-2 text-xs text-rose-500">
+                                    Kesalahan penulisan nama berpotensi tidak
+                                    dapat diperbaiki setelah sertifikat
+                                    diterbitkan.
+                                </AlertDialogDescription>
+                            </>
+                        ) : currentStep === 'requirement' ? (
                             <>
                                 <AlertDialogDescription className="text-zinc-400">
                                     Pastikan tautan (link) Google Drive yang
@@ -433,7 +487,7 @@ export default function RegisterCompetitionPage({
                             onClick={handleConfirmSubmit}
                             className="bg-purple-600 font-semibold text-white hover:bg-purple-700"
                         >
-                            {currentStep === 'requirement'
+                            {STEPS_REQUIRING_CONFIRMATION.includes(currentStep)
                                 ? 'Sudah, Lanjutkan'
                                 : 'Ya, Kirim'}
                         </AlertDialogAction>

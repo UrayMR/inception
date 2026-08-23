@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('team_id')->constrained('teams', 'id')->onDelete('cascade');
             $table->string('member_name');
+            $table->string('member_phone_number');
             $table->timestamps();
         });
     }

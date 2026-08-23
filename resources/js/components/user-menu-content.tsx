@@ -45,7 +45,7 @@ export function UserMenuContent({ user }: Props) {
                 >
                     <Link
                         className="flex w-full cursor-pointer items-center px-2 py-2 font-sans text-xs font-medium tracking-wide text-zinc-300"
-                        href={isAdmin ? dashboard() : settings.dashboard()}
+                        href={settings.dashboard()}
                         prefetch
                         onClick={cleanup}
                     >
@@ -71,6 +71,27 @@ export function UserMenuContent({ user }: Props) {
             </DropdownMenuGroup>
 
             <DropdownMenuSeparator className="bg-purple-500/20" />
+
+            {isAdmin && (
+                <>
+                    <DropdownMenuItem
+                        asChild
+                        className="rounded-lg transition-colors duration-200 focus:bg-purple-900/40 focus:text-white data-highlighted:bg-purple-900/40 data-highlighted:text-white"
+                    >
+                        <Link
+                            className="flex w-full cursor-pointer items-center px-2 py-2 font-sans text-xs font-medium tracking-wide text-zinc-300"
+                            href={dashboard()}
+                            prefetch
+                            onClick={cleanup}
+                        >
+                            <LayoutDashboard className="mr-2.5 h-4 w-4 text-purple-400" />
+                            <span>Admin Dashboard</span>
+                        </Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuSeparator className="bg-purple-500/20" />
+                </>
+            )}
 
             <DropdownMenuItem
                 asChild

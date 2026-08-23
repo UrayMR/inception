@@ -34,6 +34,7 @@ class ShowTeamResource extends JsonResource
                 return [
                     'id' => $member->id,
                     'member_name' => $member->member_name,
+                    'member_phone_number' => $member->member_phone_number,
                 ];
             })->toArray(),
             'requirement_link' => $this->requirement_link,

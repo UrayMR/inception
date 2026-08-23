@@ -228,8 +228,8 @@ export default function RegisterCompetitionPage({
         const teamName = form.data.team_name || form.data.leader_name;
 
         const message = [
-            `Halo, INCEPTION! Saya baru saja mendaftar di bidang lomba:${selectedCompetition?.label ?? '-'}`,
-            `Atas nama tim:${teamName || '-'}`,
+            `Halo, INCEPTION! Saya baru saja mendaftar di bidang lomba: ${selectedCompetition?.label ?? '-'}`,
+            `Atas nama tim: ${teamName || '-'}`,
             `ingin mengkonfirmasi ulang pendaftaran saya dan meminta link grup peserta, terimakasih!`,
         ].join('\n');
 

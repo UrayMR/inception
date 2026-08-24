@@ -15,7 +15,7 @@ type RegisterCompetitionRequirementStepProps = {
 };
 
 const ASSETS_DRIVE_URL =
-    'https://drive.google.com/drive/folders/1eYYAL0osYS0HJoKoNjdRRq8Jj6H37tZe?usp=sharing';
+    'https://drive.google.com/drive/folders/1g4csOe28N5SF-DDXeAlP9ySxQpXKtzM0?usp=sharing';
 
 export default function RegisterCompetitionRequirementStep({
     data,

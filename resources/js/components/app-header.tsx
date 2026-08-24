@@ -64,7 +64,7 @@ export function AppHeader() {
     return (
         <>
             <div
-                className="sticky top-0 z-50 w-full px-2"
+                className="sticky top-0 z-50 w-full"
                 style={{
                     backdropFilter: 'blur(12px)',
                     WebkitBackdropFilter: 'blur(12px)',

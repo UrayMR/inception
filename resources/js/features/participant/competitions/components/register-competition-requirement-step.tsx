@@ -14,6 +14,9 @@ type RegisterCompetitionRequirementStepProps = {
     ) => void;
 };
 
+const ASSETS_DRIVE_URL =
+    'https://drive.google.com/drive/folders/1eYYAL0osYS0HJoKoNjdRRq8Jj6H37tZe?usp=sharing';
+
 export default function RegisterCompetitionRequirementStep({
     data,
     errors,
@@ -58,6 +61,19 @@ export default function RegisterCompetitionRequirementStep({
                             .
                         </li>
                     </ul>
+
+                    <p className="mt-3 border-t border-purple-500/10 pt-3 font-mono text-[11px] leading-relaxed text-zinc-500">
+                        Aset twibbon, caption, dan template lainnya tersedia di{' '}
+                        <a
+                            href={ASSETS_DRIVE_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-amber-400 underline underline-offset-2 hover:text-amber-300"
+                        >
+                            folder Google Drive ini
+                        </a>
+                        .
+                    </p>
                 </div>
 
                 <FormField

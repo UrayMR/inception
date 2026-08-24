@@ -33,7 +33,7 @@ export function MobileSummarySheet({
                     aria-controls="mobile-summary-sheet"
                     whileTap={{ scale: 0.98 }}
                 >
-                    <span className="bg-linear-to-r from-purple-200 via-purple-300 to-purple-400 bg-clip-text text-xs font-bold tracking-widest text-transparent uppercase">
+                    <span className="text-xs font-bold tracking-widest text-zinc-200 uppercase">
                         Ringkasan Kompetisi
                     </span>
 

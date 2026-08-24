@@ -1,5 +1,5 @@
 import { Link, router } from '@inertiajs/react';
-import { LayoutDashboard, LogOut, Settings } from 'lucide-react';
+import { Blocks, LayoutDashboard, LogOut, Settings } from 'lucide-react';
 import {
     DropdownMenuGroup,
     DropdownMenuItem,
@@ -26,7 +26,9 @@ export function UserMenuContent({ user }: Props) {
         router.flushAll();
     };
 
-    const isAdmin = user.role === UserRoleMap.Admin.value;
+    const isAdminOrAccountant =
+        user.role === UserRoleMap.Admin.value ||
+        user.role === UserRoleMap.Accountant.value;
 
     return (
         <>
@@ -72,7 +74,7 @@ export function UserMenuContent({ user }: Props) {
 
             <DropdownMenuSeparator className="bg-purple-500/20" />
 
-            {isAdmin && (
+            {isAdminOrAccountant && (
                 <>
                     <DropdownMenuItem
                         asChild
@@ -84,8 +86,8 @@ export function UserMenuContent({ user }: Props) {
                             prefetch
                             onClick={cleanup}
                         >
-                            <LayoutDashboard className="mr-2.5 h-4 w-4 text-purple-400" />
-                            <span>Admin Dashboard</span>
+                            <Blocks className="mr-2.5 h-4 w-4 text-purple-400" />
+                            <span>Panel Dashboard</span>
                         </Link>
                     </DropdownMenuItem>
 

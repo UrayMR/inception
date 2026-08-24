@@ -13,7 +13,7 @@ export default function CompetitionSummaryPanel({
     return (
         <aside className="space-y-5 rounded-2xl border border-purple-900/20 bg-zinc-950/40 backdrop-blur-sm p-6 md:p-8">
             <div className="flex items-center justify-between border-b border-zinc-800 pb-3 font-sans">
-                <h3 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">
+                <h3 className="text-xs font-bold tracking-wider text-zinc-200 uppercase">
                     Ringkasan Kompetisi
                 </h3>
                 <CompetitionStatusBadge

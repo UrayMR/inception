@@ -130,7 +130,7 @@ class CompetitionSeeder extends Seeder
                     'status'         => $details['status'] ?? CompetitionStatus::closed->value,
                     'image_path'     => $details['image_path'],
                     'keywords'       => $details['keywords'] ?? null,
-                    'guidebook_link' => $details['guidebook_link'] ?? "https://himatifaupnvjt.org/",
+                    'guidebook_link' => $details['guidebook_link'] ?? "https://drive.google.com/file/d/1neyExmp26Xq27_XOI8fZqC0Tz2lfZHYE/view?usp=sharing",
                 ]
             );
 

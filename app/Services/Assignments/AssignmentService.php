@@ -7,13 +7,16 @@ use App\Actions\Assignments\StoreAssignment;
 use App\Actions\Assignments\UpdateAssignment;
 use App\DTOs\Assignments\StoreAssignmentDTO;
 use App\DTOs\Assignments\UpdateAssignmentDTO;
+use App\Enums\AssignmentStatus;
 use App\Models\Assignment;
 use App\Repositories\Assignments\AssignmentRepository;
+use App\Services\Competitions\CompetitionService;
 use Illuminate\Support\Facades\DB;
 
 class AssignmentService
 {
   public function __construct(
+    protected CompetitionService $competitionService,
     protected AssignmentRepository $assignmentRepository,
     protected StoreAssignment $storeAssignment,
     protected UpdateAssignment $updateAssignment,
@@ -43,6 +46,10 @@ class AssignmentService
 
   public function update(UpdateAssignmentDTO $dto, Assignment $assignment)
   {
+    if ($dto->status === AssignmentStatus::active->value) {
+      $this->competitionService->ensureCompetitionIsOngoing($assignment->competition);
+    }
+
     return DB::transaction(function () use ($dto, $assignment) {
       return $this->updateAssignment->handle($dto, $assignment);
     });

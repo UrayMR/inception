@@ -10,6 +10,8 @@ use App\Actions\Competitions\UpdateCompetition;
 use App\Actions\Competitions\DeleteCompetition;
 use App\DTOs\Competitions\StoreCompetitionDTO;
 use App\DTOs\Competitions\UpdateCompetitionDTO;
+use App\Enums\AssignmentStatus;
+use App\Enums\CompetitionStatus;
 use App\Helpers\ThrowException;
 use App\Utilities\SlugGenerator;
 use Illuminate\Http\Request;
@@ -60,37 +62,13 @@ class CompetitionService
 
         $this->validateMaxMemberForType($dto->type, $dto->max_member);
 
+        if ($competition->status === CompetitionStatus::ongoing->value) {
+            $this->ensureCompetitionHasNoActiveAssignments($competition);
+        }
+
         return DB::transaction(function () use ($dto, $competition, $slug, $timelineAttributes) {
             return $this->updateCompetition->handle($dto, $competition, $slug, $timelineAttributes);
         });
-    }
-
-    public function validateMaxMemberForType(string $type, ?int $maxMember = null): void
-    {
-        if ($type === CompetitionType::solo->value) {
-            if ($maxMember !== 1) {
-                ThrowException::validation(
-                    'max_member',
-                    'Solo competitions must have max member exactly 1 (the leader counts as the only member).'
-                );
-            }
-
-            return;
-        }
-
-        if ($maxMember === null) {
-            ThrowException::validation(
-                'max_member',
-                'Team competitions require max member of at least 2 (leader is counted separately).'
-            );
-        }
-
-        if ($maxMember < 2) {
-            ThrowException::validation(
-                'max_member',
-                'Team competitions must have max member of at least 2 (leader is counted separately).'
-            );
-        }
     }
 
     public function destroy(Competition $competition): bool
@@ -161,5 +139,51 @@ class CompetitionService
         }
 
         return $slug;
+    }
+
+    public function ensureCompetitionHasNoActiveAssignments(Competition $competition): void
+    {
+        if ($competition->assignments()->where('status', AssignmentStatus::active->value)->exists()) {
+            ThrowException::business(
+                'This competition has active assignments and cannot be modified.'
+            );
+        }
+    }
+
+    public function validateMaxMemberForType(string $type, ?int $maxMember = null): void
+    {
+        if ($type === CompetitionType::solo->value) {
+            if ($maxMember !== 1) {
+                ThrowException::validation(
+                    'max_member',
+                    'Solo competitions must have max member exactly 1 (the leader counts as the only member).'
+                );
+            }
+
+            return;
+        }
+
+        if ($maxMember === null) {
+            ThrowException::validation(
+                'max_member',
+                'Team competitions require max member of at least 2 (leader is counted separately).'
+            );
+        }
+
+        if ($maxMember < 2) {
+            ThrowException::validation(
+                'max_member',
+                'Team competitions must have max member of at least 2 (leader is counted separately).'
+            );
+        }
+    }
+
+    public function ensureCompetitionIsOngoing(Competition $competition): void
+    {
+        if ($competition->status !== CompetitionStatus::ongoing->value) {
+            ThrowException::business(
+                'This competition is not ongoing and cannot be modified.'
+            );
+        }
     }
 }

@@ -91,7 +91,7 @@ export function TeamForm({
             );
 
             if (trimmedMembers.length === 0 && maxMembersForPayload > 0) {
-                onChange('members', [{ member_name: '' }]);
+                onChange('members', [{ member_name: '', member_phone_number: '' }]);
 
                 return;
             }

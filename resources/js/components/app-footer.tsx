@@ -1,21 +1,25 @@
 import { Link } from '@inertiajs/react';
 import { Mail, Phone } from 'lucide-react';
 import capitalize from '@/helpers/capitalize';
-import { index as competitionIndex } from '@/routes/guest/competitions';
+import competitions from '@/routes/guest/competitions';
 import InstagramIcon from './svg/instagram-icon';
 
 const footerCompetitions = [
     {
         label: 'Hackathon',
+        href: competitions.show('hackathon').url,
     },
     {
         label: 'Business Plan',
+        href: competitions.show('business-plan').url,
     },
     {
         label: 'UI/UX',
+        href: competitions.show('ui-ux').url,
     },
     {
         label: 'Data Science',
+        href: competitions.show('data-science').url,
     },
     // {
     //     label: 'Essay',
@@ -33,7 +37,7 @@ const footerExplore = [
     },
     {
         label: 'Timelines',
-        href: '/#timeline',
+        href: '/#timelines',
     },
     {
         label: 'FAQ',
@@ -61,9 +65,10 @@ export function AppFooter() {
                                 className="h-10"
                             />
                             <p className="mt-4 max-w-md text-sm leading-relaxed text-slate-400">
-                                Platform kompetisi digital untuk eksplorasi
-                                event, komunitas, dan pengalaman baru yang
-                                profesional.
+                                Wadah kompetisi teknologi informasi nasional
+                                oleh HIMATIFA UPN "Veteran" Jawa Timur yang
+                                memberdayakan generasi muda untuk berinovasi
+                                melalui kreativitas dan teknologi.
                             </p>
                         </div>
 
@@ -100,7 +105,7 @@ export function AppFooter() {
                                 {footerCompetitions.map((item, index) => (
                                     <li key={index}>
                                         <Link
-                                            href={competitionIndex()}
+                                            href={item.href}
                                             className="transition hover:text-purple-400"
                                         >
                                             {capitalize(item.label)}
@@ -119,12 +124,12 @@ export function AppFooter() {
                             <ul className="mt-4 space-y-3 text-sm text-slate-400">
                                 {footerExplore.map((item) => (
                                     <li key={item.label}>
-                                        <Link
+                                        <a
                                             href={item.href}
                                             className="transition hover:text-purple-400"
                                         >
                                             {item.label}
-                                        </Link>
+                                        </a>
                                     </li>
                                 ))}
                             </ul>

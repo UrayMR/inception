@@ -7,24 +7,25 @@ import {
 
 const faqs = [
     {
-        question: 'Apa itu Inception?',
-        answer: 'Inception adalah platform kompetisi yang membantu peserta menemukan, mengikuti, dan mengelola berbagai event kompetitif secara terstruktur.',
+        question: 'Apa itu INCEPTION 2026?',
+        answer: 'INCEPTION (Informatics Competition for Exploring Technology and Innovation) 2026 adalah kompetisi teknologi informasi tingkat nasional oleh Himatifa UPN Veteran Jawa Timur dengan tema "Empowering Future Innovators Through Technology and Creativity".',
     },
     {
-        question: 'Bagaimana cara mengikuti sebuah kompetisi?',
-        answer: 'Pilih kompetisi yang tersedia, baca detail event, lalu lakukan registrasi melalui halaman kompetisi tersebut.',
+        question: 'Siapa saja yang bisa mengikuti kompetisi ini?',
+        answer: 'Terbuka untuk seluruh mahasiswa aktif D3, D4, atau S1 sederajat di seluruh Indonesia secara daring. Setiap tim terdiri dari 3 orang, dan anggota tim boleh berasal dari prodi berbeda dalam satu kampus yang sama (ketentuan lintas kampus mengacu pada guidebook masing-masing kompetisi).',
     },
     {
-        question: 'Apakah saya bisa mengikuti lebih dari satu kompetisi?',
-        answer: 'Bisa. Selama jadwal kompetisi tidak bertabrakan dan memenuhi persyaratan event.',
+        question: 'Apa saja cabang lomba yang diadakan?',
+        answer: 'Terdapat 4 cabang perlombaan: UI/UX Competition, Data Science Competition (DSC), Online Hackathon, dan Business Plan Competition (BPC). Peserta hanya boleh menjadi ketua pada satu tim di satu cabang lomba, namun boleh menjadi anggota di cabang lomba lain selama jadwalnya tidak bersamaan.',
     },
     {
-        question: 'Apakah tersedia leaderboard?',
-        answer: 'Setiap kompetisi dapat memiliki leaderboard untuk menampilkan ranking peserta berdasarkan hasil kompetisi.',
+        question: 'Kapan jadwal penting pendaftaran dan pelaksanaannya?',
+        answer: 'Pendaftaran utama dibuka 24–30 Agustus 2026 (perpanjangan hingga 3 September 2026). Technical Meeting dilaksanakan pada 4 September 2026, penjurian/presentasi finalis pada 10 Oktober 2026, dan pengumuman pemenang pada 13 Oktober 2026.',
     },
     {
-        question: 'Bagaimana jika mengalami masalah?',
-        answer: 'Hubungi penyelenggara melalui informasi kontak yang tersedia pada halaman event.',
+        question:
+            'Di mana saya bisa mengunduh guidebook dan menghubungi panitia?',
+        answer: 'Guidebook lengkap dapat diunduh melalui website resmi di https://inception.himatifaupnvjt.org/ pada bagian Detail Kompetisi yang ingin Anda ikuti. Jika mengalami kendala, Anda bisa menghubungi Instagram @inception.upnvjt atau melalui helpdesk website.',
     },
 ];
 
@@ -39,7 +40,7 @@ export default function FaqSection({ id }: { id: string }) {
                     <span className="block font-mono text-xs font-bold tracking-[0.4em] text-purple-400 uppercase">
                         // SYSTEM_INFO
                     </span>
-                    <h2 className="text-4xl font-extrabold tracking-wider font-avalors text-white uppercase sm:text-5xl">
+                    <h2 className="font-avalors text-4xl font-extrabold tracking-wider text-white uppercase sm:text-5xl">
                         Frequently Asked Questions
                     </h2>
                     <div className="mx-auto h-1 w-20 rounded-full bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.6)]" />

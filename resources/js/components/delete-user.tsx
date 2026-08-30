@@ -18,7 +18,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-export default function DeleteUser() {
+export default function DeleteUser({ hasPassword }: { hasPassword: boolean }) {
     const passwordInput = useRef<HTMLInputElement>(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -46,10 +46,8 @@ export default function DeleteUser() {
                     </div>
                 </div>
 
-                {/* Menggunakan AlertDialog */}
                 <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
                     <AlertDialogTrigger asChild>
-                        {/* Tombol Simpel & Clean (Tidak lebay) */}
                         <Button
                             variant="destructive"
                             data-test="delete-user-button"
@@ -72,8 +70,10 @@ export default function DeleteUser() {
                                 <strong className="text-zinc-200">
                                     INCEPTION 2026
                                 </strong>{' '}
-                                akan dihapus secara permanen. Masukkan kata
-                                sandi Anda untuk mengonfirmasi tindakan ini.
+                                akan dihapus secara permanen.
+                                {hasPassword
+                                    ? ' Masukkan kata sandi Anda untuk mengonfirmasi tindakan ini.'
+                                    : ''}
                             </AlertDialogDescription>
                         </AlertDialogHeader>
 
@@ -88,28 +88,30 @@ export default function DeleteUser() {
                         >
                             {({ resetAndClearErrors, processing, errors }) => (
                                 <div className="space-y-5 pt-2">
-                                    <div className="grid gap-2">
-                                        <Label
-                                            htmlFor="password"
-                                            className="text-xs font-medium tracking-wide text-purple-300/80"
-                                        >
-                                            Kata Sandi Konfirmasi
-                                        </Label>
+                                    {hasPassword && (
+                                        <div className="grid gap-2">
+                                            <Label
+                                                htmlFor="password"
+                                                className="text-xs font-medium tracking-wide text-purple-300/80"
+                                            >
+                                                Kata Sandi Konfirmasi
+                                            </Label>
 
-                                        <PasswordInput
-                                            id="password"
-                                            name="password"
-                                            ref={passwordInput}
-                                            placeholder="Masukkan kata sandi Anda"
-                                            autoComplete="current-password"
-                                            className="h-10 rounded-lg border-purple-900/50 bg-[#0d071a]/80 text-sm text-zinc-200 shadow-inner focus:border-rose-500 focus:ring-1 focus:ring-rose-500/50"
-                                        />
+                                            <PasswordInput
+                                                id="password"
+                                                name="password"
+                                                ref={passwordInput}
+                                                placeholder="Masukkan kata sandi Anda"
+                                                autoComplete="current-password"
+                                                className="h-10 rounded-lg border-purple-900/50 bg-[#0d071a]/80 text-sm text-zinc-200 shadow-inner focus:border-rose-500 focus:ring-1 focus:ring-rose-500/50"
+                                            />
 
-                                        <InputError
-                                            className="mt-1 text-xs text-rose-500"
-                                            message={errors.password}
-                                        />
-                                    </div>
+                                            <InputError
+                                                className="mt-1 text-xs text-rose-500"
+                                                message={errors.password}
+                                            />
+                                        </div>
+                                    )}
 
                                     <AlertDialogFooter className="gap-2">
                                         <AlertDialogCancel asChild>

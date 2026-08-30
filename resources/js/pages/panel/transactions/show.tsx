@@ -40,11 +40,11 @@ interface ShowTransactionPageProps {
 const MessageTemplate = {
     verified: {
         defaultMessage: (transaction: ITransactionShow) =>
-            `Halo ${transaction.team_name ?? transaction.leader_name}, pembayaran transaksi kamu untuk ${transaction.competition_name} sudah terverifikasi.`,
+            `Halo ${transaction.team_name ?? transaction.leader_name}, pembayaran transaksi kamu untuk kompetisi ${transaction.competition_name} sudah kami setujui. Untuk selanjutnya, silahkan masuk komunitas INCEPTION 2026 pada link berikut: https://chat.whatsapp.com/IezNiwZlQVb7lKRyn9iY8w`,
     },
     rejected: {
         defaultMessage: (transaction: ITransactionShow) =>
-            `Halo ${transaction.team_name ?? transaction.leader_name}, maaf transaksi kamu untuk ${transaction.competition_name} belum dapat kami terima.`,
+            `Halo ${transaction.team_name ?? transaction.leader_name}, mohon maaf transaksi kamu untuk kompetisi ${transaction.competition_name} belum dapat kami terima. Silahkan coba lagi atau hubungi Admin.`,
     },
 };
 

@@ -29,9 +29,11 @@ import { send } from '@/routes/verification';
 export default function Profile({
     mustVerifyEmail,
     status,
+    hasPassword,
 }: {
     mustVerifyEmail: boolean;
     status?: string;
+    hasPassword: boolean;
 }) {
     const { auth } = usePage().props;
 
@@ -196,7 +198,9 @@ export default function Profile({
                                         data-test="update-profile-button"
                                         className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-purple-500/30 bg-purple-950/10 px-7 text-purple-300 backdrop-blur-xs transition-all duration-300 hover:border-purple-500/50 hover:bg-purple-900/20 hover:text-white sm:w-auto"
                                     >
-                                        {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+                                        {processing
+                                            ? 'Menyimpan...'
+                                            : 'Simpan Perubahan'}
                                     </Button>
                                 </div>
                             </div>
@@ -206,7 +210,7 @@ export default function Profile({
 
                 {/* Danger zone */}
                 <div className="rounded-xl border border-rose-500/20 bg-black/20 p-4">
-                    <DeleteUser />
+                    <DeleteUser hasPassword={hasPassword} />
                 </div>
             </div>
 

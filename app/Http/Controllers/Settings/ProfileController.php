@@ -31,6 +31,7 @@ class ProfileController extends Controller
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
             'schedule' => $schedule,
+            'hasPassword' => ! empty($request->user()?->password),
         ]);
     }
 

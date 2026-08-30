@@ -15,10 +15,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             CompetitionSeeder::class,
-            TeamSeeder::class,
-            TransactionSeeder::class,
+            // TeamSeeder::class,
+            // TransactionSeeder::class,
             AssignmentSeeder::class,
-            SubmissionSeeder::class,
+            // SubmissionSeeder::class,
+            AnnouncementSeeder::class,
         ]);
     }
 }

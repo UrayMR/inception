@@ -31,6 +31,7 @@ class StoreTeamRequest extends FormRequest
         $memberRules = [
             'members' => ['nullable', 'array'],
             'members.*.member_name' => ['required', 'string', 'max:255'],
+            'members.*.member_phone_number' => ['required', 'string', 'max:20'],
         ];
 
         return array_merge($teamRules, $memberRules);
@@ -64,6 +65,7 @@ class StoreTeamRequest extends FormRequest
             $dto = new MemberDTO(
                 team_id: $team_id,
                 member_name: $member['member_name'],
+                member_phone_number: $member['member_phone_number'],
             );
 
             return $dto->toArray();

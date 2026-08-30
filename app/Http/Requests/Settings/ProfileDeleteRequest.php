@@ -11,14 +11,28 @@ class ProfileDeleteRequest extends FormRequest
     use PasswordValidationRules;
 
     /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        return [
-            'password' => $this->currentPasswordRules(),
-        ];
+        $user = $this->user();
+
+        if ($user && !empty($user->password)) {
+            return [
+                'password' => ['required', $this->currentPasswordRules()],
+            ];
+        }
+
+        return [];
     }
 }

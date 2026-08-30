@@ -32,7 +32,7 @@ export default function Main() {
                 }
             >
                 <CompetitionSection
-                    id="competition"
+                    id="competitions"
                     items={competitions.data}
                 />
             </WhenVisible>
@@ -44,7 +44,7 @@ export default function Main() {
                     </div>
                 }
             >
-                <TimelineSection id="timeline" />
+                <TimelineSection id="timelines" />
             </WhenVisible>
 
             <WhenVisible

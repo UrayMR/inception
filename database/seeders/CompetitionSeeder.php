@@ -16,50 +16,30 @@ class CompetitionSeeder extends Seeder
         $commonTimelines = [
             'Registration' => [
                 'sequence' => 1,
-                'start_at' => Carbon::create(2026, 8, 24, 0, 0, 0),
-                'end_at'   => Carbon::create(2026, 9, 3, 23, 59, 59),
+                'start_at' => Carbon::create(2026, 8, 31, 0, 0, 0),
+                'end_at'   => Carbon::create(2026, 9, 25, 23, 59, 59),
             ],
             'Technical Meeting' => [
                 'sequence' => 2,
-                'start_at' => Carbon::create(2026, 9, 4, 9, 0, 0),
-                'end_at'   => Carbon::create(2026, 9, 4, 12, 0, 0),
+                'start_at' => Carbon::create(2026, 9, 26, 9, 0, 0),
+                'end_at'   => Carbon::create(2026, 9, 26, 12, 35, 0),
             ],
             'Final Round' => [
                 'sequence' => 5,
-                'start_at' => Carbon::create(2026, 10, 10, 9, 0, 0),
-                'end_at'   => Carbon::create(2026, 10, 10, 12, 0, 0),
+                'start_at' => Carbon::create(2026, 10, 31, 8, 0, 0),
+                'end_at'   => Carbon::create(2026, 10, 31, 15, 23, 0),
             ],
             'Winner Announcement' => [
                 'sequence' => 6,
-                'start_at' => Carbon::create(2026, 10, 13, 16, 0, 0),
-                'end_at'   => Carbon::create(2026, 10, 13, 17, 0, 0),
+                'start_at' => Carbon::create(2026, 10, 31, 15, 0, 0),
+                'end_at'   => Carbon::create(2026, 10, 31, 15, 23, 0),
             ],
         ];
 
         // Submission starts right after Technical Meeting ends for every competition.
-        $submissionStart = Carbon::create(2026, 9, 4, 12, 0, 0);
+        $submissionStart = Carbon::create(2026, 9, 26, 12, 35, 0);
 
         $competitions = [
-            // 'Essay' => [
-            //     'description' => 'Dalam dunia yang terus berkembang, ide-ide inovatif menjadi kunci untuk menghadapi tantangan global. Essay Competition mengajak kamu untuk mengekspresikan pemikiran kritis dan kreatif melalui tulisan yang mendalam. Tunjukkan kemampuan analisis, argumentasi, dan solusi yang relevan terhadap isu-isu terkini, serta buktikan bahwa kata-kata dapat menginspirasi perubahan.',
-            //     'type' => CompetitionType::team->value,
-
-            //     'custom_timelines' => [
-            //         'Submission' => [
-            //             'sequence' => 3,
-            //             'start_at' => $submissionStart,
-            //             'end_at'   => Carbon::create(2026, 9, 16, 23, 59, 59),
-            //         ],
-            //         'Finalist Announcement' => [
-            //             'sequence' => 4,
-            //             'start_at' => Carbon::create(2026, 9, 21, 16, 0, 0),
-            //             'end_at'   => Carbon::create(2026, 9, 21, 17, 0, 0),
-            //         ],
-            //     ],
-            //     'status' => CompetitionStatus::closed->value,
-            //     'image_path' => 'competitions/essay.svg',
-            //     'keywords' => "Essay, Writing, Critical Thinking, Creativity, Problem Solving, Research, Analysis, Argumentation, Communication Skills, lomba esai, essay competition, lomba menulis esai, lomba menulis kreatif"
-            // ],
             'Business Plan' => [
                 'description' => 'Ide yang hebat tidak akan berarti tanpa eksekusi dan strategi yang matang. Business Plan Competition menantang kamu untuk merangkai ide tersebut menjadi model bisnis yang inovatif, realistis, dan menjawab kebutuhan pasar. Dari melihat peluang hingga menyusun strategi keuangan, buktikan bahwa rancangan bisnismu bukan sekadar konsep, melainkan solusi nyata yang siap bersaing dan memberikan dampak.',
                 'type' => CompetitionType::team->value,
@@ -68,12 +48,12 @@ class CompetitionSeeder extends Seeder
                     'Submission' => [
                         'sequence' => 3,
                         'start_at' => $submissionStart,
-                        'end_at'   => Carbon::create(2026, 9, 18, 23, 59, 59),
+                        'end_at'   => Carbon::create(2026, 10, 10, 23, 59, 59),
                     ],
                     'Finalist Announcement' => [
                         'sequence' => 4,
-                        'start_at' => Carbon::create(2026, 9, 24, 16, 0, 0),
-                        'end_at'   => Carbon::create(2026, 9, 24, 17, 0, 0),
+                        'start_at' => Carbon::create(2026, 10, 15, 16, 0, 0),
+                        'end_at'   => Carbon::create(2026, 10, 15, 17, 0, 0),
                     ],
                 ],
                 'image_path' => 'competitions/business_plan.svg',
@@ -87,12 +67,12 @@ class CompetitionSeeder extends Seeder
                     'Submission' => [
                         'sequence' => 3,
                         'start_at' => $submissionStart,
-                        'end_at'   => Carbon::create(2026, 9, 23, 23, 59, 59),
+                        'end_at'   => Carbon::create(2026, 10, 20, 23, 59, 59),
                     ],
                     'Finalist Announcement' => [
                         'sequence' => 4,
-                        'start_at' => Carbon::create(2026, 9, 29, 16, 0, 0),
-                        'end_at'   => Carbon::create(2026, 9, 29, 17, 0, 0),
+                        'start_at' => Carbon::create(2026, 10, 27, 16, 0, 0),
+                        'end_at'   => Carbon::create(2026, 10, 27, 17, 0, 0),
                     ],
                 ],
                 'image_path' => 'competitions/ui_ux.svg',
@@ -105,30 +85,30 @@ class CompetitionSeeder extends Seeder
                     'Submission' => [
                         'sequence' => 3,
                         'start_at' => $submissionStart,
-                        'end_at'   => Carbon::create(2026, 9, 24, 23, 59, 59),
+                        'end_at'   => Carbon::create(2026, 10, 21, 23, 59, 59),
                     ],
                     'Finalist Announcement' => [
                         'sequence' => 4,
-                        'start_at' => Carbon::create(2026, 9, 30, 16, 0, 0),
-                        'end_at'   => Carbon::create(2026, 9, 30, 17, 0, 0),
+                        'start_at' => Carbon::create(2026, 10, 28, 16, 0, 0),
+                        'end_at'   => Carbon::create(2026, 10, 28, 17, 0, 0),
                     ],
                 ],
                 'image_path' => 'competitions/data_science.svg',
                 'keywords' => "Data Science, Machine Learning, Artificial Intelligence, Data Analysis, Predictive Modeling, Data Visualization, Big Data, lomba data sains, data science competition, data science, lomba analisis, lomba kecerdasan buatan, machine learning competition"
             ],
             'Hackathon' => [
-                'description' => 'Siap membuktikan kemampuanmu? Tantang dirimu dalam Hackathon dan bangun solusi digital inovatif hanya dalam 24 jam secara online. Tuangkan ide terbaikmu, kolaborasikan kreativitas dan teknologi, lalu ciptakan aplikasi web yang mampu memberikan dampak serta menyelesaikan permasalahan nyata di masyarakat.',
+                'description' => 'Siap membuktikan kemampuanmu? Tantang dirimu dalam Hackathon dan bangun solusi digital inovatif hanya dalam waktu yang ditentukan. Tuangkan ide terbaikmu, kolaborasikan kreativitas dan teknologi, lalu ciptakan aplikasi web yang mampu memberikan dampak serta menyelesaikan permasalahan nyata di masyarakat.',
                 'type' => CompetitionType::team->value,
                 'custom_timelines' => [
                     'Submission' => [
                         'sequence' => 3,
-                        'start_at' => $submissionStart,
-                        'end_at'   => Carbon::create(2026, 9, 25, 23, 59, 59),
+                        'start_at' => Carbon::create(2026, 10, 17, 0, 0, 0),
+                        'end_at'   => Carbon::create(2026, 10, 18, 23, 59, 59), // Hackathon Day: 17-18 Oktober 2026
                     ],
                     'Finalist Announcement' => [
                         'sequence' => 4,
-                        'start_at' => Carbon::create(2026, 10, 1, 16, 0, 0),
-                        'end_at'   => Carbon::create(2026, 10, 1, 17, 0, 0),
+                        'start_at' => Carbon::create(2026, 10, 22, 16, 0, 0),
+                        'end_at'   => Carbon::create(2026, 10, 22, 17, 0, 0),
                     ],
                 ],
                 'image_path' => 'competitions/hackathon.svg',
@@ -137,18 +117,22 @@ class CompetitionSeeder extends Seeder
         ];
 
         foreach ($competitions as $name => $details) {
-            $competition = Competition::factory()->create([
-                'name' => $name,
-                'slug' => $details['slug'] ?? strtolower(str_replace(' ', '-', $name)),
-                'description' => $details['description'],
-                'type' => $details['type'],
-                'price' => $details['price'] ?? '50000',
-                'max_member' => $details['max_member'] ?? 3,
-                'status' => $details['status'] ?? CompetitionStatus::open->value,
-                'image_path' => $details['image_path'],
-                'keywords' => $details['keywords'] ?? null,
-                'guidebook_link' => $details['guidebook_link'] ?? "https://himatifaupnvjt.org/",
-            ]);
+            $slug = $details['slug'] ?? strtolower(str_replace(' ', '-', $name));
+
+            $competition = Competition::updateOrCreate(
+                ['slug' => $slug],
+                [
+                    'name'           => $name,
+                    'description'    => $details['description'],
+                    'type'           => $details['type'],
+                    'price'          => $details['price'] ?? '50000',
+                    'max_member'     => $details['max_member'] ?? 3,
+                    'status'         => $details['status'] ?? CompetitionStatus::closed->value,
+                    'image_path'     => $details['image_path'],
+                    'keywords'       => $details['keywords'] ?? null,
+                    'guidebook_link' => $details['guidebook_link'] ?? "https://drive.google.com/file/d/1neyExmp26Xq27_XOI8fZqC0Tz2lfZHYE/view?usp=sharing",
+                ]
+            );
 
             $allTimelines = [
                 'Registration'          => $commonTimelines['Registration'],
@@ -160,15 +144,18 @@ class CompetitionSeeder extends Seeder
             ];
 
             foreach ($allTimelines as $timelineName => $timeData) {
-                CompetitionTimeline::factory()
-                    ->for($competition)
-                    ->create([
-                        'timeline_name'     => $timelineName,
+                CompetitionTimeline::updateOrCreate(
+                    [
+                        'competition_id' => $competition->id,
+                        'timeline_name'  => $timelineName,
+                    ],
+                    [
                         'description' => null,
-                        'sequence' => $timeData['sequence'],
-                        'start_at' => $timeData['start_at'],
-                        'end_at'   => $timeData['end_at'],
-                    ]);
+                        'sequence'    => $timeData['sequence'],
+                        'start_at'    => $timeData['start_at'],
+                        'end_at'      => $timeData['end_at'],
+                    ]
+                );
             }
         }
     }

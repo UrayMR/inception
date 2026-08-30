@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-const REGISTRATION_START = new Date('2026-08-24T00:00:00');
-const REGISTRATION_END = new Date('2026-09-03T23:59:59');
+const REGISTRATION_START = new Date('2026-08-31T00:00:00');
+const REGISTRATION_END = new Date('2026-09-25T23:59:59');
 
 type RegistrationStatus = 'not_started' | 'open' | 'ended';
 
@@ -102,7 +102,7 @@ export default function AboutSection({ id }: { id: string }) {
 
                     <h3 className="mb-6 text-center text-xl leading-snug font-normal tracking-wide text-white sm:text-2xl md:text-left">
                         The{' '}
-                        <span className="font-black tracking-wider text-amber-400 uppercase drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">
+                        <span className="font-avalors tracking-wider text-amber-400 uppercase drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">
                             BIGGEST
                         </span>{' '}
                         Tech & Innovation Event for Next Gen Developers

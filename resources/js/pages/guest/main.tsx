@@ -5,6 +5,7 @@ import CompetitionSection from '@/features/guest/landing-page/competition-sectio
 import { CtaSection } from '@/features/guest/landing-page/cta-section';
 import FaqSection from '@/features/guest/landing-page/faq-section';
 import HeroSection from '@/features/guest/landing-page/hero-section';
+import SponsorSection from '@/features/guest/landing-page/sponsor-section';
 import TimelineSection from '@/features/guest/landing-page/timeline-section';
 import AppLayout from '@/layouts/app-layout';
 import type { ICompetitionCard } from '@/types';
@@ -45,6 +46,16 @@ export default function Main() {
                 }
             >
                 <TimelineSection id="timelines" />
+            </WhenVisible>
+
+            <WhenVisible
+                fallback={
+                    <div className="container mx-auto py-12">
+                        <Skeleton className="mx-auto h-125 w-full max-w-7xl" />
+                    </div>
+                }
+            >
+                <SponsorSection id="sponsors" />
             </WhenVisible>
 
             <WhenVisible

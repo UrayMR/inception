@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-const REGISTRATION_START = new Date('2026-08-24T00:00:00');
-const REGISTRATION_END = new Date('2026-09-03T23:59:59');
+const REGISTRATION_START = new Date('2026-08-31T00:00:00');
+const REGISTRATION_END = new Date('2026-09-25T23:59:59');
 
 type RegistrationStatus = 'not_started' | 'open' | 'ended';
 

@@ -117,6 +117,8 @@ return [
     'limiters' => [
         'login' => 'login',
         'two-factor' => 'two-factor',
+        'register' => 'register',
+        'competition-register' => 'competition-register',
     ],
 
     /*

@@ -20,7 +20,6 @@ Route::as('guest.')->group(function () {
 
     Route::controller(CompetitionRegistrationController::class)->group(function () {
         Route::get('competitions', 'index')->name('competitions.index');
-        // Route::get('competitions/{competition}', 'show')->name('competitions.show');
     });
 });
 
@@ -53,7 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::as('participant.')->group(function () {
         Route::controller(CompetitionRegistrationController::class)->group(function () {
             Route::get('competitions/register', 'register')->name('competitions.register');
-            Route::post('competitions/register', 'store')->name('competitions.register.store');
+            Route::post('competitions/register', 'store')->middleware('throttle:competition-register')->name('competitions.register.store');
         });
     });
 });

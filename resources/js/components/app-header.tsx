@@ -39,7 +39,7 @@ const mobileAuthNavItems: NavItem[] = mainNavItems.concat([
     },
     {
         title: 'Sign Out',
-        href: logout.url(),
+        href: logout(),
     },
 ]);
 

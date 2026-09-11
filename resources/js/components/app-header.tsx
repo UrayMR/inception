@@ -12,6 +12,7 @@ import { useCurrentUrl } from '@/hooks/use-current-url';
 import { home, login, logout } from '@/routes';
 import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
+import settings from '@/routes/settings';
 import { AnnouncementStatusMap } from '@/types';
 import type { Announcement, NavItem } from '@/types';
 import AnnouncementBanner from './announcement-banner';
@@ -32,17 +33,6 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-const mobileAuthNavItems: NavItem[] = mainNavItems.concat([
-    {
-        title: 'Settings',
-        href: '/settings',
-    },
-    {
-        title: 'Sign Out',
-        href: logout(),
-    },
-]);
-
 const mobileNonAuthNavItems: NavItem[] = mainNavItems.concat([
     {
         title: 'Sign In',
@@ -57,8 +47,29 @@ export function AppHeader() {
     const { isCurrentUrl } = useCurrentUrl();
     const [mobileOpen, setMobileOpen] = useState(false);
 
-    const mobileNavItems = auth.user
-        ? mobileAuthNavItems
+    const mobileNavItems: NavItem[] = auth.user
+        ? mainNavItems.concat([
+              ...(auth.user.role === 'admin'
+                  ? [
+                        {
+                            title: 'Panel Dashboard',
+                            href: panel.dashboard(),
+                        },
+                    ]
+                  : []),
+              {
+                  title: 'Dashboard',
+                  href: settings.dashboard(),
+              },
+              {
+                  title: 'Settings',
+                  href: settings.index.url(),
+              },
+              {
+                  title: 'Sign Out',
+                  href: logout(),
+              },
+          ])
         : mobileNonAuthNavItems;
 
     return (
@@ -237,7 +248,7 @@ export function AppHeader() {
                     }}
                 >
                     <Link
-                        href={panel.dashboard()}
+                        href={home()}
                         onClick={() => setMobileOpen(false)}
                         className="flex items-center space-x-2"
                         style={{

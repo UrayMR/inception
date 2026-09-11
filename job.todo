@@ -20,6 +20,7 @@ Functionality List:
 - Submission
 
 Detail Functionality List:
+- Inertia Props Contract (Standardizing the props sent to the frontend for better maintainability and readability)
 - Component Functionality (Detailing & Efficiency)
 - PHPDoc Comments (For better code readability and maintainability)
 - Error Message Contract (Standardizing error messages across the app for better frontend handling + main language message source)
@@ -38,3 +39,34 @@ Docs:
 - [✅] Backend Architecture Decision Records
 - Route Documentation
 - [✅] README.md
+
+Next:
+- [✅] Testing CRUD operations for all models (User, Competition, Team, Transaction)
+- [✅] Make sure if the competition status is not open, the registration endpoint should not work.
+- [✅] Make a validation of competition management, the given name should be unique (slug)
+- [✅] If transaction status is pending or verified, the participant should not be able to register to another competition (if it's individual) or create/join another team (if it's team-based)
+- [✅] If transaction status is rejected, the participant should be able to register to another competition (if it's individual) or create/join another team (if it's team-based)
+- [✅] Add status column to team table. Status used to determine whether the team already has a verified transaction or not.
+- [✅] Add institution column to team table.
+- [✅] Make sure that if the team got rejected, they should be able to register again with the same team id (just updating the transaction and team status)
+- [✅] Add max_member column to competition table.
+- [✅] Make sure that if the competition type is team-based, the max_member should be more than 1, and if the competition type is individual, the max_member should be 1.
+- [✅] Add minimum number input (price field)
+- [✅] Query competition index participant optimizing (order by status and start date)
+- [✅] Change file upload transaction to private storage + generate temporary signed url for access (for better security)
+- [✅] Image overview for competition + overview uploaded file on form
+- [✅] Policy Implementation for all pages
+- [✅] Add Features Architecture in Frontend
+- [✅] Add Barrel Export for easier imports in Features Architecture
+- [✅] Change QRIS picture with real QRIS
+- [✅] App Logo implement + Header / Sidebar Styling
+- [✅] Register Page Optimization + Auth Page Styling
+- [✅] Landing Page
+- [✅] Competition page styling
+- [✅] User profile page optimized
+- [✅] Implement submission functionality pages
+- [✅] Add custom throw on Global Error Handler for toast message (FlashException)
+
+Optional:
+- Fix TODO comments in the codebase
+- Assign refactor issue about team member on GitHub

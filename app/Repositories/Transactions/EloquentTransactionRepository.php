@@ -28,7 +28,7 @@ class EloquentTransactionRepository implements TransactionRepository
       }
     }
 
-    return $query->orderByDesc('created_at')->paginate($perPage);
+    return $query->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")->orderByDesc('created_at')->paginate($perPage);
   }
 
 

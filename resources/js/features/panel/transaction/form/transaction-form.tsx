@@ -31,7 +31,8 @@ type TransactionFormData = {
     leader_name: string;
     leader_email: string;
     phone_number: string;
-    
+    requirement_link: string;
+
     institution?: string;
     members?: TeamMember[];
 };
@@ -205,6 +206,17 @@ export function TransactionForm({
                             disabled
                         />
                     </FormField>
+
+                    <FormField name="requirement_link" label="Link Persyaratan">
+                        <a
+                            href={data.requirement_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-primary underline hover:opacity-80"
+                        >
+                            {data.requirement_link || 'Link Persyaratan'}
+                        </a>
+                    </FormField>
                 </div>
 
                 {/* Daftar Anggota Tim (kalau kompetisi tipe Team) */}
@@ -221,7 +233,9 @@ export function TransactionForm({
                                             {index + 1}.
                                         </span>
                                         <span>{member.member_name}</span>
-                                        <span>{member.member_phone_number}</span>
+                                        <span>
+                                            {member.member_phone_number}
+                                        </span>
                                     </div>
                                 ))}
                             </div>

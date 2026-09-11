@@ -29,6 +29,7 @@ export interface ITransactionShow {
     leader_name: string;
     leader_email: string;
     phone_number: string;
+    requirement_link: string;
     
     institution?: string;
     members?: TeamMember[];

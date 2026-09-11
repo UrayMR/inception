@@ -19,6 +19,7 @@ class Team extends Model
         'leader_name',
         'phone_number',
         'institution',
+        // INI KENAPA DISINI JIR kocak
         'requirement_link',
         'status',
     ];

@@ -105,14 +105,14 @@ class RegisterCompetitionService
     }
   }
 
-  protected function hasOpenCompetition(): bool
+  public function hasOpenCompetition(): bool
   {
     return Competition::query()
       ->where('status', CompetitionStatus::open->value)
       ->exists();
   }
 
-  protected function hasBlockingRegistration(string $leaderId): bool
+  public function hasBlockingRegistration(string $leaderId): bool
   {
     return Team::query()
       ->where('leader_id', $leaderId)

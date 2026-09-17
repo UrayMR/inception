@@ -5,7 +5,11 @@ import formatDate from '@/helpers/format-date';
 import settings from '@/routes/settings';
 import utils from '@/routes/utils';
 import type { ITransactionShow, TransactionPaymentMethodType } from '@/types';
-import { TransactionPaymentMethodMap, TransactionStatusMap } from '@/types';
+import {
+    TransactionPaymentMethodMap,
+    TransactionStatusMap,
+    TransactionTypeMap,
+} from '@/types';
 
 function statusBadgeClass(status: string) {
     switch (status) {
@@ -99,6 +103,13 @@ export default function TransactionDetailTab({
                             TransactionPaymentMethodMap[
                                 transaction.payment_method as TransactionPaymentMethodType
                             ]?.label
+                        }
+                    />
+                    <InfoRow
+                        label="Tipe Transaksi"
+                        value={
+                            TransactionTypeMap[transaction.transaction_type]
+                                ?.label
                         }
                     />
                     <InfoRow

@@ -20,6 +20,7 @@ class ShowTransactionResource extends JsonResource
       'amount' => $this->amount,
       'payment_method' => $this->payment_method,
       'payment_proof_path' => $this->payment_proof_path,
+      'transaction_type' => $this->transaction_type,
       'status' => $this->status,
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,

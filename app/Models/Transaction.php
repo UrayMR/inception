@@ -17,6 +17,7 @@ class Transaction extends Model
     'amount',
     'payment_method',
     'payment_proof_path',
+    'transaction_type',
     'status',
   ];
 

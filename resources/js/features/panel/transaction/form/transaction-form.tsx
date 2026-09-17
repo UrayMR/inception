@@ -14,13 +14,19 @@ import type {
     TeamMember,
     TransactionPaymentMethodType,
     TransactionStatusType,
+    TransactionTypeType,
 } from '@/types';
-import { TransactionPaymentMethodMap, TransactionStatusMap } from '@/types';
+import {
+    TransactionPaymentMethodMap,
+    TransactionStatusMap,
+    TransactionTypeMap,
+} from '@/types';
 
 type TransactionFormData = {
     amount: number;
     payment_method: TransactionPaymentMethodType;
     payment_proof_path: string;
+    transaction_type: TransactionTypeType;
     status: TransactionStatusType;
     created_at?: string;
     updated_at?: string;
@@ -100,6 +106,32 @@ export function TransactionForm({
                                             value={method.value}
                                         >
                                             {method.label}
+                                        </SelectItem>
+                                    ),
+                                )}
+                            </SelectContent>
+                        </Select>
+                    </FormField>
+
+                    <FormField name="transaction_type" label="Tipe Transaksi">
+                        <Select value={data.transaction_type} disabled>
+                            <SelectTrigger>
+                                <SelectValue>
+                                    {
+                                        TransactionTypeMap[
+                                            data.transaction_type
+                                        ]?.label
+                                    }
+                                </SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                                {Object.values(TransactionTypeMap).map(
+                                    (type) => (
+                                        <SelectItem
+                                            key={type.value}
+                                            value={type.value}
+                                        >
+                                            {type.label}
                                         </SelectItem>
                                     ),
                                 )}

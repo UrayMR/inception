@@ -29,6 +29,7 @@ class StoreTransaction
         $this->disk
       ),
       'status' => $dto->status,
+      'transaction_type' => $dto->transaction_type,
     ];
 
     return $this->transactionRepository->store($attributes);

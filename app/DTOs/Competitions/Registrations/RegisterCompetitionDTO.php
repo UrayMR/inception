@@ -8,6 +8,7 @@ use App\DTOs\Transactions\StoreTransactionDTO;
 use App\Enums\CompetitionType;
 use App\Enums\TeamStatus;
 use App\Enums\TransactionStatus;
+use App\Enums\TransactionType;
 use App\Models\Competition;
 use Illuminate\Http\UploadedFile;
 
@@ -69,6 +70,7 @@ class RegisterCompetitionDTO
       payment_method: $this->payment_method,
       payment_proof_file: $this->payment_proof_file,
       status: TransactionStatus::pending->value,
+      transaction_type: TransactionType::batch1->value,
     );
   }
 }

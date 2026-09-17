@@ -1,6 +1,7 @@
 import type {
     TransactionPaymentMethodType,
     TransactionStatusType,
+    TransactionTypeType,
 } from '../enums/transaction';
 import type { TeamMember } from './team';
 
@@ -17,6 +18,7 @@ export interface ITransactionShow {
     amount: number;
     payment_method: TransactionPaymentMethodType;
     payment_proof_path: string;
+    transaction_type: TransactionTypeType;
     status: TransactionStatusType;
     created_at: string;
     updated_at: string;
@@ -30,7 +32,7 @@ export interface ITransactionShow {
     leader_email: string;
     phone_number: string;
     requirement_link: string;
-    
+
     institution?: string;
     members?: TeamMember[];
 }

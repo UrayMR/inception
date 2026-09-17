@@ -1,7 +1,7 @@
+import type { Option } from '..';
 import type {
     TransactionPaymentMethodType,
     TransactionStatusType,
-    TransactionTypeType,
 } from '../enums/transaction';
 import type { TeamMember } from './team';
 
@@ -11,6 +11,7 @@ export interface ITransactionIndex {
     competition_name: string;
     amount: number;
     status: TransactionStatusType;
+    registration_batch: Option;
 }
 
 export interface ITransactionShow {
@@ -18,7 +19,7 @@ export interface ITransactionShow {
     amount: number;
     payment_method: TransactionPaymentMethodType;
     payment_proof_path: string;
-    transaction_type: TransactionTypeType;
+    registration_batch: Option;
     status: TransactionStatusType;
     created_at: string;
     updated_at: string;

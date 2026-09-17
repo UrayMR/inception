@@ -47,6 +47,15 @@ export const getTransactionColumns = (
         },
     },
     {
+        accessorKey: 'registration_batch',
+        header: 'Registration Batch',
+        cell: ({ row }) => {
+            const registrationBatch = row.original.registration_batch;
+
+            return registrationBatch?.label || '-';
+        },
+    },
+    {
         header: 'Actions',
         cell: ({ row }) => {
             return (

@@ -26,12 +26,3 @@ export const TransactionStatusValue = [
 ] as const;
 
 export type TransactionStatusType = (typeof TransactionStatusValue)[number];
-
-export const TransactionTypeMap = {
-    'batch-1': { value: 'batch-1', label: 'Batch 1' },
-    'batch-2': { value: 'batch-2', label: 'Batch 2' },
-} as const;
-
-export const TransactionTypeValue = ['batch-1', 'batch-2'] as const;
-
-export type TransactionTypeType = (typeof TransactionTypeValue)[number];

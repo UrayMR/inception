@@ -8,7 +8,6 @@ import type { ITransactionShow, TransactionPaymentMethodType } from '@/types';
 import {
     TransactionPaymentMethodMap,
     TransactionStatusMap,
-    TransactionTypeMap,
 } from '@/types';
 
 function statusBadgeClass(status: string) {
@@ -106,10 +105,9 @@ export default function TransactionDetailTab({
                         }
                     />
                     <InfoRow
-                        label="Tipe Transaksi"
+                        label="Batch Pendaftaran"
                         value={
-                            TransactionTypeMap[transaction.transaction_type]
-                                ?.label
+                            transaction.registration_batch.label || '-'
                         }
                     />
                     <InfoRow

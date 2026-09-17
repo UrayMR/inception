@@ -27,8 +27,6 @@ class RegisterCompetitionDTO
     public string $payment_method,
     public UploadedFile $payment_proof_file,
     public array $members = [],
-
-    protected RegistrationBatchService $registrationBatchService,
   ) {}
 
   public function teamNameFor(Competition $competition): string
@@ -65,7 +63,7 @@ class RegisterCompetitionDTO
     );
   }
 
-  public function toTransactionDTO(string $teamId, float $amount): StoreTransactionDTO
+  public function toTransactionDTO(string $teamId, float $amount, string $registrationBatchId): StoreTransactionDTO
   {
     return new StoreTransactionDTO(
       team_id: $teamId,
@@ -73,7 +71,7 @@ class RegisterCompetitionDTO
       payment_method: $this->payment_method,
       payment_proof_file: $this->payment_proof_file,
       status: TransactionStatus::pending->value,
-      registration_batch_id: $this->registrationBatchService->checkActiveBatch()->id,
+      registration_batch_id: $registrationBatchId,
     );
   }
 }

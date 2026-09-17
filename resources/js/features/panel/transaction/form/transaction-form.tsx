@@ -11,22 +11,18 @@ import {
 import utils from '@/routes/utils';
 import type {
     FormProps,
+    Option,
     TeamMember,
     TransactionPaymentMethodType,
     TransactionStatusType,
-    TransactionTypeType,
 } from '@/types';
-import {
-    TransactionPaymentMethodMap,
-    TransactionStatusMap,
-    TransactionTypeMap,
-} from '@/types';
+import { TransactionPaymentMethodMap, TransactionStatusMap } from '@/types';
 
 type TransactionFormData = {
     amount: number;
     payment_method: TransactionPaymentMethodType;
     payment_proof_path: string;
-    transaction_type: TransactionTypeType;
+    registration_batch: Option;
     status: TransactionStatusType;
     created_at?: string;
     updated_at?: string;
@@ -113,30 +109,15 @@ export function TransactionForm({
                         </Select>
                     </FormField>
 
-                    <FormField name="transaction_type" label="Tipe Transaksi">
-                        <Select value={data.transaction_type} disabled>
-                            <SelectTrigger>
-                                <SelectValue>
-                                    {
-                                        TransactionTypeMap[
-                                            data.transaction_type
-                                        ]?.label
-                                    }
-                                </SelectValue>
-                            </SelectTrigger>
-                            <SelectContent>
-                                {Object.values(TransactionTypeMap).map(
-                                    (type) => (
-                                        <SelectItem
-                                            key={type.value}
-                                            value={type.value}
-                                        >
-                                            {type.label}
-                                        </SelectItem>
-                                    ),
-                                )}
-                            </SelectContent>
-                        </Select>
+                    <FormField
+                        name="registration_batch"
+                        label="Batch Registrasi"
+                    >
+                        <Input
+                            value={data.registration_batch?.label || '-'}
+                            readOnly
+                            disabled
+                        />
                     </FormField>
 
                     <FormField name="status" label="Status">

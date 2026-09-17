@@ -17,7 +17,7 @@ class Transaction extends Model
     'amount',
     'payment_method',
     'payment_proof_path',
-    'transaction_type',
+    'registration_batch_id',
     'status',
   ];
 
@@ -31,5 +31,10 @@ class Transaction extends Model
   public function team()
   {
     return $this->belongsTo(Team::class);
+  }
+
+  public function registrationBatch()
+  {
+    return $this->belongsTo(RegistrationBatch::class);
   }
 }

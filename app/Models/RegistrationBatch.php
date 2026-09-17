@@ -16,4 +16,9 @@ class RegistrationBatch extends Model
         'name',
         'status',
     ];
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

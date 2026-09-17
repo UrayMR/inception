@@ -10,6 +10,7 @@ use App\Enums\TeamStatus;
 use App\Enums\TransactionStatus;
 use App\Enums\TransactionType;
 use App\Models\Competition;
+use App\Services\Batches\RegistrationBatchService;
 use Illuminate\Http\UploadedFile;
 
 class RegisterCompetitionDTO
@@ -26,6 +27,8 @@ class RegisterCompetitionDTO
     public string $payment_method,
     public UploadedFile $payment_proof_file,
     public array $members = [],
+
+    protected RegistrationBatchService $registrationBatchService,
   ) {}
 
   public function teamNameFor(Competition $competition): string
@@ -70,7 +73,7 @@ class RegisterCompetitionDTO
       payment_method: $this->payment_method,
       payment_proof_file: $this->payment_proof_file,
       status: TransactionStatus::pending->value,
-      transaction_type: TransactionType::batch1->value,
+      registration_batch_id: $this->registrationBatchService->checkActiveBatch()->id,
     );
   }
 }

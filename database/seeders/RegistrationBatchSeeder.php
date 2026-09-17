@@ -11,18 +11,15 @@ class RegistrationBatchSeeder extends Seeder
 {
   public function run(): void
   {
-    RegistrationBatch::updateOrCreate([
-      'name' => RegistrationBatchType::batch1->value,
-    ], [
-      'name' => RegistrationBatchType::batch1->value,
-      'status' => RegistrationBatchStatus::active->value,
-    ]);
-
-    RegistrationBatch::updateOrCreate([
-      'name' => RegistrationBatchType::batch2->value,
-    ], [
-      'name' => RegistrationBatchType::batch2->value,
-      'status' => RegistrationBatchStatus::inactive->value,
-    ]);
+    RegistrationBatch::upsert([
+      [
+        'name' => RegistrationBatchType::batch1->value,
+        'status' => RegistrationBatchStatus::active->value,
+      ],
+      [
+        'name' => RegistrationBatchType::batch2->value,
+        'status' => RegistrationBatchStatus::inactive->value,
+      ],
+    ], ['name'], ['status']);
   }
 }

@@ -21,6 +21,10 @@ class ShowTransactionResource extends JsonResource
       'payment_method' => $this->payment_method,
       'payment_proof_path' => $this->payment_proof_path,
       'status' => $this->status,
+      'registration_batch' => [
+        'label' => $this->registrationBatch?->name,
+        'value' => $this->registrationBatch?->id,
+      ],
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
 

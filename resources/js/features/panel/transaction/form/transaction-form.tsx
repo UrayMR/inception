@@ -11,6 +11,7 @@ import {
 import utils from '@/routes/utils';
 import type {
     FormProps,
+    Option,
     TeamMember,
     TransactionPaymentMethodType,
     TransactionStatusType,
@@ -21,6 +22,7 @@ type TransactionFormData = {
     amount: number;
     payment_method: TransactionPaymentMethodType;
     payment_proof_path: string;
+    registration_batch: Option;
     status: TransactionStatusType;
     created_at?: string;
     updated_at?: string;
@@ -105,6 +107,17 @@ export function TransactionForm({
                                 )}
                             </SelectContent>
                         </Select>
+                    </FormField>
+
+                    <FormField
+                        name="registration_batch"
+                        label="Batch Registrasi"
+                    >
+                        <Input
+                            value={data.registration_batch?.label || '-'}
+                            readOnly
+                            disabled
+                        />
                     </FormField>
 
                     <FormField name="status" label="Status">

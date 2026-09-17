@@ -1,4 +1,5 @@
-export const TransactionPaymentMethodValue = ['qris', 
+export const TransactionPaymentMethodValue = [
+    'qris',
     // 'bank_transfer'
 ] as const;
 

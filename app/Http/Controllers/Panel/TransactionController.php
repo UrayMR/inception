@@ -8,13 +8,14 @@ use App\Resources\Transactions\ShowTransactionResource;
 use App\Services\Transactions\TransactionService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\MailService;
+use App\Services\Batches\RegistrationBatchService;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
   public function __construct(
     protected TransactionService $transactionService,
+    protected RegistrationBatchService $registrationBatchService,
   ) {}
 
   public function index(Request $request)
@@ -27,6 +28,7 @@ class TransactionController extends Controller
 
     return $this->render('panel/transactions/index', [
       'transactions' => IndexTransactionResource::collection($transactions),
+      'registrationBatches' => $this->registrationBatchService->index(),
       'schedule' => $schedule,
     ]);
   }
@@ -39,6 +41,7 @@ class TransactionController extends Controller
       'team.competition',
       'team.leader',
       'team.members',
+      'registrationBatch',
     ]);
 
     $schedule = Auth::user()?->team?->competition?->timelines ?? [];

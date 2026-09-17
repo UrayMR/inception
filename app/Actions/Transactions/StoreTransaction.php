@@ -29,6 +29,7 @@ class StoreTransaction
         $this->disk
       ),
       'status' => $dto->status,
+      'registration_batch_id' => $dto->registration_batch_id,
     ];
 
     return $this->transactionRepository->store($attributes);

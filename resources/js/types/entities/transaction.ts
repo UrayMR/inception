@@ -1,3 +1,4 @@
+import type { Option } from '..';
 import type {
     TransactionPaymentMethodType,
     TransactionStatusType,
@@ -10,6 +11,7 @@ export interface ITransactionIndex {
     competition_name: string;
     amount: number;
     status: TransactionStatusType;
+    registration_batch: Option;
 }
 
 export interface ITransactionShow {
@@ -17,6 +19,7 @@ export interface ITransactionShow {
     amount: number;
     payment_method: TransactionPaymentMethodType;
     payment_proof_path: string;
+    registration_batch: Option;
     status: TransactionStatusType;
     created_at: string;
     updated_at: string;
@@ -30,7 +33,7 @@ export interface ITransactionShow {
     leader_email: string;
     phone_number: string;
     requirement_link: string;
-    
+
     institution?: string;
     members?: TeamMember[];
 }

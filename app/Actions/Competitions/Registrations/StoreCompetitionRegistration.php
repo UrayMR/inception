@@ -15,13 +15,13 @@ class StoreCompetitionRegistration
     protected StoreTransaction $storeTransaction,
   ) {}
 
-  public function handle(RegisterCompetitionDTO $dto, Competition $competition): Team
+  public function handle(RegisterCompetitionDTO $dto, Competition $competition, string $registrationBatchId): Team
   {
     $teamDTO = $dto->toStoreTeamDTO($competition);
 
     $team = $this->storeTeam->handle($teamDTO, $dto->members);
 
-    $transactionDTO = $dto->toTransactionDTO($team->id, $competition->price);
+    $transactionDTO = $dto->toTransactionDTO($team->id, $competition->price, $registrationBatchId);
 
     $this->storeTransaction->handle($transactionDTO);
 

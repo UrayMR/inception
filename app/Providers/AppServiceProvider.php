@@ -14,6 +14,8 @@ use App\Repositories\Competitions\GuestCompetitionRepository;
 use App\Repositories\Competitions\Timelines\EloquentTimelineRepository;
 use App\Repositories\Competitions\Timelines\TimelineRepository;
 use App\Repositories\Announcements\EloquentAnnouncementRepository;
+use App\Repositories\Batches\EloquentRegistrationBatchRepository;
+use App\Repositories\Batches\RegistrationBatchRepository;
 use App\Repositories\Teams\EloquentTeamRepository;
 use App\Repositories\Teams\Members\EloquentMemberRepository;
 use App\Repositories\Teams\Members\MemberRepository;
@@ -45,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(AssignmentRepository::class, EloquentAssignmentRepository::class);
         $this->app->bind(SubmissionRepository::class, EloquentSubmissionRepository::class);
         $this->app->bind(AnnouncementRepository::class, EloquentAnnouncementRepository::class);
+        $this->app->bind(RegistrationBatchRepository::class, EloquentRegistrationBatchRepository::class);
 
         // ... Bind other repositories here
     }

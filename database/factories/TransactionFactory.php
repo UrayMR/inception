@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\TransactionMethod;
 use App\Enums\TransactionStatus;
-use App\Enums\TransactionType;
+use App\Enums\RegistrationBatchType;
 use App\Models\Team;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -27,7 +27,7 @@ class TransactionFactory extends Factory
       'payment_method' =>  TransactionMethod::qris->value,
       'payment_proof_path' => 'transactions/' . $this->faker->uuid() . '.jpg',
       'status' => $this->faker->randomElement(TransactionStatus::cases()),
-      'transaction_type' => $this->faker->randomElement(TransactionType::cases()),
+      'transaction_type' => $this->faker->randomElement(RegistrationBatchType::cases()),
     ];
   }
 }

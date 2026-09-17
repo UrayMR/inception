@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CompetitionSeeder::class,
             TeamSeeder::class,
+            RegistrationBatchSeeder::class,
             TransactionSeeder::class,
             AssignmentSeeder::class,
             SubmissionSeeder::class,

@@ -6,6 +6,7 @@ use App\Http\Controllers\Panel\AssignmentController;
 use App\Http\Controllers\Participant\CompetitionRegistrationController;
 use App\Http\Controllers\Panel\CompetitionController;
 use App\Http\Controllers\Panel\ConfigController;
+use App\Http\Controllers\Panel\RegistrationBatchController;
 use App\Http\Controllers\Panel\SubmissionController;
 use App\Http\Controllers\Panel\TeamController;
 use App\Http\Controllers\Panel\TransactionController;
@@ -30,6 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('competitions', CompetitionController::class)->names('competitions');
             Route::resource('teams', TeamController::class)->names('teams');
             Route::resource('assignments', AssignmentController::class)->names('assignments');
+
+            Route::put('registration-batches/{registrationBatch}/switch', [RegistrationBatchController::class, 'switch'])->name('registration-batches.switch');
 
             Route::get('submissions/export', [SubmissionController::class, 'export'])->name('submissions.export');
             Route::resource('submissions', SubmissionController::class)->names('submissions');

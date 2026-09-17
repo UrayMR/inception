@@ -10,6 +10,7 @@ import type {
     BreadcrumbItem,
     DataTableProps,
     ITransactionIndex,
+    RegistrationBatch,
     SearchParams,
 } from '@/types';
 
@@ -17,6 +18,7 @@ type TransactionsPageProps = {
     transactions: DataTableProps<ITransactionIndex>;
     filters: SearchParams;
     auth: Auth;
+    registrationBatches: RegistrationBatch[];
 };
 
 export default function IndexTransactionsPage() {
@@ -39,6 +41,16 @@ export default function IndexTransactionsPage() {
                         meta={props.transactions.meta}
                         links={props.transactions.links}
                         filtersSchema={[
+                            {
+                                key: 'registration_batch',
+                                label: 'Registration Batch',
+                                values: Object.values(
+                                    props.registrationBatches,
+                                ).map((batch) => ({
+                                    label: batch.name,
+                                    value: batch.id,
+                                })),
+                            },
                             {
                                 key: 'status',
                                 label: 'Status',

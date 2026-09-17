@@ -8,7 +8,9 @@ use App\DTOs\Transactions\StoreTransactionDTO;
 use App\Enums\CompetitionType;
 use App\Enums\TeamStatus;
 use App\Enums\TransactionStatus;
+use App\Enums\TransactionType;
 use App\Models\Competition;
+use App\Services\Batches\RegistrationBatchService;
 use Illuminate\Http\UploadedFile;
 
 class RegisterCompetitionDTO
@@ -61,7 +63,7 @@ class RegisterCompetitionDTO
     );
   }
 
-  public function toTransactionDTO(string $teamId, float $amount): StoreTransactionDTO
+  public function toTransactionDTO(string $teamId, float $amount, string $registrationBatchId): StoreTransactionDTO
   {
     return new StoreTransactionDTO(
       team_id: $teamId,
@@ -69,6 +71,7 @@ class RegisterCompetitionDTO
       payment_method: $this->payment_method,
       payment_proof_file: $this->payment_proof_file,
       status: TransactionStatus::pending->value,
+      registration_batch_id: $registrationBatchId,
     );
   }
 }

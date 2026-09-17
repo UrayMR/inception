@@ -15,6 +15,7 @@ use App\Mail\CompetitionRegisteredMail;
 use App\Models\Competition;
 use App\Models\Team;
 use App\Models\User;
+use App\Services\Batches\RegistrationBatchService;
 use App\Services\MailService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,7 @@ class RegisterCompetitionService
     protected StoreCompetitionRegistration $storeCompetitionRegistration,
     protected UpdateCompetitionRegistration $updateCompetitionRegistration,
     protected MailService $mailService,
+    protected RegistrationBatchService $registrationBatchService,
   ) {}
 
   public function isCanRegister(): bool
@@ -52,6 +54,8 @@ class RegisterCompetitionService
 
       $this->ensureLeaderCanRegister($dto->leader_id);
 
+      $registrationBatchId = $this->registrationBatchService->checkActiveBatch()->id;
+
       $existingRejectedTeam = Team::query()
         ->where('leader_id', $dto->leader_id)
         ->where('competition_id', $competition->id)
@@ -60,12 +64,12 @@ class RegisterCompetitionService
         ->first();
 
       if ($existingRejectedTeam) {
-        $this->updateCompetitionRegistration->handle($dto, $competition, $existingRejectedTeam);
+        $this->updateCompetitionRegistration->handle($dto, $competition, $existingRejectedTeam, $registrationBatchId);
 
         return;
       }
 
-      $this->storeCompetitionRegistration->handle($dto, $competition);
+      $this->storeCompetitionRegistration->handle($dto, $competition, $registrationBatchId);
     });
 
     $this->mailService->send(
@@ -101,14 +105,14 @@ class RegisterCompetitionService
     }
   }
 
-  protected function hasOpenCompetition(): bool
+  public function hasOpenCompetition(): bool
   {
     return Competition::query()
       ->where('status', CompetitionStatus::open->value)
       ->exists();
   }
 
-  protected function hasBlockingRegistration(string $leaderId): bool
+  public function hasBlockingRegistration(string $leaderId): bool
   {
     return Team::query()
       ->where('leader_id', $leaderId)

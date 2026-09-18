@@ -8,6 +8,7 @@ use App\Resources\Transactions\ShowTransactionResource;
 use App\Services\Transactions\TransactionService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Competition;
 use App\Services\Batches\RegistrationBatchService;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,6 +30,7 @@ class TransactionController extends Controller
     return $this->render('panel/transactions/index', [
       'transactions' => IndexTransactionResource::collection($transactions),
       'registrationBatches' => $this->registrationBatchService->index(),
+      'competitions' => Competition::all(['id', 'name']),
       'schedule' => $schedule,
     ]);
   }

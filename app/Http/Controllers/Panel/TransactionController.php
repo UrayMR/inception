@@ -9,6 +9,7 @@ use App\Services\Transactions\TransactionService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Competition;
+use App\Models\SyncTracker;
 use App\Services\Batches\RegistrationBatchService;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,14 +25,35 @@ class TransactionController extends Controller
     $this->authorize('viewAny', Transaction::class);
 
     $queryParams = $request->all();
+
     $transactions = $this->transactionService->index($queryParams);
-    $schedule = Auth::user()?->team?->competition?->timelines ?? [];
+
+    $tracker = SyncTracker::where('target_name', 'transactions_to_gsheet')->first();
+
+    $totalTransactions = Transaction::count();
+    $syncedCount = 0;
+    $unsyncedCount = $totalTransactions;
+
+    if ($tracker && $tracker->last_synced_id !== '0') {
+      $lastTransaction = Transaction::find($tracker->last_synced_id);
+
+      if ($lastTransaction) {
+        $syncedCount = Transaction::where('created_at', '<=', $lastTransaction->created_at)->count();
+        $unsyncedCount = $totalTransactions - $syncedCount;
+      }
+    }
 
     return $this->render('panel/transactions/index', [
       'transactions' => IndexTransactionResource::collection($transactions),
       'registrationBatches' => $this->registrationBatchService->index(),
-      'competitions' => Competition::all(['id', 'name']),
-      'schedule' => $schedule,
+
+      'competitions' => Competition::select('id', 'name')->get(),
+
+      'sync' => $tracker ? [
+        'last_synced_at' => $tracker->last_synced_at,
+        'synced_count'   => $syncedCount,
+        'unsynced_count' => $unsyncedCount,
+      ] : null,
     ]);
   }
 

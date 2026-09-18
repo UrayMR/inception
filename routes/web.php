@@ -8,6 +8,7 @@ use App\Http\Controllers\Panel\CompetitionController;
 use App\Http\Controllers\Panel\ConfigController;
 use App\Http\Controllers\Panel\RegistrationBatchController;
 use App\Http\Controllers\Panel\SubmissionController;
+use App\Http\Controllers\Panel\SyncController;
 use App\Http\Controllers\Panel\TeamController;
 use App\Http\Controllers\Panel\TransactionController;
 use App\Http\Controllers\Panel\UserController;
@@ -33,6 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('assignments', AssignmentController::class)->names('assignments');
 
             Route::put('registration-batches/{registrationBatch}/switch', [RegistrationBatchController::class, 'switch'])->name('registration-batches.switch');
+            Route::post('sync/transactions', [SyncController::class, 'syncTransactionsToGoogleSheet'])->name('sync.transactions');
 
             Route::get('submissions/export', [SubmissionController::class, 'export'])->name('submissions.export');
             Route::resource('submissions', SubmissionController::class)->names('submissions');

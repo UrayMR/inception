@@ -25,7 +25,15 @@ class EloquentTransactionRepository implements TransactionRepository
     if (!empty($queryParams['filters'])) {
       foreach ($queryParams['filters'] as $key => $value) {
         if ($value !== null && $value !== '') {
-          $query->where($key, $value);
+
+          if ($key === 'competition_id') {
+            $query->whereHas('team', function ($q) use ($value) {
+              $q->where('competition_id', $value);
+            });
+          } else {
+            // else go to transactions table
+            $query->where("transactions.{$key}", $value);
+          }
         }
       }
     }
@@ -37,6 +45,9 @@ class EloquentTransactionRepository implements TransactionRepository
         '=',
         'registration_batches.id'
       )
+      ->join('teams', 'transactions.team_id', '=', 'teams.id')
+      ->join('competitions', 'teams.competition_id', '=', 'competitions.id')
+
       ->orderByRaw("
                 CASE
                     WHEN transactions.status = 'pending' THEN 0
@@ -46,7 +57,9 @@ class EloquentTransactionRepository implements TransactionRepository
       ->orderByRaw("
                 CAST(SUBSTRING(registration_batches.name, 7) AS UNSIGNED) DESC
             ")
+      ->orderBy('competitions.name', 'ASC')
       ->orderByDesc('transactions.created_at')
+
       ->select('transactions.*')
       ->paginate($perPage);
   }

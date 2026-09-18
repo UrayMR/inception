@@ -39,3 +39,8 @@ export type ICompetitionCard = ICompetitionIndex & {
     description?: string | null;
     image_path?: string | null;
 };
+
+export type CompetitionOption = {
+    id: string;
+    name: string;
+};

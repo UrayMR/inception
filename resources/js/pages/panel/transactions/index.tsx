@@ -8,6 +8,7 @@ import { TransactionStatusMap } from '@/types';
 import type {
     Auth,
     BreadcrumbItem,
+    CompetitionOption,
     DataTableProps,
     ITransactionIndex,
     RegistrationBatch,
@@ -19,6 +20,7 @@ type TransactionsPageProps = {
     filters: SearchParams;
     auth: Auth;
     registrationBatches: RegistrationBatch[];
+    competitions: CompetitionOption[];
 };
 
 export default function IndexTransactionsPage() {
@@ -41,6 +43,16 @@ export default function IndexTransactionsPage() {
                         meta={props.transactions.meta}
                         links={props.transactions.links}
                         filtersSchema={[
+                            {
+                                key: 'competition',
+                                label: 'Competition',
+                                values: Object.values(props.competitions).map(
+                                    (competition) => ({
+                                        label: competition.name,
+                                        value: competition.id,
+                                    }),
+                                ),
+                            },
                             {
                                 key: 'registration_batch',
                                 label: 'Registration Batch',

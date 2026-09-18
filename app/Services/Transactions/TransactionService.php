@@ -29,6 +29,7 @@ class TransactionService
       'filters' => [
         'status' => $queryParams['filters']['status'] ?? null,
         'registration_batch_id' => $queryParams['filters']['registration_batch'] ?? null,
+        'competition_id' => $queryParams['filters']['competition'] ?? null,
       ],
     ];
 

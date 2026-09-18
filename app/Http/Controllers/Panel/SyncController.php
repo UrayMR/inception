@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\SyncTracker;
 use App\Services\Transactions\TransactionSyncService;
 
 class SyncController extends Controller
@@ -14,6 +15,8 @@ class SyncController extends Controller
 
   public function syncTransactionsToGoogleSheet()
   {
+    $this->authorize('syncTransactions', SyncTracker::class);
+
     $syncedCount = $this->transactionSyncService->handleSync();
 
     if ($syncedCount === 0) {
@@ -23,5 +26,5 @@ class SyncController extends Controller
     }
 
     return back();
-}
+  }
 }

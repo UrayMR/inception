@@ -28,13 +28,31 @@ class TransactionController extends Controller
     $transactions = $this->transactionService->index($queryParams);
     $schedule = Auth::user()?->team?->competition?->timelines ?? [];
 
-    $sync = SyncTracker::where('target_name', 'transactions_to_gsheet')->first();
+    $tracker = SyncTracker::where('target_name', 'transactions_to_gsheet')->first();
+
+    // Siapkan default value
+    $syncedCount = 0;
+    $unsyncedCount = Transaction::count();
+
+    if ($tracker && $tracker->last_synced_id !== '0') {
+      $lastTransaction = Transaction::find($tracker->last_synced_id);
+      if ($lastTransaction) {
+        $syncedCount = Transaction::where('created_at', '<=', $lastTransaction->created_at)->count();
+        $unsyncedCount = Transaction::where('created_at', '>', $lastTransaction->created_at)->count();
+      }
+    }
 
     return $this->render('panel/transactions/index', [
       'transactions' => IndexTransactionResource::collection($transactions),
       'registrationBatches' => $this->registrationBatchService->index(),
       'competitions' => Competition::all(['id', 'name']),
-      'sync' => $sync,
+
+      'sync' => $tracker ? [
+        'last_synced_at' => $tracker->last_synced_at,
+        'synced_count'   => $syncedCount,
+        'unsynced_count' => $unsyncedCount,
+      ] : null,
+
       'schedule' => $schedule,
     ]);
   }

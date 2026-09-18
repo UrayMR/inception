@@ -5,10 +5,11 @@ import { DataTable } from '@/components/data-table/data-table';
 import { MainContent } from '@/components/main-content';
 import { Button } from '@/components/ui/button';
 import { getTransactionColumns } from '@/features/panel/transaction';
+import formatDate from '@/helpers/format-date';
 import PanelLayout from '@/layouts/panel-layout';
 import syncRoute from '@/routes/panel/sync';
 import transactions from '@/routes/panel/transactions';
-import { TransactionStatusMap } from '@/types';
+import { TransactionStatusMap, UserRoleMap } from '@/types';
 import type {
     Auth,
     BreadcrumbItem,
@@ -20,10 +21,9 @@ import type {
 } from '@/types';
 
 type SyncTracker = {
-    id: string;
-    target_name: string;
-    last_synced_id: string;
     last_synced_at: string;
+    synced_count: number;
+    unsynced_count: number;
 };
 
 type TransactionsPageProps = {
@@ -42,6 +42,8 @@ export default function IndexTransactionsPage() {
 
     const { props } = usePage<TransactionsPageProps>();
 
+    const isAdmin = props.auth.user.role === UserRoleMap.Admin.value;
+
     const [isSyncLoading, setIsSyncLoading] = useState(false);
 
     const handleSync = () => {
@@ -54,18 +56,6 @@ export default function IndexTransactionsPage() {
                 onFinish: () => setIsSyncLoading(false),
             },
         );
-    };
-
-    const formatLastSynced = (dateString: string) => {
-        const date = new Date(dateString);
-
-        return new Intl.DateTimeFormat('id-ID', {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-        }).format(date);
     };
 
     return (
@@ -114,18 +104,45 @@ export default function IndexTransactionsPage() {
                         ]}
                         extraActions={
                             <div className="flex items-center gap-4">
-                                {props.sync?.last_synced_at && (
-                                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                                        Terakhir sync:{' '}
-                                        {formatLastSynced(
-                                            props.sync.last_synced_at,
-                                        )}
-                                    </span>
+                                {props.sync && isAdmin && (
+                                    <div className="flex flex-col items-end text-sm">
+                                        <span className="text-gray-500 dark:text-gray-400">
+                                            Terakhir sync:{' '}
+                                            {formatDate(
+                                                props.sync.last_synced_at,
+                                                { long: true },
+                                            )}
+                                        </span>
+
+                                        <span className="mt-0.5 text-xs">
+                                            <span className="text-gray-500 dark:text-gray-400">
+                                                {props.sync.synced_count}{' '}
+                                                tersinkron
+                                            </span>
+                                            <span className="mx-1.5 text-gray-300 dark:text-gray-600">
+                                                •
+                                            </span>
+                                            <span
+                                                className={`font-medium ${
+                                                    props.sync.unsynced_count >
+                                                    0
+                                                        ? 'text-amber-600 dark:text-amber-500'
+                                                        : 'text-emerald-600 dark:text-emerald-500'
+                                                }`}
+                                            >
+                                                {props.sync.unsynced_count}{' '}
+                                                menunggu
+                                            </span>
+                                        </span>
+                                    </div>
                                 )}
 
                                 <Button
                                     onClick={handleSync}
-                                    disabled={isSyncLoading}
+                                    disabled={
+                                        isSyncLoading ||
+                                        props.sync?.unsynced_count === 0
+                                    }
                                     variant="default"
                                     size="sm"
                                     className="flex items-center gap-2"

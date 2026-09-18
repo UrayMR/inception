@@ -44,8 +44,8 @@ class TransactionSyncService
         $trx->team->team_name ?? '-',
         $trx->team->phone_number ?? '-',
         $trx->team->requirement_link ?? '-',
-        $trx->created_at ? $trx->created_at->format('Y-m-d H:i:s') : now()->format('Y-m-d H:i:s'),
         $linkFormula,
+        $trx->created_at ? $trx->created_at->format('Y-m-d H:i:s') : now()->format('Y-m-d H:i:s'),
         $trx->status ?? '-',
       ];
 
@@ -53,7 +53,7 @@ class TransactionSyncService
     }
 
     try {
-      $this->googleSheetService->appendData('Sheet1!A2:H', $sheetData);
+      $this->googleSheetService->appendData('main_data!A2:H', $sheetData);
 
       $lastTrx = $unsynced->last();
       SyncTracker::updateOrCreate(

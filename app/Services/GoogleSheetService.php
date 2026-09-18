@@ -22,7 +22,7 @@ class GoogleSheetService
 
     $this->service = new Sheets($client);
 
-    $this->spreadsheetId = env('GOOGLE_SHEET_ID', '');
+    $this->spreadsheetId = config('services.google_sheet.id');
   }
 
   public function appendData(string $range, array $values)

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use App\Services\Auth\GoogleAuthService;
+use Laravel\Socialite\Two\InvalidStateException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 
 class GoogleController extends Controller
@@ -29,12 +30,22 @@ class GoogleController extends Controller
    */
   public function callback(): RedirectResponse
   {
+    if (request()->has('error')) {
+      $this->flash('info', 'Login dibatalkan. Silakan coba lagi.');
+
+      return redirect()->route('login');
+    }
+
     try {
       $user = $this->googleAuthService->authenticate();
 
       $this->flash('success', "Selamat datang, {$user->name}!");
 
       return redirect()->intended('/');
+    } catch (InvalidStateException $e) {
+      $this->flash('error', 'Sesi login kedaluwarsa atau terblokir browser. Silakan coba lagi.');
+
+      return redirect()->route('login');
     } catch (Exception $e) {
       report($e);
 

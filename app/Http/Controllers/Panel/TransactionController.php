@@ -9,6 +9,7 @@ use App\Services\Transactions\TransactionService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Competition;
+use App\Models\SyncTracker;
 use App\Services\Batches\RegistrationBatchService;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,10 +28,13 @@ class TransactionController extends Controller
     $transactions = $this->transactionService->index($queryParams);
     $schedule = Auth::user()?->team?->competition?->timelines ?? [];
 
+    $sync = SyncTracker::where('target_name', 'transactions_to_gsheet')->first();
+
     return $this->render('panel/transactions/index', [
       'transactions' => IndexTransactionResource::collection($transactions),
       'registrationBatches' => $this->registrationBatchService->index(),
       'competitions' => Competition::all(['id', 'name']),
+      'sync' => $sync,
       'schedule' => $schedule,
     ]);
   }

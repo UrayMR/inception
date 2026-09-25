@@ -21,6 +21,11 @@ class EloquentTeamRepository implements TeamRepository
             $query->where(function ($q) use ($search) {
                 $q->where('team_name', 'like', "%$search%");
             });
+
+            // Search by leader's name
+            $query->orWhereHas('leader', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            });
         }
 
         // Filtering

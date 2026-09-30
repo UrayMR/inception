@@ -1,3 +1,12 @@
+<IfModule mod_headers.c>
+    # Disable caching for Inertia XHR responses only
+    <IfModule mod_setenvif.c>
+        SetEnvIfNoCase X-Inertia "^true$" INERTIA_REQUEST
+
+        Header always set Cache-Control "no-cache, no-store, must-revalidate" env=INERTIA_REQUEST
+    </IfModule>
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

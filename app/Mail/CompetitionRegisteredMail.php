@@ -71,7 +71,7 @@ class CompetitionRegisteredMail extends Mailable implements ShouldQueue
     private function getUrl(): string
     {
         if ($this->transaction_status === 'rejected') {
-            return route('competitions.register');
+            return route('participant.competitions.register');
         }
 
         return route('settings.dashboard');

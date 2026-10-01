@@ -48,8 +48,20 @@ class CompetitionRegistrationController extends Controller
     public function register()
     {
         // TODO: is this really necessary? how about policy? or middleware?
-        if (Auth::check() && ! $this->registerCompetitionService->isCanRegister()) {
-            $this->flash('error', 'Anda sudah memiliki pendaftaran kompetisi yang sedang diproses atau sudah diverifikasi. Silakan cek dashboard Anda untuk informasi lebih lanjut.');
+        if (!$this->registerCompetitionService->hasOpenCompetition()) {
+            $this->flash(
+                'error',
+                'Saat ini belum ada kompetisi yang sedang dibuka untuk pendaftaran.'
+            );
+
+            return back();
+        }
+
+        if (Auth::check() && !$this->registerCompetitionService->isCanRegister()) {
+            $this->flash(
+                'error',
+                'Anda sudah memiliki pendaftaran kompetisi yang sedang diproses atau sudah diverifikasi. Silakan cek dashboard Anda untuk informasi lebih lanjut.'
+            );
 
             return back();
         }

@@ -26,12 +26,16 @@ export type * from './enums/assignment';
 export * from './enums/announcement';
 export type * from './enums/announcement';
 
+export * from './enums/registration-batch';
+export type * from './enums/registration-batch';
+
 export type * from './entities/user';
 export type * from './entities/competition';
 export type * from './entities/team';
 export type * from './entities/transaction';
 export type * from './entities/assignment';
 export type * from './entities/announcement';
+export type * from './entities/registration-batch';
 
 export interface SearchParams {
     search?: string;

@@ -6,7 +6,9 @@ use App\Http\Controllers\Panel\AssignmentController;
 use App\Http\Controllers\Participant\CompetitionRegistrationController;
 use App\Http\Controllers\Panel\CompetitionController;
 use App\Http\Controllers\Panel\ConfigController;
+use App\Http\Controllers\Panel\RegistrationBatchController;
 use App\Http\Controllers\Panel\SubmissionController;
+use App\Http\Controllers\Panel\SyncController;
 use App\Http\Controllers\Panel\TeamController;
 use App\Http\Controllers\Panel\TransactionController;
 use App\Http\Controllers\Panel\UserController;
@@ -20,7 +22,6 @@ Route::as('guest.')->group(function () {
 
     Route::controller(CompetitionRegistrationController::class)->group(function () {
         Route::get('competitions', 'index')->name('competitions.index');
-        // Route::get('competitions/{competition}', 'show')->name('competitions.show');
     });
 });
 
@@ -31,6 +32,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('competitions', CompetitionController::class)->names('competitions');
             Route::resource('teams', TeamController::class)->names('teams');
             Route::resource('assignments', AssignmentController::class)->names('assignments');
+
+            Route::put('registration-batches/{registrationBatch}/switch', [RegistrationBatchController::class, 'switch'])->name('registration-batches.switch');
+            Route::post('sync/transactions', [SyncController::class, 'syncTransactionsToGoogleSheet'])->name('sync.transactions');
 
             Route::get('submissions/export', [SubmissionController::class, 'export'])->name('submissions.export');
             Route::resource('submissions', SubmissionController::class)->names('submissions');
@@ -53,7 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::as('participant.')->group(function () {
         Route::controller(CompetitionRegistrationController::class)->group(function () {
             Route::get('competitions/register', 'register')->name('competitions.register');
-            Route::post('competitions/register', 'store')->name('competitions.register.store');
+            Route::post('competitions/register', 'store')->middleware('throttle:competition-register')->name('competitions.register.store');
         });
     });
 });

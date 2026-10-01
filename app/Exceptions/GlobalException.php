@@ -24,20 +24,32 @@ class GlobalException
   public function report(Throwable $e): void
   {
     if ($e instanceof BusinessException) {
+      Log::warning('Business exception', [
+        'exception' => get_class($e),
+        'error' => $e->getMessage(),
+        'code' => $e->getCode(),
+        'url' => request()->fullUrl(),
+        'method' => request()->method(),
+        'user_id' => request()->user()?->id,
+      ]);
+
       return;
     }
 
     $context = [
+      'exception' => get_class($e),
       'error' => $e->getMessage(),
+      'code' => $e->getCode(),
+      'url' => request()->fullUrl(),
+      'method' => request()->method(),
+      'user_id' => request()->user()?->id,
+      'input' => request()->except([
+        'password',
+        'password_confirmation',
+        'payment_proof_file',
+      ]),
       'trace' => $e->getTraceAsString(),
     ];
-
-    if (app()->bound('request')) {
-      $request = app(Request::class);
-
-      $context['url'] = $request->fullUrl();
-      $context['input'] = $request->all();
-    }
 
     Log::error('Exception caught', $context);
   }
@@ -58,7 +70,6 @@ class GlobalException
   public function render(Throwable $e, Request $request): ?Response
   {
     if ($e instanceof BusinessException) {
-
       if ($request->expectsJson()) {
         return response()->json([
           'success' => false,
@@ -68,7 +79,9 @@ class GlobalException
 
       FlashResponse::error($e->getMessage());
 
-      return back();
+      return back()->withErrors([
+        'business' => $e->getMessage(),
+      ]);
     }
 
     if (! $request->is('api/*') && ! $request->expectsJson()) {

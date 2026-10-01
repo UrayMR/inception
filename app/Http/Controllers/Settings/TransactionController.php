@@ -19,7 +19,7 @@ class TransactionController extends Controller
       abort(403, 'Akses tidak diizinkan.');
     }
 
-    $transaction->load(['team.competition', 'team.leader', 'team.members']);
+    $transaction->load(['team.competition', 'team.leader', 'team.members', 'registrationBatch']);
 
     $schedule = $transaction->team?->competition?->timelines ?? [];
 

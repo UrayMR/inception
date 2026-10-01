@@ -21,6 +21,10 @@ class ShowTransactionResource extends JsonResource
       'payment_method' => $this->payment_method,
       'payment_proof_path' => $this->payment_proof_path,
       'status' => $this->status,
+      'registration_batch' => [
+        'label' => $this->registrationBatch?->name,
+        'value' => $this->registrationBatch?->id,
+      ],
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
 
@@ -31,6 +35,7 @@ class ShowTransactionResource extends JsonResource
       'team_name' => $this->team?->team_name,
       'institution' => $this->team?->institution,
       'phone_number' => $this->team?->phone_number,
+      'requirement_link' => $this->team?->requirement_link,
       'leader_name' => $this->team?->leader_name ?? $this->team?->leader?->name,
       'leader_email' => $this->team?->leader?->email,
       'members' => $this->team?->members?->map(fn($member) => [

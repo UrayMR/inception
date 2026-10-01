@@ -21,6 +21,10 @@ class IndexTransactionResource extends JsonResource
       'competition_name' => $this->team?->competition?->name,
       'amount' => $this->amount,
       'status' => $this->status,
+      'registration_batch' => [
+        'label' => $this->registrationBatch?->name,
+        'value' => $this->registrationBatch?->id,
+      ],
     ];
   }
 }

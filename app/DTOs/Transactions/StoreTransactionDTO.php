@@ -12,5 +12,6 @@ class StoreTransactionDTO
     public string $payment_method,
     public UploadedFile $payment_proof_file,
     public string $status,
+    public string $registration_batch_id,
   ) {}
 }

@@ -11,6 +11,7 @@ import {
 import utils from '@/routes/utils';
 import type {
     FormProps,
+    Option,
     TeamMember,
     TransactionPaymentMethodType,
     TransactionStatusType,
@@ -21,6 +22,7 @@ type TransactionFormData = {
     amount: number;
     payment_method: TransactionPaymentMethodType;
     payment_proof_path: string;
+    registration_batch: Option;
     status: TransactionStatusType;
     created_at?: string;
     updated_at?: string;
@@ -31,7 +33,8 @@ type TransactionFormData = {
     leader_name: string;
     leader_email: string;
     phone_number: string;
-    
+    requirement_link: string;
+
     institution?: string;
     members?: TeamMember[];
 };
@@ -104,6 +107,17 @@ export function TransactionForm({
                                 )}
                             </SelectContent>
                         </Select>
+                    </FormField>
+
+                    <FormField
+                        name="registration_batch"
+                        label="Batch Registrasi"
+                    >
+                        <Input
+                            value={data.registration_batch?.label || '-'}
+                            readOnly
+                            disabled
+                        />
                     </FormField>
 
                     <FormField name="status" label="Status">
@@ -205,6 +219,17 @@ export function TransactionForm({
                             disabled
                         />
                     </FormField>
+
+                    <FormField name="requirement_link" label="Link Persyaratan">
+                        <a
+                            href={data.requirement_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-primary underline hover:opacity-80"
+                        >
+                            {data.requirement_link || 'Link Persyaratan'}
+                        </a>
+                    </FormField>
                 </div>
 
                 {/* Daftar Anggota Tim (kalau kompetisi tipe Team) */}
@@ -221,7 +246,9 @@ export function TransactionForm({
                                             {index + 1}.
                                         </span>
                                         <span>{member.member_name}</span>
-                                        <span>{member.member_phone_number}</span>
+                                        <span>
+                                            {member.member_phone_number}
+                                        </span>
                                     </div>
                                 ))}
                             </div>

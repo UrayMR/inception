@@ -24,6 +24,7 @@ import {
     FieldTitle,
 } from '@/components/ui/field';
 import { TransactionForm } from '@/features/panel/transaction';
+import { parsePhoneNumber } from '@/helpers/parsing-phone-number';
 import PanelLayout from '@/layouts/panel-layout';
 import transactions from '@/routes/panel/transactions';
 import { TransactionStatusMap } from '@/types';
@@ -77,7 +78,8 @@ export default function ShowTransactionPage({
             return;
         }
 
-        const phoneNumber = transaction.phone_number.replace(/\D/g, '');
+        const phoneNumber = parsePhoneNumber(transaction.phone_number);
+
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
         window.open(whatsappUrl, '_blank');

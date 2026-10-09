@@ -1,5 +1,4 @@
 import { Head, usePage } from '@inertiajs/react';
-import { CreateButton } from '@/components/buttons/create-button';
 import { DataTable } from '@/components/data-table/data-table';
 import { MainContent } from '@/components/main-content';
 import {
@@ -50,7 +49,6 @@ export default function IndexSubmissionsPage() {
                                         competitions={props.competitions}
                                     />
                                 )}
-                                <CreateButton href={submissions.create.url()} />
                             </div>
                         }
                     />

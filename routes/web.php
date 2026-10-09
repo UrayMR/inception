@@ -36,8 +36,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('registration-batches/{registrationBatch}/switch', [RegistrationBatchController::class, 'switch'])->name('registration-batches.switch');
             Route::post('sync/transactions', [SyncController::class, 'syncTransactionsToGoogleSheet'])->name('sync.transactions');
 
+            Route::get('submissions', [SubmissionController::class, 'index'])->name('submissions.index');
             Route::get('submissions/export', [SubmissionController::class, 'export'])->name('submissions.export');
-            Route::resource('submissions', SubmissionController::class)->names('submissions');
 
             Route::put('announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
             Route::get('configuration', [ConfigController::class, 'index'])->name('configuration');

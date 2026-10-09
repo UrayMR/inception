@@ -27,6 +27,8 @@ class StoreTeam
       'status' => $dto->status,
     ];
 
+    // $attributes['phone_number'] = $this->parsePhoneNumber($dto->phone_number);
+    
     $team = $this->teamRepository->store($attributes);
 
     if (! empty($members)) {
@@ -44,5 +46,29 @@ class StoreTeam
         'member_phone_number' => $member['member_phone_number'],
       ];
     }, $members);
+  }
+
+  /**
+   * Parse and format phone number to Indonesian format (62...)
+   */
+  protected function parsePhoneNumber(string $phoneNumber): ?string
+  {
+    $cleanNumber = preg_replace('/\D/', '', $phoneNumber);
+
+    if (empty($cleanNumber)) {
+      return null;
+    }
+
+    if (str_starts_with($cleanNumber, '62')) {
+      $cleanNumber = substr($cleanNumber, 2);
+    }
+
+    $cleanNumber = ltrim($cleanNumber, '0');
+
+    if (strlen($cleanNumber) < 8) {
+      return null;
+    }
+
+    return '62' . $cleanNumber;
   }
 }

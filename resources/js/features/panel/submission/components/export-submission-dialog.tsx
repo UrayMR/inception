@@ -130,6 +130,11 @@ export function ExportSubmissionDialog({
         availableCompetitions.length > 0 &&
         selectedCompetitions.length === availableCompetitions.length;
 
+    const totalSubmissionCount = competitions.reduce(
+        (sum, comp) => sum + (Number(comp.otherValues?.submissionCount) || 0),
+        0,
+    );
+
     return (
         <Dialog
             open={isOpen}
@@ -161,59 +166,81 @@ export function ExportSubmissionDialog({
                 </DialogHeader>
 
                 <div className="grid gap-4 py-4">
-                    <div className="flex items-center space-x-2 border-b pb-3">
-                        <Checkbox
-                            id="select-all-competitions"
-                            checked={isAllSelected}
-                            disabled={availableCompetitions.length === 0}
-                            onCheckedChange={(checked) =>
-                                handleSelectAll(checked === true)
-                            }
-                        />
-                        <label
-                            htmlFor="select-all-competitions"
-                            className="cursor-pointer text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                            Pilih Semua Kompetisi
-                        </label>
+                    <div className="flex items-center justify-between border-b pb-3">
+                        <div className="flex items-center space-x-2">
+                            <Checkbox
+                                id="select-all-competitions"
+                                checked={isAllSelected}
+                                disabled={availableCompetitions.length === 0}
+                                onCheckedChange={(checked) =>
+                                    handleSelectAll(checked === true)
+                                }
+                            />
+                            <label
+                                htmlFor="select-all-competitions"
+                                className="cursor-pointer text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                Pilih Semua Kompetisi
+                            </label>
+                        </div>
+                        <span className="text-sm font-medium text-muted-foreground">
+                            Total: {totalSubmissionCount}
+                        </span>
                     </div>
 
                     <div className="grid max-h-60 gap-3 overflow-y-auto">
-                        {competitions.map((comp) => (
-                            <div
-                                key={comp.value}
-                                className="flex items-center space-x-2"
-                            >
-                                <Checkbox
-                                    id={`comp-${comp.value}`}
-                                    checked={selectedCompetitions.includes(
-                                        comp.value,
-                                    )}
-                                    disabled={!comp.otherValues?.hasSubmissions}
-                                    onCheckedChange={(checked) =>
-                                        handleCheckboxChange(
-                                            comp.value,
-                                            checked === true,
-                                        )
-                                    }
-                                />
-                                <label
-                                    htmlFor={`comp-${comp.value}`}
-                                    className={`text-sm leading-none font-normal ${
-                                        comp.otherValues?.hasSubmissions
-                                            ? 'cursor-pointer'
-                                            : 'cursor-not-allowed'
-                                    }`}
+                        {competitions.map((comp) => {
+                            const submissionCount =
+                                Number(comp.otherValues?.submissionCount) || 0;
+
+                            return (
+                                <div
+                                    key={comp.value}
+                                    className="flex items-center justify-between gap-2"
                                 >
-                                    {comp.label}
-                                    {!comp.otherValues?.hasSubmissions && (
-                                        <span className="text-xs text-muted-foreground">
-                                            (Tidak ada data)
-                                        </span>
-                                    )}
-                                </label>
-                            </div>
-                        ))}
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox
+                                            id={`comp-${comp.value}`}
+                                            checked={selectedCompetitions.includes(
+                                                comp.value,
+                                            )}
+                                            disabled={
+                                                !comp.otherValues
+                                                    ?.hasSubmissions
+                                            }
+                                            onCheckedChange={(checked) =>
+                                                handleCheckboxChange(
+                                                    comp.value,
+                                                    checked === true,
+                                                )
+                                            }
+                                        />
+                                        <label
+                                            htmlFor={`comp-${comp.value}`}
+                                            className={`text-sm leading-none font-normal ${
+                                                comp.otherValues?.hasSubmissions
+                                                    ? 'cursor-pointer'
+                                                    : 'cursor-not-allowed'
+                                            }`}
+                                        >
+                                            {comp.label}
+                                            {!comp.otherValues
+                                                ?.hasSubmissions && (
+                                                <span className="text-xs text-muted-foreground">
+                                                    {' '}
+                                                    (Tidak ada data)
+                                                </span>
+                                            )}
+                                        </label>
+                                    </div>
+
+                                    <span className="text-xs font-medium text-muted-foreground">
+                                        {submissionCount} submission
+                                        {submissionCount === 1 ? '' : 's'}
+                                    </span>
+                                </div>
+                            );
+                        })}
                     </div>
 
                     {error && (

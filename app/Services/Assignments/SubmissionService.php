@@ -44,20 +44,21 @@ class SubmissionService
 
   public function getCompetitionOptions(?array $accessibleCompetitionIds = null): array
   {
-    $query = Competition::query()->withCount(['assignments as has_submissions' => function ($query) {
-      $query->whereHas('submission');
-    }]);
+    $query = Competition::query()->withCount('submissions as submission_count');
 
     if ($accessibleCompetitionIds !== null) {
       $query->whereIn('id', $accessibleCompetitionIds);
     }
 
     return $query->get(['id', 'name'])->map(function (Competition $competition) {
+      $submissionCount = (int) ($competition->submission_count ?? 0);
+
       return [
         'value' => $competition->id,
         'label' => $competition->name,
         'otherValues' => [
-          'hasSubmissions' => $competition->has_submissions > 0,
+          'hasSubmissions' => $submissionCount > 0,
+          'submissionCount' => $submissionCount,
         ],
       ];
     })->toArray();
@@ -105,7 +106,7 @@ class SubmissionService
   public function exportForCompetitions(array $competitionIds): string
   {
     $competitions = Competition::whereIn('id', $competitionIds)
-      ->whereHas('assignments.submission')
+      ->whereHas('submissions')
       ->get();
 
     if ($competitions->isEmpty()) {

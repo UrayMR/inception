@@ -29,6 +29,24 @@ class EloquentSubmissionRepository implements SubmissionRepository
 
     if (! empty($queryParams['filters'])) {
       foreach ($queryParams['filters'] as $key => $value) {
+        if ($key === 'competition_ids') {
+          if (is_array($value) && empty($value)) {
+            $query->whereRaw('0 = 1');
+
+            continue;
+          }
+
+          if (is_array($value) && ! empty($value)) {
+            $query->whereIn('assignment_id', function ($subQuery) use ($value) {
+              $subQuery->select('id')
+                ->from('assignments')
+                ->whereIn('competition_id', $value);
+            });
+
+            continue;
+          }
+        }
+
         if ($value !== null && $value !== '') {
           $query->where($key, $value);
         }

@@ -17,7 +17,7 @@ class LoginResponse implements LoginResponseContract
       'message' => "Selamat datang, {$user->name}!",
     ]);
 
-    if ($user->role === UserRole::admin->value || $user->role === UserRole::accountant->value) {
+    if ($user->role === UserRole::admin->value || $user->role === UserRole::accountant->value || $user->role === UserRole::committee->value) {
       return redirect()->intended(route('panel.dashboard'));
     }
 

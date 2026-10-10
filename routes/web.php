@@ -36,21 +36,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('registration-batches/{registrationBatch}/switch', [RegistrationBatchController::class, 'switch'])->name('registration-batches.switch');
             Route::post('sync/transactions', [SyncController::class, 'syncTransactionsToGoogleSheet'])->name('sync.transactions');
 
-            Route::get('submissions', [SubmissionController::class, 'index'])->name('submissions.index');
-            Route::get('submissions/export', [SubmissionController::class, 'export'])->name('submissions.export');
-
             Route::put('announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
             Route::get('configuration', [ConfigController::class, 'index'])->name('configuration');
         });
 
-        Route::middleware('role:admin,accountant')->group(function () {
+        Route::middleware('role:admin,accountant,committee')->group(function () {
             Route::inertia('dashboard', 'panel/dashboard')->name('dashboard');
+        });
 
+        Route::middleware('role:admin,accountant')->group(function () {
             Route::controller(TransactionController::class)->group(function () {
                 Route::patch('transactions/verify/{transaction}', 'verify')->name('transactions.verify');
                 Route::patch('transactions/reject/{transaction}', 'reject')->name('transactions.reject');
                 Route::resource('transactions', TransactionController::class)->names('transactions');
             });
+        });
+
+    Route::middleware('role:admin,committee')->group(function () {
+            Route::get('submissions', [SubmissionController::class, 'index'])->name('submissions.index');
+            Route::get('submissions/export', [SubmissionController::class, 'export'])->name('submissions.export');
         });
     });
 

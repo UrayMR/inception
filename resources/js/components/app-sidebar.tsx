@@ -39,7 +39,11 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: panel.dashboard(),
         icon: LayoutGrid,
-        roles: [UserRoleMap.Admin.value, UserRoleMap.Accountant.value],
+        roles: [
+            UserRoleMap.Admin.value,
+            UserRoleMap.Accountant.value,
+            UserRoleMap.Committee.value,
+        ],
     },
     {
         title: 'Users',
@@ -69,7 +73,7 @@ const mainNavItems: NavItem[] = [
         title: 'Submissions',
         href: submissions.index(),
         icon: PenToolIcon,
-        roles: [UserRoleMap.Admin.value],
+        roles: [UserRoleMap.Admin.value, UserRoleMap.Committee.value],
     },
     {
         title: 'Transactions',

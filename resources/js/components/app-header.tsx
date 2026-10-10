@@ -13,7 +13,7 @@ import { home, login, logout } from '@/routes';
 import competitions from '@/routes/guest/competitions';
 import panel from '@/routes/panel';
 import settings from '@/routes/settings';
-import { AnnouncementStatusMap } from '@/types';
+import { AnnouncementStatusMap, UserRoleMap } from '@/types';
 import type { Announcement, NavItem } from '@/types';
 import AnnouncementBanner from './announcement-banner';
 import { AvatarProfile } from './avatar-profile';
@@ -47,9 +47,19 @@ export function AppHeader() {
     const { isCurrentUrl } = useCurrentUrl();
     const [mobileOpen, setMobileOpen] = useState(false);
 
+    const panelDashboardRoles = [
+        UserRoleMap.Admin.value,
+        UserRoleMap.Accountant.value,
+        UserRoleMap.Committee.value,
+    ] as const;
+
+    const canAccessPanelDashboard = panelDashboardRoles.includes(
+        auth.user?.role as (typeof panelDashboardRoles)[number],
+    );
+
     const mobileNavItems: NavItem[] = auth.user
         ? mainNavItems.concat([
-              ...(auth.user.role === 'admin'
+              ...(canAccessPanelDashboard
                   ? [
                         {
                             title: 'Panel Dashboard',

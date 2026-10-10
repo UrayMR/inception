@@ -26,9 +26,10 @@ export function UserMenuContent({ user }: Props) {
         router.flushAll();
     };
 
-    const isAdminOrAccountant =
+    const canAccessPanelDashboard =
         user.role === UserRoleMap.Admin.value ||
-        user.role === UserRoleMap.Accountant.value;
+        user.role === UserRoleMap.Accountant.value ||
+        user.role === UserRoleMap.Committee.value;
 
     return (
         <>
@@ -74,7 +75,7 @@ export function UserMenuContent({ user }: Props) {
 
             <DropdownMenuSeparator className="bg-purple-500/20" />
 
-            {isAdminOrAccountant && (
+            {canAccessPanelDashboard && (
                 <>
                     <DropdownMenuItem
                         asChild

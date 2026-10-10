@@ -15,7 +15,10 @@ class EloquentSubmissionRepository implements SubmissionRepository
    */
   public function index(array $queryParams = [], int $perPage = 10): LengthAwarePaginator
   {
-    $query = AssignmentSubmission::query()->with(['assignment.competition', 'team']);
+    $query = AssignmentSubmission::query()
+      ->with(['assignment.competition', 'team'])
+      ->join('assignments', 'assignment_submissions.assignment_id', '=', 'assignments.id')
+      ->select('assignment_submissions.*');
 
     // Searching
     if (! empty($queryParams['search'])) {
@@ -29,6 +32,14 @@ class EloquentSubmissionRepository implements SubmissionRepository
 
     if (! empty($queryParams['filters'])) {
       foreach ($queryParams['filters'] as $key => $value) {
+        if ($key === 'competition' && $value !== null && $value !== '') {
+          $query->whereHas('assignment', function ($assignmentQuery) use ($value) {
+            $assignmentQuery->where('competition_id', $value);
+          });
+
+          continue;
+        }
+
         if ($key === 'competition_ids') {
           if (is_array($value) && empty($value)) {
             $query->whereRaw('0 = 1');
@@ -37,10 +48,8 @@ class EloquentSubmissionRepository implements SubmissionRepository
           }
 
           if (is_array($value) && ! empty($value)) {
-            $query->whereIn('assignment_id', function ($subQuery) use ($value) {
-              $subQuery->select('id')
-                ->from('assignments')
-                ->whereIn('competition_id', $value);
+            $query->whereHas('assignment', function ($assignmentQuery) use ($value) {
+              $assignmentQuery->whereIn('competition_id', $value);
             });
 
             continue;
@@ -53,7 +62,10 @@ class EloquentSubmissionRepository implements SubmissionRepository
       }
     }
 
-    return $query->orderByDesc('updated_at')->paginate($perPage);
+    return $query
+      ->orderBy('assignments.competition_id')
+      ->orderByDesc('assignment_submissions.updated_at')
+      ->paginate($perPage);
   }
 
   /**

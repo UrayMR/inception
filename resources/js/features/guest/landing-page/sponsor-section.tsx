@@ -8,7 +8,7 @@ type Sponsor = {
 const ROW_ONE_SPONSORS: Sponsor[] = [
     {
         name: 'DMP',
-        logoUrl: '/assets/png/sponsors/LOGO DMP_XL.png',
+        logoUrl: '/assets/webp/sponsors/LOGO DMP_XL.webp',
     },
     // {
     //     name: 'DMP',
@@ -23,7 +23,7 @@ const ROW_ONE_SPONSORS: Sponsor[] = [
 const ROW_TWO_SPONSORS: Sponsor[] = [
     {
         name: 'AYU',
-        logoUrl: '/assets/png/sponsors/LOGO AYU_M.png',
+        logoUrl: '/assets/webp/sponsors/LOGO AYU_M.webp',
     },
     // {
     //     name: 'AYU',

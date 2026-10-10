@@ -6,24 +6,30 @@ import { UserForm } from '@/features/panel/user';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
 import users from '@/routes/panel/users';
-import type { BreadcrumbItem, IUserEdit } from '@/types';
+import type { BreadcrumbItem, IUserEdit, Option } from '@/types';
 import { UpdateUserSchema } from '@/validations/user-schema';
 import type { UpdateUserSchemaType } from '@/validations/user-schema';
 
 interface EditUserPageProps {
     user: IUserEdit;
+    competitions?: Option[];
 }
 
-export default function EditUserPage({ user }: EditUserPageProps) {
+export default function EditUserPage({
+    user,
+    competitions = [],
+}: EditUserPageProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Users', href: users.index.url() },
         { title: 'Edit User', href: users.edit.url(user.id) },
     ];
+    const competitionOptions = competitions;
 
     const form = useForm<UpdateUserSchemaType>({
         name: user.name,
         email: user.email,
         role: user.role,
+        competition_id: user.competition_id ?? '',
         password: undefined,
         password_confirmation: undefined,
     });
@@ -57,6 +63,7 @@ export default function EditUserPage({ user }: EditUserPageProps) {
                                 data={form.data}
                                 errors={form.errors}
                                 onChange={form.setData}
+                                competitions={competitionOptions}
                             />
 
                             <div className="mt-4 flex justify-end">

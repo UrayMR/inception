@@ -1,3 +1,4 @@
+import type { Option } from '@/types';
 import type { UserRoleType } from '../enums/role';
 
 export interface User {
@@ -22,6 +23,8 @@ export interface IUserIndex {
 export type IUserAuth = User;
 
 export interface IUserShow extends IUserIndex {
+    competition_id?: string | null;
+    competition?: Option | null;
     created_at: string;
     updated_at: string;
 }

@@ -8,26 +8,54 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { UserRoleMap } from '@/types';
-import type { UserRoleType, FormProps } from '@/types';
+import type { UserRoleType, FormProps, Option } from '@/types';
 
 export type UserFormData = {
     name: string;
     email: string;
     role: UserRoleType;
+    competition_id?: string | null;
+    competition?: Option | null;
     password?: string;
     password_confirmation?: string;
 };
 
-type UserFormProps = FormProps<UserFormData>;
+type UserFormProps = FormProps<UserFormData> & {
+    competitions?: Option[];
+};
 
-export function UserForm({ mode, data, errors, onChange }: UserFormProps) {
+export function UserForm({
+    mode,
+    data,
+    errors,
+    onChange,
+    competitions = [],
+}: UserFormProps) {
     const createMode = mode === 'create';
     const editMode = mode === 'edit';
     const showMode = mode === 'show';
     const isReadOnly = showMode;
+    const competitionOptions = competitions;
+    const selectedCompetition =
+        competitionOptions.find(
+            (competition) => competition.value === data.competition_id,
+        ) ??
+        data.competition ??
+        null;
+    const isCommitteeRole = data.role === UserRoleMap.Committee.value;
+    const shouldShowCompetitionField =
+        isCommitteeRole || (showMode && Boolean(selectedCompetition));
 
     const isPasswordChanged =
         data.password !== undefined && data.password !== '';
+
+    const handleRoleChange = (value: string) => {
+        onChange('role', value as UserRoleType);
+
+        if (value !== UserRoleMap.Committee.value) {
+            onChange('competition_id', '');
+        }
+    };
 
     return (
         <div className="space-y-5">
@@ -75,9 +103,8 @@ export function UserForm({ mode, data, errors, onChange }: UserFormProps) {
             <FormField name="role" label="Role" error={errors.role} required>
                 <Select
                     value={data.role}
-                    onValueChange={(value) =>
-                        onChange('role', value as UserRoleType)
-                    }
+                    onValueChange={handleRoleChange}
+                    disabled={isReadOnly}
                     required
                 >
                     <SelectTrigger>
@@ -97,6 +124,42 @@ export function UserForm({ mode, data, errors, onChange }: UserFormProps) {
                     </SelectContent>
                 </Select>
             </FormField>
+
+            {shouldShowCompetitionField && (
+                <FormField
+                    name="competition_id"
+                    label="Competition"
+                    error={errors.competition_id}
+                    required={isCommitteeRole}
+                >
+                    <Select
+                        value={data.competition_id ?? ''}
+                        onValueChange={(value) =>
+                            onChange('competition_id', value)
+                        }
+                        disabled={isReadOnly}
+                        required={isCommitteeRole}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select Competition">
+                                {selectedCompetition?.label}
+                            </SelectValue>
+                        </SelectTrigger>
+
+                        <SelectContent>
+                            {competitionOptions.map((competition) => (
+                                <SelectItem
+                                    key={competition.value}
+                                    value={competition.value}
+                                    disabled={isReadOnly}
+                                >
+                                    {competition.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </FormField>
+            )}
 
             {!showMode && (
                 <>

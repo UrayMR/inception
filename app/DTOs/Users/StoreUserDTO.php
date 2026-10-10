@@ -11,5 +11,7 @@ class StoreUserDTO
         public readonly string $email,
         public readonly UserRole $role,
         public readonly string $password,
+        
+        public readonly ?string $competition_id = null,
     ) {}
 }

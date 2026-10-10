@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Resources\Users\EditUserResource;
 use App\Resources\Users\IndexUserResource;
 use App\Resources\Users\ShowUserResource;
+use App\Services\Competitions\CompetitionService;
 use App\Services\Users\UserService;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,7 @@ class UserController extends Controller
 {
     public function __construct(
         protected UserService $userService,
+        protected CompetitionService $competitionService,
     ) {}
 
     /**
@@ -40,7 +42,11 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
 
-        return $this->render('panel/users/create');
+        $competitions = $this->competitionService->getCompetitionMap();
+
+        return $this->render('panel/users/create', [
+            'competitions' => $competitions,
+        ]);
     }
 
     /**
@@ -64,8 +70,11 @@ class UserController extends Controller
     {
         $this->authorize('view', $user);
 
+        $competitions = $this->competitionService->getCompetitionMap();
+
         return $this->render('panel/users/show', [
             'user' => ShowUserResource::make($user)->resolve(),
+            'competitions' => $competitions,
         ]);
     }
 
@@ -76,8 +85,11 @@ class UserController extends Controller
     {
         $this->authorize('update', $user);
 
+        $competitions = $this->competitionService->getCompetitionMap();
+
         return $this->render('panel/users/edit', [
             'user' => EditUserResource::make($user)->resolve(),
+            'competitions' => $competitions,
         ]);
     }
 

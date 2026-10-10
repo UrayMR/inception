@@ -49,4 +49,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Team::class, 'leader_id', 'id');
     }
+
+    public function managedCompetitions()
+    {
+        return $this->belongsToMany(Competition::class, 'competition_committees', 'user_id', 'competition_id')
+            ->using(CompetitionCommittee::class)
+            ->withTimestamps();
+    }
 }

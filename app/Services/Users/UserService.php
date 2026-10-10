@@ -2,6 +2,7 @@
 
 namespace App\Services\Users;
 
+use App\Actions\Users\ManageUserCompetition;
 use App\Repositories\Users\UserRepository;
 use App\Actions\Users\StoreUser;
 use App\Actions\Users\UpdateUser;
@@ -11,7 +12,6 @@ use App\DTOs\Users\StoreUserDTO;
 use App\DTOs\Users\UpdateUserDTO;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 
 class UserService
 {
@@ -20,6 +20,7 @@ class UserService
         protected StoreUser $storeUser,
         protected UpdateUser $updateUser,
         protected DeleteUser $deleteUser,
+        protected ManageUserCompetition $manageUserCompetition,
         protected UpdatePassword $updatePassword,
     ) {}
 
@@ -40,14 +41,24 @@ class UserService
     public function store(StoreUserDTO $dto): User
     {
         return DB::transaction(function () use ($dto) {
-            return $this->storeUser->handle($dto);
+            $user = $this->storeUser->handle($dto);
+
+            if ($dto->competition_id) {
+                $this->manageUserCompetition->handle($user, $dto->competition_id);
+            }
+
+            return $user;
         });
     }
 
     public function update(UpdateUserDTO $dto, User $user): User
     {
         return DB::transaction(function () use ($dto, $user) {
-            return $this->updateUser->handle($dto, $user);
+            $user = $this->updateUser->handle($dto, $user);
+
+            $this->manageUserCompetition->handle($user, $dto->competition_id);
+
+            return $user;
         });
     }
 

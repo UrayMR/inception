@@ -57,4 +57,11 @@ class Competition extends Model
     {
         return $this->hasMany(Assignment::class);
     }
+
+    public function committees()
+    {
+        return $this->belongsToMany(User::class, 'competition_committees', 'competition_id', 'user_id')
+            ->using(CompetitionCommittee::class)
+            ->withTimestamps();
+    }
 }

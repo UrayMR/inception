@@ -33,6 +33,12 @@ class UpdateUserRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'string', Rule::in(UserRole::cases())],
+
+            'competition_id' => [
+                Rule::requiredIf(fn() => $this->input('role') === UserRole::committee->value),
+                Rule::exists('competitions', 'id'),
+                'nullable'
+            ],
         ];
     }
 
@@ -43,6 +49,15 @@ class UpdateUserRequest extends FormRequest
             email: $this->input('email'),
             role: UserRole::from($this->input('role')),
             password: $this->input('password'),
+            competition_id: $this->input('competition_id'),
         );
+    }
+
+    public function messages(): array
+    {
+        return [
+            'competition_id.required_if' => 'Kompetisi wajib dipilih jika role adalah Committee.',
+            'competition_id.exists' => 'Kompetisi yang dipilih tidak valid.'
+        ];
     }
 }

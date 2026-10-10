@@ -93,6 +93,7 @@ class SubmissionService
     $cleanParams = [
       'search' => $queryParams['search'] ?? null,
       'filters' => [
+        'competition' => $queryParams['filters']['competition'] ?? null,
         'type' => $queryParams['filters']['type'] ?? null,
         'competition_ids' => $accessibleCompetitionIds,
       ],

@@ -42,6 +42,18 @@ export default function IndexSubmissionsPage() {
                         data={props.submissions.data}
                         meta={props.submissions.meta}
                         links={props.submissions.links}
+                        filtersSchema={[
+                            {
+                                key: 'competition',
+                                label: 'Competition',
+                                values: Object.values(props.competitions).map(
+                                    (competition) => ({
+                                        label: competition.label,
+                                        value: competition.value,
+                                    }),
+                                ),
+                            },
+                        ]}
                         extraActions={
                             <div className="flex items-center gap-2">
                                 {props.competitions.length > 0 && (

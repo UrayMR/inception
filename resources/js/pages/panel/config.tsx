@@ -1,7 +1,8 @@
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { SubmitButton } from '@/components/buttons/submit-button';
 import { FormField } from '@/components/form-field';
 import { MainContent } from '@/components/main-content';
+import { Button } from '@/components/ui/button';
 import {
     Select,
     SelectContent,
@@ -13,7 +14,12 @@ import { AnnouncementForm } from '@/features/panel/announcement';
 import { useZod } from '@/hooks/use-zod';
 import PanelLayout from '@/layouts/panel-layout';
 import panel from '@/routes/panel';
-import type { Announcement, BreadcrumbItem, RegistrationBatch } from '@/types';
+import type {
+    Announcement,
+    BreadcrumbItem,
+    Option,
+    RegistrationBatch,
+} from '@/types';
 import { RegistrationBatchStatusMap } from '@/types';
 import { AnnouncementSchema } from '@/validations/announcement-schema';
 import type { AnnouncementSchemaType } from '@/validations/announcement-schema';
@@ -21,11 +27,13 @@ import type { AnnouncementSchemaType } from '@/validations/announcement-schema';
 interface ConfigPageProps {
     announcement: Announcement;
     registrationBatches: RegistrationBatch[];
+    competitions: Option[];
 }
 
 export default function ConfigPage({
     announcement,
     registrationBatches,
+    competitions,
 }: ConfigPageProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: panel.dashboard() },
@@ -52,8 +60,12 @@ export default function ConfigPage({
             : '',
     });
 
-    const finalAnnouncementForm = useForm<{ whitelist: string }>({
+    const finalAnnouncementForm = useForm<{
+        whitelist: string;
+        competitionId: string;
+    }>({
         whitelist: '',
+        competitionId: '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -185,14 +197,46 @@ export default function ConfigPage({
                             onSubmit={handleFinalAnnouncementSubmit}
                             className="space-y-4"
                         >
+                            <FormField
+                                name="competitionId"
+                                label="Competition"
+                                required
+                            >
+                                <Select
+                                    value={
+                                        finalAnnouncementForm.data.competitionId
+                                    }
+                                    onValueChange={(value) =>
+                                        finalAnnouncementForm.setData(
+                                            'competitionId',
+                                            value,
+                                        )
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Pilih Kompetisi" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {competitions.map((competition) => (
+                                            <SelectItem
+                                                key={competition.value}
+                                                value={competition.value}
+                                            >
+                                                {competition.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </FormField>
+
                             <div>
                                 <label
                                     htmlFor="whitelist"
                                     className="mb-2 block text-sm font-medium"
                                 >
-                                    Email ketua tim yang lolos
+                                    Email ketua tim yang lolos (Finalist)
+                                    <span className="text-destructive"> *</span>
                                 </label>
-
                                 <textarea
                                     id="whitelist"
                                     value={finalAnnouncementForm.data.whitelist}
@@ -207,37 +251,62 @@ export default function ConfigPage({
                                     placeholder={
                                         'ketua.tim1@example.com, ketua.tim2@example.com'
                                     }
+                                    disabled={
+                                        finalAnnouncementForm.processing ||
+                                        !finalAnnouncementForm.data
+                                            .competitionId
+                                    }
+                                    required
                                 />
-
                                 {finalAnnouncementForm.errors.whitelist && (
                                     <p className="mt-2 text-sm text-red-500">
                                         {finalAnnouncementForm.errors.whitelist}
                                     </p>
                                 )}
-
                                 <p className="mt-2 text-xs text-muted-foreground">
                                     Pastikan seluruh email yang masuk whitelist
-                                    benar-benar milik ketua tim, ada di data
-                                    tim, dan tim-nya memiliki transaksi dengan
-                                    status verified.
+                                    benar-benar milik ketua tim, terdaftar,
+                                    memiliki transaksi terverifikasi, dan telah
+                                    mengumpulkan tugas (submission).
                                 </p>
                             </div>
 
-                            <div className="flex justify-end">
+                            <div className="flex items-center justify-between gap-2">
+                                <Button
+                                    type="button"
+                                    variant="link"
+                                    onClick={() => {
+                                        router.visit(
+                                            panel.finalAnnouncement.manage({
+                                                query: {
+                                                    competitionId:
+                                                        finalAnnouncementForm
+                                                            .data.competitionId,
+                                                },
+                                            }).url,
+                                        );
+                                    }}
+                                    className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+                                    disabled={
+                                        finalAnnouncementForm.processing ||
+                                        !finalAnnouncementForm.data
+                                            .competitionId
+                                    }
+                                >
+                                    Manage Final Announcement
+                                </Button>
+
                                 <SubmitButton
                                     loading={finalAnnouncementForm.processing}
-                                    label="Check"
+                                    disabled={
+                                        finalAnnouncementForm.processing ||
+                                        !finalAnnouncementForm.data
+                                            .competitionId
+                                    }
+                                    label="Check & Simpan Whitelist"
                                 />
                             </div>
                         </form>
-
-                        <Link
-                            href="/panel/final-announcement/manage"
-                            className="mt-4 inline-flex items-center gap-2 text-sm text-primary hover:underline"
-                        >
-                            <Link className="h-4 w-4" />
-                            Lihat daftar tim yang lolos
-                        </Link>
                     </MainContent.Section>
                 </MainContent>
             </div>

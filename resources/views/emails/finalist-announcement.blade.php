@@ -125,15 +125,17 @@
 								@if ($isFinalist)
 									Kami mengucapkan selamat kepada tim <strong
 										style="color: #ffffff; font-weight: 600;">{{ $team_name }}</strong>.
-									Berdasarkan hasil penilaian dewan juri <strong>{{ $competition_name }}</strong>, tim Anda dinyatakan <strong
-										style="color: #00e676; font-weight: bold;">LOLOS</strong> ke babak final INCEPTION 2026.
+									Berdasarkan hasil penilaian dewan juri <strong
+										style="color: #ffffff; font-weight: 400;">{{ $competition_name }}</strong>, tim <strong
+										style="color: #ffffff; font-weight: 600;">{{ $team_name }}</strong> dinyatakan <strong
+										style="color: #00e676 !important; font-weight: bold;">LOLOS</strong> ke babak final INCEPTION 2026.
 								@else
 									Terima kasih telah berpartisipasi dalam INCEPTION 2026.
 									Berdasarkan hasil penilaian dewan juri <strong
-										style="color: #ffffff; font-weight: 200>{{ $competition_name }}</strong>, tim <strong
-										style="color:
-										#ffffff; font-weight: 600;">{{ $team_name }}</strong> dinyatakan <strong
-										style="color: #ff5252; font-weight: bold;">BELUM LOLOS</strong> ke babak final. Kami sangat mengapresiasi
+										style="color: #ffffff; font-weight: 400;">{{ $competition_name }}</strong>, tim <strong
+										style="color: #ffffff; font-weight: 600;">{{ $team_name }}</strong> dinyatakan <strong
+										style="color: #ff5252 !important; font-weight: bold;">BELUM LOLOS</strong> ke babak final. Kami sangat
+									mengapresiasi
 									kerja keras dan karya luar biasa yang telah Anda lakukan.
 								@endif
 							</p>
@@ -171,7 +173,7 @@
 													[STATUS]
 												</td>
 												<td width="65%"
-													style="padding-bottom: 8px; font-size: 14px; color: {{ $isFinalist ? '#00e676' : '#ff5252' }}; font-weight: bold; vertical-align: top;">
+													style="padding-bottom: 8px; font-size: 14px; color: {{ $isFinalist ? '#00e676 !important' : '#ff5252 !important' }}; font-weight: bold; vertical-align: top;">
 													{{ $isFinalist ? 'LOLOS' : 'BELUM LOLOS' }}
 												</td>
 											</tr>

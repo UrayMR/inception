@@ -60,22 +60,23 @@ class FinalAnnouncementService
    * - Leader with email
    * - Submissions
    */
-  private function eligibleTeamsQuery()
+  public function eligibleTeamsQuery(?string $competitionId = null)
   {
     return Team::query()
       ->whereHas('transactions', fn($q) => $q->where('status', TransactionStatus::verified->value))
       ->whereHas('leader', fn($q) => $q->whereNotNull('email')->where('email', '!=', ''))
       ->whereHas('submissions')
+      ->when($competitionId, fn($q) => $q->where('competition_id', $competitionId))
       ->with('leader', 'competition');
   }
 
   /**
    * Validate whitelist against eligible teams.
    */
-  public function validateWhitelist(string $whitelist): Collection
+  public function validateWhitelist(string $whitelist, ?string $competitionId = null): Collection
   {
     $emails = $this->normalizeWhitelist($whitelist);
-    $eligibleTeams = $this->eligibleTeamsQuery()->get();
+    $eligibleTeams = $this->eligibleTeamsQuery($competitionId)->get();
 
     $eligibleEmails = $eligibleTeams->pluck('leader.email')->map(fn($e) => strtolower(trim($e)))->all();
 
@@ -95,16 +96,28 @@ class FinalAnnouncementService
   /**
    * Store whitelist for eligible teams.
    */
-  public function storeWhitelist(Collection $eligibleTeams): int
+  public function storeWhitelist(Collection $eligibleTeams, ?string $competitionId = null): int
   {
-    DB::transaction(function () use ($eligibleTeams) {
-      if (FinalAnnouncementRun::query()->exists()) {
+    DB::transaction(function () use ($eligibleTeams, $competitionId) {
+      $hasRuns = FinalAnnouncementRun::query()
+        ->when($competitionId, function ($query) use ($competitionId) {
+          $query->whereHas('team', fn($q) => $q->where('competition_id', $competitionId));
+        })
+        ->exists();
+
+      if ($hasRuns) {
         throw ValidationException::withMessages([
-          'whitelist' => 'Whitelist tidak dapat diubah karena proses pengiriman pengumuman sudah dimulai.',
+          'whitelist' => "Whitelist tidak dapat diubah karena proses pengiriman pengumuman untuk lomba $competitionId sudah dimulai.",
         ]);
       }
 
-      FinalTeamRecipient::query()->delete();
+      if ($competitionId) {
+        FinalTeamRecipient::query()
+          ->whereHas('team', fn($q) => $q->where('competition_id', $competitionId))
+          ->delete();
+      } else {
+        FinalTeamRecipient::query()->delete();
+      }
 
       $data = $eligibleTeams->map(fn($team) => [
         'id' => \Illuminate\Support\Str::uuid(),
@@ -117,6 +130,7 @@ class FinalAnnouncementService
     });
 
     Log::info('Whitelist finalist berhasil disimpan.', [
+      'competition_id' => $competitionId,
       'total_teams' => $eligibleTeams->count(),
       'created_by' => Auth::id(),
     ]);
@@ -150,14 +164,16 @@ class FinalAnnouncementService
 
       Log::info('Email pengumuman berhasil dikirim.', [
         'team_id' => $team->id,
+        'competition_id' => $team->competition_id,
         'announcement_type' => $type,
-        'recipient' => $team->leader->email,
+        'email' => $team->leader->email,
       ]);
 
       return true;
     } catch (Throwable $e) {
       Log::error('Gagal mengirim email pengumuman.', [
         'team_id' => $team->id,
+        'competition_id' => $team->competition_id,
         'announcement_type' => $type,
         'error' => $e->getMessage(),
       ]);
@@ -182,25 +198,31 @@ class FinalAnnouncementService
    * Send announcement email to all eligible teams.
    * Teams in whitelist get Finalist email, others get Non-Finalist email.
    */
-  public function sendAnnouncements(): void
+  public function sendAnnouncements(?string $competitionId = null): void
   {
-    $eligibleTeams = $this->eligibleTeamsQuery()->get();
+    $eligibleTeams = $this->eligibleTeamsQuery($competitionId)->get();
 
     if ($eligibleTeams->isEmpty()) {
       throw ValidationException::withMessages([
-        'announcement' => 'Tidak ada tim yang eligible untuk dikirimkan pengumuman.',
+        'announcement' => "Tidak ada tim yang eligible untuk dikirimkan pengumuman untuk lomba {$competitionId}.",
       ]);
     }
 
-    // Get all eligible teams in whitelist finalist teams
-    $finalistTeamIds = FinalTeamRecipient::query()->pluck('team_id')->all();
+    // Get all eligible teams that are in the whitelist (Finalist) competition
+    $finalistTeamIds = FinalTeamRecipient::query()
+      ->whereHas('team', fn($q) => $q->when(
+        $competitionId,
+        fn($query) => $query->where('competition_id', $competitionId)
+      ))
+      ->pluck('team_id')
+      ->all();
 
     // Check if any eligible team has already been sent an announcement
     foreach ($eligibleTeams as $team) {
       $run = FinalAnnouncementRun::query()->where('team_id', $team->id)->first();
       if ($run) {
         throw ValidationException::withMessages([
-          'announcement' => "Pengiriman email untuk tim {$team->team_name} sudah dilakukan sebelumnya dengan status: {$run->status}.",
+          'announcement' => "Pengiriman email untuk tim {$team->team_name} pada lomba {$competitionId} sudah dilakukan sebelumnya dengan status: {$run->status}.",
         ]);
       }
     }

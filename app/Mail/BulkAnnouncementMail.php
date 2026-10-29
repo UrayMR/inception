@@ -17,7 +17,6 @@ class BulkAnnouncementMail extends Mailable implements ShouldQueue
   public function __construct(
     public readonly string $competitionName,
     public readonly string $teamName,
-    public readonly string $resultUrl,
     public readonly bool $isBlacklisted,
   ) {}
 

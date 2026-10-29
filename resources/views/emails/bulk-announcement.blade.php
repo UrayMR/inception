@@ -127,7 +127,7 @@
 									Berdasarkan hasil evaluasi panitia dan dewan juri <strong
 										style="color: #ffffff; font-weight: 400;">{{ $competitionName }}</strong>, tim <strong
 										style="color: #ffffff; font-weight: 600;">{{ $teamName }}</strong> dinyatakan <strong
-										style="color: #ff5252 !important; font-weight: bold;">TIDAK DAPAT LANJUT</strong> ke tahap berikutnya. Kami
+										style="color: #ff5252 !important; font-weight: bold;">TIDAK LOLOS</strong> ke tahap berikutnya. Kami
 									sangat
 									mengapresiasi kerja keras, usaha, serta kontribusi yang telah Anda lakukan.
 								@else
@@ -136,7 +136,7 @@
 									Berdasarkan hasil evaluasi panitia dan penilaian dewan juri <strong
 										style="color: #ffffff; font-weight: 400;">{{ $competitionName }}</strong>, tim <strong
 										style="color: #ffffff; font-weight: 600;">{{ $teamName }}</strong> dinyatakan <strong
-										style="color: #00e676 !important; font-weight: bold;">DAPAT LANJUT</strong> ke babak Hacking Day INCEPTION
+										style="color: #00e676 !important; font-weight: bold;">LOLOS</strong> ke babak Hacking Day INCEPTION
 									2026.
 								@endif
 							</p>
@@ -175,37 +175,13 @@
 												</td>
 												<td width="65%"
 													style="padding-bottom: 8px; font-size: 14px; color: {{ $isBlacklisted ? '#ff5252 !important' : '#00e676 !important' }}; font-weight: bold; vertical-align: top;">
-													{{ $isBlacklisted ? 'TIDAK DAPAT LANJUT' : 'DAPAT LANJUT' }}
+													{{ $isBlacklisted ? 'TIDAK LOLOS' : 'LOLOS' }}
 												</td>
 											</tr>
 										</table>
 									</td>
 								</tr>
 							</table>
-
-							<!-- Action Links (Transparansi & Kuisioner) -->
-							<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"
-								style="border-collapse: collapse;">
-								<tr>
-									<td align="center">
-										<!--[if !mso]><!-->
-										<table role="presentation" border="0" cellpadding="0" cellspacing="0"
-											style="margin: 0 auto; border-collapse: collapse;">
-											<tr>
-												<td align="center"
-													style="border-radius: 8px; background-color: #b13bff; box-shadow: 0 4px 15px rgba(177, 59, 255, 0.4);">
-													<a href="{{ $resultUrl }}" target="_blank" class="btn-link"
-														style="padding: 14px 28px; display: inline-block; font-size: 13px; font-weight: bold; color: #ffffff; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; font-family: Arial, sans-serif;">
-														TRANSPARANSI PENILAIAN
-													</a>
-												</td>
-											</tr>
-										</table>
-										<!--<![endif]-->
-									</td>
-								</tr>
-							</table>
-
 						</td>
 					</tr>
 

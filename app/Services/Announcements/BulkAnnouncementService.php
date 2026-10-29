@@ -14,8 +14,6 @@ use Throwable;
 
 class BulkAnnouncementService
 {
-  private const RESULT_URL = 'https://drive.google.com/drive/';
-
   /**
    * Normalize blacklist text into lowercase unique email list.
    */
@@ -104,7 +102,6 @@ class BulkAnnouncementService
         Mail::to($team->leader->email)->send(new BulkAnnouncementMail(
           competitionName: $team->competition?->name ?? 'Hackathon',
           teamName: $team->team_name,
-          resultUrl: self::RESULT_URL,
           isBlacklisted: $isBlacklisted,
         ));
 

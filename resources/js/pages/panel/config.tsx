@@ -68,6 +68,12 @@ export default function ConfigPage({
         competitionId: '',
     });
 
+    const bulkAnnouncementForm = useForm<{
+        blacklist: string;
+    }>({
+        blacklist: '',
+    });
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -100,6 +106,16 @@ export default function ConfigPage({
         }
 
         finalAnnouncementForm.post('/panel/final-announcement/check');
+    };
+
+    const handleBulkAnnouncementSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!bulkAnnouncementForm.data.blacklist) {
+            return;
+        }
+
+        bulkAnnouncementForm.post(panel.bulkAnnouncement.send.url());
     };
 
     return (
@@ -304,6 +320,60 @@ export default function ConfigPage({
                                             .competitionId
                                     }
                                     label="Check & Simpan Whitelist"
+                                />
+                            </div>
+                        </form>
+                    </MainContent.Section>
+
+                    <hr className="my-8 border-muted" />
+
+                    <MainContent.Section>
+                        <h2 className="mb-4 text-2xl font-bold">
+                            Bulk Announcement Hacking Day (Hackathon)
+                        </h2>
+                        <form
+                            onSubmit={handleBulkAnnouncementSubmit}
+                            className="space-y-4"
+                        >
+                            <FormField
+                                name="blacklist"
+                                label="Email blacklist"
+                                required
+                            >
+                                <textarea
+                                    id="blacklist"
+                                    value={bulkAnnouncementForm.data.blacklist}
+                                    onChange={(event) =>
+                                        bulkAnnouncementForm.setData(
+                                            'blacklist',
+                                            event.target.value,
+                                        )
+                                    }
+                                    rows={8}
+                                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                                    placeholder={
+                                        'ketua.tim1@example.com, ketua.tim2@example.com'
+                                    }
+                                    disabled={bulkAnnouncementForm.processing}
+                                    required
+                                />
+                                {bulkAnnouncementForm.errors.blacklist && (
+                                    <p className="mt-2 text-sm text-red-500">
+                                        {bulkAnnouncementForm.errors.blacklist}
+                                    </p>
+                                )}
+                                <p className="mt-2 text-xs text-muted-foreground">
+                                    Masukkan email yang dipisahkan koma atau
+                                    baris baru. Email dalam daftar ini akan
+                                    dikecualikan saat proses bulk announcement.
+                                </p>
+                            </FormField>
+
+                            <div className="flex justify-end">
+                                <SubmitButton
+                                    loading={bulkAnnouncementForm.processing}
+                                    disabled={bulkAnnouncementForm.processing}
+                                    label="Kirim Bulk Announcement"
                                 />
                             </div>
                         </form>

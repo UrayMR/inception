@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\AnnouncementController;
 use App\Http\Controllers\Panel\AssignmentController;
+use App\Http\Controllers\Panel\BulkAnnouncementController;
 use App\Http\Controllers\Panel\FinalAnnouncementController;
 use App\Http\Controllers\Participant\CompetitionRegistrationController;
 use App\Http\Controllers\Panel\CompetitionController;
@@ -48,6 +49,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::get('manage', 'manage')->name('manage');
                     Route::post('send', 'send')->name('send');
                     Route::post('retry', 'retry')->name('retry');
+                });
+
+            Route::prefix('bulk-announcement')
+                ->name('bulk-announcement.')
+                ->controller(BulkAnnouncementController::class)
+                ->group(function () {
+                    Route::post('send', 'send')->name('send');
                 });
         });
 

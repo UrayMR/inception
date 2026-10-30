@@ -59,7 +59,6 @@ class BulkAnnouncementService
       ->whereHas('transactions', fn($q) => $q->where('status', TransactionStatus::verified->value))
       ->whereHas('competition', fn($q) => $q->whereRaw('LOWER(name) LIKE ?', ['%hackathon%']))
       ->whereHas('leader', fn($q) => $q->whereNotNull('email')->where('email', '!=', ''))
-      ->whereHas('submissions')
       ->with(['leader', 'competition']);
   }
 

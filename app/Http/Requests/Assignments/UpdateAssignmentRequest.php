@@ -21,7 +21,7 @@ class UpdateAssignmentRequest extends FormRequest
       'name' => ['required', 'string', 'max:255'],
       'assignment_guide_link' => ['required', 'string', 'url'],
       'status' => ['required', 'string', Rule::in(AssignmentStatus::cases())],
-      'due_at' => ['required', 'date', 'after:now'],
+      'due_at' => ['required', 'date', Rule::when($this->input('status') === AssignmentStatus::active->value, 'after:now')],
     ];
 
     return $rules;

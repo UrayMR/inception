@@ -3,6 +3,8 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\AnnouncementController;
 use App\Http\Controllers\Panel\AssignmentController;
+use App\Http\Controllers\Panel\BulkAnnouncementController;
+use App\Http\Controllers\Panel\FinalAnnouncementController;
 use App\Http\Controllers\Participant\CompetitionRegistrationController;
 use App\Http\Controllers\Panel\CompetitionController;
 use App\Http\Controllers\Panel\ConfigController;
@@ -38,6 +40,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::put('announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
             Route::get('configuration', [ConfigController::class, 'index'])->name('configuration');
+
+            Route::prefix('final-announcement')
+                ->name('final-announcement.')
+                ->controller(FinalAnnouncementController::class)
+                ->group(function () {
+                    Route::post('check', 'check')->name('check');
+                    Route::get('manage', 'manage')->name('manage');
+                    Route::post('send', 'send')->name('send');
+                    Route::post('retry', 'retry')->name('retry');
+                });
+
+            Route::prefix('bulk-announcement')
+                ->name('bulk-announcement.')
+                ->controller(BulkAnnouncementController::class)
+                ->group(function () {
+                    Route::post('send', 'send')->name('send');
+                });
         });
 
         Route::middleware('role:admin,accountant,committee')->group(function () {
@@ -52,7 +71,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             });
         });
 
-    Route::middleware('role:admin,committee')->group(function () {
+        Route::middleware('role:admin,committee')->group(function () {
             Route::get('submissions', [SubmissionController::class, 'index'])->name('submissions.index');
             Route::get('submissions/export', [SubmissionController::class, 'export'])->name('submissions.export');
         });

@@ -13,6 +13,7 @@ use App\Services\Assignments\AssignmentService;
 use App\Services\Competitions\CompetitionService;
 use Illuminate\Http\Request;
 
+// TODO: Perbolehkan ubah inactive tanpa penahan apapun
 class AssignmentController extends Controller
 {
   public function __construct(

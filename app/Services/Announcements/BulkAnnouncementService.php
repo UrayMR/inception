@@ -87,7 +87,7 @@ class BulkAnnouncementService
    */
   public function sendAnnouncements(string $blacklistText): array
   {
-    $eligibleTeams = $this->validateBlacklist($blacklistText);
+    $eligibleTeams = $this->hackathonTeamsQuery()->get();
     $normalizedBlacklist = $this->normalizeBlacklist($blacklistText);
 
     $sent = 0;

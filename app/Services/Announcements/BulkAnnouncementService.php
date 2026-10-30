@@ -62,12 +62,10 @@ class BulkAnnouncementService
       ->with(['leader', 'competition']);
   }
 
-  public function validateBlacklist(string $blacklistText): Collection
+  public function validateBlacklist(string $blacklistText): array
   {
     $emails = $this->normalizeBlacklist($blacklistText);
-    $eligibleTeams = $this->hackathonTeamsQuery()->get();
-
-    $eligibleEmails = $eligibleTeams->pluck('leader.email')->map(fn($e) => strtolower(trim($e)))->all();
+    $eligibleEmails = $this->hackathonTeamsQuery()->pluck('leader.email')->map(fn($e) => strtolower(trim($e)))->unique()->all();
 
     foreach ($emails as $email) {
       if (!in_array($email, $eligibleEmails, true)) {
@@ -77,9 +75,7 @@ class BulkAnnouncementService
       }
     }
 
-    return $eligibleTeams->filter(
-      fn($team) => in_array(strtolower(trim($team->leader->email)), $emails, true)
-    )->values();
+    return $emails;
   }
 
   /**
@@ -88,7 +84,7 @@ class BulkAnnouncementService
   public function sendAnnouncements(string $blacklistText): array
   {
     $eligibleTeams = $this->hackathonTeamsQuery()->get();
-    $normalizedBlacklist = $this->normalizeBlacklist($blacklistText);
+    $normalizedBlacklist = $this->validateBlacklist($blacklistText);
 
     $sent = 0;
     $failed = 0;

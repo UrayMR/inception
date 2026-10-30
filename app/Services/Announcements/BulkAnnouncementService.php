@@ -65,7 +65,15 @@ class BulkAnnouncementService
   public function validateBlacklist(string $blacklistText): array
   {
     $emails = $this->normalizeBlacklist($blacklistText);
-    $eligibleEmails = $this->hackathonTeamsQuery()->pluck('leader.email')->map(fn($e) => strtolower(trim($e)))->unique()->all();
+
+    $eligibleEmails = $this->hackathonTeamsQuery()
+      ->get()
+      ->pluck('leader.email')
+      ->filter()
+      ->map(fn($email) => strtolower(trim($email)))
+      ->unique()
+      ->values()
+      ->all();
 
     foreach ($emails as $email) {
       if (!in_array($email, $eligibleEmails, true)) {

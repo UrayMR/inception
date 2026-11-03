@@ -106,6 +106,7 @@ class CompetitionRegistrationController extends Controller
             ->with([
                 'leader',
                 'competition',
+                'members',
             ])
             ->latest('updated_at')
             ->first();

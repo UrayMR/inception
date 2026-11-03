@@ -239,6 +239,10 @@ class MailAnnouncementService
         ? $isListed
         : !$isListed;
 
+      if ($announcementType === 'final') {
+        $team->update(['is_finalist' => $isFinalist]);
+      }
+
       return [
         'team_id' => $team->id,
         'email' => $team->leader->email,

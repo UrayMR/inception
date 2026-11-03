@@ -35,6 +35,7 @@ type ResultPageProps = {
             email: string;
         };
         phone_number: string;
+        is_finalist: boolean;
         institution?: string | null;
         members?: TeamMember[];
     };
@@ -91,12 +92,14 @@ type TransparencyAccessProps = {
     clickedAt: number | null;
     unlockDelaySeconds: number;
     transparencyUrl: string;
+    requiresQuestionnaire: boolean;
 };
 
 function TransparencyAccess({
     clickedAt,
     unlockDelaySeconds,
     transparencyUrl,
+    requiresQuestionnaire = true,
 }: TransparencyAccessProps) {
     const unlockAt =
         clickedAt === null
@@ -131,7 +134,8 @@ function TransparencyAccess({
         return () => window.clearInterval(timer);
     }, [unlockAt]);
 
-    const isTransparencyUnlocked = unlockAt !== null && now >= unlockAt;
+    const isTransparencyUnlocked =
+        !requiresQuestionnaire || (unlockAt !== null && now >= unlockAt);
 
     return (
         <div className="relative pl-10">
@@ -142,7 +146,7 @@ function TransparencyAccess({
                         : 'border-zinc-700 bg-zinc-900 text-zinc-500'
                 }`}
             >
-                02
+                {requiresQuestionnaire ? '02' : '01'}
             </div>
 
             <div className="pb-4">
@@ -150,8 +154,9 @@ function TransparencyAccess({
                     Transparansi Penilaian
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                    Akses dokumen transparansi setelah kuisioner diisi dan
-                    disubmit.
+                    {requiresQuestionnaire
+                        ? 'Akses dokumen transparansi setelah kuisioner diisi dan disubmit.'
+                        : 'Silahkan buka tautan untuk mengakses dokumen transparansi penilaian.'}
                 </p>
             </div>
 
@@ -214,6 +219,8 @@ export default function ParticipantCompetitionResultPage() {
         writeClickedAt(storageKey, Date.now());
         window.open(questionnaireUrl, '_blank', 'noopener,noreferrer');
     };
+
+    const isFinalist = team.is_finalist;
 
     return (
         <AppLayout>
@@ -443,61 +450,66 @@ export default function ParticipantCompetitionResultPage() {
 
                                 <div className="space-y-0">
                                     {/* Step 01 */}
+                                    {!isFinalist && (
+                                        <div className="relative pb-7 pl-10">
+                                            <div className="absolute top-0 left-0 flex h-7 w-7 items-center justify-center rounded-full border border-purple-500/50 bg-purple-500/10 font-mono text-xs font-bold text-purple-300">
+                                                01
+                                            </div>
 
-                                    <div className="relative pb-7 pl-10">
-                                        <div className="absolute top-0 left-0 flex h-7 w-7 items-center justify-center rounded-full border border-purple-500/50 bg-purple-500/10 font-mono text-xs font-bold text-purple-300">
-                                            01
+                                            <div className="absolute top-7 bottom-0 left-3.25 border-l border-dashed border-purple-900/70" />
+
+                                            <div className="pb-4">
+                                                <h3 className="text-sm font-semibold text-zinc-100">
+                                                    Kuesioner Peserta
+                                                </h3>
+
+                                                <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                                                    Buka tautan dan isi
+                                                    kuesioner evaluasi kompetisi
+                                                    untuk membuka akses dokumen
+                                                    transparansi penilaian.
+                                                </p>
+                                            </div>
+
+                                            <button
+                                                type="button"
+                                                onClick={
+                                                    handleQuestionnaireClick
+                                                }
+                                                disabled={!questionnaireUrl}
+                                                className="group relative inline-flex h-10 w-full items-center justify-center gap-2 overflow-hidden rounded-lg px-4 font-mono text-xs font-bold tracking-widest text-purple-100 uppercase transition-all duration-300 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
+                                                style={{
+                                                    background:
+                                                        'linear-gradient(135deg, #B13BFF 0%, #8B2DCC 100%)',
+
+                                                    boxShadow:
+                                                        '0 0 20px rgba(177,59,255,0.2)',
+                                                }}
+                                            >
+                                                <span className="relative z-10 inline-flex items-center gap-2">
+                                                    <FileText className="h-3.5 w-3.5" />
+                                                    BUKA KUESIONER
+                                                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                                </span>
+
+                                                <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                                            </button>
+
+                                            {!questionnaireUrl && (
+                                                <p className="mt-2 text-xs text-rose-400">
+                                                    Link kuesioner belum
+                                                    tersedia. Silakan hubungi
+                                                    panitia.
+                                                </p>
+                                            )}
                                         </div>
-
-                                        <div className="absolute top-7 bottom-0 left-3.25 border-l border-dashed border-purple-900/70" />
-
-                                        <div className="pb-4">
-                                            <h3 className="text-sm font-semibold text-zinc-100">
-                                                Kuesioner Peserta
-                                            </h3>
-
-                                            <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                                                Buka tautan dan isi kuesioner
-                                                evaluasi kompetisi untuk membuka
-                                                akses dokumen transparansi
-                                                penilaian.
-                                            </p>
-                                        </div>
-
-                                        <button
-                                            type="button"
-                                            onClick={handleQuestionnaireClick}
-                                            disabled={!questionnaireUrl}
-                                            className="group relative inline-flex h-10 w-full items-center justify-center gap-2 overflow-hidden rounded-lg px-4 font-mono text-xs font-bold tracking-widest text-purple-100 uppercase transition-all duration-300 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
-                                            style={{
-                                                background:
-                                                    'linear-gradient(135deg, #B13BFF 0%, #8B2DCC 100%)',
-
-                                                boxShadow:
-                                                    '0 0 20px rgba(177,59,255,0.2)',
-                                            }}
-                                        >
-                                            <span className="relative z-10 inline-flex items-center gap-2">
-                                                <FileText className="h-3.5 w-3.5" />
-                                                BUKA KUESIONER
-                                                <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                                            </span>
-
-                                            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-                                        </button>
-
-                                        {!questionnaireUrl && (
-                                            <p className="mt-2 text-xs text-rose-400">
-                                                Link kuesioner belum tersedia.
-                                                Silakan hubungi panitia.
-                                            </p>
-                                        )}
-                                    </div>
+                                    )}
 
                                     <TransparencyAccess
                                         clickedAt={questionnaireClickedAt}
                                         unlockDelaySeconds={unlockDelaySeconds}
                                         transparencyUrl={transparencyUrl}
+                                        requiresQuestionnaire={!isFinalist}
                                     />
 
                                     <div className="mt-6 border-t border-purple-950/60 pt-4">

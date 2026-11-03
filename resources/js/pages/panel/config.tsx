@@ -282,9 +282,17 @@ export default function ConfigPage({
                             </FormField>
                             <FormField
                                 name="filterType"
-                                label="Daftar email adalah"
+                                label="Tipe Filter"
                                 required
                             >
+                                <p className="mt-2 text-xs text-muted-foreground">
+                                    Blacklist: email yang ditulis menerima
+                                    status tidak lolos. <br />
+                                    Whitelist: email yang ditulis menerima
+                                    status lolos. Semua tim eligible pada
+                                    kompetisi tetap menerima email sesuai
+                                    statusnya.
+                                </p>
                                 <Select
                                     value={
                                         announcementDispatchForm.data.filterType
@@ -362,13 +370,6 @@ export default function ConfigPage({
                                         {announcementError}
                                     </p>
                                 )}
-                                <p className="mt-2 text-xs text-muted-foreground">
-                                    Blacklist: email yang ditulis menerima
-                                    status tidak lolos. <br />Whitelist: email yang
-                                    ditulis menerima status lolos. Semua tim
-                                    eligible pada kompetisi tetap menerima email
-                                    sesuai statusnya.
-                                </p>
                             </div>
                             <div className="flex items-center justify-end gap-2">
                                 <SubmitButton

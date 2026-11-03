@@ -1,7 +1,9 @@
 import { Head, usePage } from '@inertiajs/react';
+import { Upload } from 'lucide-react';
 import { CreateButton } from '@/components/buttons/create-button';
 import { DataTable } from '@/components/data-table/data-table';
 import { MainContent } from '@/components/main-content';
+import { Button } from '@/components/ui/button';
 import { getTeamColumns } from '@/features/panel/team';
 import PanelLayout from '@/layouts/panel-layout';
 import teams from '@/routes/panel/teams';
@@ -39,7 +41,17 @@ export default function IndexTeamsPage() {
                         meta={props.teams.meta}
                         links={props.teams.links}
                         extraActions={
-                            <CreateButton href={teams.create.url()} />
+                            <div className="flex gap-2">
+                                <CreateButton href={teams.create.url()} />
+                                <Button
+                                    onClick={() =>
+                                        window.open(teams.export.url())
+                                    }
+                                >
+                                    <Upload />
+                                    Export
+                                </Button>
+                            </div>
                         }
                     />
                 </MainContent.Section>

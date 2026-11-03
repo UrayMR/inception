@@ -3,8 +3,6 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\AnnouncementController;
 use App\Http\Controllers\Panel\AssignmentController;
-use App\Http\Controllers\Panel\BulkAnnouncementController;
-use App\Http\Controllers\Panel\FinalAnnouncementController;
 use App\Http\Controllers\Participant\CompetitionRegistrationController;
 use App\Http\Controllers\Panel\CompetitionController;
 use App\Http\Controllers\Panel\ConfigController;
@@ -32,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::middleware('role:admin')->group(function () {
             Route::resource('users', UserController::class)->names('users');
             Route::resource('competitions', CompetitionController::class)->names('competitions');
+            Route::get('teams/export', [TeamController::class, 'export'])->name('teams.export');
             Route::resource('teams', TeamController::class)->names('teams');
             Route::resource('assignments', AssignmentController::class)->names('assignments');
 

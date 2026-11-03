@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Exports\TeamExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Teams\StoreTeamRequest;
 use App\Http\Requests\Teams\UpdateTeamRequest;
@@ -12,6 +13,7 @@ use App\Resources\Teams\ShowTeamResource;
 use App\Services\Competitions\CompetitionService;
 use App\Services\Teams\TeamService;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 // TODO: Harusnya ketika nge store itu dropdown pengguna yg login
 class TeamController extends Controller
@@ -122,5 +124,17 @@ class TeamController extends Controller
         $this->flash('success', 'Team deleted successfully.');
 
         return redirect()->route('panel.teams.index');
+    }
+
+    /**
+     * Export all teams and their related data to Excel.
+     */
+    public function export()
+    {
+        $this->authorize('viewAny', Team::class);
+
+        $fileName = 'inception-export-teams-' . now()->format('Y-m-d') . '.xlsx';
+
+        return Excel::download(new TeamExport(), $fileName);
     }
 }

@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/react-starter-kit",
+    "name": "inception/laravel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "The Inception Project is a Laravel-based web application that serves as a platform for managing competitions, announcements, and related functionalities. It provides a robust framework for developers to build and customize their own competition management systems.",
     "keywords": [
         "laravel",
         "framework"

@@ -94,8 +94,7 @@ class MailAnnouncementService
         'final' => new FinalistAnnouncementMail(
           $team->competition->name,
           $team->team_name,
-          config('mail.announcement.result_url'),
-          config('mail.announcement.questionnaire_url'),
+          route('participant.competitions.result'),
           $isFinalist,
         ),
 

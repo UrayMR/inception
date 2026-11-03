@@ -65,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::controller(CompetitionRegistrationController::class)->group(function () {
             Route::get('competitions/register', 'register')->name('competitions.register');
             Route::post('competitions/register', 'store')->middleware('throttle:competition-register')->name('competitions.register.store');
+            Route::get('competitions/result', 'result')->name('competitions.result');
         });
     });
 });

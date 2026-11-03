@@ -124,7 +124,11 @@ return [
     |
     */
     'announcement' => [
-        'result_url' => env('MAIL_ANNOUNCEMENT_RESULT_URL', 'https://inception.himatifaupnvjt.org'),
         'questionnaire_url' => env('MAIL_ANNOUNCEMENT_QUESTIONNAIRE_URL', 'https://inception.himatifaupnvjt.org'),
+        'result_hackathon_url' => env('MAIL_ANNOUNCEMENT_RESULT_HACKATHON_URL', 'https://inception.himatifaupnvjt.org'),
+        'result_business-plan_url' => env('MAIL_ANNOUNCEMENT_RESULT_BUSINESS_PLAN_URL', 'https://inception.himatifaupnvjt.org'),
+        'result_ui-ux_url' => env('MAIL_ANNOUNCEMENT_RESULT_UI_UX_URL', 'https://inception.himatifaupnvjt.org'),
+        'result_data-science_url' => env('MAIL_ANNOUNCEMENT_RESULT_DATA_SCIENCE_URL', 'https://inception.himatifaupnvjt.org'),
+        'result_delay_seconds' => 120,
     ],
 ];

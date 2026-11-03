@@ -115,4 +115,16 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Announcement URLs
+    |--------------------------------------------------------------------------
+    |
+    | URLs used in announcement emails.
+    |
+    */
+    'announcement' => [
+        'result_url' => env('MAIL_ANNOUNCEMENT_RESULT_URL', 'https://inception.himatifaupnvjt.org'),
+        'questionnaire_url' => env('MAIL_ANNOUNCEMENT_QUESTIONNAIRE_URL', 'https://inception.himatifaupnvjt.org'),
+    ],
 ];

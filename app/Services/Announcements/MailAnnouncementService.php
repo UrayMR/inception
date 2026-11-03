@@ -14,9 +14,6 @@ use Throwable;
 
 class MailAnnouncementService
 {
-  private const RESULT_URL = 'https://drive.google.com/drive/';
-  private const QUESTIONNAIRE_URL = 'https://drive.google.com/drive/';
-
   /**
    * Normalize email input into lowercase unique email list.
    */
@@ -97,8 +94,8 @@ class MailAnnouncementService
         'final' => new FinalistAnnouncementMail(
           $team->competition->name,
           $team->team_name,
-          self::RESULT_URL,
-          self::QUESTIONNAIRE_URL,
+          config('mail.announcement.result_url'),
+          config('mail.announcement.questionnaire_url'),
           $isFinalist,
         ),
 

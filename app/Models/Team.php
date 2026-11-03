@@ -22,7 +22,20 @@ class Team extends Model
         // INI KENAPA DISINI JIR kocak
         'requirement_link',
         'status',
+        'is_finalist',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_finalist' => 'boolean',
+        ];
+    }
 
     public function competition()
     {

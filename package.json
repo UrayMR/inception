@@ -76,7 +76,8 @@
         "zod": "^4.4.3"
     },
     "overrides": {
-        "shell-quote": "^1.8.4"
+        "shell-quote": "^1.11.0",
+        "minimatch": "^11.0.1"
     },
     "optionalDependencies": {
         "@rollup/rollup-linux-x64-gnu": "4.9.5",

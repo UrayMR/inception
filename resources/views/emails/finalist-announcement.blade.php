@@ -182,29 +182,9 @@
 								</tr>
 							</table>
 
-							<!-- Action Links (Transparansi & Kuisioner) -->
+							<!-- Action Link -->
 							<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"
 								style="margin-bottom: 25px; border-collapse: collapse;">
-								@if (!$isFinalist)
-									<tr>
-										<td align="center" style="padding: 0 0 12px 0;">
-											<!--[if !mso]><!-->
-											<table role="presentation" border="0" cellpadding="0" cellspacing="0"
-												style="margin: 0 auto; border-collapse: collapse;">
-												<tr>
-													<td align="center"
-														style="border-radius: 8px; background-color: #25D366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);">
-														<a href="{{ $questionnaire_url }}" target="_blank" class="btn-link"
-															style="padding: 14px 28px; display: inline-block; font-size: 13px; font-weight: bold; color: #ffffff; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; font-family: Arial, sans-serif;">
-															ISI KUESIONER
-														</a>
-													</td>
-												</tr>
-											</table>
-											<!--<![endif]-->
-										</td>
-									</tr>
-								@endif
 								<tr>
 									<td align="center">
 										<!--[if !mso]><!-->
@@ -215,7 +195,7 @@
 													style="border-radius: 8px; background-color: #b13bff; box-shadow: 0 4px 15px rgba(177, 59, 255, 0.4);">
 													<a href="{{ $result_url }}" target="_blank" class="btn-link"
 														style="padding: 14px 28px; display: inline-block; font-size: 13px; font-weight: bold; color: #ffffff; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; font-family: Arial, sans-serif;">
-														TRANSPARANSI PENILAIAN
+														LIHAT TRANSPARANSI NILAI
 													</a>
 												</td>
 											</tr>

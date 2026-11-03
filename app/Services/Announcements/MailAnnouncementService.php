@@ -149,9 +149,11 @@ class MailAnnouncementService
    * - Listed emails receive Non-Finalist email.
    * - Other teams receive Finalist email.
    */
+
   public function sendAnnouncements(
     string $emails,
     string $filterType,
+    string $mode,
     string $competitionId,
     string $announcementType
   ): array {
@@ -166,6 +168,13 @@ class MailAnnouncementService
     if (!in_array($filterType, ['whitelist', 'blacklist'], true)) {
       throw ValidationException::withMessages([
         'filterType' => 'Tipe filter harus whitelist atau blacklist.',
+      ]);
+    }
+
+    // Validate sending mode
+    if (!in_array($mode, ['all', 'single'], true)) {
+      throw ValidationException::withMessages([
+        'mode' => 'Mode pengiriman harus all atau single.',
       ]);
     }
 
@@ -190,7 +199,7 @@ class MailAnnouncementService
       ->values()
       ->all();
 
-    // Validate input emails
+    // Validate input emails against eligible teams
     $invalidEmails = array_diff($emails, $eligibleEmails);
 
     if (!empty($invalidEmails)) {
@@ -200,11 +209,28 @@ class MailAnnouncementService
       ]);
     }
 
-    // Determine finalist status
+    // Determine target teams based on sending mode
+    $targetTeams = $mode === 'single'
+      ? $eligibleTeams->filter(
+        fn($team) => in_array(
+          strtolower(trim($team->leader->email)),
+          $emails,
+          true
+        )
+      )
+      : $eligibleTeams;
+
+    if ($targetTeams->isEmpty()) {
+      throw ValidationException::withMessages([
+        'announcement' => 'Tidak ada tim yang memenuhi kriteria pengiriman.',
+      ]);
+    }
+
+    // Determine finalist status based on filter type
     $isWhitelist = $filterType === 'whitelist';
 
     // Send announcements
-    $results = $eligibleTeams->map(function ($team) use (
+    $results = $targetTeams->map(function ($team) use (
       $emails,
       $isWhitelist,
       $announcementType

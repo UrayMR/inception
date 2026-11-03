@@ -33,6 +33,7 @@ type AnnouncementDispatchForm = {
     competitionId: string;
     announcementType: 'final' | 'hacking-day';
     filterType: 'blacklist' | 'whitelist';
+    mode: 'all' | 'single';
     emails: string;
 };
 
@@ -68,6 +69,7 @@ export default function ConfigPage({
         competitionId: '',
         announcementType: 'final',
         filterType: 'whitelist',
+        mode: 'all',
         emails: '',
     });
 
@@ -331,6 +333,54 @@ export default function ConfigPage({
                                             announcementDispatchForm.errors
                                                 .filterType
                                         }
+                                    </p>
+                                )}
+                            </FormField>
+                            <FormField
+                                name="mode"
+                                label="Mode Pengiriman"
+                                required
+                            >
+                                <p className="mt-2 text-xs text-muted-foreground">
+                                    All: kirim ke semua email yang eligible.{' '}
+                                    <br />
+                                    Single: kirim ke email yang ditulis saja.
+                                </p>
+                                <Select
+                                    value={announcementDispatchForm.data.mode}
+                                    onValueChange={(value) =>
+                                        announcementDispatchForm.setData(
+                                            'mode',
+                                            value as AnnouncementDispatchForm['mode'],
+                                        )
+                                    }
+                                    disabled={
+                                        announcementDispatchForm.processing ||
+                                        !hasSelectedCompetition ||
+                                        !announcementDispatchForm.data
+                                            .filterType
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {Object.entries({
+                                            all: 'All',
+                                            single: 'Single',
+                                        }).map(([value, label]) => (
+                                            <SelectItem
+                                                key={value}
+                                                value={value}
+                                            >
+                                                {label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                {announcementDispatchForm.errors.mode && (
+                                    <p className="mt-2 text-sm text-red-500">
+                                        {announcementDispatchForm.errors.mode}
                                     </p>
                                 )}
                             </FormField>

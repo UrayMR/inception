@@ -35,12 +35,14 @@ class ConfigController extends Controller
       'competitionId' => ['required', 'string', 'exists:competitions,id'],
       'announcementType' => ['required', 'in:final,hacking-day'],
       'filterType' => ['required', 'in:blacklist,whitelist'],
+      'mode' => ['required', 'in:all,single'],
       'emails' => ['required', 'string'],
     ]);
 
     $result = $this->mailAnnouncementService->sendAnnouncements(
       $validated['emails'],
       $validated['filterType'],
+      $validated['mode'],
       $validated['competitionId'],
       $validated['announcementType']
     );

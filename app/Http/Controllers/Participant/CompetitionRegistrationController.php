@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Participant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Participant\Competitions\RegisterCompetitionRequest;
 use App\Enums\CompetitionStatus;
-use App\Mail\CompetitionRegisteredMail;
+use App\Enums\TransactionStatus;
 use App\Models\Competition;
+use App\Models\Team;
 use App\Resources\Participant\Competitions\CompetitionListResource;
 use App\Resources\Participant\Competitions\CompetitionDetailResource;
 use App\Services\Competitions\CompetitionService;
@@ -14,7 +15,6 @@ use App\Services\Competitions\GuestCompetitionService;
 use App\Services\Competitions\Registrations\RegisterCompetitionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
 class CompetitionRegistrationController extends Controller
 {
@@ -91,6 +91,41 @@ class CompetitionRegistrationController extends Controller
         $this->flash('success', 'Mohon menunggu konfirmasi berkas pendaftaran kompetisi dari panitia. Silakan cek (spam) email Anda atau dashboard untuk informasi lebih lanjut.');
 
         return redirect()->route('settings.dashboard');
+    }
+
+    /**
+     * Show announcement result gate page for participant.
+     */
+    public function result()
+    {
+        $user = Auth::user();
+
+        $team = Team::query()
+            ->where('leader_id', $user?->id)
+            ->whereHas('transactions', fn($query) => $query->where('status', TransactionStatus::verified->value))
+            ->with([
+                'leader',
+                'competition',
+            ])
+            ->latest('updated_at')
+            ->first();
+
+        if (! $team || ! $team->competition) {
+            $this->flash('error', 'Halaman hasil belum tersedia untuk akun Anda.');
+
+            return redirect()->route('settings.dashboard');
+        }
+
+        return $this->render('participant/competitions/result', [
+            'competition' => [
+                'id' => $team->competition->id,
+                'name' => $team->competition->name,
+            ],
+            'team' => $team,
+            'questionnaireUrl' => config('mail.announcement.questionnaire_url'),
+            'transparencyUrl' => config("mail.announcement.result_{$team->competition->slug}_url"),
+            'unlockDelaySeconds' => (int) config("mail.announcement.result_delay_seconds"),
+        ]);
     }
 
     /**

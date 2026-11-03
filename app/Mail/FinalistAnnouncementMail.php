@@ -21,7 +21,6 @@ class FinalistAnnouncementMail extends Mailable implements ShouldQueue
         public readonly string $competition_name,
         public readonly string $team_name,
         public readonly string $result_url,
-        public readonly string $questionnaire_url,
         public readonly bool $isFinalist
     ) {}
 

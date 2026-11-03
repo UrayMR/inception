@@ -115,4 +115,20 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Announcement URLs
+    |--------------------------------------------------------------------------
+    |
+    | URLs used in announcement emails.
+    |
+    */
+    'announcement' => [
+        'questionnaire_url' => env('MAIL_ANNOUNCEMENT_QUESTIONNAIRE_URL', 'https://inception.himatifaupnvjt.org'),
+        'result_hackathon_url' => env('MAIL_ANNOUNCEMENT_RESULT_HACKATHON_URL', 'https://inception.himatifaupnvjt.org'),
+        'result_business-plan_url' => env('MAIL_ANNOUNCEMENT_RESULT_BUSINESS_PLAN_URL', 'https://inception.himatifaupnvjt.org'),
+        'result_ui-ux_url' => env('MAIL_ANNOUNCEMENT_RESULT_UI_UX_URL', 'https://inception.himatifaupnvjt.org'),
+        'result_data-science_url' => env('MAIL_ANNOUNCEMENT_RESULT_DATA_SCIENCE_URL', 'https://inception.himatifaupnvjt.org'),
+        'result_delay_seconds' => env('MAIL_ANNOUNCEMENT_RESULT_DELAY_SECONDS', 30),
+    ],
 ];

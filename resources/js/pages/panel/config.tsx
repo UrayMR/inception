@@ -1,8 +1,7 @@
-import { Head, router, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { SubmitButton } from '@/components/buttons/submit-button';
 import { FormField } from '@/components/form-field';
 import { MainContent } from '@/components/main-content';
-import { Button } from '@/components/ui/button';
 import {
     Select,
     SelectContent,
@@ -30,6 +29,14 @@ interface ConfigPageProps {
     competitions: Option[];
 }
 
+type AnnouncementDispatchForm = {
+    competitionId: string;
+    announcementType: 'final' | 'hacking-day';
+    filterType: 'blacklist' | 'whitelist';
+    mode: 'all' | 'single';
+    emails: string;
+};
+
 export default function ConfigPage({
     announcement,
     registrationBatches,
@@ -52,80 +59,58 @@ export default function ConfigPage({
             (batch) => batch.status === RegistrationBatchStatusMap.Active.value,
         ) ?? registrationBatches[0];
 
-    const registrationBatchForm = useForm<{
-        registrationBatchId: string;
-    }>({
+    const registrationBatchForm = useForm({
         registrationBatchId: activeRegistrationBatch
             ? String(activeRegistrationBatch.id)
             : '',
     });
 
-    const finalAnnouncementForm = useForm<{
-        whitelist: string;
-        competitionId: string;
-    }>({
-        whitelist: '',
+    const announcementDispatchForm = useForm<AnnouncementDispatchForm>({
         competitionId: '',
+        announcementType: 'final',
+        filterType: 'whitelist',
+        mode: 'all',
+        emails: '',
     });
 
-    const bulkAnnouncementForm = useForm<{
-        blacklist: string;
-    }>({
-        blacklist: '',
-    });
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (!guard(form.data, form.setError)) {
-            return;
+        if (guard(form.data, form.setError)) {
+            form.put(panel.announcements.update.url(announcement.id));
         }
-
-        form.put(panel.announcements.update.url(announcement.id));
     };
 
-    const handleBatchSwitchSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleBatchSwitchSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
 
-        if (!registrationBatchForm.data.registrationBatchId) {
-            return;
+        if (registrationBatchForm.data.registrationBatchId) {
+            registrationBatchForm.put(
+                panel.registrationBatches.switch.url(
+                    registrationBatchForm.data.registrationBatchId,
+                ),
+            );
         }
-
-        registrationBatchForm.put(
-            panel.registrationBatches.switch.url(
-                registrationBatchForm.data.registrationBatchId,
-            ),
-        );
     };
 
-    const handleFinalAnnouncementSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (!finalAnnouncementForm.data.whitelist) {
-            return;
-        }
-
-        finalAnnouncementForm.post('/panel/final-announcement/check');
+    const handleAnnouncementDispatch = (event: React.FormEvent) => {
+        event.preventDefault();
+        announcementDispatchForm.post('/panel/configuration/announcement');
     };
 
-    const handleBulkAnnouncementSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const hasSelectedCompetition =
+        announcementDispatchForm.data.competitionId !== '';
 
-        if (!bulkAnnouncementForm.data.blacklist) {
-            return;
-        }
-
-        bulkAnnouncementForm.post(panel.bulkAnnouncement.send.url());
-    };
+    const announcementError = (
+        announcementDispatchForm.errors as Record<string, string | undefined>
+    ).announcement;
 
     return (
         <PanelLayout breadcrumbs={breadcrumbs}>
             <Head title="Konfigurasi" />
-
             <div className="flex flex-col gap-4 p-4">
                 <MainContent>
                     <MainContent.Header title="Konfigurasi" />
-
                     <MainContent.Section>
                         <form onSubmit={handleSubmit}>
                             <AnnouncementForm
@@ -134,7 +119,6 @@ export default function ConfigPage({
                                 errors={form.errors}
                                 onChange={form.setData}
                             />
-
                             <div className="mt-4 flex justify-end">
                                 <SubmitButton loading={form.processing} />
                             </div>
@@ -142,7 +126,6 @@ export default function ConfigPage({
                     </MainContent.Section>
 
                     <hr className="my-8 border-muted" />
-
                     <MainContent.Section>
                         <form onSubmit={handleBatchSwitchSubmit}>
                             <div className="space-y-5">
@@ -165,12 +148,10 @@ export default function ConfigPage({
                                         disabled={
                                             registrationBatches.length === 0
                                         }
-                                        required
                                     >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Pilih batch" />
                                         </SelectTrigger>
-
                                         <SelectContent>
                                             {registrationBatches.map(
                                                 (batch) => (
@@ -190,7 +171,6 @@ export default function ConfigPage({
                                         </SelectContent>
                                     </Select>
                                 </FormField>
-
                                 <div className="flex justify-end">
                                     <SubmitButton
                                         loading={
@@ -207,30 +187,36 @@ export default function ConfigPage({
                     </MainContent.Section>
 
                     <hr className="my-8 border-muted" />
-
                     <MainContent.Section>
+                        <h2 className="mb-4 text-2xl font-bold">
+                            Kirim Pengumuman
+                        </h2>
                         <form
-                            onSubmit={handleFinalAnnouncementSubmit}
+                            onSubmit={handleAnnouncementDispatch}
                             className="space-y-4"
                         >
                             <FormField
                                 name="competitionId"
-                                label="Competition"
+                                label="Kompetisi"
                                 required
                             >
                                 <Select
                                     value={
-                                        finalAnnouncementForm.data.competitionId
+                                        announcementDispatchForm.data
+                                            .competitionId
                                     }
-                                    onValueChange={(value) =>
-                                        finalAnnouncementForm.setData(
+                                    onValueChange={(value) => {
+                                        announcementDispatchForm.setData(
                                             'competitionId',
                                             value,
-                                        )
-                                    }
+                                        );
+                                        announcementDispatchForm.clearErrors(
+                                            'competitionId',
+                                        );
+                                    }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Pilih Kompetisi" />
+                                        <SelectValue placeholder="Pilih kompetisi" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {competitions.map((competition) => (
@@ -243,137 +229,210 @@ export default function ConfigPage({
                                         ))}
                                     </SelectContent>
                                 </Select>
+                                {announcementDispatchForm.errors
+                                    .competitionId && (
+                                    <p className="mt-2 text-sm text-red-500">
+                                        {
+                                            announcementDispatchForm.errors
+                                                .competitionId
+                                        }
+                                    </p>
+                                )}
                             </FormField>
-
+                            <FormField
+                                name="announcementType"
+                                label="Jenis pengumuman"
+                                required
+                            >
+                                <Select
+                                    value={
+                                        announcementDispatchForm.data
+                                            .announcementType
+                                    }
+                                    onValueChange={(value) =>
+                                        announcementDispatchForm.setData(
+                                            'announcementType',
+                                            value as AnnouncementDispatchForm['announcementType'],
+                                        )
+                                    }
+                                    disabled={
+                                        announcementDispatchForm.processing ||
+                                        !hasSelectedCompetition
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="final">
+                                            Final Announcement
+                                        </SelectItem>
+                                        <SelectItem value="hacking-day">
+                                            Hacking Day Announcement
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                {announcementDispatchForm.errors
+                                    .announcementType && (
+                                    <p className="mt-2 text-sm text-red-500">
+                                        {
+                                            announcementDispatchForm.errors
+                                                .announcementType
+                                        }
+                                    </p>
+                                )}
+                            </FormField>
+                            <FormField
+                                name="filterType"
+                                label="Tipe Filter"
+                                required
+                            >
+                                <p className="mt-2 text-xs text-muted-foreground">
+                                    Blacklist: email yang ditulis menerima
+                                    status tidak lolos. <br />
+                                    Whitelist: email yang ditulis menerima
+                                    status lolos. Semua tim eligible pada
+                                    kompetisi tetap menerima email sesuai
+                                    statusnya.
+                                </p>
+                                <Select
+                                    value={
+                                        announcementDispatchForm.data.filterType
+                                    }
+                                    onValueChange={(value) =>
+                                        announcementDispatchForm.setData(
+                                            'filterType',
+                                            value as AnnouncementDispatchForm['filterType'],
+                                        )
+                                    }
+                                    disabled={
+                                        announcementDispatchForm.processing ||
+                                        !hasSelectedCompetition
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {Object.entries({
+                                            blacklist: 'Blacklist',
+                                            whitelist: 'Whitelist',
+                                        }).map(([value, label]) => (
+                                            <SelectItem
+                                                key={value}
+                                                value={value}
+                                            >
+                                                {label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                {announcementDispatchForm.errors.filterType && (
+                                    <p className="mt-2 text-sm text-red-500">
+                                        {
+                                            announcementDispatchForm.errors
+                                                .filterType
+                                        }
+                                    </p>
+                                )}
+                            </FormField>
+                            <FormField
+                                name="mode"
+                                label="Mode Pengiriman"
+                                required
+                            >
+                                <p className="mt-2 text-xs text-muted-foreground">
+                                    All: kirim ke semua email yang eligible.{' '}
+                                    <br />
+                                    Single: kirim ke email yang ditulis saja.
+                                </p>
+                                <Select
+                                    value={announcementDispatchForm.data.mode}
+                                    onValueChange={(value) =>
+                                        announcementDispatchForm.setData(
+                                            'mode',
+                                            value as AnnouncementDispatchForm['mode'],
+                                        )
+                                    }
+                                    disabled={
+                                        announcementDispatchForm.processing ||
+                                        !hasSelectedCompetition ||
+                                        !announcementDispatchForm.data
+                                            .filterType
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {Object.entries({
+                                            all: 'All',
+                                            single: 'Single',
+                                        }).map(([value, label]) => (
+                                            <SelectItem
+                                                key={value}
+                                                value={value}
+                                            >
+                                                {label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                {announcementDispatchForm.errors.mode && (
+                                    <p className="mt-2 text-sm text-red-500">
+                                        {announcementDispatchForm.errors.mode}
+                                    </p>
+                                )}
+                            </FormField>
                             <div>
                                 <label
-                                    htmlFor="whitelist"
+                                    htmlFor="announcement-emails"
                                     className="mb-2 block text-sm font-medium"
                                 >
-                                    Email ketua tim yang lolos (Finalist)
+                                    Email ketua tim
                                     <span className="text-destructive"> *</span>
                                 </label>
                                 <textarea
-                                    id="whitelist"
-                                    value={finalAnnouncementForm.data.whitelist}
+                                    id="announcement-emails"
+                                    value={announcementDispatchForm.data.emails}
                                     onChange={(event) =>
-                                        finalAnnouncementForm.setData(
-                                            'whitelist',
+                                        announcementDispatchForm.setData(
+                                            'emails',
                                             event.target.value,
                                         )
                                     }
-                                    rows={12}
+                                    rows={10}
                                     className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                                    placeholder={
-                                        'ketua.tim1@example.com, ketua.tim2@example.com'
-                                    }
+                                    placeholder="ketua.tim1@example.com, ketua.tim2@example.com"
                                     disabled={
-                                        finalAnnouncementForm.processing ||
-                                        !finalAnnouncementForm.data
-                                            .competitionId
+                                        announcementDispatchForm.processing ||
+                                        !hasSelectedCompetition
                                     }
                                     required
                                 />
-                                {finalAnnouncementForm.errors.whitelist && (
+                                {announcementDispatchForm.errors.emails && (
                                     <p className="mt-2 text-sm text-red-500">
-                                        {finalAnnouncementForm.errors.whitelist}
+                                        {announcementDispatchForm.errors.emails}
                                     </p>
                                 )}
-                                <p className="mt-2 text-xs text-muted-foreground">
-                                    Pastikan seluruh email yang masuk whitelist
-                                    benar-benar milik ketua tim, terdaftar,
-                                    memiliki transaksi terverifikasi, dan telah
-                                    mengumpulkan tugas (submission).
-                                </p>
-                            </div>
-
-                            <div className="flex items-center justify-between gap-2">
-                                <Button
-                                    type="button"
-                                    variant="link"
-                                    onClick={() => {
-                                        router.visit(
-                                            panel.finalAnnouncement.manage({
-                                                query: {
-                                                    competitionId:
-                                                        finalAnnouncementForm
-                                                            .data.competitionId,
-                                                },
-                                            }).url,
-                                        );
-                                    }}
-                                    className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
-                                    disabled={
-                                        finalAnnouncementForm.processing ||
-                                        !finalAnnouncementForm.data
-                                            .competitionId
-                                    }
-                                >
-                                    Manage Final Announcement
-                                </Button>
-
-                                <SubmitButton
-                                    loading={finalAnnouncementForm.processing}
-                                    disabled={
-                                        finalAnnouncementForm.processing ||
-                                        !finalAnnouncementForm.data
-                                            .competitionId
-                                    }
-                                    label="Check & Simpan Whitelist"
-                                />
-                            </div>
-                        </form>
-                    </MainContent.Section>
-
-                    <hr className="my-8 border-muted" />
-
-                    <MainContent.Section>
-                        <h2 className="mb-4 text-2xl font-bold">
-                            Bulk Announcement Hacking Day (Hackathon)
-                        </h2>
-                        <form
-                            onSubmit={handleBulkAnnouncementSubmit}
-                            className="space-y-4"
-                        >
-                            <FormField
-                                name="blacklist"
-                                label="Email blacklist"
-                                required
-                            >
-                                <textarea
-                                    id="blacklist"
-                                    value={bulkAnnouncementForm.data.blacklist}
-                                    onChange={(event) =>
-                                        bulkAnnouncementForm.setData(
-                                            'blacklist',
-                                            event.target.value,
-                                        )
-                                    }
-                                    rows={8}
-                                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                                    placeholder={
-                                        'ketua.tim1@example.com, ketua.tim2@example.com'
-                                    }
-                                    disabled={bulkAnnouncementForm.processing}
-                                    required
-                                />
-                                {bulkAnnouncementForm.errors.blacklist && (
+                                {announcementError && (
                                     <p className="mt-2 text-sm text-red-500">
-                                        {bulkAnnouncementForm.errors.blacklist}
+                                        {announcementError}
                                     </p>
                                 )}
-                                <p className="mt-2 text-xs text-muted-foreground">
-                                    Masukkan email yang dipisahkan koma atau
-                                    baris baru. Email dalam daftar ini akan
-                                    dikecualikan saat proses bulk announcement.
-                                </p>
-                            </FormField>
-
-                            <div className="flex justify-end">
+                            </div>
+                            <div className="flex items-center justify-end gap-2">
                                 <SubmitButton
-                                    loading={bulkAnnouncementForm.processing}
-                                    disabled={bulkAnnouncementForm.processing}
-                                    label="Kirim Bulk Announcement"
+                                    className="ml-auto"
+                                    loading={
+                                        announcementDispatchForm.processing
+                                    }
+                                    disabled={
+                                        announcementDispatchForm.processing ||
+                                        !hasSelectedCompetition ||
+                                        !announcementDispatchForm.data.emails
+                                    }
+                                    label="Cek & Kirim"
                                 />
                             </div>
                         </form>

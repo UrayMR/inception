@@ -40,23 +40,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::put('announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
             Route::get('configuration', [ConfigController::class, 'index'])->name('configuration');
-
-            Route::prefix('final-announcement')
-                ->name('final-announcement.')
-                ->controller(FinalAnnouncementController::class)
-                ->group(function () {
-                    Route::post('check', 'check')->name('check');
-                    Route::get('manage', 'manage')->name('manage');
-                    Route::post('send', 'send')->name('send');
-                    Route::post('retry', 'retry')->name('retry');
-                });
-
-            Route::prefix('bulk-announcement')
-                ->name('bulk-announcement.')
-                ->controller(BulkAnnouncementController::class)
-                ->group(function () {
-                    Route::post('send', 'send')->name('send');
-                });
+            Route::post('configuration/announcement', [ConfigController::class, 'dispatchAnnouncement'])->name('configuration.announcement');
         });
 
         Route::middleware('role:admin,accountant,committee')->group(function () {

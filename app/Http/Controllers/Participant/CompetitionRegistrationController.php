@@ -125,6 +125,7 @@ class CompetitionRegistrationController extends Controller
             'team' => $team,
             'questionnaireUrl' => config('mail.announcement.questionnaire_url'),
             'transparencyUrl' => config("mail.announcement.result_{$team->competition->slug}_url"),
+            'groupUrl' => config("group.finalist.{$team->competition->slug}"),
             'unlockDelaySeconds' => (int) config("mail.announcement.result_delay_seconds"),
         ]);
     }

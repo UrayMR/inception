@@ -1,17 +1,7 @@
 import { Head, usePage } from '@inertiajs/react';
-import {
-    ArrowUpRight,
-    Building2,
-    CheckCircle2,
-    ExternalLink,
-    FileText,
-    Lock,
-    Mail,
-    Phone,
-    Trophy,
-    Users,
-} from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, ExternalLink, Lock } from 'lucide-react';
 import { useEffect, useState, useSyncExternalStore } from 'react';
+import WhatsappIcon from '@/components/svg/whatsapp-icon';
 import AppLayout from '@/layouts/app-layout';
 import type { Auth } from '@/types';
 
@@ -40,6 +30,7 @@ type ResultPageProps = {
         members?: TeamMember[];
     };
 
+    groupUrl: string;
     questionnaireUrl: string;
     transparencyUrl: string;
     unlockDelaySeconds: number;
@@ -139,6 +130,7 @@ function TransparencyAccess({
 
     return (
         <div className="relative pl-10">
+            {/* Step 02 is always the last step (01 is the questionnaire or the finalist group). */}
             <div
                 className={`absolute top-0 left-0 flex h-7 w-7 items-center justify-center rounded-full border font-mono text-xs font-bold ${
                     isTransparencyUnlocked
@@ -146,7 +138,7 @@ function TransparencyAccess({
                         : 'border-zinc-700 bg-zinc-900 text-zinc-500'
                 }`}
             >
-                {requiresQuestionnaire ? '02' : '01'}
+                02
             </div>
 
             <div className="pb-4">
@@ -196,6 +188,7 @@ export default function ParticipantCompetitionResultPage() {
         auth,
         competition,
         team,
+        groupUrl,
         questionnaireUrl,
         transparencyUrl,
         unlockDelaySeconds,
@@ -256,18 +249,14 @@ export default function ParticipantCompetitionResultPage() {
 
                         <div className="space-y-6">
                             <section className="border border-purple-950/60 bg-black/20 p-5 md:p-6">
-                                <div className="mb-5 flex items-center justify-between gap-3 border-b border-purple-950/60 pb-4">
-                                    <div>
-                                        <p className="mb-1 font-mono text-[10px] font-bold tracking-[0.2em] text-purple-400 uppercase">
-                                            // TEAM_INFORMATION
-                                        </p>
+                                <div className="mb-5 border-b border-purple-950/60 pb-4">
+                                    <p className="mb-1 font-mono text-[10px] font-bold tracking-[0.2em] text-purple-400 uppercase">
+                                        // TEAM_INFORMATION
+                                    </p>
 
-                                        <h2 className="text-lg font-bold text-white">
-                                            Informasi Tim
-                                        </h2>
-                                    </div>
-
-                                    <Users className="h-5 w-5 text-purple-400/70" />
+                                    <h2 className="text-lg font-bold text-white">
+                                        Informasi Tim
+                                    </h2>
                                 </div>
 
                                 <div className="space-y-5">
@@ -280,19 +269,22 @@ export default function ParticipantCompetitionResultPage() {
                                             {team.team_name || '-'}
                                         </h3>
 
-                                        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-400">
-                                            <span className="inline-flex items-center gap-1.5">
-                                                <Trophy className="h-3.5 w-3.5 text-purple-400" />
-
-                                                {competition.name}
-                                            </span>
+                                        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-zinc-400">
+                                            {competition.name}
 
                                             {team.institution && (
-                                                <span className="inline-flex items-center gap-1.5">
-                                                    <Building2 className="h-3.5 w-3.5 text-zinc-500" />
+                                                <>
+                                                    <span
+                                                        aria-hidden="true"
+                                                        className="text-zinc-700"
+                                                    >
+                                                        /
+                                                    </span>
 
-                                                    {team.institution}
-                                                </span>
+                                                    <span>
+                                                        {team.institution}
+                                                    </span>
+                                                </>
                                             )}
                                         </div>
                                     </div>
@@ -324,13 +316,8 @@ export default function ParticipantCompetitionResultPage() {
                                                     Email
                                                 </p>
 
-                                                <p className="flex min-w-0 items-center gap-2 text-sm text-zinc-300">
-                                                    <Mail className="h-3.5 w-3.5 shrink-0 text-zinc-500" />
-
-                                                    <span className="break-all">
-                                                        {team.leader.email ||
-                                                            '-'}
-                                                    </span>
+                                                <p className="text-sm break-all text-zinc-300">
+                                                    {team.leader.email || '-'}
                                                 </p>
                                             </div>
 
@@ -339,9 +326,7 @@ export default function ParticipantCompetitionResultPage() {
                                                     Nomor Telepon
                                                 </p>
 
-                                                <p className="flex items-center gap-2 text-sm text-zinc-300">
-                                                    <Phone className="h-3.5 w-3.5 text-zinc-500" />
-
+                                                <p className="text-sm text-zinc-300">
                                                     {team.phone_number || '-'}
                                                 </p>
                                             </div>
@@ -383,9 +368,7 @@ export default function ParticipantCompetitionResultPage() {
                                                             </span>
 
                                                             {member.member_phone_number && (
-                                                                <span className="col-start-2 inline-flex items-center gap-1.5 text-xs text-zinc-500 sm:col-start-auto">
-                                                                    <Phone className="h-3 w-3" />
-
+                                                                <span className="col-start-2 text-xs text-zinc-500 sm:col-start-auto">
                                                                     {
                                                                         member.member_phone_number
                                                                     }
@@ -449,61 +432,96 @@ export default function ParticipantCompetitionResultPage() {
                                 </div>
 
                                 <div className="space-y-0">
-                                    {/* Step 01 */}
-                                    {!isFinalist && (
-                                        <div className="relative pb-7 pl-10">
-                                            <div className="absolute top-0 left-0 flex h-7 w-7 items-center justify-center rounded-full border border-purple-500/50 bg-purple-500/10 font-mono text-xs font-bold text-purple-300">
-                                                01
-                                            </div>
-
-                                            <div className="absolute top-7 bottom-0 left-3.25 border-l border-dashed border-purple-900/70" />
-
-                                            <div className="pb-4">
-                                                <h3 className="text-sm font-semibold text-zinc-100">
-                                                    Kuesioner Peserta
-                                                </h3>
-
-                                                <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                                                    Buka tautan dan isi
-                                                    kuesioner evaluasi kompetisi
-                                                    untuk membuka akses dokumen
-                                                    transparansi penilaian.
-                                                </p>
-                                            </div>
-
-                                            <button
-                                                type="button"
-                                                onClick={
-                                                    handleQuestionnaireClick
-                                                }
-                                                disabled={!questionnaireUrl}
-                                                className="group relative inline-flex h-10 w-full items-center justify-center gap-2 overflow-hidden rounded-lg px-4 font-mono text-xs font-bold tracking-widest text-purple-100 uppercase transition-all duration-300 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
-                                                style={{
-                                                    background:
-                                                        'linear-gradient(135deg, #B13BFF 0%, #8B2DCC 100%)',
-
-                                                    boxShadow:
-                                                        '0 0 20px rgba(177,59,255,0.2)',
-                                                }}
-                                            >
-                                                <span className="relative z-10 inline-flex items-center gap-2">
-                                                    <FileText className="h-3.5 w-3.5" />
-                                                    BUKA KUESIONER
-                                                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                                                </span>
-
-                                                <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-                                            </button>
-
-                                            {!questionnaireUrl && (
-                                                <p className="mt-2 text-xs text-rose-400">
-                                                    Link kuesioner belum
-                                                    tersedia. Silakan hubungi
-                                                    panitia.
-                                                </p>
-                                            )}
+                                    {/* Step 01: finalist group for finalists, questionnaire for everyone else. */}
+                                    <div className="relative pb-7 pl-10">
+                                        <div className="absolute top-0 left-0 flex h-7 w-7 items-center justify-center rounded-full border border-purple-500/50 bg-purple-500/10 font-mono text-xs font-bold text-purple-300">
+                                            01
                                         </div>
-                                    )}
+
+                                        <div className="absolute top-7 bottom-0 left-3.25 border-l border-dashed border-purple-900/70" />
+
+                                        {isFinalist ? (
+                                            <>
+                                                <div className="pb-4">
+                                                    <h3 className="text-sm font-semibold text-zinc-100">
+                                                        Grup WhatsApp Finalis
+                                                    </h3>
+
+                                                    <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                                                        Gabung ke grup khusus
+                                                        finalis untuk
+                                                        mendapatkan informasi
+                                                        lanjutan dari panitia.
+                                                    </p>
+                                                </div>
+
+                                                {groupUrl ? (
+                                                    <a
+                                                        href={groupUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-emerald-500/50 bg-emerald-950/30 px-4 font-mono text-xs font-bold tracking-widest text-emerald-200 uppercase transition-colors hover:bg-emerald-900/40"
+                                                    >
+                                                        <span className='flex items-center gap-2'><WhatsappIcon /> GABUNG GRUP WHATSAPP</span>
+                                                        <ExternalLink className="h-3.5 w-3.5" />
+                                                    </a>
+                                                ) : (
+                                                    <p className="text-xs text-rose-400">
+                                                        Link grup belum
+                                                        tersedia. Silakan
+                                                        hubungi panitia.
+                                                    </p>
+                                                )}
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="pb-4">
+                                                    <h3 className="text-sm font-semibold text-zinc-100">
+                                                        Kuesioner Peserta
+                                                    </h3>
+
+                                                    <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                                                        Buka tautan dan isi
+                                                        kuesioner evaluasi
+                                                        kompetisi untuk membuka
+                                                        akses dokumen
+                                                        transparansi penilaian.
+                                                    </p>
+                                                </div>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={
+                                                        handleQuestionnaireClick
+                                                    }
+                                                    disabled={!questionnaireUrl}
+                                                    className="group relative inline-flex h-10 w-full items-center justify-center gap-2 overflow-hidden rounded-lg px-4 font-mono text-xs font-bold tracking-widest text-purple-100 uppercase transition-all duration-300 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
+                                                    style={{
+                                                        background:
+                                                            'linear-gradient(135deg, #B13BFF 0%, #8B2DCC 100%)',
+
+                                                        boxShadow:
+                                                            '0 0 20px rgba(177,59,255,0.2)',
+                                                    }}
+                                                >
+                                                    <span className="relative z-10 inline-flex items-center gap-2">
+                                                        BUKA KUESIONER
+                                                        <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                                    </span>
+
+                                                    <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                                                </button>
+
+                                                {!questionnaireUrl && (
+                                                    <p className="mt-2 text-xs text-rose-400">
+                                                        Link kuesioner belum
+                                                        tersedia. Silakan
+                                                        hubungi panitia.
+                                                    </p>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
 
                                     <TransparencyAccess
                                         clickedAt={questionnaireClickedAt}
